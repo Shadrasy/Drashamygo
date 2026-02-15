@@ -21,18 +21,18 @@
             background: radial-gradient(circle at center, #0a192f 0%, var(--nuit) 100%);
         }
 
-        /* --- EFFET VHS (Lignes de vieux moniteur) --- */
+        /* --- FILTRE MAGNÉTOSCOPE (Lignes de scan) --- */
         body::after {
             content: "";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px;
+            background-size: 100% 4px; /* Crée les lignes horizontales VHS */
             z-index: 100;
             pointer-events: none;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
-        /* --- CONTENEUR D'ÉTOILES MULTIPLES --- */
+        /* --- CONTENEUR D'ÉTOILES --- */
         .stars-container {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -42,14 +42,14 @@
         .star {
             position: absolute;
             color: var(--ecarlate);
-            filter: blur(0.5px);
+            filter: blur(0.3px);
             animation: flicker var(--d) infinite alternate;
             opacity: var(--o);
         }
 
         @keyframes flicker {
-            0% { opacity: 0.1; transform: scale(0.8); filter: brightness(0.5); }
-            100% { opacity: 0.9; transform: scale(1.2); filter: brightness(1.5) drop-shadow(0 0 5px var(--ecarlate)); }
+            0% { opacity: 0.1; transform: scale(0.7); filter: brightness(0.5); }
+            100% { opacity: 0.9; transform: scale(1.2) rotate(10deg); filter: brightness(1.5) drop-shadow(0 0 8px var(--ecarlate)); }
         }
 
         header {
@@ -72,33 +72,5 @@
 
         .box {
             background: rgba(0, 0, 0, 0.85);
-            border: 1px solid rgba(255, 36, 0, 0.4);
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 30px rgba(0,0,0,1);
-        }
-
-        .btn {
-            background: var(--ecarlate);
-            color: white;
-            padding: 20px 45px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 0 20px rgba(255, 36, 0, 0.5);
-            transition: 0.3s;
-        }
-        .btn:hover { transform: scale(1.05); background: #ff4500; }
-    </style>
-</head>
-<body>
-    <div class="stars-container">
-        <span class="star" style="--d:3s; --o:0.4; top:10%; left:15%; font-size:20px;">✧</span>
-        <span class="star" style="--d:5s; --o:0.6; top:25%; left:80%; font-size:35px;">★</span>
-        <span class="star" style="--d:2s; --o:0.3; top:45%; left:10%; font-size:15px;">✦</span>
-        <span class="star" style="--d:4s; --o:0.5; top:65%; left:85%; font-size:25px;">✷</span>
-        <span class="star" style="--d:6s; --o:0.2; top:80%; left:20%; font-size:40px;">✶</span>
-        <span class="star" style="--d:3s; --o:0.7; top:5%; left:60%; font-size:18px;">✧</span>
-        <span class="star" style="--d:4s; --o:0.4; top:35%; left:45%; font
+            border: 1px solid rgba(255,
+                                
