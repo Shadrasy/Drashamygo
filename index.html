@@ -3,112 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Galaxie Vivante</title>
+    <title>Archives du Multivers - Horizon Final</title>
     <style>
         :root { 
-            --noir-vcr: #010206; 
+            --noir-vcr: #010103; 
             --vhs-vert: #00ff41;
-            --rouge-vif: #ff1a1a;
-            --bleu-univers: #0044ff;
+            --rouge-gaz: rgba(255, 20, 20, 0.4);
+            --bleu-gaz: rgba(0, 80, 255, 0.45);
         }
 
         body {
             margin: 0; background-color: var(--noir-vcr); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : NÉBULEUSE PROFONDE */
+            /* FOND : NÉBULEUSES EN MOUVEMENT */
             background: 
-                radial-gradient(ellipse at 20% 30%, rgba(0, 68, 255, 0.5) 0%, transparent 65%),
-                radial-gradient(ellipse at 80% 70%, rgba(255, 26, 26, 0.4) 0%, transparent 65%),
+                radial-gradient(ellipse at 25% 35%, var(--bleu-gaz) 0%, transparent 65%),
+                radial-gradient(ellipse at 75% 65%, var(--rouge-gaz) 0%, transparent 65%),
                 var(--noir-vcr);
             background-attachment: fixed;
-            filter: contrast(120%) brightness(95%) saturate(1.4);
+            filter: contrast(125%) brightness(95%) saturate(1.4);
         }
 
         /* --- FILTRE VHS --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.15; z-index: 100; pointer-events: none;
+            opacity: 0.14; z-index: 100; pointer-events: none;
             animation: vhs-noise 0.2s infinite;
         }
         @keyframes vhs-noise { 0% { transform: translate(0,0); } 100% { transform: translate(-1%, 1%); } }
 
-        /* --- LE CHAMP D'ÉTOILES (SANS EFFET DE GRILLE) --- */
-        .star-field {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
+        /* --- LES COUCHES D'ÉTOILES (DENSITÉ MAXIMALE) --- */
+        .universe { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
+        .star-layer { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-repeat: repeat; }
+        
+        /* 1. La Poussière Galactique (Milliers de micro-points) */
+        .stars-dense {
+            background-image: 
+                radial-gradient(1px 1px at 15px 25px, #fff, transparent),
+                radial-gradient(1px 1px at 60px 110px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1.5px 1.5px at 150px 200px, #fff, transparent);
+            background-size: 250px 250px; opacity: 0.8;
+            animation: drift-galactique 180s linear infinite;
         }
 
-        /* On utilise 3 couches de tailles différentes pour casser l'alignement */
-        .stars {
-            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
-            background-repeat: repeat;
-        }
-        .stars-small {
-            background-image: radial-gradient(1px 1px at 20px 30px, #eee, transparent), radial-gradient(1px 1px at 150px 250px, #fff, transparent);
-            background-size: 400px 400px; /* Grand carré pour éviter l'alignement visible */
-            opacity: 0.7; animation: drift 150s linear infinite;
-        }
-        .stars-medium {
-            background-image: radial-gradient(2px 2px at 100px 100px, #fff, transparent), radial-gradient(1.5px 1.5px at 300px 450px, var(--bleu-univers), transparent);
-            background-size: 700px 700px; opacity: 0.4; animation: drift 200s linear infinite reverse;
+        /* 2. Étoiles Scintillantes Aléatoires */
+        .stars-sparkle {
+            background-image: radial-gradient(2px 2px at 100px 150px, #fff, transparent);
+            background-size: 500px 500px; opacity: 0.5;
+            animation: drift-galactique 120s linear infinite reverse;
         }
 
-        @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(15deg); } }
+        @keyframes drift-galactique { from { transform: rotate(0deg); } to { transform: rotate(20deg); } }
 
-        /* --- LES PLANÈTES EN MOUVEMENT (DÉRIVE LENTE) --- */
+        /* --- LE TROU NOIR (ANIMÉ) --- */
+        .black-hole {
+            position: fixed; top: 35%; left: 45%; width: 100px; height: 100px;
+            background: black; border-radius: 50%; z-index: -2;
+            /* Disque d'accrétion (La lumière aspirée) */
+            box-shadow: 
+                0 0 60px 10px rgba(255, 255, 255, 0.4),
+                0 0 100px 30px rgba(0, 100, 255, 0.2),
+                inset 0 0 40px rgba(255, 255, 255, 0.8);
+            animation: black-hole-swirl 10s infinite linear, black-hole-pulse 4s infinite alternate ease-in-out;
+        }
+        @keyframes black-hole-swirl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes black-hole-pulse { 0% { transform: scale(1); box-shadow: 0 0 60px 10px rgba(255,255,255,0.4); } 100% { transform: scale(1.1); box-shadow: 0 0 90px 20px rgba(255,255,255,0.6); } }
+
+        /* --- PLANÈTES EN ORBITE LENTE --- */
         .planet {
             position: fixed; border-radius: 50%; z-index: -2;
-            box-shadow: inset -20px -20px 60px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5);
-            animation: planet-float 120s linear infinite alternate;
+            box-shadow: inset -20px -20px 60px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.4);
+            animation: orbital-move 160s linear infinite;
         }
-        
-        /* Planète Rouge (Géante) */
-        .p1 { 
-            width: 260px; height: 260px; top: 5%; left: 10%; 
-            background: radial-gradient(circle at 30% 30%, #882222, #110000); 
-            animation-duration: 180s;
-        }
-        /* Planète Bleue */
-        .p2 { 
-            width: 140px; height: 140px; bottom: 10%; right: 15%; 
-            background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); 
-            animation-duration: 140s; animation-delay: -20s;
-        }
-        /* Lune Grise */
-        .p3 { 
-            width: 30px; height: 30px; top: 60%; right: 30%; 
-            background: #555; opacity: 0.8;
-            animation-duration: 90s;
-        }
-
-        @keyframes planet-float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(15vw, 10vh) scale(1.05); }
-        }
-
-        /* --- PHÉNOMÈNES : ÉTOILE FILANTE --- */
-        .meteor {
-            position: fixed; top: -10%; left: -10%; width: 5px; height: 2px;
-            background: white; border-radius: 50%;
-            box-shadow: 0 0 15px 2px white, -20px 0 40px rgba(255,255,255,0.2);
-            z-index: -1; animation: shoot 10s infinite ease-in; opacity: 0;
-        }
-        @keyframes shoot {
-            0% { transform: translate(0, 0) rotate(35deg) scaleX(0); opacity: 0; }
-            5% { transform: translate(10vw, 10vh) rotate(35deg) scaleX(15); opacity: 1; }
-            15% { transform: translate(110vw, 85vh) rotate(35deg) scaleX(25); opacity: 0; }
-            100% { transform: translate(110vw, 85vh); opacity: 0; }
-        }
-
-        /* --- INTERFACE VCR --- */
-        .osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
-        header { padding: 90px 20px; text-align: center; position: relative; z-index: 500; }
-        h1 { 
-            color: white; font-size: 4rem; letter-spacing: 15px; margin: 0; 
-            text-shadow: 4px 0px 0px rgba(255, 0, 0, 0.7), -4px 0px 0px rgba(0, 255, 255, 0.5);
-        }
-
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 50px; backdrop-filter: blur(8px); }
-        .btn { border: 2px solid var(--rouge-vif); color: var(--rouge-vif); padding: 18px 40px; text-decoration: none;
+        .p-red { width: 220px; height: 220px; top: 10%; left: -5%; background: radial-gradient(circle at 30% 30%, #881111, #110000); animation-duration:
