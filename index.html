@@ -3,122 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - VHS</title>
+    <title>Archives du Multivers - Deep Space</title>
     <style>
         :root { 
-            --vhs-noir: #0b0d17; 
-            --ecarlate: #ff1a1a; 
-            --vhs-bleu: #002244;
-            --vhs-magenta: #4a004a;
-            --vhs-cyan: #004d4d;
+            --vhs-noir: #030509; /* Noir froid des photos spatiales */
+            --vhs-grain: rgba(255, 255, 255, 0.05);
+            --ecarlate: #d40000;
         }
         
         body {
-            margin: 0; background: var(--vhs-noir); color: #e0e0e0;
-            font-family: 'Courier New', Courier, monospace; /* Police plus "ordinateur ancien" */
-            text-align: center; min-height: 100vh; overflow-x: hidden;
-            /* Fond avec couleurs de capture analogique */
+            margin: 0; background: var(--vhs-noir); color: #d0d0d0;
+            font-family: 'Courier New', Courier, monospace;
+            min-height: 100vh; overflow-x: hidden;
+            /* Mélange de gaz sombre comme tes photos */
             background: 
-                radial-gradient(circle at 10% 10%, var(--vhs-cyan) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, var(--vhs-magenta) 0%, transparent 40%),
-                linear-gradient(180deg, #050505 0%, var(--vhs-bleu) 100%);
-            background-attachment: fixed;
+                radial-gradient(circle at 50% 50%, #0a101f 0%, var(--vhs-noir) 100%),
+                radial-gradient(circle at 20% 80%, rgba(212, 0, 0, 0.05) 0%, transparent 40%);
         }
 
-        /* --- EFFET GRAIN & BRUIT VHS --- */
+        /* --- EFFET GRAIN DE PELLICULE --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.05; /* Très léger grain */
-            z-index: 98; pointer-events: none;
-            animation: noise 0.2s infinite;
+            opacity: 0.12; /* Grain marqué pour l'effet magnétoscope */
+            z-index: 100; pointer-events: none;
+            animation: noise 0.2s steps(4) infinite;
         }
 
-        /* --- LIGNES DE SCAN VHS (Plus marquées) --- */
+        /* --- SCANLINES VHS --- */
         body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3) 2px, transparent 2px, transparent 4px);
-            z-index: 100; pointer-events: none;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.3) 0px, rgba(0,0,0,0.3) 1px, transparent 1px, transparent 3px);
+            z-index: 101; pointer-events: none;
         }
 
-        @keyframes noise {
-            0% { transform: translate(0,0); }
-            50% { transform: translate(-1%, 1%); }
-            100% { transform: translate(1%, -1%); }
-        }
+        @keyframes noise { 0% { transform: translate(0,0); } 100% { transform: translate(5px, 5px); } }
 
-        /* --- NÉBULEUSE ANALOGIQUE --- */
-        .nebula {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.1), transparent 80%);
-            mix-blend-mode: screen;
-            animation: drift 20s infinite alternate ease-in-out;
-        }
-        @keyframes drift {
-            from { opacity: 0.4; filter: blur(60px); }
-            to { opacity: 0.7; filter: blur(90px); }
-        }
-
-        /* --- ÉTOILES ÉCARLATES AVEC HALO --- */
-        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        /* --- ÉTOILES RÉALISTES (Cœur blanc) --- */
         .star { 
-            position: absolute; color: var(--ecarlate); 
-            text-shadow: 0 0 10px var(--ecarlate), 0 0 20px rgba(255,0,0,0.5);
-            animation: flicker var(--d) infinite alternate; opacity: var(--o); 
+            position: absolute; color: white; /* Cœur blanc comme tes photos */
+            text-shadow: 0 0 8px var(--ecarlate), 0 0 15px var(--ecarlate); /* Lueur rouge */
+            animation: flicker var(--d) infinite alternate;
         }
 
-        header { 
-            padding: 80px 20px; border-bottom: 2px solid var(--ecarlate); 
-            background: rgba(0, 0, 0, 0.8); position: relative; z-index: 10; 
-            box-shadow: 0 5px 15px rgba(255,0,0,0.2);
-        }
+        @keyframes flicker { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
 
-        h1 { 
-            color: var(--ecarlate); font-size: 3.5rem; letter-spacing: 15px; 
-            text-shadow: 3px 3px 0px rgba(0,255,255,0.3), -3px -3px 0px rgba(255,0,255,0.3); /* Chromatic aberration */
-            margin: 0;
-        }
-
+        header { padding: 80px 20px; text-align: center; border-bottom: 1px solid #222; background: rgba(0,0,0,0.8); position: relative; z-index: 10; }
+        h1 { color: var(--ecarlate); font-size: 3.5rem; letter-spacing: 15px; margin: 0; filter: blur(0.5px); }
+        
+        .vcr-ui { position: fixed; top: 20px; left: 20px; color: #00ff00; font-size: 1rem; z-index: 110; text-shadow: 0 0 5px #00ff00; }
+        
         .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
-
-        .box { 
-            background: rgba(10, 10, 20, 0.9); border: 1px solid #333; 
-            padding: 40px; margin-bottom: 40px; box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .btn { 
-            background: transparent; color: var(--ecarlate); border: 2px solid var(--ecarlate);
-            padding: 15px 35px; font-weight: bold; text-decoration: none; display: inline-block;
-            text-transform: uppercase; letter-spacing: 3px;
-        }
+        .box { background: rgba(5, 7, 12, 0.9); border: 1px solid #1a1a1a; padding: 40px; margin-bottom: 40px; }
+        .btn { border: 1px solid var(--ecarlate); color: var(--ecarlate); padding: 15px 30px; text-decoration: none; display: inline-block; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="nebula"></div>
-    <div class="stars-container">
-        <span class="star" style="--d:3s; --o:0.6; top:15%; left:20%; font-size:25px;">✶</span>
-        <span class="star" style="--d:5s; --o:0.8; top:50%; left:85%; font-size:30px;">★</span>
-        <span class="star" style="--d:4s; --o:0.4; top:80%; left:10%; font-size:22px;">✷</span>
-        <span class="star" style="--d:6s; --o:0.5; top:30%; left:55%; font-size:35px;">✶</span>
-    </div>
+    <div class="vcr-ui">PLAY ▷<br>00:31:05:26</div>
     
+    <div class="stars-container">
+        <span class="star" style="--d:3s; top:10%; left:15%; font-size:15px;">✦</span>
+        <span class="star" style="--d:5s; top:35%; left:85%; font-size:25px;">✶</span>
+        <span class="star" style="--d:4s; top:65%; left:12%; font-size:12px;">★</span>
+        <span class="star" style="--d:2s; top:80%; left:60%; font-size:20px;">✷</span>
+        <span class="star" style="--d:6s; top:20%; left:45%; font-size:18px;">✦</span>
+    </div>
+
     <header>
         <h1>ARCHIVES</h1>
-        <p style="color: #666; font-size: 0.9rem;">PLAY ▶ 00:31:05:26</p>
+        <p style="color: #555;">[ SIGNAL STELLAIRE RÉCUPÉRÉ ]</p>
     </header>
 
     <div class="container">
         <div class="box">
             <h2>Mur des Théories</h2>
-            <p>Analyse des fréquences du Multivers en cours...</p>
-            <a href="mailto:TON-EMAIL@gmail.com" class="btn">Transmettre</a>
+            <p>Transmission de données en cours...</p>
+            <a href="mailto:TON-EMAIL@gmail.com" class="btn">ENVOYER UN SIGNAL</a>
         </div>
-        
         <div class="box">
             <h2>Galerie Exclusive</h2>
-            <div style="border: 1px solid #222; padding: 50px; background: #050505; color: #444;">
-                [ SIGNAL FAIBLE - IMAGE NON DÉCRYPTÉE ]
+            <div style="border: 1px solid #111; padding: 50px; background: #010101; color: #333;">
+                [ AUCUNE IMAGE DÉCRYPTÉE ]
             </div>
         </div>
     </div>
