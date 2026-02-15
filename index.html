@@ -3,83 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - L'Astre Créateur</title>
+    <title>Archives du Multivers - Portail Actif</title>
     <style>
         :root { 
             --noir-fond: #010105; 
             --vhs-vert: #00ff41;
-            --lumiere-creatrice: rgba(100, 200, 255, 0.4);
+            --lumiere-creatrice: rgba(100, 200, 255, 0.3);
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: white;
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
-            background: radial-gradient(circle at 80% 20%, var(--lumiere-creatrice) 0%, transparent 50%), var(--noir-fond);
+            /* FOND : LE TROU NOIR EST À DROITE */
+            background: radial-gradient(circle at 85% 20%, var(--lumiere-creatrice) 0%, transparent 60%), var(--noir-fond);
+            background-attachment: fixed;
         }
 
-        /* --- ÉTOILES GÉNÉRÉES (DENSITÉ TOTALE) --- */
+        /* --- SYSTÈME D'ÉTOILES DENSE (SANS GRILLAGE) --- */
         .stars-field {
-            position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -5;
-            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 100px 150px, #fff, transparent);
-            background-size: 300px 300px; opacity: 0.7; animation: galaxy-rotation 200s linear infinite;
+            position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -5;
+            background-image: 
+                radial-gradient(1px 1px at 25px 35px, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent);
+            background-size: 400px 400px; opacity: 0.7; animation: galaxy-drift 200s linear infinite;
         }
-        @keyframes galaxy-rotation { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes galaxy-drift { from { transform: rotate(0deg); } to { transform: rotate(10deg); } }
 
-        /* --- LE TROU NOIR CRÉATEUR (HAUT-DROIT) --- */
-        .creator-core {
-            position: fixed; top: 10%; right: 10%; width: 150px; height: 150px; z-index: -2;
+        /* --- LE TROU NOIR CRÉATEUR (FIXE À DROITE) --- */
+        .creator-portal {
+            position: fixed; top: 10%; right: 8%; width: 140px; height: 140px; z-index: -2;
             background: black; border-radius: 50%;
-            /* L'aura n'est pas sombre, elle est lumineuse et protectrice */
-            box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.3), inset 0 0 50px rgba(100, 200, 255, 0.6);
-            animation: pulse-life 6s infinite alternate ease-in-out;
+            box-shadow: 0 0 60px 15px rgba(255, 255, 255, 0.3), inset 0 0 40px rgba(100, 200, 255, 0.6);
+            animation: pulse-portal 6s infinite alternate ease-in-out;
         }
-        @keyframes pulse-life { 
-            0% { transform: scale(1); box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.2); }
-            100% { transform: scale(1.05); box-shadow: 0 0 120px 40px rgba(100, 200, 255, 0.4); }
-        }
+        @keyframes pulse-portal { from { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
 
-        /* --- SYSTÈME DE TRAJECTOIRES ÉVITEMENT --- */
-        .orbit-zone {
-            position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3;
-            animation: move-orbit linear infinite;
-        }
-        .planet {
-            position: absolute; border-radius: 50%;
-            box-shadow: inset -15px -15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.1);
+        /* --- INTERFACE ET SECTIONS --- */
+        header { padding: 80px 20px; text-align: center; position: relative; z-index: 500; }
+        h1 { font-size: 3.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+
+        .container { max-width: 850px; margin: auto; padding: 20px; position: relative; z-index: 500; }
+        
+        .box { 
+            background: rgba(0, 0, 0, 0.9); border: 1px solid #222; 
+            padding: 40px; margin-bottom: 40px; backdrop-filter: blur(10px); 
         }
 
-        /* Chaque planète a sa propre distance fixe pour ne jamais heurter l'autre */
-        .orb-1 { animation-duration: 25s; } .p1 { width: 40px; height: 40px; background: #666; transform: translateX(180px); }
-        .orb-2 { animation-duration: 45s; } .p2 { width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); transform: translateX(-280px); }
-        .orb-3 { animation-duration: 70s; } .p3 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #881111, #110000); transform: translateY(380px); }
-
-        @keyframes move-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- ÉTOILE FILANTE (L'énergie transmise) --- */
-        .energy-beam {
-            position: fixed; top: -10%; left: -10%; width: 100px; height: 2px; background: white;
-            box-shadow: 0 0 15px white; z-index: -1; animation: shoot-energy 10s infinite linear;
+        .btn { 
+            display: inline-block; border: 1px solid white; color: white; 
+            padding: 15px 35px; text-decoration: none; font-weight: bold; 
+            background: rgba(255,255,255,0.05); letter-spacing: 5px; transition: 0.3s;
         }
-        @keyframes shoot-energy { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 1; } 100% { transform: translate(120vw, 90vh) rotate(35deg); opacity: 0; } }
+        .btn:hover { background: white; color: black; box-shadow: 0 0 20px white; }
 
-        /* --- INTERFACE --- */
-        h1 { color: white; font-size: 3.5rem; letter-spacing: 15px; text-align: center; padding-top: 60px; text-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #222; padding: 40px; margin: 40px auto; max-width: 800px; backdrop-filter: blur(10px); }
+        /* --- PLANÈTES EN ORBITE --- */
+        .orbit { position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3; animation: spin linear infinite; }
+        .p-red { width: 180px; height: 180px; background: radial-gradient(circle at 30% 30%, #881111, #110000); border-radius: 50%; transform: translateX(-300px); box-shadow: inset -15px -15px 40px black; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div class="stars-field"></div>
-    <div class="creator-core"></div>
-    <div class="energy-beam"></div>
+    <div class="creator-portal"></div>
 
-    <div class="orbit-zone orb-1"><div class="planet p1"></div></div>
-    <div class="orbit-zone orb-2"><div class="planet p2"></div></div>
-    <div class="orbit-zone orb-3"><div class="planet p3"></div></div>
+    <header>
+        <h1>ARCHIVES</h1>
+        <p style="color: #444; letter-spacing: 5px;">[ SIGNAL MULTIVERS : POINT D'ENTRÉE ]</p>
+    </header>
 
-    <h1>ARCHIVES</h1>
-    <div class="box">
-        <h2 style="letter-spacing: 5px;">Astre Créateur</h2>
-        <p style="color: #888;">Le centre ne détruit pas, il pulse et nourrit le système.</p>
+    <div class="container">
+        <div class="box">
+            <h2 style="letter-spacing: 5px; text-transform: uppercase;">Mur des Théories</h2>
+            <p style="color: #888; margin-bottom: 25px;">Consultez les rapports du centre ou transmettez votre analyse.</p>
+            <a href="theories.html" class="btn">OUVRIR RAPPORTS</a>
+        </div>
+
+        <div class="box">
+            <h2 style="letter-spacing: 5px; text-transform: uppercase;">Exploration Visuelle</h2>
+            <p style="color: #888; margin-bottom: 25px;">Traversez le trou noir pour accéder à la nébuleuse des illustrations.</p>
+            <a href="galerie.html" class="btn">TRAVERSER LE PORTAIL</a>
+        </div>
     </div>
+
+    <div class="orbit" style="animation-duration: 100s;"><div class="p-red"></div></div>
+
+    <div style="position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.8rem;">PLAY ▷<br>PORTAL STATUS: STABLE</div>
 </body>
 </html>
