@@ -1,100 +1,14 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Éclat Cosmique</title>
-    <style>
-        :root { 
-            --noir-vcr: #010204; 
-            --ecarlate: #ff1a1a; /* Rouge plus vif */
-            --vhs-vert: #00ff41;
-            --bleu-flash: #0044ff;
-        }
-
-        body {
-            margin: 0; background-color: var(--noir-vcr); color: #d0d0d0;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh; overflow-x: hidden;
-            /* FOND BOOSTÉ : Les couleurs sont 2x plus lumineuses */
-            background: 
-                radial-gradient(ellipse at 25% 35%, rgba(0, 68, 255, 0.6) 0%, transparent 60%),
-                radial-gradient(ellipse at 75% 65%, rgba(255, 26, 26, 0.5) 0%, transparent 60%),
-                var(--noir-vcr);
-            background-attachment: fixed;
-            /* Contraste augmenté pour faire ressortir le "Phénomène" */
-            filter: contrast(130%) brightness(100%) saturate(1.5);
-        }
-
-        /* --- GRAIN VHS --- */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.20; z-index: 100; pointer-events: none;
-            animation: vhs-noise 0.1s steps(2) infinite;
-        }
-        @keyframes vhs-noise { 0% { transform: translate(0,0); } 100% { transform: translate(-2%, 1%); } }
-
-        /* --- POUSSIÈRE NOIRE TRÈS LÉGÈRE (Seulement pour le relief) --- */
-        .dark-dust {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 40% 50%, rgba(2, 4, 8, 0.3) 0%, transparent 60%),
-                radial-gradient(circle at 85% 15%, rgba(2, 4, 8, 0.3) 0%, transparent 50%);
-            z-index: -3;
-            filter: blur(80px);
-            opacity: 0.3; /* On descend à 30% pour ne plus rien cacher */
-        }
-
-        .deep-field {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(1px 1px at 20px 30px, #eee, rgba(0,0,0,0)), radial-gradient(2px 2px at 50px 160px, var(--ecarlate), rgba(0,0,0,0));
-            background-size: 150px 150px;
-            opacity: 0.4; z-index: -2;
-        }
-
-        .star { 
-            position: absolute; background: white; border-radius: 50%; 
-            box-shadow: 0 0 12px 5px var(--ecarlate), 0 0 30px 15px rgba(255, 26, 26, 0.3); 
-            animation: scintille var(--d) infinite alternate ease-in-out;
-        }
-        @keyframes scintille { 0% { opacity: 0.6; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
-
-        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); }
-        header { padding: 90px 20px; text-align: center; position: relative; z-index: 10; background: rgba(0,0,0,0.4); }
-        h1 { color: white; font-size: 3.5rem; letter-spacing: 15px; margin: 0; text-shadow: 4px 0px 0px rgba(255, 0, 0, 0.9), -4px 0px 0px rgba(0, 255, 255, 0.6); }
-        .box { background: rgba(2, 4, 8, 0.92); border: 1px solid #222; padding: 45px; margin-bottom: 50px; }
-        .btn { border: 1px solid var(--ecarlate); color: var(--ecarlate); padding: 18px 40px; text-decoration: none; display: inline-block; font-weight: bold; text-transform: uppercase; }
-    </style>
-</head>
-<body>
-    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br><span style="font-size: 0.75rem;">PHENOMENA SCAN : MAXIMUM LUMINOSITY</span></div>
-    
-    <div class="dark-dust"></div>
-    <div class="deep-field"></div>
-
-    <div class="stars-container">
-        <span class="star" style="--d:3s; top:15%; left:22%; width:4px; height:4px;"></span>
-        <span class="star" style="--d:4.5s; top:75%; left:85%; width:3px; height:3px;"></span>
-    </div>
-
-    <header>
-        <h1>ARCHIVES</h1>
-        <p style="color: #666; letter-spacing: 5px; font-size: 0.85rem;">[ SIGNAL REBOOSTÉ - DENSITÉ CLAIRE ]</p>
-    </header>
-
-    <div class="container" style="max-width: 800px; margin: auto; padding: 50px 20px; position: relative; z-index: 10;">
-        <div class="box">
-            <h2>Mur des Théories</h2>
-            <p style="color: #888;">Envoyez vos analyses du phénomène.</p>
-            <a href="mailto:ton-email@mail.com" class="btn">Transmettre</a>
-        </div>
-        <div class="box">
-            <h2>Galerie Exclusive</h2>
-            <div style="border: 1px dashed #333; padding: 70px; background: #010101; color: #444; text-align: center;">
-                [ SIGNAL STABLE - DÉCRYPTAGE PRÊT ]
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+<style>
+    :root { --noir: #010204; --rouge-vif: #ff0000; --bleu-electrique: #0066ff; --vhs: #00ff41; }
+    body {
+        margin: 0; background: var(--noir); color: #d0d0d0; font-family: 'Courier New', monospace;
+        min-height: 100vh; overflow-x: hidden;
+        /* DEUX NÉBULEUSES PUISSANTES QUI SE RENCONTRENT */
+        background-image: 
+            radial-gradient(at 20% 40%, rgba(0, 102, 255, 0.6) 0%, transparent 60%),
+            radial-gradient(at 80% 60%, rgba(255, 0, 0, 0.5) 0%, transparent 60%);
+        background-attachment: fixed;
+        filter: contrast(130%) brightness(95%) saturate(1.4);
+    }
+    /* Garde le reste du code (Grain, OSD, Stars) de la v21 */
+</style>
