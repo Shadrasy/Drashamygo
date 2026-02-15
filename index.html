@@ -12,107 +12,94 @@
 
         body {
             margin: 0;
-            background: radial-gradient(circle at center, #0a192f 0%, var(--nuit) 100%);
+            background: var(--nuit);
             color: white;
             font-family: 'Georgia', serif;
             text-align: center;
             min-height: 100vh;
             overflow-x: hidden;
+            /* Le fond avec effet de profondeur */
+            background: radial-gradient(circle at center, #0a192f 0%, var(--nuit) 100%);
         }
 
-        /* Effet de ciel étoilé complexe */
-        body::before {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                /* Petites étoiles blanches lointaines */
-                radial-gradient(white 1px, transparent 1px),
-                /* Étoiles rouges moyennes avec halo */
-                radial-gradient(var(--ecarlate) 2px, transparent 3px),
-                /* Grandes étoiles écarlates brillantes */
-                radial-gradient(rgba(255, 36, 0, 0.8) 1px, transparent 4px);
-            background-size: 100px 100px, 150px 150px, 250px 250px;
-            background-position: 0 0, 40px 60px, 130px 180px;
+        /* Création du ciel étoilé avec formes variées */
+        .stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            animation: twinkle 8s infinite alternate;
+            background-image: 
+                /* Étoiles blanches lointaines */
+                radial-gradient(white 1px, transparent 1px),
+                /* Grosses étoiles rouges avec halo (brillance) */
+                radial-gradient(var(--ecarlate) 2px, transparent 4px),
+                /* Éclats écarlates diffus */
+                radial-gradient(rgba(255, 36, 0, 0.4) 1px, transparent 10px);
+            /* Tailles différentes pour briser la grille */
+            background-size: 130px 130px, 200px 200px, 350px 350px;
+            background-position: 0 0, 50px 100px, 150px 250px;
+            animation: moveStars 100s linear infinite;
         }
 
-        @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.02); }
-            100% { opacity: 0.3; transform: scale(1); }
+        /* Animation de scintillement */
+        @keyframes moveStars {
+            from { opacity: 0.5; }
+            to { opacity: 0.8; }
         }
 
         header {
-            padding: 60px 20px;
+            padding: 80px 20px;
             border-bottom: 2px solid var(--ecarlate);
-            background: rgba(2, 6, 23, 0.7);
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(10px);
         }
 
         h1 { 
             color: var(--ecarlate); 
-            letter-spacing: 8px; 
-            text-shadow: 0 0 20px var(--ecarlate);
+            font-size: 3rem;
+            letter-spacing: 10px;
+            text-shadow: 0 0 30px var(--ecarlate);
             margin: 0;
-            font-size: 2.5rem;
         }
 
         .container { max-width: 800px; margin: auto; padding: 40px 20px; }
 
         .box {
-            background: rgba(255, 36, 0, 0.05);
-            border: 1px solid rgba(255, 36, 0, 0.3);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(8px);
-            transition: 0.4s;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 36, 0, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        .box:hover {
-            border-color: var(--ecarlate);
-            box-shadow: 0 0 20px rgba(255, 36, 0, 0.2);
-        }
-
-        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
 
         .btn {
             background: var(--ecarlate);
             color: white;
-            padding: 15px 30px;
+            padding: 18px 40px;
             border: none;
-            border-radius: 8px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             text-decoration: none;
             display: inline-block;
-            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(255, 36, 0, 0.4);
         }
-
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--ecarlate); }
     </style>
 </head>
 <body>
+    <div class="stars-container"></div>
+    
     <header>
         <h1>ARCHIVES</h1>
-        <p>✧ Mystères & Illustrations Inédites ✧</p>
+        <p style="opacity: 0.8;">✧ Mystères & Illustrations Inédites ✧</p>
     </header>
 
     <div class="container">
         <div class="box">
-            <span class="icon">✍️</span>
+            <span style="font-size: 3rem;">✍️</span>
             <h2>Mur des Théories</h2>
-            <p>Partagez vos idées sur mes romans et les tomes à venir.</p>
-            <a href="mailto:TON-EMAIL@gmail.com?subject=Théorie Multivers" class="btn">PROPOSER UNE THÉORIE</a>
-        </div>
-
-        <div class="box">
-            <span class="icon">👁️</span>
-            <h2>Galerie Exclusive</h2>
-            <p>Visualisez les secrets de mes différents mondes.</p>
-            <div style="border: 1px dashed rgba(255,255,255,0.2); padding: 40px; margin-top: 20px; opacity: 0.5;">
-                [ Galerie en cours de chargement... ]
-            </div>
+            <p>Le futur de mes romans dépend de vos suppositions...</p>
+            <a href="mailto:TON-EMAIL@gmail.com?subject=Ma Théorie" class="btn">PROPOSER UNE THÉORIE</a>
         </div>
     </div>
 </body>
