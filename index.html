@@ -3,112 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Restauration Totale</title>
+    <title>Archives du Multivers - Mécanique Céleste</title>
     <style>
         :root { 
             --noir-fond: #010208; 
             --vhs-vert: #00ff41;
-            --bleu-galaxie: #0044ff;
-            --rouge-galaxie: #b30000;
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : NÉBULEUSE VIBRANTE MAIS DOUCE */
+            /* FOND : NÉBULEUSE VIBRANTE */
             background: 
-                radial-gradient(ellipse at 80% 20%, rgba(0, 68, 255, 0.4) 0%, transparent 60%),
-                radial-gradient(ellipse at 20% 80%, rgba(179, 0, 0, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(0, 68, 255, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(179, 0, 0, 0.25) 0%, transparent 60%),
                 var(--noir-fond);
             background-attachment: fixed;
         }
 
-        /* --- TEXTE ARCHIVES : NET ET REPOSANT --- */
-        h1 { 
-            color: white; font-size: 4rem; letter-spacing: 15px; margin: 0; 
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); /* Lueur douce au lieu du glitch */
-            text-align: center; padding-top: 80px; position: relative; z-index: 500;
+        /* --- FILTRE VHS LÉGER --- */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
+            opacity: 0.1; z-index: 100; pointer-events: none; animation: grain 0.2s infinite;
         }
+        @keyframes grain { 0% { transform: translate(0,0); } 100% { transform: translate(-1%, 1%); } }
 
-        /* --- CHAMP D'ÉTOILES DENSE (ANTI-GRILLAGE) --- */
-        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
+        /* --- LE GRAND TOURBILLON (Le fond d'étoiles qui tourne) --- */
+        .galaxy-container {
+            position: fixed; top: 50%; left: 50%;
+            width: 200vmax; height: 200vmax; /* Immense pour couvrir les coins */
+            transform: translate(-50%, -50%); z-index: -5;
+            /* TOUT LE FOND TOURNE EN 4 MINUTES */
+            animation: galactic-spin 240s linear infinite;
+        }
+        @keyframes galactic-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+
         .stars-layer {
-            position: absolute; width: 300%; height: 300%; top: -100%; left: -100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                radial-gradient(1.5px 1.5px at 25px 35px, #fff, transparent),
-                radial-gradient(1px 1px at 150px 200px, #fff, transparent),
-                radial-gradient(2px 2px at 80px 120px, rgba(100, 200, 255, 0.5), transparent);
-            background-size: 350px 350px; opacity: 0.8;
-            animation: rotation-univers 200s linear infinite;
+                radial-gradient(1.5px 1.5px at 100px 100px, #fff, transparent),
+                radial-gradient(1px 1px at 300px 400px, #fff, transparent),
+                radial-gradient(2px 2px at 600px 200px, rgba(100, 200, 255, 0.6), transparent);
+            background-size: 700px 700px; opacity: 0.7;
         }
-        @keyframes rotation-univers { from { transform: rotate(0deg); } to { transform: rotate(20deg); } }
 
-        /* --- TROU NOIR EN MOUVEMENT (HAUT DROITE) --- */
+        /* --- SYSTÈME ORBITAL (Zéro collisions garanties) --- */
+        /* Le point de pivot au centre de l'écran */
+        .orbit-pivot {
+            position: fixed; top: 50%; left: 50%;
+            width: 0; height: 0; z-index: -3;
+            animation: orbit-rotation linear infinite;
+        }
+        /* La planète est au bout du bras du pivot */
+        .planet-body {
+            position: absolute; border-radius: 50%;
+            box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9);
+            /* Contre-rotation pour que la planète reste "droite" (optionnel) */
+            animation: counter-rotate linear infinite;
+        }
+
+        /* --- CONFIGURATION DES ORBITES (Chacune son couloir) --- */
+        /* Orbite 1 : La plus proche et rapide (Petite lune) */
+        .orb-1 { animation-duration: 60s; } 
+        .p1 { width: 40px; height: 40px; background: #888; top: -20px; left: -20px; transform: translateX(15vw); animation-duration: 60s; }
+
+        /* Orbite 2 : Moyenne distance (Planète Bleue) */
+        .orb-2 { animation-duration: 120s; animation-delay: -30s; } 
+        .p2 { width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); top: -60px; left: -60px; transform: translateX(-25vw); animation-duration: 120s; }
+
+        /* Orbite 3 : Lointaine et lente (Géante Rouge) */
+        .orb-3 { animation-duration: 180s; animation-delay: -90s; } 
+        .p3 { width: 200px; height: 200px; background: radial-gradient(circle at 30% 30%, #881111, #110000); top: -100px; left: -100px; transform: translateX(35vw); animation-duration: 180s; }
+
+        /* Orbite 4 : Très lointaine (Planète Volcanique) */
+        .orb-4 { animation-duration: 240s; animation-delay: -10s; } 
+        .p4 { width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #ff5500, #331100); top: -50px; left: -50px; transform: translateY(42vw); animation-duration: 240s; }
+
+        @keyframes orbit-rotation { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes counter-rotate { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+
+        /* --- TROU NOIR (Fixe en rotation sur lui-même, haut-droit) --- */
         .black-hole {
-            position: fixed; top: 12%; right: 12%; width: 130px; height: 130px; z-index: -2;
+            position: fixed; top: 10%; right: 10%; width: 130px; height: 130px; z-index: -4;
             background: black; border-radius: 50%;
-            box-shadow: 0 0 50px 10px rgba(100, 200, 255, 0.3), inset 0 0 30px white;
-            animation: black-hole-float 15s infinite alternate ease-in-out;
+            box-shadow: 0 0 60px 20px rgba(100, 200, 255, 0.3), inset 0 0 40px white;
+            animation: spin-hole 5s linear infinite;
         }
-        @keyframes black-hole-float { 
-            0% { transform: translate(0,0) scale(1); } 
-            100% { transform: translate(-3vw, 3vh) scale(1.1); } 
-        }
+        @keyframes spin-hole { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- ARMADA DE PLANÈTES (6 PLANÈTES EN DÉRIVE) --- */
-        .planet {
-            position: fixed; border-radius: 50%; z-index: -2;
-            box-shadow: inset -20px -20px 50px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.3);
-            animation: planet-drift 100s linear infinite alternate;
-        }
-        .p1 { width: 220px; height: 220px; top: 10%; left: -5%; background: radial-gradient(circle at 30% 30%, #881111, #110000); animation-duration: 180s; }
-        .p2 { width: 130px; height: 130px; bottom: 15%; right: 10%; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); animation-duration: 140s; }
-        .p3 { width: 45px; height: 45px; top: 50%; right: 35%; background: #444; animation-duration: 90s; }
-        .p4 { width: 160px; height: 160px; bottom: -40px; left: 15%; background: radial-gradient(circle at 30% 30%, #442266, #110022); animation-duration: 200s; }
-        .p5 { width: 35px; height: 35px; top: 5%; left: 35%; background: #999; animation-duration: 110s; }
-        .p6 { width: 80px; height: 80px; top: 40%; left: 10%; background: radial-gradient(circle at 30% 30%, #aa6622, #331100); animation-duration: 160s; }
-
-        @keyframes planet-drift { 0% { transform: translate(0,0); } 100% { transform: translate(12vw, 8vh); } }
-
-        /* --- ÉTOILE FILANTE (LENTE ET VISIBLE) --- */
+        /* --- ÉTOILE FILANTE --- */
         .shooting-star {
             position: fixed; top: -10%; left: -10%; width: 5px; height: 2px; background: white;
             box-shadow: 0 0 15px white, -30px 0 50px rgba(255,255,255,0.3);
-            z-index: -1; animation: shoot 18s infinite linear; opacity: 0;
+            z-index: -1; animation: shoot 15s infinite linear;
         }
-        @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(20); } 20% { transform: translate(120vw, 90vh) rotate(35deg); opacity: 0; } 100% { opacity: 0; } }
+        @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 1; } 100% { transform: translate(120vw, 90vh) rotate(35deg); opacity: 0; } }
 
-        /* --- INTERFACE VCR --- */
+        /* --- INTERFACE CONFORTABLE --- */
         .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; }
+        h1 { color: white; font-size: 4rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); text-align: center; padding-top: 80px; position: relative; z-index: 500; }
         .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 50px; backdrop-filter: blur(8px); }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #222; padding: 45px; margin-bottom: 50px; backdrop-filter: blur(8px); }
         .btn { border: 1px solid white; color: white; padding: 18px 40px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 5px; }
     </style>
 </head>
 <body>
-    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : SYSTEM RECOVERED</div>
+    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : ORBITAL MECHANICS ENGAGED</div>
     
-    <h1>ARCHIVES</h1>
-    <div class="stars-container"><div class="stars-layer"></div></div>
+    <div class="galaxy-container">
+        <div class="stars-layer"></div>
+    </div>
     
+    <div class="orbit-pivot orb-1"><div class="planet-body p1"></div></div>
+    <div class="orbit-pivot orb-2"><div class="planet-body p2"></div></div>
+    <div class="orbit-pivot orb-3"><div class="planet-body p3"></div></div>
+    <div class="orbit-pivot orb-4"><div class="planet-body p4"></div></div>
+
     <div class="black-hole"></div>
     <div class="shooting-star"></div>
 
-    <div class="planet p1"></div><div class="planet p2"></div>
-    <div class="planet p3"></div><div class="planet p4"></div>
-    <div class="planet p5"></div><div class="planet p6"></div>
+    <h1>ARCHIVES</h1>
 
     <div class="container">
         <div class="box">
             <h2 style="letter-spacing: 5px;">Mur des Théories</h2>
-            <p style="color: #888; margin-bottom: 30px;">Analyse du signal restaurée. Visibilité 100%.</p>
             <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
         </div>
         <div class="box">
             <h2 style="letter-spacing: 5px;">Galerie Exclusive</h2>
             <div style="border: 1px dashed #333; padding: 80px; text-align: center; color: #444;">
-                [ SCAN PHÉNOMÈNE TERMINÉ ]
+                [ SCAN EN COURS ]
             </div>
         </div>
     </div>
