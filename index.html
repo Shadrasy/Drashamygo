@@ -3,83 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Phénomène Organique</title>
+    <title>Archives du Multivers - Synthèse</title>
     <style>
         :root { 
-            --noir-profond: #020308; 
+            --noir: #020408; 
             --vhs-vert: #00ff41;
-            --rouge-vif: #ff1a1a;
-            --bleu-profond: #0044ff;
+            --rouge: #ff0000;
+            --bleu: #0055ff;
         }
 
         body {
-            margin: 0; background-color: var(--noir-profond); color: white;
+            margin: 0; background-color: var(--noir); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : MÉLANGE DE GAZ ET DE POUSSIÈRE (Nébuleuse texturée) */
+            /* FOND : NÉBULEUSES TEXTURÉES (Mélange de v20 et v24) */
             background: 
-                radial-gradient(ellipse at 20% 30%, rgba(0, 68, 255, 0.4) 0%, transparent 70%),
-                radial-gradient(ellipse at 80% 70%, rgba(255, 26, 26, 0.35) 0%, transparent 70%),
-                radial-gradient(circle at 50% 50%, rgba(100, 0, 200, 0.2) 0%, transparent 80%),
-                var(--noir-profond);
+                radial-gradient(ellipse at 15% 35%, rgba(0, 85, 255, 0.5) 0%, transparent 65%),
+                radial-gradient(ellipse at 85% 65%, rgba(255, 0, 0, 0.4) 0%, transparent 65%),
+                radial-gradient(circle at 50% 50%, rgba(50, 0, 100, 0.2) 0%, transparent 80%),
+                var(--noir);
             background-attachment: fixed;
-            filter: contrast(120%) brightness(95%) saturate(1.4);
+            filter: contrast(125%) brightness(90%) saturate(1.4);
         }
 
-        /* --- LE GRAIN VHS (Léger pour ne pas boucher les couleurs) --- */
+        /* --- LE GRAIN VHS (Léger mais présent) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.18; z-index: 100; pointer-events: none;
-            animation: vhs-grain 0.12s steps(2) infinite;
+            opacity: 0.20; z-index: 100; pointer-events: none;
+            animation: vhs-grain 0.1s steps(2) infinite;
         }
-        @keyframes vhs-grain { 0% { transform: scale(1.1) translate(0,0); } 100% { transform: scale(1.1) translate(-1%, -1%); } }
+        @keyframes vhs-grain { 0% { transform: scale(1.1); } 100% { transform: scale(1.1) translate(-1%, -1%); } }
 
-        /* --- TRACKING VHS (Plus discret) --- */
-        body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 4px;
-            background: rgba(255, 255, 255, 0.04);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-            z-index: 101; pointer-events: none;
-            animation: scanline 8s linear infinite;
-        }
-        @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
-
-        /* --- POUSSIÈRE COSMIQUE (Micro-étoiles lointaines) --- */
+        /* --- POUSSIÈRE D'ÉTOILES DENSE (La "Matière") --- */
         .cosmic-dust {
             position: fixed; top: 0; left: 0; width: 1px; height: 1px;
             background: transparent;
-            /* Tapis denses de poussière stellaire */
-            box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 45vw 10vh #fff, 90vw 90vh var(--rouge-vif), 
-                        30vw 70vh rgba(255,255,255,0.4), 15vw 85vh #fff, 65vw 45vh #fff, 5vw 50vh var(--bleu-profond),
-                        55vw 55vh rgba(255,255,255,0.3), 22vw 12vh #fff, 75vw 42vh rgba(255,255,255,0.5);
-            z-index: -2;
+            /* On remet le tapis de micro-étoiles de la v18 */
+            box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 45vw 10vh #fff, 90vw 90vh var(--rouge), 
+                        30vw 70vh rgba(255,255,255,0.4), 15vw 85vh #fff, 65vw 45vh #fff, 5vw 50vh var(--bleu),
+                        55vw 55vh rgba(255,255,255,0.3), 22vw 12vh #fff, 75vw 42vh #fff;
+            z-index: 1;
         }
 
         /* --- ÉTOILES RÉALISTES --- */
         .star { 
             position: absolute; background: white; border-radius: 50%; 
-            box-shadow: 0 0 10px 4px var(--rouge-vif), 0 0 25px 8px rgba(255, 26, 26, 0.3); 
-            animation: twinkle var(--d) infinite alternate ease-in-out;
+            box-shadow: 0 0 10px 4px var(--rouge), 0 0 25px 8px rgba(255, 0, 0, 0.3); 
+            animation: scintille var(--d) infinite alternate ease-in-out;
         }
-        @keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
+        @keyframes scintille { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
 
-        .osd { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); }
+        /* --- INTERFACE (Z-INDEX PRIORITAIRE) --- */
+        .vcr-ui { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
         
-        header { padding: 80px 20px; text-align: center; position: relative; z-index: 10; }
+        header { padding: 90px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { 
             color: white; font-size: 3.5rem; letter-spacing: 18px; margin: 0; 
             text-shadow: 4px 0px 0px rgba(255, 0, 0, 0.8), -4px 0px 0px rgba(0, 255, 255, 0.5);
-            filter: blur(0.2px);
         }
 
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 40px; box-shadow: 0 0 40px rgba(0,0,0,1); }
-        .btn { border: 1px solid var(--rouge-vif); color: var(--rouge-vif); padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.3); letter-spacing: 3px; }
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 100; }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 40px; }
+        .btn { border: 1px solid var(--rouge); color: var(--rouge); padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.3); letter-spacing: 3px; }
     </style>
 </head>
 <body>
-    <div class="osd">PLAY ▷<br>00:31:05:26</div>
+    <div class="vcr-ui">PLAY ▷<br>00:31:05:26</div>
     <div class="cosmic-dust"></div>
 
     <div class="stars-container">
@@ -89,18 +79,18 @@
 
     <header>
         <h1>ARCHIVES</h1>
-        <p style="color: #444; letter-spacing: 5px;">[ SIGNAL STABLE : UNIVERSIAL DENSITY ]</p>
+        <p style="color: #444; letter-spacing: 5px;">[ SIGNAL SYNTHÉTISÉ : DENSITÉ ORIGINELLE ]</p>
     </header>
 
     <div class="container">
         <div class="box">
             <h2>Mur des Théories</h2>
-            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
+            <a href="mailto:ton@mail.com" class="btn">TRANSMETTRE</a>
         </div>
         <div class="box">
             <h2>Galerie Exclusive</h2>
             <div style="border: 1px dashed #222; padding: 70px; background: #010101; color: #333; text-align: center;">
-                [ SIGNAL STABLE - VISUAL SCAN READY ]
+                [ VISUEL STABLE ]
             </div>
         </div>
     </div>
