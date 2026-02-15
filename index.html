@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Phénomène Total</title>
+    <title>Archives du Multivers - Dossier Final</title>
     <style>
         :root { 
             --noir-vhs: #020305; 
             --ecarlate: #d40000;
             --vhs-vert: #00ff41;
-            --bleu-profond: rgba(0, 30, 80, 0.3);
-            --gaz-rouge: rgba(150, 0, 0, 0.2);
+            --bleu-gaz: rgba(0, 30, 80, 0.3);
         }
 
         body {
             margin: 0; background-color: var(--noir-vhs); color: #d0d0d0;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : NÉBULEUSE RÉALISTE AVEC PROFONDEUR */
+            /* ÉTAPE 1 : FOND ORGANIQUE (Nébuleuses de gaz) */
             background-image: 
-                radial-gradient(at 15% 25%, var(--bleu-profond) 0%, transparent 55%),
-                radial-gradient(at 85% 75%, var(--gaz-rouge) 0%, transparent 55%),
+                radial-gradient(at 15% 25%, var(--bleu-gaz) 0%, transparent 55%),
+                radial-gradient(at 85% 75%, rgba(150, 0, 0, 0.2) 0%, transparent 55%),
                 radial-gradient(at 50% 50%, rgba(20, 20, 35, 0.5) 0%, transparent 85%);
             background-attachment: fixed;
-            /* FILTRE DE CAPTURE BRUTE */
+            /* ÉTAPE 3 : FILTRE ANALOGIQUE (Saturation et contraste) */
             filter: contrast(115%) brightness(85%) saturate(1.2);
         }
 
-        /* --- FILTRE : GRAIN DE PELLICULE VIVANT --- */
+        /* --- ÉTAPE 3 : GRAIN DE PELLICULE (La Neige) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.22; z-index: 100; pointer-events: none;
-            animation: grain 0.1s steps(2) infinite;
+            opacity: 0.20; z-index: 100; pointer-events: none;
+            animation: grain-vhs 0.1s steps(2) infinite;
         }
 
-        /* --- FILTRE : BARRE DE TRACKING MAGNÉTIQUE --- */
+        /* --- ÉTAPE 3 : BARRE DE TRACKING (Distorsion magnétique) --- */
         body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 10px;
             background: rgba(255, 255, 255, 0.05);
@@ -44,20 +43,18 @@
             animation: tracking 8s linear infinite;
         }
 
-        @keyframes grain { 0% { transform: scale(1.1) translate(0,0); } 100% { transform: scale(1.1) translate(-2%, -1%); } }
+        @keyframes grain-vhs { 0% { transform: scale(1.1) translate(0,0); } 100% { transform: scale(1.1) translate(-1%, -2%); } }
         @keyframes tracking { 0% { top: -5%; opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { top: 105%; opacity: 0; } }
 
-        /* --- MATIÈRE : POUSSIÈRE COSMIQUE DENSE --- */
+        /* --- ÉTAPE 2 : MATIÈRE (Poussière cosmique) --- */
         .poussiere { 
             position: fixed; top: 0; left: 0; width: 2px; height: 2px; background: transparent; 
             box-shadow: 15vw 10vh #fff, 85vw 25vh rgba(255,255,255,0.4), 45vw 10vh #fff, 12vw 45vh rgba(255,0,0,0.2), 
-                        65vw 15vh #fff, 82vw 88vh #fff, 45vw 35vh rgba(255,255,255,0.3), 5vw 70vh #fff, 
-                        55vw 55vh rgba(255,0,0,0.2), 22vw 12vh #fff, 75vw 42vh #fff, 95vw 95vh rgba(255,255,255,0.5), 
-                        18vw 28vh #fff, 60vw 65vh #fff, 35vw 75vh #fff, 72vw 5vh rgba(255,255,255,0.2); 
+                        65vw 15vh #fff, 82vw 88vh #fff, 5vw 70vh #fff, 22vw 12vh #fff, 75vw 42vh #fff; 
             z-index: -2; 
         }
 
-        /* --- ÉTOILES RÉALISTES : CŒUR BLANC ET HALO ÉCARLATE --- */
+        /* --- ÉTAPE 2 : ÉTOILES RÉALISTES (Cœur blanc) --- */
         .star { 
             position: absolute; background: white; border-radius: 50%; 
             box-shadow: 0 0 10px 4px var(--ecarlate), 0 0 25px 10px rgba(212, 0, 0, 0.3); 
@@ -65,59 +62,54 @@
         }
         @keyframes scintille { 0% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); filter: blur(0.5px); } }
 
-        /* --- INTERFACE VCR : TIME-CODE --- */
-        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 1.1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); line-height: 1.4; }
+        /* --- ÉTAPE 4 : INTERFACE OSD (Timecode) --- */
+        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 1.1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); line-height: 1.4; font-family: monospace; }
         
-        header { padding: 90px 20px; text-align: center; position: relative; z-index: 10; background: rgba(0,0,0,0.6); border-bottom: 1px solid #111; }
+        header { padding: 90px 20px; text-align: center; position: relative; z-index: 10; background: rgba(0,0,0,0.6); }
         
-        /* --- TITRE : ABERRATION CHROMATIQUE --- */
+        /* --- ÉTAPE 4 : TITRE (Aberration chromatique) --- */
         h1 { 
             color: white; font-size: 3.5rem; letter-spacing: 18px; margin: 0; 
             text-shadow: 4px 0px 0px rgba(212, 0, 0, 0.9), -4px 0px 0px rgba(0, 255, 255, 0.6);
             filter: blur(0.3px);
-            text-transform: uppercase;
         }
 
         .container { max-width: 850px; margin: auto; padding: 50px 20px; position: relative; z-index: 10; }
-        .box { background: rgba(5, 7, 12, 0.96); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 50px; box-shadow: 0 0 30px rgba(0,0,0,1); }
+        .box { background: rgba(5, 7, 12, 0.96); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 50px; }
         
         .btn { 
             border: 1px solid var(--ecarlate); color: var(--ecarlate); padding: 18px 40px; 
             text-decoration: none; display: inline-block; font-weight: bold; 
             background: rgba(0,0,0,0.4); text-transform: uppercase; letter-spacing: 3px;
-            transition: 0.3s;
         }
-        .btn:hover { background: var(--ecarlate); color: white; box-shadow: 0 0 20px var(--ecarlate); }
     </style>
 </head>
 <body>
-    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br><span style="font-size: 0.75rem;">PHENOMENA SCAN : ACTIVE</span></div>
-    
+    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br><span style="font-size: 0.75rem;">CAPTURING PHENOMENA...</span></div>
     <div class="poussiere"></div>
 
     <div class="stars-container">
         <span class="star" style="--d:3s; top:15%; left:22%; width:4px; height:4px;"></span>
-        <span class="star" style="--d:2s; top:18%; left:24%; width:2px; height:2px;"></span>
+        <span class="star" style="--d:2.5s; top:18%; left:24%; width:2px; height:2px;"></span>
         <span class="star" style="--d:4.5s; top:70%; left:85%; width:3px; height:3px;"></span>
         <span class="star" style="--d:3.5s; top:35%; left:15%; width:2px; height:2px;"></span>
-        <span class="star" style="--d:6s; top:88%; left:55%; width:1px; height:1px;"></span>
     </div>
 
     <header>
         <h1>ARCHIVES</h1>
-        <p style="color: #444; letter-spacing: 5px; font-size: 0.85rem; margin-top: 15px;">[ SIGNAL BRUT RÉCUPÉRÉ - SECTEUR ORIGINEL ]</p>
+        <p style="color: #444; letter-spacing: 5px; font-size: 0.85rem; margin-top: 15px;">[ SIGNAL MULTIVERS : SECTEUR 031 ]</p>
     </header>
 
     <div class="container">
         <div class="box">
             <h2>Mur des Théories</h2>
-            <p style="color: #888; line-height: 1.6;">Le destin du Multivers attend vos écrits. Transmettez vos analyses à travers le spectre.</p>
+            <p style="color: #888;">Envoyez vos analyses du phénomène à travers le spectre.</p>
             <a href="mailto:ton-email@mail.com" class="btn">Transmettre</a>
         </div>
         
         <div class="box">
             <h2>Galerie Exclusive</h2>
-            <div style="border: 1px dashed #222; padding: 70px; background: #010101; color: #333; text-align: center; font-size: 0.9rem;">
+            <div style="border: 1px dashed #222; padding: 70px; background: #010101; color: #333; text-align: center;">
                 [ SIGNAL FAIBLE : DÉCRYPTAGE EN COURS ]
             </div>
         </div>
