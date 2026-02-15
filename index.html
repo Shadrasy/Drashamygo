@@ -3,139 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Horizon Final</title>
+    <title>Archives du Multivers - Éclosion Totale</title>
     <style>
         :root { 
             --noir-vcr: #010103; 
             --vhs-vert: #00ff41;
-            --rouge-gaz: rgba(255, 20, 20, 0.4);
-            --bleu-gaz: rgba(0, 80, 255, 0.45);
+            --rouge: #ff1a1a;
+            --bleu: #0066ff;
+            --or: #ffcc00;
         }
 
         body {
             margin: 0; background-color: var(--noir-vcr); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : NÉBULEUSES EN MOUVEMENT */
+            /* FOND : NÉBULEUSE VIBRANTE */
             background: 
-                radial-gradient(ellipse at 25% 35%, var(--bleu-gaz) 0%, transparent 65%),
-                radial-gradient(ellipse at 75% 65%, var(--rouge-gaz) 0%, transparent 65%),
+                radial-gradient(ellipse at 25% 30%, rgba(0, 102, 255, 0.5) 0%, transparent 65%),
+                radial-gradient(ellipse at 75% 65%, rgba(255, 26, 26, 0.45) 0%, transparent 65%),
                 var(--noir-vcr);
             background-attachment: fixed;
-            filter: contrast(125%) brightness(95%) saturate(1.4);
+            filter: contrast(125%) brightness(95%) saturate(1.5);
         }
 
         /* --- FILTRE VHS --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.14; z-index: 100; pointer-events: none;
+            opacity: 0.15; z-index: 100; pointer-events: none;
             animation: vhs-noise 0.2s infinite;
         }
         @keyframes vhs-noise { 0% { transform: translate(0,0); } 100% { transform: translate(-1%, 1%); } }
 
-        /* --- LES COUCHES D'ÉTOILES (DENSITÉ MAXIMALE) --- */
+        /* --- LES COUCHES D'ÉTOILES (DENSITÉ MAXIMUM) --- */
         .universe { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
-        .star-layer { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background-repeat: repeat; }
+        .star-layer { position: absolute; width: 300%; height: 300%; top: -100%; left: -100%; }
         
-        /* 1. La Poussière Galactique (Milliers de micro-points) */
-        .stars-dense {
+        /* On multiplie les points pour saturer le vide */
+        .stars-1 {
             background-image: 
-                radial-gradient(1px 1px at 15px 25px, #fff, transparent),
-                radial-gradient(1px 1px at 60px 110px, rgba(255,255,255,0.6), transparent),
-                radial-gradient(1.5px 1.5px at 150px 200px, #fff, transparent);
+                radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
+                radial-gradient(1px 1px at 150px 250px, #fff, transparent),
+                radial-gradient(2px 2px at 80px 120px, var(--bleu), transparent);
             background-size: 250px 250px; opacity: 0.8;
-            animation: drift-galactique 180s linear infinite;
+            animation: rotate-gal 150s linear infinite;
+        }
+        .stars-2 {
+            background-image: 
+                radial-gradient(1px 1px at 100px 100px, #fff, transparent),
+                radial-gradient(2px 2px at 300px 400px, var(--rouge), transparent);
+            background-size: 400px 400px; opacity: 0.6;
+            animation: rotate-gal 250s linear infinite reverse;
         }
 
-        /* 2. Étoiles Scintillantes Aléatoires */
-        .stars-sparkle {
-            background-image: radial-gradient(2px 2px at 100px 150px, #fff, transparent);
-            background-size: 500px 500px; opacity: 0.5;
-            animation: drift-galactique 120s linear infinite reverse;
+        @keyframes rotate-gal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* --- LE TROU NOIR QUI TOURNE ET ASPIRE --- */
+        .black-hole-system {
+            position: fixed; top: 35%; left: 45%; width: 120px; height: 120px; z-index: -2;
+            animation: float 20s infinite alternate ease-in-out;
         }
-
-        @keyframes drift-galactique { from { transform: rotate(0deg); } to { transform: rotate(20deg); } }
-
-        /* --- LE TROU NOIR (ANIMÉ) --- */
-        .black-hole {
-            position: fixed; top: 35%; left: 45%; width: 100px; height: 100px;
-            background: black; border-radius: 50%; z-index: -2;
-            /* Disque d'accrétion (La lumière aspirée) */
+        .black-hole-core {
+            width: 100%; height: 100%; background: black; border-radius: 50%;
             box-shadow: 
-                0 0 60px 10px rgba(255, 255, 255, 0.4),
-                0 0 100px 30px rgba(0, 100, 255, 0.2),
-                inset 0 0 40px rgba(255, 255, 255, 0.8);
-            animation: black-hole-swirl 10s infinite linear, black-hole-pulse 4s infinite alternate ease-in-out;
+                0 0 50px 10px rgba(255, 255, 255, 0.4),
+                0 0 120px 30px rgba(0, 80, 255, 0.3),
+                inset 0 0 30px white;
+            position: relative;
         }
-        @keyframes black-hole-swirl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes black-hole-pulse { 0% { transform: scale(1); box-shadow: 0 0 60px 10px rgba(255,255,255,0.4); } 100% { transform: scale(1.1); box-shadow: 0 0 90px 20px rgba(255,255,255,0.6); } }
-
-        /* --- PLANÈTES EN ORBITE LENTE --- */
-        .planet {
-            position: fixed; border-radius: 50%; z-index: -2;
-            box-shadow: inset -20px -20px 60px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.4);
-            animation: orbital-move 160s linear infinite;
-        }
-        .p-red { width: 220px; height: 220px; top: 10%; left: -5%; background: radial-gradient(circle at 30% 30%, #881111, #110000); animation-duration: 200s; }
-        .p-blue { width: 140px; height: 140px; bottom: 15%; right: 5%; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); animation-delay: -50s; }
-
-        @keyframes orbital-move { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(10vw, 15vh) rotate(45deg); } }
-
-        /* --- ÉTOILE FILANTE --- */
-        .shooting-star {
-            position: fixed; top: -10%; left: -10%; width: 6px; height: 2px;
-            background: white; border-radius: 50%;
-            box-shadow: 0 0 15px 2px white, -30px 0 50px rgba(255,255,255,0.3);
-            z-index: -1; animation: shoot 14s infinite ease-in; opacity: 0;
-        }
-        @keyframes shoot {
-            0% { transform: translate(0, 0) rotate(35deg) scaleX(0); opacity: 0; }
-            5% { transform: translate(10vw, 10vh) rotate(35deg) scaleX(15); opacity: 1; }
-            15% { transform: translate(120vw, 90vh) rotate(35deg) scaleX(25); opacity: 0; }
-            100% { transform: translate(120vw, 90vh); opacity: 0; }
-        }
-
-        /* --- INTERFACE VCR --- */
-        .osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
-        header { padding: 90px 20px; text-align: center; position: relative; z-index: 500; }
-        h1 { color: white; font-size: 4rem; letter-spacing: 15px; margin: 0; text-shadow: 3px 0px 0px rgba(255, 0, 0, 0.6), -3px 0px 0px rgba(0, 255, 255, 0.5); }
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 50px; backdrop-filter: blur(8px); }
-        .btn { border: 2px solid #ff1a1a; color: #ff1a1a; padding: 18px 40px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 4px; }
-    </style>
-</head>
-<body>
-    <div class="osd">PLAY ▷<br>00:31:05:26<br>SCAN : GALACTIC PHENOMENA ACTIVE</div>
-    
-    <div class="universe">
-        <div class="star-layer stars-dense"></div>
-        <div class="star-layer stars-sparkle"></div>
-    </div>
-    
-    <div class="black-hole"></div>
-    
-    <div class="shooting-star"></div>
-
-    <div class="planet p-red"></div>
-    <div class="planet p-blue"></div>
-
-    <header>
-        <h1>ARCHIVES</h1>
-        <p style="color: #444; letter-spacing: 5px; margin-top: 15px;">[ SIGNAL MULTIVERS : DENSITÉ TOTALE ]</p>
-    </header>
-
-    <div class="container">
-        <div class="box">
-            <h2>Mur des Théories</h2>
-            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
-        </div>
-        <div class="box">
-            <h2>Galerie Exclusive</h2>
-            <div style="border: 2px dashed #222; padding: 70px; background: #000; text-align: center; color: #333;">
-                [ SCAN PHÉNOMÈNE : 100% ]
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+        /* Disque d'accrétion qui tourne */
+        .accretion-disk {
+            position: absolute; top: -50%; left: -50%; width: 200%; height
