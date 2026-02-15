@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives du Multivers</title>
+    <style>
+        :root {
+            --nuit: #020617;
+            --ecarlate: #ff2400;
+        }
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #0a192f 0%, var(--nuit) 100%);
+            color: white;
+            font-family: 'Georgia', serif;
+            text-align: center;
+        }
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--ecarlate) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.25;
+            z-index: -1;
+        }
+        header {
+            padding: 60px 20px;
+            border-bottom: 2px solid var(--ecarlate);
+        }
+        h1 { color: var(--ecarlate); letter-spacing: 6px; text-shadow: 0 0 15px var(--ecarlate); }
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; }
+        .box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 36, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .btn {
+            background: var(--ecarlate);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ARCHIVES</h1>
+        <p>✧ Mystères & Illustrations Inédites ✧</p>
+    </header>
+    <div class="container">
+        <div class="box">
+            <span class="icon">✍️</span>
+            <h2>Mur des Théories</h2>
+            <p>Partagez vos idées sur mes romans et les tomes à venir.</p>
+            <button class="btn">PROPOSER UNE THÉORIE</button>
+        </div>
+        <div class="box">
+            <span class="icon">👁️</span>
+            <h2>Galerie Exclusive</h2>
+            <p>Visualisez les secrets de mes différents mondes.</p>
+            <div style="border: 1px dashed rgba(255,255,255,0.2); padding: 40px; margin-top: 20px; opacity: 0.5;">
+                [ Galerie en cours de chargement... ]
+            </div>
+        </div>
+    </div>
+</body>
+</html>
