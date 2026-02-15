@@ -3,134 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Réactivation</title>
+    <title>Archives du Multivers - Éveil Total</title>
     <style>
         :root { 
-            --noir-univers: #010103; 
+            --noir-vcr: #010206; 
             --vhs-vert: #00ff41;
-            --rouge-profond: #b30000;
-            --bleu-electrique: #0044ff;
-            --blanc-eclat: #ffffff;
+            --rouge-vif: #ff1a1a;
+            --bleu-neon: #0066ff;
+            --violet: #8800ff;
         }
 
         body {
-            margin: 0; background-color: var(--noir-univers); color: white;
+            margin: 0; background-color: var(--noir-vcr); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : NÉBULEUSE PLUS VIVE ET CONTRASTÉE */
+            /* FOND : NÉBULEUSE MULTICOLORE (Plus de puissance visuelle) */
             background: 
-                radial-gradient(ellipse at 30% 30%, rgba(0, 68, 255, 0.5) 0%, transparent 70%),
-                radial-gradient(ellipse at 70% 70%, rgba(179, 0, 0, 0.4) 0%, transparent 70%),
-                radial-gradient(circle at 50% 50%, rgba(50, 0, 100, 0.3) 0%, transparent 90%),
-                var(--noir-univers);
+                radial-gradient(ellipse at 20% 30%, rgba(0, 102, 255, 0.5) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(255, 26, 26, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(136, 0, 255, 0.2) 0%, transparent 80%),
+                var(--noir-vcr);
             background-attachment: fixed;
-            filter: contrast(120%) brightness(100%) saturate(1.4);
+            filter: contrast(120%) brightness(100%);
         }
 
-        /* --- FILTRE VHS VIVANT (Plus rapide) --- */
+        /* --- FILTRE VHS (Léger pour la visibilité) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.15; z-index: 100; pointer-events: none;
-            animation: vhs-noise 0.15s infinite; /* Retour à une vitesse normale */
+            opacity: 0.12; z-index: 100; pointer-events: none;
+            animation: vhs-noise 0.2s infinite;
         }
         @keyframes vhs-noise { 0% { transform: translate(0,0); } 100% { transform: translate(-1%, 1%); } }
 
-        /* --- SYSTÈME D'ÉTOILES DENSE & EN MOUVEMENT --- */
-        .stars-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
-        /* On agrandit les couches pour un mouvement plus fluide */
-        .layer { position: absolute; width: 300%; height: 300%; top: -100%; left: -100%; }
+        /* --- ÉTOILES : DENSITÉ PHÉNOMÉNALE (Sans effet de grillage) --- */
+        .universe-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -3;
+        }
         
-        /* Couche 1 : Poussière d'étoiles ULTRA DENSE (Rapide) */
-        .stars-dust {
+        /* On crée un tapis de milliers de points blancs et bleus */
+        .stars-field {
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
             background-image: 
-                radial-gradient(1px 1px at 10px 10px, white, transparent),
-                radial-gradient(1px 1px at 50px 70px, white, transparent),
-                radial-gradient(1px 1px at 120px 150px, white, transparent),
-                radial-gradient(0.5px 0.5px at 200px 50px, white, transparent);
-            background-size: 100px 100px; /* Répétition très serrée */
-            opacity: 0.8; /* Très visible */
-            animation: rotation-rapide 80s linear infinite;
+                radial-gradient(1px 1px at 10px 10px, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 150px 200px, #fff, transparent),
+                radial-gradient(1px 1px at 50px 300px, var(--bleu-neon), transparent);
+            background-size: 250px 250px;
+            opacity: 0.7;
+            animation: drift-galactique 180s linear infinite;
         }
+        @keyframes drift-galactique { from { transform: rotate(0deg); } to { transform: rotate(10deg); } }
 
-        /* Couche 2 : Étoiles moyennes colorées (Vitesse moyenne, sens inverse) */
-        .stars-medium {
-            background-image: radial-gradient(1.5px 1.5px at 100px 100px, var(--bleu-electrique), transparent), radial-gradient(2px 2px at 300px 400px, var(--rouge-profond), transparent);
-            background-size: 400px 400px; opacity: 0.5;
-            animation: rotation-moyenne 150s linear infinite reverse;
+        /* --- PHÉNOMÈNES : ÉTOILES FILANTES --- */
+        .meteor {
+            position: fixed; top: -10%; left: -10%; width: 4px; height: 2px;
+            background: white; border-radius: 50%;
+            box-shadow: 0 0 15px 2px white, -15px 0 30px rgba(255,255,255,0.2);
+            z-index: -1; animation: shoot-star 12s infinite ease-in; opacity: 0;
         }
-
-        @keyframes rotation-rapide { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes rotation-moyenne { from { transform: rotate(0deg); } to { transform: rotate(-180deg); } }
-
-        /* --- PHÉNOMÈNES ACTIFS --- */
-        /* Étoile Filante (Passe souvent : toutes les 8 secondes) */
-        .shooting-star {
-            position: fixed; top: -10%; left: -10%; width: 3px; height: 3px; background: white; border-radius: 50%;
-            box-shadow: 0 0 15px 2px white, -20px 0 50px 5px rgba(255,255,255,0.2); z-index: -1; 
-            animation: meteor 8s infinite ease-in-out; opacity: 0;
-        }
-        @keyframes meteor {
+        @keyframes shoot-star {
             0% { transform: translate(0, 0) rotate(35deg) scaleX(0); opacity: 0; }
-            10% { transform: translate(10vw, 10vh) rotate(35deg) scaleX(20); opacity: 1; }
-            30% { transform: translate(120vw, 90vh) rotate(35deg) scaleX(30); opacity: 0; }
-            100% { transform: translate(120vw, 90vh); opacity: 0; }
+            5% { transform: translate(10vw, 10vh) rotate(35deg) scaleX(15); opacity: 1; }
+            15% { transform: translate(110vw, 85vh) rotate(35deg) scaleX(25); opacity: 0; }
+            100% { transform: translate(110vw, 85vh); opacity: 0; }
         }
 
-        /* Pulsar brillant (Respira plus vite) */
-        .pulsar {
-            position: fixed; top: 30%; right: 25%; width: 5px; height: 5px; background: white; border-radius: 50%; z-index: -2;
-            box-shadow: 0 0 20px 5px rgba(100, 200, 255, 0.8);
-            animation: pulse 4s ease-in-out infinite alternate;
+        /* --- LES 5 PLANÈTES (Plus de détails et de couleurs) --- */
+        .planet {
+            position: fixed; border-radius: 50%; z-index: -2;
+            box-shadow: inset -20px -20px 50px rgba(0,0,0,0.9), 0 0 15px rgba(0,0,0,0.5);
         }
-        @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 100% { opacity: 1; transform: scale(2); box-shadow: 0 0 50px 15px rgba(150, 255, 255, 1); } }
-
-        /* --- LES PLANÈTES (Toujours là pour le décor) --- */
-        .planet { position: fixed; border-radius: 50%; z-index: -2; filter: blur(0.5px); box-shadow: inset -15px -15px 40px rgba(0,0,0,0.8); }
-        .p1-geante { width: 200px; height: 200px; top: 10%; left: -30px; background: radial-gradient(circle at 30% 30%, #882222, #220000); opacity: 0.7; }
-        .p2-bleue { width: 150px; height: 150px; bottom: 20%; right: 5%; background: radial-gradient(circle at 30% 30%, #3366aa, #0a1533); opacity: 0.6; }
-        .p3-lune { width: 30px; height: 30px; top: 55%; right: 35%; background: #ddd; opacity: 0.9; }
+        .p1-gas-giant { width: 240px; height: 240px; top: 10%; left: -60px; background: radial-gradient(circle at 30% 30%, #772222, #110000); opacity: 0.7; }
+        .p2-ice-world { width: 130px; height: 130px; bottom: 15%; right: 10%; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); opacity: 0.6; }
+        .p3-purple-void { width: 90px; height: 90px; top: 40%; right: 30%; background: radial-gradient(circle at 30% 30%, #551188, #110022); opacity: 0.5; }
+        .p4-dark-sun { width: 40px; height: 40px; top: 5%; right: 45%; background: #333; opacity: 0.8; }
+        .p5-moon { width: 20px; height: 20px; bottom: 30%; left: 25%; background: #eee; opacity: 0.9; }
 
         /* --- INTERFACE --- */
-        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; }
-        header { padding: 100px 20px; text-align: center; position: relative; z-index: 500; }
+        .osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.95rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
+        header { padding: 90px 20px; text-align: center; position: relative; z-index: 500; }
         h1 { 
-            color: white; font-size: 3.5rem; letter-spacing: 15px; margin: 0; 
-            text-shadow: 3px 0px 0px rgba(255, 0, 0, 0.6), -3px 0px 0px rgba(0, 100, 255, 0.6);
+            color: white; font-size: 4rem; letter-spacing: 20px; margin: 0; 
+            text-shadow: 4px 0px 0px rgba(255, 0, 0, 0.8), -4px 0px 0px rgba(0, 255, 255, 0.5);
         }
+
         .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 40px; backdrop-filter: blur(5px); }
-        .btn { border: 1px solid var(--rouge-profond); color: #ff4444; padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 3px; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 50px; margin-bottom: 50px; backdrop-filter: blur(10px); }
+        .btn { border: 2px solid var(--rouge-vif); color: var(--rouge-vif); padding: 18px 40px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 4px; }
     </style>
 </head>
 <body>
-    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : HIGH ACTIVITY</div>
+    <div class="osd">PLAY ▷<br>00:31:05:26<br>SCAN : PHENOMENA RECOVERED</div>
     
-    <div class="stars-background">
-        <div class="layer stars-dust"></div> <div class="layer stars-medium"></div>
+    <div class="universe-layer">
+        <div class="stars-field"></div>
     </div>
     
-    <div class="shooting-star"></div>
-    <div class="pulsar"></div>
+    <div class="meteor"></div>
 
-    <div class="planet p1-geante"></div>
-    <div class="planet p2-bleue"></div>
-    <div class="planet p3-lune"></div>
+    <div class="planet p1-gas-giant"></div>
+    <div class="planet p2-ice-world"></div>
+    <div class="planet p3-purple-void"></div>
+    <div class="planet p4-dark-sun"></div>
+    <div class="planet p5-moon"></div>
 
     <header>
         <h1>ARCHIVES</h1>
-        <p style="color: #aaa; letter-spacing: 5px;">[ SIGNAL MULTIVERS : ACTIVITÉ MAXIMALE ]</p>
+        <p style="color: #444; letter-spacing: 8px; margin-top: 15px;">[ SIGNAL MULTIVERS : DENSITÉ TOTALE ]</p>
     </header>
 
     <div class="container">
         <div class="box">
             <h2>Mur des Théories</h2>
-            <a href="mailto:ton@mail.com" class="btn">ENVOYER ANALYSE</a>
+            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
         </div>
         <div class="box">
             <h2>Galerie Exclusive</h2>
-            <div style="border: 1px dashed #333; padding: 70px; background: #010101; color: #555; text-align: center;">
-                [ SCAN EN COURS... ]
+            <div style="border: 2px dashed #222; padding: 80px; background: #000; text-align: center; color: #333;">
+                [ SCAN PHÉNOMÈNE : 100% ]
             </div>
         </div>
     </div>
