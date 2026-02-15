@@ -3,47 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Signal Brut</title>
+    <title>Archives du Multivers - Étape 1</title>
     <style>
-        :root { --noir: #03050a; --rouge: #cc0000; --vhs-vert: #00ff41; }
-
-        body {
-            margin: 0; background: var(--noir); color: #d0d0d0;
-            font-family: 'Courier New', monospace;
-            min-height: 100vh; overflow-x: hidden;
-            /* FOND DE GAZ RÉALISTE (Nébuleuse irrégulière) */
-            background-image: 
-                radial-gradient(at 15% 25%, rgba(0, 50, 100, 0.25) 0%, transparent 50%),
-                radial-gradient(at 85% 75%, rgba(150, 0, 0, 0.2) 0%, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
-            background-attachment: fixed;
-            /* Effet global de capture vidéo ancienne */
-            filter: contrast(110%) brightness(95%) saturate(1.2);
+        /* Variables pour garder les couleurs authentiques */
+        :root { 
+            --noir-vhs: #020305; 
+            --rouge-gaz: rgba(150, 0, 0, 0.2);
+            --bleu-profond: rgba(0, 30, 80, 0.25);
         }
 
-        /* --- GRAIN ET "NEIGE" (Bruit de capteur) --- */
+        body {
+            margin: 0;
+            background-color: var(--noir-vhs);
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Création de la nébuleuse asymétrique comme tes captures */
+            background-image: 
+                radial-gradient(at 15% 25%, var(--bleu-profond) 0%, transparent 50%),
+                radial-gradient(at 85% 75%, var(--rouge-gaz) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+    </body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives du Multivers - Étape 2</title>
+    <style>
+        :root { 
+            --noir-vhs: #020305; 
+            --rouge-gaz: rgba(150, 0, 0, 0.2);
+            --bleu-profond: rgba(0, 30, 80, 0.25);
+            --ecarlate: #d40000;
+        }
+
+        body {
+            margin: 0; background-color: var(--noir-vhs);
+            min-height: 100vh; overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 15% 25%, var(--bleu-profond) 0%, transparent 50%),
+                radial-gradient(at 85% 75%, var(--rouge-gaz) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
+            background-attachment: fixed;
+        }
+
+        /* --- COUCHE : POUSSIÈRE STELLAIRE (Bruit de fond) --- */
+        .poussiere {
+            position: fixed; top: 0; left: 0; width: 1px; height: 1px;
+            background: transparent;
+            /* On génère une multitude de micro-points partout */
+            box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 30vw 70vh rgba(255,255,255,0.4), 
+                        50vw 10vh #fff, 90vw 90vh rgba(255,0,0,0.3), 15vw 85vh #fff, 
+                        65vw 45vh rgba(255,255,255,0.5), 40vw 40vh #fff, 75vw 25vh #fff, 
+                        5vw 50vh rgba(255,0,0,0.2), 25vw 5vh #fff, 95vw 60vh #fff;
+            z-index: -2;
+        }
+
+        /* --- COUCHE : ÉTOILES À CŒUR BLANC --- */
+        .star { 
+            position: absolute; background: white; border-radius: 50%;
+            /* Halo rouge
+          <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives du Multivers - Étape 3</title>
+    <style>
+        :root { 
+            --noir-vhs: #020305; 
+            --rouge-gaz: rgba(150, 0, 0, 0.2);
+            --bleu-profond: rgba(0, 30, 80, 0.25);
+            --ecarlate: #d40000;
+        }
+
+        body {
+            margin: 0; background-color: var(--noir-vhs);
+            min-height: 100vh; overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 15% 25%, var(--bleu-profond) 0%, transparent 50%),
+                radial-gradient(at 85% 75%, var(--rouge-gaz) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
+            background-attachment: fixed;
+            /* Effet de capture brute : on booste un peu le contraste */
+            filter: contrast(110%) brightness(95%);
+        }
+
+        /* --- COUCHE : GRAIN ET BRUIT (La "Neige" VHS) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.2; z-index: 100; pointer-events: none;
-            animation: vhs-noise 0.1s steps(2) infinite;
+            opacity: 0.15; /* On rend le grain bien visible comme tes photos */
+            z-index: 100; pointer-events: none;
+            animation: vhs-grain 0.1s steps(2) infinite;
         }
 
-        /* --- BARRE DE DISTORSION (Tracking) --- */
+        /* --- COUCHE : BARRE DE TRACKING (La ligne qui descend) --- */
         body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 8px;
             background: rgba(255, 255, 255, 0.05);
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
             z-index: 101; pointer-events: none;
-            animation: scanline 5s linear infinite;
+            animation: scanline 6s linear infinite;
         }
 
-        @keyframes vhs-noise { 0% { transform: scale(1.1) translate(1%, 1%); } 100% { transform: scale(1.1) translate(-1%, -1%); } }
+        @keyframes vhs-grain { 
+            0% { transform: scale(1.1) translate(0,0); } 
+            100% { transform: scale(1.1) translate(-2%, -1%); } 
+        }
+        
+        @keyframes scanline { 0% { top: -10%; } 100% { top: 110%; } }
+
+        /* Étoiles et Poussière de l'étape 2 */
+        .poussiere { position: fixed; top: 0; left: 0; width: 1px; height: 1px; background: transparent; box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 30vw 70vh rgba(255,255,255,0.4), 50vw 10vh #fff, 90vw 90vh rgba(255,0,0,0.3), 15vw 85vh #fff; z-index: -2; }
+        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 10px 3px var(--ecarlate); animation: scintille var(--d) infinite alternate ease-in-out; }
+        @keyframes scintille { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); filter: blur(0.5px); } }
+    </style>
+</head>
+<body>
+    <div class="poussiere"></div>
+    <div class="stars-container">
+        <span class="star" style="--d:3s; top:20%; left:25%; width:4px; height:4px;"></span>
+        <span class="star" style="--d:5s; top:75%; left:80%; width:3px; height:3px;"></span>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives du Multivers - Version Finale</title>
+    <style>
+        :root { 
+            --noir-vhs: #020305; 
+            --ecarlate: #d40000;
+            --vhs-vert: #00ff41;
+            --bleu-profond: rgba(0, 30, 80, 0.25);
+        }
+
+        body {
+            margin: 0; background-color: var(--noir-vhs); color: #d0d0d0;
+            font-family: 'Courier New', monospace;
+            min-height: 100vh; overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 15% 25%, var(--bleu-profond) 0%, transparent 50%),
+                radial-gradient(at 85% 75%, rgba(150, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
+            background-attachment: fixed;
+            filter: contrast(110%) brightness(90%);
+        }
+
+        /* --- FILTRE : GRAIN ET BRUIT (Étape 3) --- */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
+            opacity: 0.18; z-index: 100; pointer-events: none;
+            animation: vhs-grain 0.1s steps(2) infinite;
+        }
+
+        /* --- FILTRE : TRACKING VHS (Étape 3) --- */
+        body::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            z-index: 101; pointer-events: none;
+            animation: scanline 7s linear infinite;
+        }
+
+        @keyframes vhs-grain { 0% { transform: scale(1.1) translate(0,0); } 100% { transform: scale(1.1) translate(-2%, -1%); } }
         @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
 
-        /* --- POUSSIÈRE D'ÉTOILES DENSE (Micro-points) --- */
-        .cosmic-dust {
-            position: fixed; top: 0; left: 0; width: 2px; height: 2px;
-            background: transparent;
-            /* On remplit le vide avec des milliers de poussières stellaires */
-            box-shadow: 5vw 10vh #fff, 90vw 20vh #fff, 35vw 80vh rgba(255,255,255,
+        /* --- ÉTOILES ET POUSSIÈRE (Étape 2) --- */
+        .poussiere { position: fixed; top: 0; left: 0; width: 1px; height: 1px; background: transparent; box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 30vw 70vh rgba(255,255,255,0.4), 50vw 10vh #fff, 90vw 90vh rgba(255,0,0,0.3); z-index: -2; }
+        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 10px 3px var(--ecarlate), 0 0 20px 8px rgba(212, 0, 0, 0.3); animation: scintille var(--d) infinite alternate ease-in-out; }
+        @keyframes scintille { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); filter: blur(0.5px); } }
+
+        /* --- INTERFACE VCR (Nouveau) --- */
+        .vcr-ui { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); opacity: 0.8; }
+        
+        header { padding: 80px 20px; text-align: center; position: relative; z-index: 10; }
+        
+        /* --- TITRE AVEC ABERRATION CHROMATIQUE --- */
+        h1 { 
+            color: white; font-size: 3.5rem; letter-spacing: 15px; margin: 0; 
+            /* On crée le décalage rouge et bleu sur le texte blanc */
+            text-shadow: 3px 0px 0px rgba(212, 0, 0, 0.8), -3px 0px 0px rgba(0, 255, 255, 0.5);
+            filter: blur(0.5px);
+        }
+
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 40px; margin-bottom: 40px; border-radius: 2px; }
+        .btn { border: 1px solid var(--ecarlate); color: var(--ecarlate); padding: 15px 30px; text-decoration: none; display: inline-block; font-weight: bold; background: rgba(0,0,0,0.3); text-transform: uppercase; }
+        .btn:hover { background: var(--ecarlate); color: white; }
+    </style>
+</head>
+<body>
+    <div class="vcr-ui">PLAY ▷<br>00:31:05:26<br><span style="font-size: 0.7rem;">DEEP SCAN ACTIVE</span></div>
+    <div class="poussiere"></div>
+
+    <div class="stars-container">
+        <span class="star" style="--d:3s; top:15%; left:20%; width:4px; height:4px;"></span>
+        <span class="star" style="--d:2s; top:17%; left:22%; width:2px; height:2px;"></span>
+        <span class="star" style="--d:5s; top:75%; left:85%; width:3px; height:3px;"></span>
+        <span class="star" style="--d:4s; top:40%; left:10%; width:2px; height:2px;"></span>
+    </div>
+
+    <header>
+        <h1>ARCHIVES</h1>
+        <p style="color: #444; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px;">[ SIGNAL STELLAIRE ANALYSÉ ]</p>
+    </header>
+
+    <div class="container">
+        <div class="box">
+            <h2>Mur des Théories</h2>
+            <p>Le destin du Multivers attend vos écrits...</p>
+            <a href="mailto:ton-email@mail.com" class="btn">Transmettre</a>
+        </div>
+        
+        <div class="box">
+            <h2>Galerie Exclusive</h2>
+            <div style="border: 1px dashed #222; padding: 60px; background: #010101; color: #333; text-align: center;">
+                [ SIGNAL FAIBLE : DÉCRYPTAGE EN COURS ]
+            </div>
+        </div>
+    </div>
+</body>
+</html>
