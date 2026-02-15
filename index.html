@@ -84,4 +84,54 @@
             animation: spin 3s linear infinite;
         }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes float { from { transform: translate(0,0); } to { transform: translate(-3vw, 2vh); }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(-3vw, 2vh); } }
+
+        /* --- ÉTOILE FILANTE (VITESSE VALIDÉE) --- */
+        .shooting-star {
+            position: fixed; top: -10%; left: -10%; width: 6px; height: 2px; background: white;
+            box-shadow: 0 0 15px white, -40px 0 60px rgba(255,255,255,0.3);
+            z-index: -1; animation: shoot 12s infinite linear;
+        }
+        @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 1; } 100% { transform: translate(120vw, 90vh) rotate(35deg); opacity: 0; } }
+
+        /* --- INTERFACE REPOSANTE --- */
+        h1 { 
+            color: white; font-size: 3.5rem; letter-spacing: 15px; text-align: center; 
+            padding-top: 60px; margin: 0; text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            position: relative; z-index: 500;
+        }
+        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; }
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #222; padding: 40px; margin-bottom: 40px; backdrop-filter: blur(8px); }
+        .btn { border: 1px solid white; color: white; padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 5px; }
+    </style>
+</head>
+<body>
+    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : KINETIC HORIZON</div>
+    
+    <div class="galaxy-layer stars-1"></div>
+    <div class="galaxy-layer stars-2"></div>
+    
+    <div class="orbit orb-1"><div class="planet p1"></div></div>
+    <div class="orbit orb-2"><div class="planet p2"></div></div>
+    <div class="orbit orb-3"><div class="planet p3"></div></div>
+
+    <div class="black-hole-system"><div class="black-hole-core"></div></div>
+    <div class="shooting-star"></div>
+
+    <h1>ARCHIVES</h1>
+
+    <div class="container">
+        <div class="box">
+            <h2 style="letter-spacing: 5px;">Mur des Théories</h2>
+            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
+        </div>
+        <div class="box">
+            <h2 style="letter-spacing: 5px;">Galerie Exclusive</h2>
+            <div style="border: 1px dashed #333; padding: 60px; text-align: center; color: #444;">
+                [ ANALYSE DYNAMIQUE EN COURS ]
+            </div>
+        </div>
+    </div>
+</body>
+</html>
