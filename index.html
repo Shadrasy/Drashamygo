@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Hyper Rotation</title>
+    <title>Archives du Multivers - Horizon Cinétique</title>
     <style>
         :root { 
-            --noir-fond: #010104; 
+            --noir-fond: #010105; 
             --vhs-vert: #00ff41;
+            --bleu-profond: #0044ff;
+            --rouge-vhs: #ff1a1a;
         }
 
         body {
@@ -21,92 +23,65 @@
             background-attachment: fixed;
         }
 
-        /* --- FOND D'ÉTOILES QUI TOURNE LENTEMENT --- */
-        .galaxy-background {
+        /* --- LE SIGNAL VHS (GRAIN) --- */
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
+            opacity: 0.12; z-index: 100; pointer-events: none;
+            animation: grain 0.2s infinite;
+        }
+        @keyframes grain { 0% { transform: translate(0,0); } 100% { transform: translate(-1%, 1%); } }
+
+        /* --- MILLIONS D'ÉTOILES (3 COUCHES DE PROFONDEUR) --- */
+        .galaxy-layer {
             position: fixed; top: 50%; left: 50%; width: 250vmax; height: 250vmax;
             transform: translate(-50%, -50%); z-index: -5;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 100px 100px, #fff, transparent),
-                radial-gradient(1px 1px at 300px 400px, #fff, transparent),
-                radial-gradient(2px 2px at 150px 500px, rgba(100, 200, 255, 0.6), transparent);
-            background-size: 500px 500px; opacity: 0.8;
-            animation: galactic-spin 120s linear infinite; /* Fond plus rapide aussi */
         }
-        @keyframes galactic-spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .stars-1 {
+            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 200px, #fff, transparent);
+            background-size: 250px 250px; opacity: 0.8; animation: rotate-gal 180s linear infinite;
+        }
+        .stars-2 {
+            background-image: radial-gradient(1px 1px at 100px 100px, rgba(100,200,255,0.4), transparent);
+            background-size: 400px 400px; opacity: 0.5; animation: rotate-gal 240s linear infinite reverse;
+        }
+        @keyframes rotate-gal { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- SYSTÈME ORBITAL RAPIDE --- */
-        .orbit-pivot {
+        /* --- SYSTÈME ORBITAL (MOUVEMENT RÉEL) --- */
+        .orbit {
             position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3;
-            animation: orbit-rotate linear infinite;
+            animation: orbit-spin linear infinite;
         }
-        .planet-body {
+        .planet {
             position: absolute; border-radius: 50%;
-            box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.2);
+            /* Taches sur les planètes pour voir la rotation */
+            background-image: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), transparent);
+            box-shadow: inset -15px -15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.4);
+            animation: planet-spin linear infinite;
         }
+        @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes planet-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* CONFIGURATION DES 4 PLANÈTES : PLUS PROCHES, PLUS RAPIDES */
-        
-        /* P1 (Lune Grise) : Très proche, très rapide (8 secondes) */
-        .orb-1 { animation-duration: 8s; } 
-        .p1 { width: 50px; height: 50px; background: #aaa; transform: translateY(-150px); }
+        /* CONFIGURATION : Vitesses rapides et positions visibles */
+        .orb-1 { animation-duration: 10s; } .p1 { width: 45px; height: 45px; background-color: #777; transform: translateY(-160px); animation-duration: 5s; }
+        .orb-2 { animation-duration: 18s; } .p2 { width: 90px; height: 90px; background-color: var(--bleu-profond); transform: translateX(260px); animation-duration: 8s; }
+        .orb-3 { animation-duration: 30s; } .p3 { width: 140px; height: 140px; background-color: var(--rouge-vhs); transform: translateY(340px); animation-duration: 12s; }
 
-        /* P2 (Bleue) : Proche, rapide (15 secondes) */
-        .orb-2 { animation-duration: 15s; animation-delay: -2s; } 
-        .p2 { width: 110px; height: 110px; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); transform: translateX(250px); }
-
-        /* P3 (Rouge) : Moyenne distance, vitesse moyenne (25 secondes) */
-        .orb-3 { animation-duration: 25s; animation-delay: -10s; } 
-        .p3 { width: 180px; height: 180px; background: radial-gradient(circle at 30% 30%, #881111, #110000); transform: translateY(350px); }
-
-        /* P4 (Violette) : Plus loin, plus lente (40 secondes) */
-        .orb-4 { animation-duration: 40s; animation-delay: -20s; } 
-        .p4 { width: 90px; height: 90px; background: radial-gradient(circle at 30% 30%, #5522aa, #110033); transform: translateX(-450px); }
-
-        @keyframes orbit-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- TROU NOIR QUI TOURNE VITE --- */
-        .black-hole {
+        /* --- LE TROU NOIR (VISIBLE EN ROTATION) --- */
+        .black-hole-system {
             position: fixed; top: 12%; right: 12%; width: 120px; height: 120px; z-index: -4;
-            background: black; border-radius: 50%;
-            box-shadow: 0 0 60px 20px rgba(100, 200, 255, 0.4), inset 0 0 30px white;
-            /* Ajout de l'animation de rotation "spin-hole" */
-            animation: spin-hole 5s linear infinite;
+            animation: float 15s infinite alternate ease-in-out;
         }
-        @keyframes spin-hole { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- INTERFACE NETTE --- */
-        h1 { 
-            color: white; font-size: 4rem; letter-spacing: 15px; margin: 0; 
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); text-align: center; 
-            padding-top: 80px; position: relative; z-index: 500;
+        .black-hole-core {
+            width: 100%; height: 100%; background: black; border-radius: 50%;
+            box-shadow: 0 0 60px 15px rgba(100, 200, 255, 0.4), inset 0 0 30px white;
+            position: relative; overflow: hidden;
         }
-        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; }
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 45px; margin-bottom: 50px; backdrop-filter: blur(8px); }
-        .btn { border: 1px solid white; color: white; padding: 18px 40px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 5px; }
-        body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png'); opacity: 0.1; z-index: 100; pointer-events: none; }
-    </style>
-</head>
-<body>
-    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : HYPER ROTATION ACTIVE</div>
-    
-    <div class="galaxy-background"></div>
-    
-    <div class="orbit-pivot orb-1"><div class="planet-body p1"></div></div> <div class="orbit-pivot orb-2"><div class="planet-body p2"></div></div> <div class="orbit-pivot orb-3"><div class="planet-body p3"></div></div> <div class="orbit-pivot orb-4"><div class="planet-body p4"></div></div> <div class="black-hole"></div>
-
-    <h1>ARCHIVES</h1>
-
-    <div class="container">
-        <div class="box">
-            <h2 style="letter-spacing: 5px; color: white;">Mur des Théories</h2>
-            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
-        </div>
-        <div class="box">
-            <h2 style="letter-spacing: 5px; color: white;">Galerie Exclusive</h2>
-            <div style="border: 1px dashed #333; padding: 80px; text-align: center; color: #444;">
-                [ SCAN RAPIDE EN COURS ]
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+        /* Disque d'accrétion pour voir la rotation du trou noir */
+        .black-hole-core::after {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent, rgba(0,100,255,0.2), transparent);
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(-3vw, 2vh); }
