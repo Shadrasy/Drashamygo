@@ -3,96 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Phénomène Vrai</title>
+    <title>Archives du Multivers - Phénomène Vivant</title>
     <style>
         :root { 
-            --espace-noir: #010205; 
+            --noir-profond: #010205; 
             --vhs-vert: #00ff41;
-            --rouge-gaz: #b30000;
-            --bleu-gaz: #003366;
+            --rouge: #cc0000;
+            --bleu: #0044cc;
         }
 
         body {
-            margin: 0; background-color: var(--espace-noir); color: #e0e0e0;
+            margin: 0; background-color: var(--noir-profond); color: #e0e0e0;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : ON SUPPRIME LE GRILLAGE - Nébuleuse Douce */
+            /* FOND : GAZ QUI RESPIRE LENTEMENT */
             background: 
-                radial-gradient(ellipse at 25% 40%, rgba(0, 85, 255, 0.4) 0%, transparent 60%),
-                radial-gradient(ellipse at 75% 60%, rgba(179, 0, 0, 0.3) 0%, transparent 60%),
-                var(--espace-noir);
+                radial-gradient(ellipse at 30% 40%, rgba(0, 68, 204, 0.35) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(204, 0, 0, 0.3) 0%, transparent 60%),
+                var(--noir-profond);
             background-attachment: fixed;
+            animation: respiration-gaz 20s infinite alternate ease-in-out;
+        }
+        @keyframes respiration-gaz { 
+            0% { background-size: 100% 100%; } 
+            100% { background-size: 110% 105%; background-position: center 2%; } 
         }
 
-        /* --- LE GRAIN VHS (Plus lent pour le confort des yeux) --- */
+        /* --- LE GRAIN VHS (Confortable) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.10; z-index: 100; pointer-events: none;
-            animation: grain-calme 0.25s infinite;
+            opacity: 0.12; z-index: 100; pointer-events: none;
+            animation: grain-leger 0.3s steps(3) infinite;
         }
-        @keyframes grain-calme { 0% { transform: translate(0,0); } 50% { transform: translate(-0.5%, 0.5%); } 100% { transform: translate(0,0); } }
+        @keyframes grain-leger { 0% { transform: translate(0,0); } 100% { transform: translate(1%, 1%); } }
 
-        /* --- POUSSIÈRE GALACTIQUE (Éparpillée, pas de grillage) --- */
-        .poussiere-aleatoire {
-            position: fixed; top: 0; left: 0; width: 1px; height: 1px;
-            background: transparent;
-            /* On utilise des positions différentes pour casser le grillage */
-            box-shadow: 
-                12vw 15vh #fff, 85vw 25vh #fff, 45vw 10vh rgba(255,255,255,0.4), 
-                90vw 90vh var(--rouge-gaz), 30vw 70vh #fff, 15vw 85vh #fff, 
-                65vw 45vh #fff, 5vw 50vh var(--bleu-gaz), 55vw 55vh rgba(255,255,255,0.3),
-                22vw 12vh #fff, 75vw 42vh #fff, 40vw 10vh #fff, 95vw 80vh #fff,
-                60vw 90vh var(--bleu-gaz), 10vw 40vh #fff, 80vw 5vh #fff;
-            z-index: 1;
+        /* --- COUCHES D'ÉTOILES (Techique anti-grillage) --- */
+        .stars-layer-1 {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(1px 1px at 10px 10px, #fff, transparent), radial-gradient(1px 1px at 50px 80px, #fff, transparent);
+            background-size: 200px 200px; opacity: 0.5; z-index: -3;
+        }
+        .stars-layer-2 {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(1.5px 1.5px at 100px 50px, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 30px 150px, var(--rouge), transparent);
+            background-size: 350px 350px; opacity: 0.4; z-index: -2;
         }
 
-        /* --- ÉTOILES RÉALISTES --- */
-        .star { 
+        /* --- NOUVEAU : PLANÈTES ERRANTES --- */
+        .planet {
+            position: fixed; border-radius: 50%; z-index: -1;
+            box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8); /* Ombre pour le volume 3D */
+            animation: orbite 60s linear infinite;
+        }
+        .planet-red {
+            width: 150px; height: 150px; top: 10%; left: -10%;
+            background: radial-gradient(circle at 30% 30%, #ff5555, #550000);
+            opacity: 0.4; animation-duration: 80s;
+        }
+        .planet-blue {
+            width: 100px; height: 100px; bottom: 20%; right: -10%;
+            background: radial-gradient(circle at 30% 30%, #5555ff, #000055);
+            opacity: 0.3; animation-delay: -30s;
+        }
+        @keyframes orbite { 
+            0% { transform: translate(0, 0) rotate(0deg); } 
+            100% { transform: translate(120vw, 20vh) rotate(45deg); } 
+        }
+
+        /* --- NOUVEAU : ÉTOILE FILANTE --- */
+        .shooting-star {
+            position: fixed; top: 0; left: -20%; width: 300px; height: 2px;
+            background: linear-gradient(to right, rgba(255,255,255,0), white, rgba(255,255,255,0));
+            transform: rotate(-35deg); z-index: 0;
+            animation: shoot 15s infinite; /* Passe toutes les 15 secondes */
+            opacity: 0;
+        }
+        @keyframes shoot {
+            0% { left: -20%; top: 20%; opacity: 1; }
+            5% { left: 120%; top: 80%; opacity: 0; }
+            100% { left: 120%; top: 80%; opacity: 0; }
+        }
+
+        /* --- ÉTOILES PRINCIPALES --- */
+        .star-main { 
             position: absolute; background: white; border-radius: 50%; 
-            box-shadow: 0 0 10px 4px var(--rouge-gaz); 
+            box-shadow: 0 0 8px 3px var(--rouge); 
             animation: scintille var(--d) infinite alternate ease-in-out;
             z-index: 5;
         }
         @keyframes scintille { 0% { opacity: 0.3; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.1); } }
 
-        /* --- TEXTE CONFORTABLE (Pas de mal à la tête) --- */
-        .vcr-ui { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; opacity: 0.8; }
-        header { padding: 90px 20px; text-align: center; position: relative; z-index: 500; }
-        h1 { 
-            color: white; font-size: 3.5rem; letter-spacing: 12px; margin: 0; 
-            /* On réduit l'effet qui fait mal aux yeux */
-            text-shadow: 2px 0px 0px rgba(255, 0, 0, 0.5), -1px 0px 0px rgba(0, 255, 255, 0.3);
-        }
-
+        /* --- INTERFACE ET TEXTE --- */
+        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; opacity: 0.8; }
+        header { padding: 100px 20px; text-align: center; position: relative; z-index: 500; }
+        h1 { color: white; font-size: 3.5rem; letter-spacing: 12px; margin: 0; text-shadow: 2px 0px 0px rgba(255, 0, 0, 0.6), -2px 0px 0px rgba(0, 255, 255, 0.4); }
         .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        .box { background: rgba(0, 0, 0, 0.95); border: 1px solid #111; padding: 45px; margin-bottom: 40px; }
-        .btn { border: 1px solid var(--rouge-gaz); color: var(--rouge-gaz); padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 2px; }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 40px; }
+        .btn { border: 1px solid var(--rouge); color: var(--rouge); padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 2px; }
     </style>
 </head>
 <body>
-    <div class="vcr-ui">PLAY ▷<br>00:31:05:26</div>
-    <div class="poussiere-aleatoire"></div>
-
-    <div class="stars-container">
-        <span class="star" style="--d:3s; top:15%; left:20%; width:4px; height:4px;"></span>
-        <span class="star" style="--d:4.5s; top:75%; left:85%; width:3px; height:3px;"></span>
+    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : ACTIVE PHENOMENA</div>
+    
+    <div class="stars-layer-1"></div> <div class="stars-layer-2"></div> <div class="planet planet-red"></div> <div class="planet planet-blue"></div> <div class="shooting-star"></div> <div class="stars-container">
+        <span class="star-main" style="--d:3s; top:15%; left:20%; width:4px; height:4px;"></span>
+        <span class="star-main" style="--d:4.5s; top:75%; left:85%; width:3px; height:3px;"></span>
     </div>
 
     <header>
         <h1>ARCHIVES</h1>
-        <p style="color: #444; letter-spacing: 5px;">[ SIGNAL PHÉNOMÉNAL : PROFONDEUR RÉELLE ]</p>
+        <p style="color: #444; letter-spacing: 5px; margin-top: 10px;">[ SIGNAL MULTIVERS : SYSTÈME COMPLET ]</p>
     </header>
 
     <div class="container">
         <div class="box">
             <h2>Mur des Théories</h2>
-            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
+            <a href="mailto:ton@mail.com" class="btn">ENVOYER ANALYSE</a>
         </div>
+        
         <div class="box">
             <h2>Galerie Exclusive</h2>
             <div style="border: 1px dashed #222; padding: 80px; background: #010101; color: #333; text-align: center;">
-                [ SCAN PHÉNOMÈNE PRÊT ]
+                [ SCAN SYSTÈME EN COURS ]
             </div>
         </div>
     </div>
