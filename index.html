@@ -77,4 +77,65 @@
             box-shadow: inset -20px -20px 60px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.4);
             animation: orbital-move 160s linear infinite;
         }
-        .p-red { width: 220px; height: 220px; top: 10%; left: -5%; background: radial-gradient(circle at 30% 30%, #881111, #110000); animation-duration:
+        .p-red { width: 220px; height: 220px; top: 10%; left: -5%; background: radial-gradient(circle at 30% 30%, #881111, #110000); animation-duration: 200s; }
+        .p-blue { width: 140px; height: 140px; bottom: 15%; right: 5%; background: radial-gradient(circle at 30% 30%, #2244aa, #050a1a); animation-delay: -50s; }
+
+        @keyframes orbital-move { 0% { transform: translate(0,0) rotate(0deg); } 100% { transform: translate(10vw, 15vh) rotate(45deg); } }
+
+        /* --- ÉTOILE FILANTE --- */
+        .shooting-star {
+            position: fixed; top: -10%; left: -10%; width: 6px; height: 2px;
+            background: white; border-radius: 50%;
+            box-shadow: 0 0 15px 2px white, -30px 0 50px rgba(255,255,255,0.3);
+            z-index: -1; animation: shoot 14s infinite ease-in; opacity: 0;
+        }
+        @keyframes shoot {
+            0% { transform: translate(0, 0) rotate(35deg) scaleX(0); opacity: 0; }
+            5% { transform: translate(10vw, 10vh) rotate(35deg) scaleX(15); opacity: 1; }
+            15% { transform: translate(120vw, 90vh) rotate(35deg) scaleX(25); opacity: 0; }
+            100% { transform: translate(120vw, 90vh); opacity: 0; }
+        }
+
+        /* --- INTERFACE VCR --- */
+        .osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
+        header { padding: 90px 20px; text-align: center; position: relative; z-index: 500; }
+        h1 { color: white; font-size: 4rem; letter-spacing: 15px; margin: 0; text-shadow: 3px 0px 0px rgba(255, 0, 0, 0.6), -3px 0px 0px rgba(0, 255, 255, 0.5); }
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 50px; backdrop-filter: blur(8px); }
+        .btn { border: 2px solid #ff1a1a; color: #ff1a1a; padding: 18px 40px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.5); letter-spacing: 4px; }
+    </style>
+</head>
+<body>
+    <div class="osd">PLAY ▷<br>00:31:05:26<br>SCAN : GALACTIC PHENOMENA ACTIVE</div>
+    
+    <div class="universe">
+        <div class="star-layer stars-dense"></div>
+        <div class="star-layer stars-sparkle"></div>
+    </div>
+    
+    <div class="black-hole"></div>
+    
+    <div class="shooting-star"></div>
+
+    <div class="planet p-red"></div>
+    <div class="planet p-blue"></div>
+
+    <header>
+        <h1>ARCHIVES</h1>
+        <p style="color: #444; letter-spacing: 5px; margin-top: 15px;">[ SIGNAL MULTIVERS : DENSITÉ TOTALE ]</p>
+    </header>
+
+    <div class="container">
+        <div class="box">
+            <h2>Mur des Théories</h2>
+            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
+        </div>
+        <div class="box">
+            <h2>Galerie Exclusive</h2>
+            <div style="border: 2px dashed #222; padding: 70px; background: #000; text-align: center; color: #333;">
+                [ SCAN PHÉNOMÈNE : 100% ]
+            </div>
+        </div>
+    </div>
+</body>
+</html>
