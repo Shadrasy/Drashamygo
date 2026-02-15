@@ -3,120 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Galaxie Totale</title>
+    <title>Archives du Multivers - Coeur Galactique</title>
     <style>
         :root { 
             --noir-profond: #000103; 
             --vhs-vert: #00ff41;
-            --rouge-vhs: #ff0000;
-            --bleu-vhs: #0055ff;
+            --rouge: #ff0000;
+            --bleu: #0066ff;
         }
 
         body {
             margin: 0; background-color: var(--noir-profond); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* FOND : NÉBULEUSES TURBULENTES (Plus serrées, moins douces) */
+            /* FOND : TRAINÉE GALACTIQUE DIAGONALE */
             background: 
-                radial-gradient(circle at 25% 35%, rgba(0, 85, 255, 0.5) 0%, transparent 50%),
-                radial-gradient(circle at 75% 65%, rgba(255, 0, 0, 0.45) 0%, transparent 55%),
-                radial-gradient(circle at 50% 50%, rgba(100, 0, 150, 0.3) 0%, transparent 70%),
+                /* 1. Le "gaz" rouge diffus */
+                radial-gradient(ellipse at 80% 20%, rgba(255, 0, 0, 0.4) 0%, transparent 60%),
+                /* 2. Le "gaz" bleu profond */
+                radial-gradient(ellipse at 20% 80%, rgba(0, 102, 255, 0.4) 0%, transparent 60%),
+                /* 3. LE BULBE (Bande centrale laiteuse) */
+                linear-gradient(45deg, transparent 20%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 55%, transparent 80%),
                 var(--noir-profond);
             background-attachment: fixed;
-            /* Contraste fort pour faire ressortir la matière */
-            filter: contrast(135%) brightness(90%) saturate(1.4);
+            filter: contrast(130%) brightness(90%) saturate(1.5);
         }
 
-        /* --- COUCHE 1 : LE GRAIN VHS (Texture sale) --- */
+        /* --- LE GRAIN VHS (Texture de capteur) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.25; z-index: 100; pointer-events: none;
-            animation: vhs-noise 0.1s steps(2) infinite;
+            opacity: 0.22; z-index: 100; pointer-events: none;
+            animation: vhs-noise 0.15s infinite;
         }
-        @keyframes vhs-noise { 0% { transform: scale(1.1) translate(0,0); } 100% { transform: scale(1.1) translate(-2%, -1%); } }
+        @keyframes vhs-noise { 0% { transform: scale(1.1); } 50% { transform: translate(-1%, 1%); } 100% { transform: scale(1.1) translate(1%, -1%); } }
 
-        /* --- NOUVEAU : CŒUR GALACTIQUE (L'illusion de millions d'étoiles) --- */
-        /* C'est cette couche qui va remplir ton écran */
-        .galactic-core {
+        /* --- AMAS GALACTIQUE (Nuage d'étoiles massif) --- */
+        .galaxy-texture {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* On crée des milliers de micro-points de tailles différentes */
             background-image: 
-                /* Micro-points blancs très serrés */
-                radial-gradient(white 1px, transparent 1px),
-                /* Points rougeâtres un peu plus gros */
-                radial-gradient(rgba(255, 100, 100, 0.4) 1.5px, transparent 1.5px),
-                /* Nuages de points bleutés lointains */
-                radial-gradient(rgba(100, 100, 255, 0.3) 1px, transparent 1px);
-            /* On décale les motifs pour éviter l'effet "papier peint" */
-            background-size: 30px 30px, 70px 70px, 110px 110px;
-            background-position: 0 0, 30px 30px, 15px 15px;
-            opacity: 0.7; /* Très visible */
-            z-index: 1;
+                radial-gradient(1px 1px at 10% 10%, #fff, transparent),
+                radial-gradient(1px 1px at 20% 50%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(2px 2px at 30% 90%, var(--bleu), transparent),
+                radial-gradient(1.5px 1.5px at 70% 30%, var(--rouge), transparent),
+                radial-gradient(1px 1px at 90% 80%, #fff, transparent);
+            background-size: 100px 100px; /* On répète le motif pour saturer l'écran */
+            opacity: 0.6; z-index: 1;
         }
 
-        /* --- COUCHE 3 : POUSSIÈRE DYNAMIQUE (Étoiles moyennes) --- */
-        .cosmic-dust {
-            position: fixed; top: 0; left: 0; width: 2px; height: 2px; background: transparent;
-            box-shadow: 15vw 10vh #fff, 85vw 25vh #fff, 45vw 10vh #fff, 12vw 45vh var(--rouge-vhs), 
-                        65vw 15vh #fff, 82vw 88vh #fff, 5vw 70vh #fff, 22vw 12vh #fff, 75vw 42vh #fff,
-                        40vw 55vh rgba(255,255,255,0.5), 60vw 30vh var(--bleu-vhs), 90vw 5vh #fff;
-            z-index: 2;
-        }
-
-        /* --- ÉTOILES PRINCIPALES (Avant-plan) --- */
+        /* --- ÉTOILES PRINCIPALES (Cœur blanc brûlant) --- */
         .star { 
             position: absolute; background: white; border-radius: 50%; 
-            box-shadow: 0 0 12px 4px var(--rouge-vhs), 0 0 30px 15px rgba(255, 0, 0, 0.4); 
-            animation: scintille var(--d) infinite alternate ease-in-out;
-            z-index: 3;
+            box-shadow: 0 0 10px 4px var(--rouge), 0 0 25px 10px rgba(255, 0, 0, 0.3); 
+            animation: twinkle var(--d) infinite alternate ease-in-out;
+            z-index: 5;
         }
-        @keyframes scintille { 0% { opacity: 0.5; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.3); } }
+        @keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
 
         /* --- INTERFACE VCR --- */
-        .osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 1rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
-        
+        .vcr-osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 1rem; z-index: 1000; text-shadow: 0 0 5px var(--vhs-vert); }
         header { padding: 90px 20px; text-align: center; position: relative; z-index: 500; }
-        h1 { 
-            color: white; font-size: 3.5rem; letter-spacing: 18px; margin: 0; 
-            text-shadow: 4px 0px 0px rgba(255, 0, 0, 0.9), -4px 0px 0px rgba(0, 255, 255, 0.6);
-        }
-
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 500; }
-        /* Boîtes plus sombres pour contraster avec la galaxie lumineuse */
-        .box { background: rgba(0, 0, 0, 0.96); border: 1px solid #222; padding: 45px; margin-bottom: 45px; box-shadow: 0 0 50px black; }
-        .btn { border: 1px solid var(--rouge-vhs); color: var(--rouge-vhs); padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.4); letter-spacing: 4px; }
+        h1 { color: white; font-size: 3.5rem; letter-spacing: 15px; margin: 0; text-shadow: 4px 0px 0px rgba(255, 0, 0, 0.8), -4px 0px 0px rgba(0, 255, 255, 0.5); }
+        .box { background: rgba(0, 0, 0, 0.95); border: 1px solid #1a1a1a; padding: 45px; margin-bottom: 40px; box-shadow: 0 0 40px black; position: relative; z-index: 500; }
+        .btn { border: 1px solid var(--rouge); color: var(--rouge); padding: 15px 35px; text-decoration: none; font-weight: bold; background: rgba(0,0,0,0.4); letter-spacing: 3px; }
     </style>
 </head>
 <body>
-    <div class="osd">PLAY ▷<br>00:31:05:26<br>DENSITY: MAX</div>
+    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br>SCAN : GALACTIC CENTER</div>
     
-    <div class="galactic-core"></div>
-    <div class="cosmic-dust"></div>
+    <div class="galaxy-texture"></div>
 
     <div class="stars-container">
         <span class="star" style="--d:3s; top:15%; left:22%; width:4px; height:4px;"></span>
-        <span class="star" style="--d:2.5s; top:16%; left:24%; width:2px; height:2px;"></span>
-        <span class="star" style="--d:4s; top:18%; left:21%; width:3px; height:3px;"></span>
-        
-        <span class="star" style="--d:4.5s; top:75%; left:85%; width:3px; height:3px;"></span>
+        <span class="star" style="--d:2s; top:17%; left:25%; width:2px; height:2px;"></span>
+        <span class="star" style="--d:4s; top:75%; left:85%; width:3px; height:3px;"></span>
     </div>
 
     <header>
         <h1>ARCHIVES</h1>
-        <p style="color: #666; letter-spacing: 6px;">[ SIGNAL GALACTIQUE : DENSITÉ TOTALE ]</p>
+        <p style="color: #444; letter-spacing: 6px;">[ SIGNAL MULTIVERS : DENSITÉ PHÉNOMÉNALE ]</p>
     </header>
 
-    <div class="container">
+    <div class="container" style="max-width: 800px; margin: auto; padding: 40px 20px;">
         <div class="box">
             <h2>Mur des Théories</h2>
-            <p style="color: #888;">Envoyez vos analyses du phénomène à travers le spectre.</p>
             <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
         </div>
         
         <div class="box">
             <h2>Galerie Exclusive</h2>
-            <div style="border: 1px dashed #333; padding: 70px; background: #020202; color: #444; text-align: center;">
-                [ SCAN GALACTIQUE PRÊT ]
+            <div style="border: 1px dashed #222; padding: 70px; background: #010101; color: #333; text-align: center;">
+                [ SIGNAL STABLE - DÉCRYPTAGE RÉUSSI ]
             </div>
         </div>
     </div>
