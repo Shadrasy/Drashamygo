@@ -5,71 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archives du Multivers</title>
     <style>
-        :root {
-            --nuit: #020617;
-            --ecarlate: #ff2400;
-        }
-
+        :root { --nuit: #020617; --ecarlate: #ff2400; }
         body {
-            margin: 0;
-            background: var(--nuit);
-            color: white;
-            font-family: 'Georgia', serif;
-            text-align: center;
-            min-height: 100vh;
-            overflow-x: hidden;
+            margin: 0; background: var(--nuit); color: white;
+            font-family: 'Georgia', serif; text-align: center;
+            min-height: 100vh; overflow-x: hidden;
             background: radial-gradient(circle at center, #0a192f 0%, var(--nuit) 100%);
         }
-
-        /* --- FILTRE MAGNÉTOSCOPE (Lignes de scan) --- */
+        /* --- EFFET VHS RENFORCÉ --- */
         body::after {
-            content: "";
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px; /* Crée les lignes horizontales VHS */
-            z-index: 100;
-            pointer-events: none;
-            opacity: 0.4;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+            z-index: 100; pointer-events: none;
         }
-
-        /* --- CONTENEUR D'ÉTOILES --- */
-        .stars-container {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-        }
-
+        /* --- SYSTÈME DE GALAXIE --- */
+        .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .star {
-            position: absolute;
-            color: var(--ecarlate);
-            filter: blur(0.3px);
-            animation: flicker var(--d) infinite alternate;
-            opacity: var(--o);
+            position: absolute; color: var(--ecarlate);
+            animation: flicker var(--d) infinite alternate; opacity: var(--o);
         }
-
         @keyframes flicker {
-            0% { opacity: 0.1; transform: scale(0.7); filter: brightness(0.5); }
-            100% { opacity: 0.9; transform: scale(1.2) rotate(10deg); filter: brightness(1.5) drop-shadow(0 0 8px var(--ecarlate)); }
+            0% { opacity: 0.1; transform: scale(0.8); filter: brightness(0.5); }
+            100% { opacity: 1; transform: scale(1.2) rotate(15deg); filter: brightness(1.8) drop-shadow(0 0 8px var(--ecarlate)); }
         }
-
-        header {
-            padding: 80px 20px;
-            border-bottom: 3px double var(--ecarlate);
-            background: rgba(2, 6, 23, 0.85);
-            backdrop-filter: blur(10px);
-            position: relative; z-index: 10;
-        }
-
-        h1 { 
-            color: var(--ecarlate); 
-            font-size: clamp(2rem, 8vw, 3.5rem);
-            letter-spacing: 12px;
-            text-shadow: 0 0 20px var(--ecarlate);
-            margin: 0;
-        }
-
+        header { padding: 80px 20px; border-bottom: 3px double var(--ecarlate); background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(10px); position: relative; z-index: 10; }
+        h1 { color: var(--ecarlate); font-size: 3.5rem; letter-spacing: 12px; text-shadow: 0 0 25px var(--ecarlate); margin: 0; }
         .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid rgba(255, 36, 0, 0.4); padding: 40px; margin-bottom: 40px; box-shadow: 0 0 40px rgba(0,0,0,1); border-radius: 5px; }
+        .btn { background: var(--ecarlate); color: white; padding: 20px 45px; border: none; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; box-shadow: 0 0 20px rgba(255, 36, 0, 0.5); }
+    </style>
+</head>
+<body>
+    <div class="stars-container">
+        <span class="star" style="--d:3s; --o:0.5; top:5%; left:12%; font-size:25px;">✶</span>
+        <span class="star" style="--d:5s; --o:0.8; top:18%; left:88%; font-size:30px;">★</span>
+        <span class="star" style="--d:2s; --o:0.4; top:42%; left:5%; font-size:18px;">✦</span>
+        <span class="star" style="--d:4s; --o:0.6; top:68%; left:92%; font-size:22px;">✷</span>
+        <span class="star" style="--d:3s; --o:0.3; top:85%; left:15%; font-size:35px;">✶</span>
+        <span class="star" style="--d:6s; --o:0.5; top:10%; left:50%; font-size:20px;">✧</span>
+        <span class="star" style="--d:2s; --o:0.7; top:35%; left:25%; font-size:28px;">★</span>
+        <span class="star" style="--d:4s; --o:0.4; top:55%; left:75%; font-size:24px;">✷</span>
+        <span class="star" style="--d:5s; --o:0.6; top:75%; left:45%; font-size:16px;">✦</span>
+        <span class="star" style="--d:3s; --o:0.5; top:92%; left:80%; font-size:26px;">✧</span>
+        <span class="star" style="--d:4s; --o:0.8; top:22%; left:65%; font-size:32px;">✶</span>
+        <span class="star" style="--d:2s; --o:0.3; top:48%; left:12%; font-size:14px;">✧</span>
+        <span class="star" style="--d:6s; --o:0.7; top:8%; left:28%; font-size:21px;">★</span>
+        <span class="star" style="--d:3s; --o:0.4; top:62%; left:3%; font-size:29px;">✷</span>
+        <span class="star" style="--d:5s; --o:0.5; top:15%; left:72%; font-size:19px;">✦</span>
+        <span class="star" style="--d:2s; --o:0.6; top:88%; left:62%; font-size:34px;">✶</span>
+        <span class="star" style="--d:4s; --o:0.3; top:30%; left:95%; font-size:17px;">✧</span>
+        <span class="star" style="--d:3s; --o:0.5; top:52%; left:85%; font-size:23px;">★</span>
+        <span class="star" style="--d:5s; --o:0.4; top:2%; left:40%; font-size:27px;">✷</span>
+        <span class="star" style="--d:6s; --o:0.8; top:78%; left:10%; font-size:20px;">✧</span>
+        <span class="star" style="--d:2s; --o:0.5; top:40%; left:40%; font-size:15px;">•</span>
+        <span class="star" style="--d:4s; --o:0.4; top:60%; left:60%; font-size:15px;">•</span>
+        <span class="star" style="--d:3s; --o:0.3; top:20%; left:20%; font-size:15px;">•</span>
+    </div>
+    
+    <header>
+        <h1>ARCHIVES</h1>
+        <p style="font-family: monospace; letter-spacing: 2px; color: #888;">[ ENREGISTREMENT VHS #031 - MULTIVERS ]</p>
+    </header>
 
-        .box {
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid rgba(255,
+    <div class="container">
+        <div class="box">
+            <span style="font-size: 4rem; display: block; margin-bottom: 20px;">✍️</span>
+            <h2>Mur des Théories</h2>
+            <p>Le futur de mes romans dépend de vos suppositions...</p>
+            <a href="mailto:TON-EMAIL@gmail.com?subject=Analyse" class="btn">ENVOYER UNE ANALYSE</a>
+        </div>
+        <div class="box">
+            <span style="font-size: 4rem; display: block; margin-bottom: 20px;">👁️</span>
+            <h2>Galerie Exclusive</h2>
+            <p>[ DÉCRYPTAGE DES DONNÉES VISUELLES... ]</p>
+            <div style="border: 1px dashed var(--ecarlate); padding: 40px; margin-top: 20px; background: rgba(255,36,0,0.05);">
+                <span style="font-size: 2rem;">🖼️</span><br>
+                Galerie en cours de préparation...
+            </div>
+        </div>
+    </div>
+</body>
+</html>
