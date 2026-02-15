@@ -1,14 +1,18 @@
 <style>
-    :root { --noir: #010204; --rouge-vif: #ff0000; --bleu-electrique: #0066ff; --vhs: #00ff41; }
     body {
-        margin: 0; background: var(--noir); color: #d0d0d0; font-family: 'Courier New', monospace;
-        min-height: 100vh; overflow-x: hidden;
-        /* DEUX NÉBULEUSES PUISSANTES QUI SE RENCONTRENT */
-        background-image: 
-            radial-gradient(at 20% 40%, rgba(0, 102, 255, 0.6) 0%, transparent 60%),
-            radial-gradient(at 80% 60%, rgba(255, 0, 0, 0.5) 0%, transparent 60%);
+        margin: 0; background-color: #000; color: #d0d0d0; font-family: 'Courier New', monospace;
+        min-height: 100vh;
+        /* ON UTILISE TA PHOTO COMME FOND */
+        background-image: url('image_c6351e.jpg'); 
+        background-size: cover;
+        background-position: center;
         background-attachment: fixed;
-        filter: contrast(130%) brightness(95%) saturate(1.4);
+        /* On traite l'image pour qu'elle ressemble à une capture VHS */
+        filter: contrast(140%) brightness(80%) saturate(1.2) blur(0.5px);
     }
-    /* Garde le reste du code (Grain, OSD, Stars) de la v21 */
+    /* On ajoute un voile sombre par-dessus pour que le texte reste lisible */
+    body::after {
+        content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.4); z-index: 1; pointer-events: none;
+    }
 </style>
