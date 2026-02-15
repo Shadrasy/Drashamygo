@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Version Finale</title>
+    <title>Archives du Multivers - Signal Originel</title>
     <style>
         :root { 
             --noir-vhs: #020305; 
@@ -16,15 +16,17 @@
             margin: 0; background-color: var(--noir-vhs); color: #d0d0d0;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
+            /* FOND : LA NÉBULEUSE RÉALISTE (GAZ ET POUSSIÈRE) */
             background-image: 
                 radial-gradient(at 15% 25%, var(--bleu-profond) 0%, transparent 50%),
                 radial-gradient(at 85% 75%, rgba(150, 0, 0, 0.2) 0%, transparent 50%),
                 radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
             background-attachment: fixed;
-            filter: contrast(110%) brightness(90%);
+            /* RENDU VIDÉO : CONTRASTE ET SATURATION ANALOGIQUE */
+            filter: contrast(110%) brightness(90%) saturate(1.1);
         }
 
-        /* --- FILTRE : GRAIN ET BRUIT --- */
+        /* --- FILTRE : LE GRAIN DE LA PELLICULE --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
@@ -32,9 +34,9 @@
             animation: vhs-grain 0.1s steps(2) infinite;
         }
 
-        /* --- FILTRE : TRACKING VHS --- */
+        /* --- FILTRE : LA BARRE DE TRACKING (DÉGRADATION) --- */
         body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 6px;
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 8px;
             background: rgba(255, 255, 255, 0.05);
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
             z-index: 101; pointer-events: none;
@@ -44,15 +46,29 @@
         @keyframes vhs-grain { 0% { transform: scale(1.1) translate(0,0); } 100% { transform: scale(1.1) translate(-2%, -1%); } }
         @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
 
-        /* --- ÉTOILES ET POUSSIÈRE --- */
-        .poussiere { position: fixed; top: 0; left: 0; width: 1px; height: 1px; background: transparent; box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 30vw 70vh rgba(255,255,255,0.4), 50vw 10vh #fff, 90vw 90vh rgba(255,0,0,0.3); z-index: -2; }
-        .star { position: absolute; background: white; border-radius: 50%; box-shadow: 0 0 10px 3px var(--ecarlate), 0 0 20px 8px rgba(212, 0, 0, 0.3); animation: scintille var(--d) infinite alternate ease-in-out; }
+        /* --- MATIÈRE : POUSSIÈRE STELLAIRE --- */
+        .poussiere { 
+            position: fixed; top: 0; left: 0; width: 1px; height: 1px; background: transparent; 
+            box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 30vw 70vh rgba(255,255,255,0.4), 
+                        50vw 10vh #fff, 90vw 90vh rgba(255,0,0,0.3), 5vw 45vh #fff, 
+                        65vw 55vh rgba(212,0,0,0.2), 40vw 80vh #fff; 
+            z-index: -2; 
+        }
+
+        /* --- ÉTOILES RÉALISTES : CŒUR BLANC ET HALO --- */
+        .star { 
+            position: absolute; background: white; border-radius: 50%; 
+            box-shadow: 0 0 10px 3px var(--ecarlate), 0 0 20px 8px rgba(212, 0, 0, 0.3); 
+            animation: scintille var(--d) infinite alternate ease-in-out;
+        }
         @keyframes scintille { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); filter: blur(0.5px); } }
 
-        /* --- INTERFACE VCR --- */
+        /* --- INTERFACE VCR : TIME-CODE ET ÉTAT --- */
         .vcr-ui { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); opacity: 0.8; }
+        
         header { padding: 80px 20px; text-align: center; position: relative; z-index: 10; }
         
+        /* --- TITRE : ABERRATION CHROMATIQUE (Bave de couleur) --- */
         h1 { 
             color: white; font-size: 3.5rem; letter-spacing: 15px; margin: 0; 
             text-shadow: 3px 0px 0px rgba(212, 0, 0, 0.8), -3px 0px 0px rgba(0, 255, 255, 0.5);
@@ -61,11 +77,18 @@
 
         .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
         .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #1a1a1a; padding: 40px; margin-bottom: 40px; border-radius: 2px; }
-        .btn { border: 1px solid var(--ecarlate); color: var(--ecarlate); padding: 15px 30px; text-decoration: none; display: inline-block; font-weight: bold; background: rgba(0,0,0,0.3); text-transform: uppercase; }
+        
+        .btn { 
+            border: 1px solid var(--ecarlate); color: var(--ecarlate); padding: 15px 30px; 
+            text-decoration: none; display: inline-block; font-weight: bold; 
+            background: rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 2px;
+        }
+        .btn:hover { background: var(--ecarlate); color: white; }
     </style>
 </head>
 <body>
     <div class="vcr-ui">PLAY ▷<br>00:31:05:26<br><span style="font-size: 0.7rem;">DEEP SCAN ACTIVE</span></div>
+    
     <div class="poussiere"></div>
 
     <div class="stars-container">
