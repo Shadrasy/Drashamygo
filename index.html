@@ -3,101 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Phénomène VCR</title>
+    <title>Archives du Multivers - Signal Brut</title>
     <style>
-        :root { --espace: #010204; --rouge: #b30000; --vhs-vert: #00ff41; --bleu-gaz: #001a33; }
+        :root { --noir: #03050a; --rouge: #cc0000; --vhs-vert: #00ff41; }
 
         body {
-            margin: 0; background: var(--espace); color: #d0d0d0;
+            margin: 0; background: var(--noir); color: #d0d0d0;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* MÉLANGE DE GAZ ORIGINEL (Nébuleuse dense) */
+            /* FOND DE GAZ RÉALISTE (Nébuleuse irrégulière) */
             background-image: 
-                radial-gradient(at 30% 20%, rgba(0, 40, 80, 0.3) 0%, transparent 50%),
-                radial-gradient(at 70% 60%, rgba(179, 0, 0, 0.2) 0%, transparent 60%),
-                radial-gradient(at 50% 50%, rgba(0, 20, 40, 0.2) 0%, transparent 80%);
+                radial-gradient(at 15% 25%, rgba(0, 50, 100, 0.25) 0%, transparent 50%),
+                radial-gradient(at 85% 75%, rgba(150, 0, 0, 0.2) 0%, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(20, 20, 30, 0.4) 0%, transparent 80%);
             background-attachment: fixed;
+            /* Effet global de capture vidéo ancienne */
+            filter: contrast(110%) brightness(95%) saturate(1.2);
         }
 
-        /* --- BRUIT ET GRAIN VHS ÉPAIS --- */
+        /* --- GRAIN ET "NEIGE" (Bruit de capteur) --- */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.15; z-index: 100; pointer-events: none;
-            animation: noise 0.1s steps(2) infinite;
+            opacity: 0.2; z-index: 100; pointer-events: none;
+            animation: vhs-noise 0.1s steps(2) infinite;
         }
 
-        /* --- BARRE DE TRACKING ET DISTORSION --- */
+        /* --- BARRE DE DISTORSION (Tracking) --- */
         body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 3px;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
             z-index: 101; pointer-events: none;
-            animation: scanline 8s linear infinite;
+            animation: scanline 5s linear infinite;
         }
 
-        @keyframes noise { 0% { transform: scale(1); } 100% { transform: scale(1.05) translate(-1%, -1%); } }
-        @keyframes scanline { 0% { top: -10%; opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { top: 110%; opacity: 0; } }
+        @keyframes vhs-noise { 0% { transform: scale(1.1) translate(1%, 1%); } 100% { transform: scale(1.1) translate(-1%, -1%); } }
+        @keyframes scanline { 0% { top: -5%; } 100% { top: 105%; } }
 
-        /* --- POUSSIÈRE D'ÉTOILES (Effet Univers rempli) --- */
-        .star-dust {
+        /* --- POUSSIÈRE D'ÉTOILES DENSE (Micro-points) --- */
+        .cosmic-dust {
             position: fixed; top: 0; left: 0; width: 2px; height: 2px;
             background: transparent;
-            /* Génération massive de milliers de points (Bruit stellaire) */
-            box-shadow: 12vw 15vh #fff, 85vw 25vh rgba(255,255,255,0.4), 45vw 10vh #fff, 10vw 80vh rgba(255,0,0,0.3), 65vw 90vh #fff, 35vw 55vh rgba(255,255,255,0.6), 92vw 42vh #fff, 8vw 22vh rgba(255,255,255,0.3), 52vw 12vh #fff, 78vw 88vh rgba(255,0,0,0.4), 22vw 28vh #fff, 58vw 58vh #fff, 88vw 68vh rgba(255,255,255,0.5), 18vw 98vh #fff, 72vw 32vh #fff, 32vw 72vh rgba(255,0,0,0.2), 5vw 45vh #fff, 95vw 15vh #fff, 40vw 85vh rgba(255,255,255,0.4);
-            z-index: -2;
-        }
-
-        /* --- ÉTOILES RÉALISTES (Cœur brillant) --- */
-        .star { 
-            position: absolute; background: #fff; border-radius: 50%;
-            box-shadow: 0 0 10px 2px var(--rouge), 0 0 20px 5px rgba(179, 0, 0, 0.4);
-            animation: twinkle var(--d) infinite alternate ease-in-out;
-        }
-        @keyframes twinkle { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.2); filter: brightness(1.5); } }
-
-        /* --- UI MAGNÉTOSCOPE --- */
-        .vcr-osd { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); line-height: 1.5; }
-        
-        header { padding: 80px 20px; text-align: center; position: relative; z-index: 10; background: rgba(0,0,0,0.4); }
-        h1 { color: var(--rouge); font-size: 3.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 20px var(--rouge); filter: contrast(1.2); }
-
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #111; padding: 40px; margin-bottom: 40px; box-shadow: inset 0 0 20px rgba(0,0,0,1); }
-        .btn { border: 1px solid var(--rouge); color: var(--rouge); padding: 15px 35px; text-decoration: none; display: inline-block; font-weight: bold; text-transform: uppercase; background: rgba(0,0,0,0.5); }
-    </style>
-</head>
-<body>
-    <div class="vcr-osd">PLAY ▷<br>00:31:05:26<br><span style="font-size: 0.7rem;">PHENOMENA ANALYSIS</span></div>
-    <div class="star-dust"></div>
-
-    <div class="stars-container">
-        <span class="star" style="--d:3s; top:12%; left:25%; width:4px; height:4px;"></span>
-        <span class="star" style="--d:2s; top:13%; left:27%; width:2px; height:2px;"></span>
-        <span class="star" style="--d:4s; top:11%; left:24%; width:1px; height:1px;"></span>
-        
-        <span class="star" style="--d:5s; top:65%; left:85%; width:3px; height:3px;"></span>
-        <span class="star" style="--d:3s; top:40%; left:10%; width:2px; height:2px;"></span>
-        <span class="star" style="--d:6s; top:85%; left:50%; width:1px; height:1px;"></span>
-    </div>
-
-    <header>
-        <h1>ARCHIVES</h1>
-        <p style="color: #444; letter-spacing: 4px; font-size: 0.8rem; margin-top: 10px;">[ CAPTURE STELLAIRE - SECTEUR 031 ]</p>
-    </header>
-
-    <div class="container">
-        <div class="box">
-            <h2>Mur des Théories</h2>
-            <p style="color: #888;">Analyse des distorsions gravitationnelles...</p>
-            <a href="mailto:ton@mail.com" class="btn">Transmettre</a>
-        </div>
-        <div class="box">
-            <h2>Galerie Exclusive</h2>
-            <div style="border: 1px dashed #222; padding: 60px; background: #010101; color: #333;">
-                [ SIGNAL FAIBLE : DECRYPTAGE EN COURS ]
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+            /* On remplit le vide avec des milliers de poussières stellaires */
+            box-shadow: 5vw 10vh #fff, 90vw 20vh #fff, 35vw 80vh rgba(255,255,255,
