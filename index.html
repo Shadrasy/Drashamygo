@@ -3,116 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Phénomène Universel</title>
+    <title>Archives du Multivers - Lumière Totale</title>
     <style>
         :root { 
-            --fond: #02040a; 
+            --fond-noir: #050508; 
             --vhs-vert: #00ff41;
             --rouge-vif: #ff0000;
-            --bleu-vif: #0044ff;
+            --bleu-vif: #0088ff;
         }
 
         body {
-            margin: 0; background-color: var(--fond); color: white;
+            margin: 0; background-color: var(--fond-noir); color: white;
             font-family: 'Courier New', monospace;
             min-height: 100vh; overflow-x: hidden;
-            /* --- LE PHÉNOMÈNE VISUEL (TRÈS PUISSANT) --- */
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 68, 255, 0.7) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, rgba(255, 0, 0, 0.6) 0%, transparent 60%),
-                radial-gradient(circle at 50% 50%, rgba(50, 0, 100, 0.4) 0%, transparent 80%),
-                var(--fond);
+            /* FOND : ON FORCE LES COULEURS (Nébuleuses visibles) */
+            background-image: 
+                radial-gradient(circle at 15% 30%, rgba(0, 136, 255, 0.8) 0%, transparent 60%),
+                radial-gradient(circle at 85% 70%, rgba(255, 0, 0, 0.7) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(100, 0, 255, 0.3) 0%, transparent 80%);
             background-attachment: fixed;
-            /* On force le contraste pour que l'univers "pète" aux yeux */
-            filter: contrast(130%) brightness(100%) saturate(1.6);
         }
 
-        /* --- FILTRE VHS : LE GRAIN --- */
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        /* --- LE GRAIN VHS (Placé DERRIÈRE le texte pour la sécurité) --- */
+        .vhs-filter {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Static_Noise_Graphic.png');
-            opacity: 0.25; z-index: 100; pointer-events: none;
-            animation: vhs-grain 0.1s steps(2) infinite;
+            opacity: 0.15; z-index: 1; pointer-events: none;
+            animation: noise 0.1s infinite;
         }
-        @keyframes vhs-grain { 0% { transform: scale(1.2) translate(0,0); } 100% { transform: scale(1.2) translate(-2%, -1%); } }
-
-        /* --- FILTRE VHS : LA BARRE DE TRACKING --- */
-        body::after {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-            z-index: 101; pointer-events: none;
-            animation: tracking 5s linear infinite;
-        }
-        @keyframes tracking { 0% { top: -10%; } 100% { top: 110%; } }
+        @keyframes noise { 0% { transform: translate(0,0); } 100% { transform: translate(-1%, -2%); } }
 
         /* --- POUSSIÈRE D'ÉTOILES --- */
-        .stars-dust { 
-            position: fixed; top: 0; left: 0; width: 2px; height: 2px; background: transparent; 
-            box-shadow: 10vw 20vh #fff, 80vw 15vh #fff, 50vw 10vh #fff, 90vw 90vh var(--rouge-vif), 
-                        30vw 70vh rgba(255,255,255,0.5), 15vw 85vh #fff, 65vw 45vh #fff, 5vw 50vh var(--bleu-vif); 
-            z-index: -2; 
+        .poussiere {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(2px 2px at 100px 150px, #ff0000, transparent);
+            background-size: 180px 180px;
+            opacity: 0.4; z-index: 2;
         }
 
-        /* --- ÉTOILES PRINCIPALES --- */
-        .star { 
-            position: absolute; background: white; border-radius: 50%; 
-            box-shadow: 0 0 12px 4px var(--rouge-vif), 0 0 30px 10px rgba(255, 0, 0, 0.4); 
-            animation: twinkle var(--d) infinite alternate ease-in-out;
-        }
-        @keyframes twinkle { 0% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.3); } }
+        /* --- INTERFACE ET TEXTE (Priorité Maximale) --- */
+        .interface-layer { position: relative; z-index: 1000; }
 
-        /* --- INTERFACE OSD --- */
-        .osd { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1.1rem; z-index: 110; text-shadow: 0 0 5px var(--vhs-vert); }
+        .osd { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 1.1rem; text-shadow: 0 0 5px var(--vhs-vert); }
         
-        header { padding: 100px 20px; text-align: center; position: relative; z-index: 10; }
+        header { padding: 80px 20px; text-align: center; }
         h1 { 
             color: white; font-size: 4rem; letter-spacing: 20px; margin: 0; 
-            text-shadow: 5px 0px 0px rgba(255, 0, 0, 0.8), -5px 0px 0px rgba(0, 255, 255, 0.5);
+            text-shadow: 4px 0px 0px var(--rouge-vif), -4px 0px 0px var(--bleu-vif);
         }
 
-        .container { max-width: 800px; margin: auto; padding: 40px 20px; position: relative; z-index: 10; }
-        
-        /* Les boîtes sont semi-transparentes pour laisser passer le visuel */
+        .container { max-width: 800px; margin: auto; padding: 40px 20px; }
         .box { 
-            background: rgba(0, 0, 0, 0.85); 
-            border: 1px solid #333; 
-            padding: 50px; margin-bottom: 50px; 
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.8); border: 2px solid #222; 
+            padding: 40px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(0,0,0,1);
         }
 
         .btn { 
             border: 2px solid var(--rouge-vif); color: var(--rouge-vif); 
-            padding: 20px 40px; text-decoration: none; display: inline-block; 
-            font-weight: bold; text-transform: uppercase; letter-spacing: 5px;
+            padding: 15px 35px; text-decoration: none; font-weight: bold; 
+            display: inline-block; letter-spacing: 5px; background: rgba(0,0,0,0.5);
         }
     </style>
 </head>
 <body>
-    <div class="osd">PLAY ▷<br>00:31:05:26</div>
-    <div class="stars-dust"></div>
+    <div class="vhs-filter"></div>
+    <div class="poussiere"></div>
 
-    <div class="stars-container">
-        <span class="star" style="--d:3s; top:15%; left:20%; width:5px; height:5px;"></span>
-        <span class="star" style="--d:5s; top:75%; left:85%; width:4px; height:4px;"></span>
-    </div>
+    <div class="interface-layer">
+        <div class="osd">PLAY ▷<br>00:31:05:26</div>
 
-    <header>
-        <h1>ARCHIVES</h1>
-        <p style="color: #666; letter-spacing: 8px;">SIGNAL : TOTAL UNIVERS</p>
-    </header>
+        <header>
+            <h1>ARCHIVES</h1>
+            <p style="color: #666; letter-spacing: 8px;">[ SIGNAL RESTAURÉ - VISIBILITÉ MAX ]</p>
+        </header>
 
-    <div class="container">
-        <div class="box">
-            <h2>Mur des Théories</h2>
-            <a href="mailto:ton@mail.com" class="btn">ENVOYER</a>
-        </div>
-        
-        <div class="box">
-            <h2>Galerie Exclusive</h2>
-            <div style="border: 2px solid #222; padding: 80px; background: #000; text-align: center;">
-                <span style="font-size: 3rem;">🔭</span><br>
-                [ VISUAL SCAN ]
+        <div class="container">
+            <div class="box">
+                <h2>Mur des Théories</h2>
+                <a href="mailto:ton@mail.com" class="btn">TRANSMETTRE</a>
+            </div>
+            
+            <div class="box">
+                <h2>Galerie Exclusive</h2>
+                <div style="border: 2px solid #111; padding: 60px; text-align: center; background: #000;">
+                    [ VISUEL DÉCRYPTÉ ]
+                </div>
             </div>
         </div>
     </div>
