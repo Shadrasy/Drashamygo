@@ -3,49 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Astre Créateur</title>
+    <title>Archives - L'Astre Créateur Suprême</title>
     <style>
-        :root { --noir: #010108; --bleu: rgba(0, 100, 255, 0.4); --rouge: rgba(150, 0, 0, 0.2); }
-        body { margin: 0; background: var(--noir); color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
+        :root { 
+            --noir-fond: #010108; 
+            --lumiere-bleue: rgba(0, 100, 255, 0.4); 
+            --bulbe-jaune: rgba(255, 200, 50, 0.25);
+            --jet-faisceau: rgba(200, 230, 255, 0.6);
+            --vhs-vert: #00ff41;
+            --extinction-rouge: rgba(150, 0, 0, 0.2);
+        }
+
+        body { 
+            margin: 0; background-color: var(--noir-fond); color: white; 
+            font-family: 'Courier New', monospace; overflow-x: hidden; 
+        }
         
-        /* DÉCORS (Z-INDEX NÉGATIF / CLIC TRAVERSANT) */
-        .bg-fx { position: fixed; inset: 0; pointer-events: none; z-index: -10; }
-        .redshift { background: radial-gradient(circle, transparent 40%, var(--rouge) 100%); z-index: -1; }
-        .spiral { background: conic-gradient(from 0deg, transparent, rgba(100,200,255,0.05) 10%, transparent 50%); width: 200vmax; height: 200vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; }
-        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 240s linear infinite; opacity: 0.7; }
+        /* --- 1. DÉCORS GALACTIQUES (POINTER-EVENTS NONE) --- */
+        .bg-layer { position: fixed; inset: 0; pointer-events: none; }
+        
+        .redshift { background: radial-gradient(circle, transparent 40%, var(--extinction-rouge) 100%); z-index: -1; }
+        .spiral { background: conic-gradient(from 0deg, transparent, rgba(100, 200, 255, 0.05) 10%, transparent 50%); width: 250vmax; height: 250vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; }
+        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 300px 300px; opacity: 0.7; animation: spin 240s linear infinite; z-index: -5; }
+        .stars-twinkle { background-image: radial-gradient(1px 1px at 50px 50px, #fff, transparent); background-size: 150px 150px; animation: twinkle 3s infinite alternate; z-index: -6; }
+        .nebula-gas { background: radial-gradient(circle at 30% 70%, rgba(100, 0, 255, 0.1) 0%, transparent 50%); animation: gas-pulse 10s infinite alternate ease-in-out; z-index: -9; }
+        .supernova { position: fixed; top: 70%; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 0, 100, 0.1), transparent 70%); filter: blur(50px); z-index: -7; }
+        .bulge { position: fixed; top: 10%; right: 8%; width: 200px; height: 200px; background: radial-gradient(circle, var(--bulbe-jaune), transparent 70%); transform: translate(12.5%, 12.5%); z-index: -3; }
+
         @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
+        @keyframes gas-pulse { from { opacity: 0.5; } to { opacity: 1; } }
 
-        /* QUASAR & JET */
-        .quasar { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
-        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px white, inset 0 0 50px rgba(0,100,255,0.5); animation: pulse 4s infinite alternate; }
-        .jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, #fff, transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--bleu); }
+        /* --- 2. MÉTÉORES --- */
+        .meteor { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white; z-index: -4; opacity: 0; animation: shoot linear infinite; }
+        .m1 { top: 5%; left: -10%; animation-duration: 8s; animation-delay: 2s; }
+        .m2 { top: 40%; left: -10%; animation-duration: 12s; animation-delay: 5s; }
+        .m3 { top: 80%; left: -10%; animation-duration: 10s; animation-delay: 0s; }
+        @keyframes shoot { 0% { transform: translate(0,0) rotate(25deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 50vh) rotate(25deg); opacity: 0; } 100% { opacity: 0; } }
+
+        /* --- 3. QUASAR CENTRAL (TROU NOIR + DISQUE + JET) --- */
+        .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; pointer-events: none; }
+        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px white, inset 0 0 50px rgba(0, 100, 255, 0.5); animation: pulse 4s infinite alternate; }
+        .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
+        .jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, var(--jet-faisceau), white, var(--jet-faisceau), transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--lumiere-bleue); animation: jet-flicker 0.1s infinite alternate; }
+        
         @keyframes pulse { to { transform: scale(1.1); } }
+        @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
 
-        /* PLANÈTES */
+        /* --- 4. ARMADA DE 4 PLANÈTES (RESTAURÉE) --- */
         .orbit { position: fixed; top: 50%; left: 50%; z-index: -3; animation: orbit-spin linear infinite; pointer-events: none; }
         .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 20px black; }
-        .orb1 { animation-duration: 20s; } .p1 { width: 30px; height: 30px; background: #888; transform: translateX(200px); }
-        .orb2 { animation-duration: 45s; } .p2 { width: 80px; height: 80px; background: radial-gradient(circle at 30%, #24a, #000); transform: translateX(-300px); }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* INTERFACE (Z-INDEX MAX) */
-        .container { position: relative; z-index: 999; max-width: 800px; margin: 100px auto; text-align: center; }
-        .box { background: rgba(0,0,0,0.8); border: 1px solid #333; padding: 30px; display: inline-block; width: 40%; margin: 10px; backdrop-filter: blur(10px); }
-        .btn { display: inline-block; border: 1px solid white; color: white; padding: 10px 20px; text-decoration: none; margin-top: 15px; transition: 0.3s; }
-        .btn:hover { background: white; color: black; }
+        .orb1 { animation-duration: 20s; } .p1 { width: 30px; height: 30px; background: #888; transform: translateX(200px); }
+        .orb2 { animation-duration: 45s; animation-delay: -10s; } .p2 { width: 85px; height: 85px; background: radial-gradient(circle at 30%, #24a, #000); transform: translateX(-320px); }
+        .orb3 { animation-duration: 80s; animation-delay: -30s; } .p3 { width: 140px; height: 140px; background: radial-gradient(circle at 30%, #a22, #000); transform: translateY(380px); }
+        .orb4 { animation-duration: 120s; } .p4 { width: 60px; height: 60px; background: radial-gradient(circle at 30%, #62a, #000); transform: translateY(-450px); }
+
+        /* --- 5. INTERFACE (PRIORITÉ MAXIMALE) --- */
+        .container { position: relative; z-index: 9999; max-width: 850px; margin: 100px auto; text-align: center; }
+        h1 { font-size: 4rem; letter-spacing: 15px; text-shadow: 0 0 25px rgba(255,255,255,0.6); margin-bottom: 60px; }
+        .box { background: rgba(0,0,0,0.85); border: 1px solid #444; padding: 35px; display: inline-block; width: 42%; margin: 15px; backdrop-filter: blur(12px); border-radius: 4px; }
+        .icon { font-size: 4rem; display: block; margin-bottom: 15px; }
+        .btn { display: inline-block; border: 2px solid white; color: white; padding: 15px 30px; text-decoration: none; letter-spacing: 4px; font-weight: bold; background: rgba(255,255,255,0.05); transition: 0.3s; margin-top: 20px; }
+        .btn:hover { background: white; color: black; box-shadow: 0 0 30px white; transform: scale(1.05); }
+
+        .osd { position: fixed; top: 30px; left: 30px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 9999; line-height: 1.5; }
     </style>
 </head>
 <body>
-    <div class="bg-fx redshift"></div>
-    <div class="bg-fx spiral"></div>
-    <div class="bg-fx stars"></div>
-    <div class="quasar"><div class="jet"></div><div class="black-hole"></div></div>
+    <div class="osd">PLAY ▷<br>00:31:05:26<br>SCAN : UNIVERSE LOADED</div>
+
+    <div class="bg-layer redshift"></div>
+    <div class="bg-layer spiral"></div>
+    <div class="bg-layer stars"></div>
+    <div class="bg-layer stars-twinkle"></div>
+    <div class="bg-layer nebula-gas"></div>
+    <div class="supernova"></div>
+    <div class="bulge"></div>
+
+    <div class="meteor m1"></div>
+    <div class="meteor m2"></div>
+    <div class="meteor m3"></div>
+
+    <div class="quasar-container">
+        <div class="jet"></div>
+        <div class="accretion-disk"></div>
+        <div class="black-hole"></div>
+    </div>
+
     <div class="orbit orb1"><div class="planet p1"></div></div>
     <div class="orbit orb2"><div class="planet p2"></div></div>
+    <div class="orbit orb3"><div class="planet p3"></div></div>
+    <div class="orbit orb4"><div class="planet p4"></div></div>
+
     <div class="container">
         <h1>ARCHIVES</h1>
-        <div class="box"><span>✍️</span><h2>THÉORIES</h2><a href="theories.html" class="btn">PROPOSER</a></div>
-        <div class="box"><span>👁️</span><h2>GALERIE</h2><a href="galerie.html" class="btn">TRAVERSER</a></div>
+        <div class="box">
+            <span class="icon">✍️</span>
+            <h2>THÉORIES</h2>
+            <a href="theories.html" class="btn">PROPOSER</a>
+        </div>
+        <div class="box">
+            <span class="icon">👁️</span>
+            <h2>GALERIE</h2>
+            <a href="galerie.html" class="btn">TRAVERSER</a>
+        </div>
     </div>
 </body>
 </html>
