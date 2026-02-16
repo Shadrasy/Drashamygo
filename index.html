@@ -3,109 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - L'Univers Interactif</title>
+    <title>Archives - Astre Créateur</title>
     <style>
-        :root { 
-            --noir-fond: #010108; 
-            --lumiere-bleue: rgba(0, 100, 255, 0.4); 
-            --bulbe-jaune: rgba(255, 200, 50, 0.25);
-            --jet-faisceau: rgba(200, 230, 255, 0.6);
-            --vhs-vert: #00ff41;
-            --extinction-rouge: rgba(150, 0, 0, 0.2);
-        }
-
-        body { 
-            margin: 0; background-color: var(--noir-fond); color: white; 
-            font-family: 'Courier New', monospace; overflow-x: hidden; 
-        }
+        :root { --noir: #010108; --bleu: rgba(0, 100, 255, 0.4); --rouge: rgba(150, 0, 0, 0.2); }
+        body { margin: 0; background: var(--noir); color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
         
-        /* --- 1. DYNAMIQUE GALACTIQUE (SANS BLOQUER LE CLIC) --- */
-        .cosmic-redshift { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at center, transparent 40%, var(--extinction-rouge) 100%); pointer-events: none; }
-        .spiral-arms { position: fixed; top: 50%; left: 50%; width: 250vmax; height: 250vmax; transform: translate(-50%, -50%); z-index: -8; background: conic-gradient(from 0deg, transparent, rgba(100, 200, 255, 0.05) 10%, transparent 25%, rgba(255, 255, 255, 0.03) 40%, transparent 50%); animation: spin 300s linear infinite; pointer-events: none; }
-        .tidal-tail { position: fixed; top: 60%; left: -20%; width: 120vw; height: 100px; background: linear-gradient(90deg, transparent, rgba(200, 200, 255, 0.1), transparent); filter: blur(40px); transform: rotate(-15deg); z-index: -9; pointer-events: none; }
-        .supernova-remnant { position: fixed; top: 70%; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 0, 100, 0.1), transparent 70%); filter: blur(50px); border-radius: 50%; z-index: -7; pointer-events: none; }
-        .galactic-bulge { position: fixed; top: 10%; right: 8%; width: 200px; height: 200px; background: radial-gradient(circle, var(--bulbe-jaune), transparent 70%); transform: translate(12.5%, 12.5%); z-index: -3; pointer-events: none; }
+        /* DÉCORS (Z-INDEX NÉGATIF / CLIC TRAVERSANT) */
+        .bg-fx { position: fixed; inset: 0; pointer-events: none; z-index: -10; }
+        .redshift { background: radial-gradient(circle, transparent 40%, var(--rouge) 100%); z-index: -1; }
+        .spiral { background: conic-gradient(from 0deg, transparent, rgba(100,200,255,0.05) 10%, transparent 50%); width: 200vmax; height: 200vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; }
+        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 240s linear infinite; opacity: 0.7; }
+        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* --- 2. SYSTÈME D'ÉTOILES --- */
-        .stars { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -5; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 300px 300px; opacity: 0.7; animation: spin-stars 240s linear infinite; pointer-events: none; }
-        @keyframes spin-stars { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        /* QUASAR & JET */
+        .quasar { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
+        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px white, inset 0 0 50px rgba(0,100,255,0.5); animation: pulse 4s infinite alternate; }
+        .jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, #fff, transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--bleu); }
+        @keyframes pulse { to { transform: scale(1.1); } }
 
-        /* --- 3. TROU NOIR (QUASAR) --- */
-        .black-hole-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; pointer-events: none; }
-        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.2), inset 0 0 50px rgba(0, 100, 255, 0.5); animation: pulse 4s infinite alternate ease-in-out; }
-        .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
-        .relativistic-jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, var(--jet-faisceau), white, var(--jet-faisceau), transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--jet-faisceau); z-index: -1; animation: jet-flicker 0.1s infinite alternate; }
-        @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse { to { transform: scale(1.1); box-shadow: 0 0 100px 30px rgba(255, 255, 255, 0.4); } }
-        @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
-
-        /* --- 4. PLANÈTES EN ORBITE --- */
-        .orbit { position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3; animation: orbit-spin linear infinite; pointer-events: none; }
-        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9); }
+        /* PLANÈTES */
+        .orbit { position: fixed; top: 50%; left: 50%; z-index: -3; animation: orbit-spin linear infinite; pointer-events: none; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 20px black; }
+        .orb1 { animation-duration: 20s; } .p1 { width: 30px; height: 30px; background: #888; transform: translateX(200px); }
+        .orb2 { animation-duration: 45s; } .p2 { width: 80px; height: 80px; background: radial-gradient(circle at 30%, #24a, #000); transform: translateX(-300px); }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .orb1 { animation-duration: 20s; } .p1 { width: 40px; height: 40px; background: #888; transform: translateX(180px); }
-        .orb2 { animation-duration: 45s; animation-delay: -10s; } .p2 { width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #2244aa, #000); transform: translateX(-280px); }
-        .orb3 { animation-duration: 80s; animation-delay: -30s; } .p3 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #aa2222, #000); transform: translateY(380px); }
-        .orb4 { animation-duration: 120s; animation-delay: -5s; } .p4 { width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #6622aa, #000); transform: translateY(-450px); }
-
-        /* --- 5. INTERFACE (FORCE AU PREMIER PLAN) --- */
-        .container { 
-            max-width: 850px; margin: 100px auto; padding: 20px; 
-            position: relative; z-index: 9999; /* Z-INDEX MAXIMUM */
-            text-align: center; 
-        }
-        h1 { font-size: 4rem; letter-spacing: 15px; text-shadow: 0 0 20px rgba(255,255,255,0.5); margin-bottom: 60px; }
-        .box { 
-            background: rgba(0,0,0,0.85); border: 1px solid #333; 
-            padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px); 
-            display: inline-block; width: 40%; margin: 2%; vertical-align: top; 
-        }
-        .icon { font-size: 4rem; display: block; margin-bottom: 10px; }
-        .btn { 
-            display: inline-block; border: 2px solid white; color: white; 
-            padding: 12px 30px; text-decoration: none; letter-spacing: 3px; 
-            font-weight: bold; background: rgba(255,255,255,0.05); 
-            transition: 0.3s; margin-top: 20px; position: relative; z-index: 10000;
-        }
-        .btn:hover { background: white; color: black; box-shadow: 0 0 20px white; }
-
-        .osd { position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.8rem; z-index: 9999; }
+        /* INTERFACE (Z-INDEX MAX) */
+        .container { position: relative; z-index: 999; max-width: 800px; margin: 100px auto; text-align: center; }
+        .box { background: rgba(0,0,0,0.8); border: 1px solid #333; padding: 30px; display: inline-block; width: 40%; margin: 10px; backdrop-filter: blur(10px); }
+        .btn { display: inline-block; border: 1px solid white; color: white; padding: 10px 20px; text-decoration: none; margin-top: 15px; transition: 0.3s; }
+        .btn:hover { background: white; color: black; }
     </style>
 </head>
 <body>
-    <div class="osd">PLAY ▷<br>00:31:05:26<br>SCAN : SYSTEM ENGAGED</div>
-
-    <div class="cosmic-redshift"></div>
-    <div class="spiral-arms"></div>
-    <div class="tidal-tail"></div>
-    <div class="supernova-remnant"></div>
-    <div class="galactic-bulge"></div>
-    <div class="stars"></div>
-
-    <div class="black-hole-container">
-        <div class="relativistic-jet"></div>
-        <div class="accretion-disk"></div>
-        <div class="black-hole"></div>
-    </div>
-
+    <div class="bg-fx redshift"></div>
+    <div class="bg-fx spiral"></div>
+    <div class="bg-fx stars"></div>
+    <div class="quasar"><div class="jet"></div><div class="black-hole"></div></div>
     <div class="orbit orb1"><div class="planet p1"></div></div>
     <div class="orbit orb2"><div class="planet p2"></div></div>
-    <div class="orbit orb3"><div class="planet p3"></div></div>
-    <div class="orbit orb4"><div class="planet p4"></div></div>
-
     <div class="container">
         <h1>ARCHIVES</h1>
-        <div class="box">
-            <span class="icon">✍️</span>
-            <h2>THÉORIES</h2>
-            <a href="theories.html" class="btn">PROPOSER</a>
-        </div>
-        <div class="box">
-            <span class="icon">👁️</span>
-            <h2>GALERIE</h2>
-            <a href="galerie.html" class="btn">TRAVERSER</a>
-        </div>
+        <div class="box"><span>✍️</span><h2>THÉORIES</h2><a href="theories.html" class="btn">PROPOSER</a></div>
+        <div class="box"><span>👁️</span><h2>GALERIE</h2><a href="galerie.html" class="btn">TRAVERSER</a></div>
     </div>
 </body>
 </html>
