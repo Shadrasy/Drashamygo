@@ -31,10 +31,8 @@
         /* --- 2. ARMADA ANIMÉE --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: float 15s ease-in-out infinite alternate; }
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(2vw, 4vh) rotate(10deg); } }
-
         .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 50px; left: 50px; box-shadow: 0 0 20px #ffcc00; cursor: pointer; z-index: 500; animation-duration: 10s; border-radius: 50%; }
         .p-ring { width: 110px; height: 110px; background: #ddd; top: 20%; right: 10%; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation-duration: 25s; }
-        .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
         .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 20%; left: 10%; animation-duration: 20s; }
         .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 15%; right: 15%; animation-duration: 22s; }
 
@@ -43,14 +41,17 @@
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
         
-        .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; }
-        #galerie-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        /* Titres de sections */
+        .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
+        #galerie-container, #world-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); }
         .image-frame { width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
-        model-viewer { width: 100%; height: 100%; background-color: #050505; }
-        
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        
+        /* Style spécial pour les objets 3D */
+        model-viewer { width: 100%; height: 100%; --poster-color: transparent; }
+
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
         .tag-world { color: orange; border-color: orange; }
@@ -64,7 +65,6 @@
 <body>
     <div class="nebula-layer"></div>
     <div class="star-field"></div>
-    
     <div class="nebula-planet p-ring"></div>
     <div class="nebula-planet p-ice"></div>
     <div class="nebula-planet p-toxic"></div>
@@ -78,6 +78,13 @@
             <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 CONTRÔLE MAÎTRE HINARU</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
             
+            <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
+                <button class="btn-nav-master" onclick="filtrerType('Livre')">LIVRE</button>
+                <button class="btn-nav-master" onclick="filtrerType('Anime')">ANIME</button>
+                <button class="btn-nav-master" onclick="filtrerType('Serie')">SÉRIE</button>
+                <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
+            </div>
+
             <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px; text-align:center;">
                 <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL (Lieux, 3D & Tomes)</p>
                 <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:80%; padding:5px; margin-bottom:5px;">
@@ -95,24 +102,22 @@
                         TOME : <input type="number" id="img-tome" value="1" style="width:50px; background:black; color:white; border:1px solid #444;">
                     </span>
                 </div>
-
                 <div style="margin-bottom:10px;">
-                    DATE DE SORTIE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
+                    DATE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
                 </div>
-
-                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE SOURCE</button>
+                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE</button>
                 <textarea id="output-code" style="width:90%; height:60px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333; font-family:monospace;"></textarea>
-                <p id="copy-hint" style="color:#666; font-size:8px; display:none;">Copié ! Colle cette ligne dans ton fichier archives-data.js</p>
             </div>
-            
+
             <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
-        <div id="world-section-title" class="section-title" style="display:none;">ARCHIVES DU MONDE</div>
-        <div id="world-container" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom:50px;"></div>
+        <div id="world-section-title" class="section-title" style="display:none;">Archives du Monde (Lieux & Équipements)</div>
+        <div id="world-container" style="margin-bottom:50px;"></div>
 
-        <div class="section-title">CHRONOLOGIE DES TOMES</div>
+        <div id="chrono-title" class="section-title">Chronologie des Tomes</div>
         <div id="galerie-container"></div>
+        
         <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
     </div>
 
@@ -138,9 +143,8 @@
         const isHinaru = urlParams.get('Hinaru') === 'true';
 
         if (isHinaru) {
-            const osd = document.getElementById('signals-status');
-            osd.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
-            osd.style.color = "#00ff41";
+            document.getElementById('signals-status').innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
+            document.getElementById('signals-status').style.color = "#00ff41";
             document.getElementById('master-panel').style.display = 'block';
         }
 
@@ -150,9 +154,9 @@
         }
 
         function activerModeMaitre() {
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('Hinaru', 'true');
-            window.location.href = currentUrl.toString();
+            const url = new URL(window.location.href);
+            url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.toString();
         }
 
         function genererCodeSignal() {
@@ -171,17 +175,77 @@
             output.style.display = 'block';
             output.select();
             document.execCommand('copy');
-            document.getElementById('copy-hint').style.display = 'block';
         }
 
-        function chargerGalerie() {
+        function filtrerType(t) { chargerGalerie(t); }
+
+        function chargerGalerie(filtreType = null) {
             const container = document.getElementById('galerie-container');
             const worldContainer = document.getElementById('world-container');
             const nav = document.getElementById('nav-buttons');
             const projetActuel = parseInt(urlParams.get('projet')) || 1;
             const now = new Date();
             
-            container.innerHTML = "";
-            worldContainer.innerHTML = "";
-            nav.innerHTML = "";
-            document.getElementById('world-section-title').
+            container.innerHTML = ""; worldContainer.innerHTML = ""; nav.innerHTML = "";
+            document.getElementById('world-section-title').style.display = 'none';
+
+            romansConfig.forEach(r => {
+                if (isHinaru || r.public) {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-nav-master";
+                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
+                    btn.onclick = () => { 
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('projet', r.id);
+                        window.location.href = url.toString();
+                    };
+                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
+                    nav.appendChild(btn);
+                }
+            });
+
+            if (typeof archivesData !== 'undefined') {
+                const romanActuel = romansConfig.find(r => r.id === projetActuel);
+                const dataFiltrée = archivesData.filter(item => {
+                    const matchRoman = item.roman === projetActuel;
+                    const matchType = filtreType ? item.type === filtreType : true;
+                    return matchRoman && matchType;
+                });
+
+                dataFiltrée.forEach(item => {
+                    const releaseDate = new Date(item.date);
+                    const estDebloque = isHinaru || (now >= releaseDate);
+                    const box = document.createElement('div');
+                    box.className = estDebloque ? 'box unlocked' : 'box locked';
+                    
+                    let media = `<div style="color:#444">[ SIGNAL_CRYPTÉ ]</div>`;
+                    if(estDebloque) {
+                        if(item.glb) {
+                            media = `<model-viewer src="${item.glb}" poster="${item.url}" auto-rotate camera-controls shadow-intensity="1"></model-viewer>`;
+                        } else {
+                            media = `<img src="${item.url}" style="width:100%; height:100%; object-fit:contain;">`;
+                        }
+                    }
+
+                    box.innerHTML = `
+                        <div class="image-frame">${media}</div>
+                        <div style="font-size:0.7rem; text-align:left;">
+                            <span class="type-tag ${item.type === 'World' ? 'tag-world' : 'tag-roman'}">${item.type.toUpperCase()}</span><br>
+                            ${item.type === 'World' ? 'ASSET GÉNÉRAL' : `TOME ${item.tome} / ${romanActuel.tomes}`}<br>
+                            ${isHinaru ? `<span style="color:orange">MASTER: ${item.date}</span>` : ''}
+                        </div>
+                    `;
+
+                    if(item.type === 'World') {
+                        document.getElementById('world-section-title').style.display = 'block';
+                        worldContainer.appendChild(box);
+                    } else {
+                        container.appendChild(box);
+                    }
+                });
+            }
+        }
+        window.onload = () => chargerGalerie();
+    </script>
+</body>
+</html>
