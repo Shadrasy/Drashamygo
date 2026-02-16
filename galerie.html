@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V98.5)</title>
+    <title>Archives - Nébuleuse Visuelle (V98.6)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -28,7 +28,7 @@
 
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: float 15s ease-in-out infinite alternate; }
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(2vw, 4vh) rotate(10deg); } }
-        .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 50px; left: 50px; box-shadow: 0 0 20px #ffcc00; cursor: pointer; z-index: 500; border-radius: 50%; }
+        .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 50px; left: 50px; box-shadow: 0 0 20px #ffcc00; cursor: pointer; z-index: 500; border-radius: 50%; position: fixed; }
 
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
@@ -40,24 +40,12 @@
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
         
-        /* --- HUD DE FUSION SCAN --- */
         .hud-technique {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 140px;
-            background: rgba(0, 20, 40, 0.85);
-            border-left: 2px solid var(--bleu-tech);
-            padding: 10px;
-            color: var(--bleu-tech);
-            font-family: monospace;
-            font-size: 8px;
-            text-align: left;
-            backdrop-filter: blur(5px);
-            z-index: 10;
-            border-radius: 0 5px 5px 0;
-            pointer-events: none;
-            animation: pulseScan 2s infinite ease-in-out;
+            position: absolute; top: 10px; right: 10px; width: 140px;
+            background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech);
+            padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 8px;
+            text-align: left; backdrop-filter: blur(5px); z-index: 10; border-radius: 0 5px 5px 0;
+            pointer-events: none; animation: pulseScan 2s infinite ease-in-out;
         }
 
         @keyframes pulseScan {
@@ -89,22 +77,22 @@
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
             
             <div style="margin-top:10px; display:flex; gap:10px; justify-content:center;">
-                <button class="btn-nav-master" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PROTOCOLE MÉTHODE ]</button>
-                <button class="btn-nav-master" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
+                <button class="btn-nav-master" onclick="afficherProtocole('methode')">[ PROTOCOLE MÉTHODE ]</button>
+                <button class="btn-nav-master" onclick="afficherProtocole('philosophie')">[ PROTOCOLE SILENCE ]</button>
             </div>
             
             <div id="protocol-display">
                 <div id="protocol-content"></div>
-                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
+                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER</button>
             </div>
 
             <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px;">
-                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL (FUSION 3D READY)</p>
+                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL</p>
                 <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
                 <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
-                <textarea id="img-tech" placeholder="Logs Workflows (ex: [ STATUS : FUSION COMPLÈTE ]...)" style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:60px; padding:5px; margin-bottom:10px; font-family:monospace; font-size:10px;"></textarea>
+                <textarea id="img-tech" placeholder="Logs Workflows..." style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:50px; padding:5px; margin-bottom:10px; font-family:monospace;"></textarea>
 
-                <div style="margin-bottom:10px;">
+                <div>
                     TYPE : 
                     <select id="img-type" style="background:black; color:white; border:1px solid #444;" onchange="toggleTomeField()">
                         <option value="Livre">LIVRE (Recto)</option>
@@ -118,10 +106,10 @@
                         TOME : <input type="number" id="img-tome" value="1" style="width:45px; background:black; color:white; border:1px solid #444;">
                     </span>
                 </div>
-                <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444; margin-bottom:10px;">
+                <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444; margin-top:10px;">
                 <br>
-                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; padding:8px 15px;">GÉNÉRER LE CODE FUSION</button>
-                <p id="copy-msg" style="color:cyan; font-size:8px; display:none; margin-top:5px;">SIGNAL COPIÉ !</p>
+                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; margin-top:10px;">GÉNÉRER LE CODE FUSION</button>
+                <p id="copy-msg" style="color:cyan; font-size:8px; display:none;">SIGNAL COPIÉ !</p>
                 <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
 
@@ -136,17 +124,27 @@
 
         <div id="world-section-title" class="section-title" style="display:none;">Archives du Monde (Lieux & Équipements)</div>
         <div id="world-container"></div>
-
-        <div class="section-title">Chronologie des Tomes</div>
+        <div id="chrono-title" class="section-title">Chronologie des Tomes</div>
         <div id="galerie-container"></div>
-        
         <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
         const romansConfig = [
             { id: 1, nom: "Shadrasy", tomes: 154, public: true },
-            { id: 2, nom: "Roman 2", tomes: 96, public: false }
+            { id: 2, nom: "Roman 2", tomes: 96, public: false },
+            { id: 3, nom: "Roman 3", tomes: 96, public: false },
+            { id: 4, nom: "Roman 4", tomes: 96, public: false },
+            { id: 5, nom: "Roman 5", tomes: 96, public: false },
+            { id: 6, nom: "Roman 6", tomes: 96, public: false },
+            { id: 7, nom: "Roman 7", tomes: 96, public: false },
+            { id: 8, nom: "Roman 8", tomes: 96, public: false },
+            { id: 9, nom: "Roman 9", tomes: 96, public: false },
+            { id: 10, nom: "Roman 10", tomes: 96, public: false },
+            { id: 11, nom: "Roman 11", tomes: 96, public: false },
+            { id: 12, nom: "Roman 12", tomes: 96, public: false },
+            { id: 13, nom: "Roman 13", tomes: 96, public: false },
+            { id: 14, nom: "Roman 14", tomes: 96, public: false }
         ];
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -158,6 +156,11 @@
             document.getElementById('master-panel').style.display = 'block';
         }
 
+        function toggleTomeField() {
+            const type = document.getElementById('img-type').value;
+            document.getElementById('tome-input-area').style.display = (type === 'World') ? 'none' : 'inline';
+        }
+
         function afficherProtocole(type) {
             const display = document.getElementById('protocol-display');
             const content = document.getElementById('protocol-content');
@@ -167,11 +170,6 @@
             } else {
                 content.innerHTML = `<p style="color:yellow; font-weight:bold;">[ PROTOCOLE SILENCE : IMMERSION ]</p>• Absence de texte pour éviter la rupture cognitive.<br>• Le visuel installe l'âme, le texte installe l'action.`;
             }
-        }
-
-        function toggleTomeField() {
-            const type = document.getElementById('img-type').value;
-            document.getElementById('tome-input-area').style.display = (type === 'World') ? 'none' : 'inline';
         }
 
         function activerModeMaitre() {
@@ -188,8 +186,6 @@
             const date = document.getElementById('img-date').value;
             const type = document.getElementById('img-type').value;
             const projet = urlParams.get('projet') || 1;
-            
-            // Correction ici pour supporter les retours à la ligne dans l'objet généré
             const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${projet}, tome: ${type === 'World' ? 0 : tome}, date: "${date}", type: "${type}" },`;
             const output = document.getElementById('output-code');
             output.value = code;
@@ -250,7 +246,6 @@
                         }
                     }
 
-                    // On construit le HUD seulement si tech existe
                     let hudHTML = "";
                     if(estDebloque && item.tech && item.tech.trim() !== "") {
                         const lines = item.tech.split('\n').map(l => `<div>> ${l}</div>`).join('');
