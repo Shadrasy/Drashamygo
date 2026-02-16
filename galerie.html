@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V95)</title>
+    <title>Archives - Nébuleuse Visuelle (V96)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -13,7 +13,6 @@
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
-            --bleu-tech: #00a8ff; 
             --einstein-glow: rgba(255, 255, 255, 0.4);
         }
 
@@ -22,17 +21,27 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- 1. DÉCORS --- */
+        /* --- 1. PHÉNOMÈNES VISUELS & ANIMATIONS --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .p-gold { width: 22px; height: 22px; background: #ffcc00; position: fixed; top: 15%; left: 10%; box-shadow: 0 0 20px #ffcc00; cursor: pointer; border-radius: 50%; z-index: 500; }
+        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite alternate; pointer-events: none; }
+        @keyframes ring-pulse { from { opacity: 0.3; scale: 0.9; } to { opacity: 0.8; scale: 1.1; } }
 
-        /* --- 2. INTERFACE --- */
+        /* --- 2. ARMADA DES PLANÈTES --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: float 20s ease-in-out infinite alternate; }
+        @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(3vw, 3vh) rotate(5deg); } }
+
+        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); }
+        .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
+        .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; }
+        .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; }
+        .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 15%; left: 10%; box-shadow: 0 0 20px #ffcc00; cursor: pointer; z-index: 500; border-radius: 50%; }
+
+        /* --- 3. INTERFACE & GRILLE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
-        
         #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
 
         #galerie-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
@@ -43,15 +52,19 @@
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
 
-        /* --- 3. PANNEAU MAÎTRE --- */
+        /* --- 4. PANNEAU MAÎTRE --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
-        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
-        .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; }
+        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; transition: 0.2s; }
+        .btn-nav-master:hover { background: var(--vhs-vert); color: black; }
     </style>
 </head>
 <body>
     <div class="nebula-layer"></div>
     <div class="star-field"></div>
+    <div class="einstein-ring"></div>
+    <div class="nebula-planet p-ring"></div>
+    <div class="nebula-planet p-ice"></div>
+    <div class="nebula-planet p-toxic"></div>
     <div class="p-gold" ondblclick="activerModeMaitre()"></div>
 
     <div class="container">
@@ -64,13 +77,12 @@
             
             <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
                 <span style="font-size:10px;">FILTRER PAR TYPE :</span>
-                <button class="btn-nav-master" onclick="filtrerType('Livre')">LIVRE</button>
-                <button class="btn-nav-master" onclick="filtrerType('Anime')">ANIME</button>
-                <button class="btn-nav-master" onclick="filtrerType('Serie')">SÉRIE</button>
+                <button class="btn-nav-master" onclick="chargerGalerie('Livre')">LIVRE</button>
+                <button class="btn-nav-master" onclick="chargerGalerie('Anime')">ANIME</button>
+                <button class="btn-nav-master" onclick="chargerGalerie('Serie')">SÉRIE</button>
                 <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
             </div>
-
-            <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
+            <button class="btn-nav-master" style="margin-top:15px; border-color:#ff3232; color:#ff3232;" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
         <div id="galerie-container"></div>
@@ -97,23 +109,18 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const isHinaru = urlParams.get('Hinaru') === 'true';
-        const osdStatus = document.getElementById('signals-status');
 
-        // Initialisation OSD
         if (isHinaru) {
-            osdStatus.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
-            osdStatus.style.color = "#00ff41";
+            const osd = document.getElementById('signals-status');
+            osd.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
+            osd.style.color = "#00ff41";
             document.getElementById('master-panel').style.display = 'block';
         }
 
         function activerModeMaitre() {
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('Hinaru', 'true');
-            window.location.href = currentUrl.toString();
-        }
-
-        function filtrerType(typeCible) {
-            chargerGalerie(typeCible);
+            const url = new URL(window.location.href);
+            url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.toString();
         }
 
         function chargerGalerie(filtreType = null) {
@@ -125,7 +132,7 @@
             container.innerHTML = "";
             nav.innerHTML = "";
 
-            // 1. Génération de la Navigation (Maître voit tout, Public voit R1)
+            // Navigation Romans
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
@@ -141,34 +148,34 @@
                 }
             });
 
-            // 2. Chargement des données réelles (archivesData doit être défini dans archives-data.js)
-            const romanActuel = romansConfig.find(r => r.id === projetActuel);
-            
-            // On filtre les données par roman ET par type (si demandé)
-            const dataFiltrée = archivesData.filter(item => {
-                const matchRoman = item.roman === projetActuel;
-                const matchType = filtreType ? item.type === filtreType : true;
-                return matchRoman && matchType;
-            });
+            // Affichage des images depuis archives-data.js
+            if (typeof archivesData !== 'undefined') {
+                const dataFiltrée = archivesData.filter(item => {
+                    const matchRoman = item.roman === projetActuel;
+                    const matchType = filtreType ? item.type === filtreType : true;
+                    return matchRoman && matchType;
+                });
 
-            dataFiltrée.forEach(item => {
-                const releaseDate = new Date(item.date);
-                const estDebloque = isHinaru || (now >= releaseDate);
+                dataFiltrée.forEach(item => {
+                    const releaseDate = new Date(item.date);
+                    const estDebloque = isHinaru || (now >= releaseDate);
+                    const romanActuel = romansConfig.find(r => r.id === projetActuel);
 
-                const box = document.createElement('div');
-                box.className = estDebloque ? 'box unlocked' : 'box locked';
-                box.innerHTML = `
-                    <div class="image-frame">
-                        ${estDebloque ? `<img src="${item.url}" style="width:100%">` : `<div style="color:#444">[ SIGNAL_CRYPTÉ ]</div>`}
-                    </div>
-                    <div style="font-size:0.7rem; text-align:left;">
-                        <span class="type-tag ${item.type === 'Livre' ? 'tag-roman' : ''}">${item.type.toUpperCase()}</span><br>
-                        TOME ${item.tome} / ${romanActuel.tomes}<br>
-                        ${isHinaru ? `<span style="color:orange">MASTER_VIEW: ${item.date}</span>` : ''}
-                    </div>
-                `;
-                container.appendChild(box);
-            });
+                    const box = document.createElement('div');
+                    box.className = estDebloque ? 'box unlocked' : 'box locked';
+                    box.innerHTML = `
+                        <div class="image-frame">
+                            ${estDebloque ? `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">` : `<div style="color:#444">[ SIGNAL_CRYPTÉ ]</div>`}
+                        </div>
+                        <div style="font-size:0.7rem; text-align:left;">
+                            <span class="type-tag ${item.type === 'Livre' ? 'tag-roman' : ''}">${item.type.toUpperCase()}</span><br>
+                            TOME ${item.tome} / ${romanActuel.tomes}<br>
+                            ${isHinaru ? `<span style="color:orange">MASTER: ${item.date}</span>` : ''}
+                        </div>
+                    `;
+                    container.appendChild(box);
+                });
+            }
         }
 
         window.onload = () => chargerGalerie();
