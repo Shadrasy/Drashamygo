@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100 Ultimate Cinematic)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.1 Master Edition)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -13,7 +13,7 @@
         :root { 
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
-            --rose-hii: rgba(255, 50, 150, 0.2);
+            --rose-hii: rgba(255, 50, 150, 0.15);
             --bleu-tech: #00ffff; 
             --standard-magenta: #ff00ff;
             --cosplay-gold: #ffcc00;
@@ -24,54 +24,49 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- EFFET VHS --- */
+        /* --- EFFET SCANLINE VHS --- */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- DÉCOR & PLANÈTES ANIMÉES --- */
+        /* --- DÉCOR NÉBULEUSE & PLANÈTES ANIMÉES --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
-        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: starRotate 400s linear infinite; pointer-events: none; }
-        @keyframes starRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 400s linear infinite; pointer-events: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: -5; 
             animation: floatMove 20s ease-in-out infinite alternate, rotatePlanet 30s linear infinite; 
         }
 
-        @keyframes floatMove { 
-            0% { transform: translate(0, 0); } 100% { transform: translate(3vw, 5vh); } 
-        }
-        @keyframes rotatePlanet { 
-            from { filter: hue-rotate(0deg) brightness(1); } to { filter: hue-rotate(360deg) brightness(1.2); } 
-        }
+        @keyframes floatMove { 0% { transform: translate(0, 0); } 100% { transform: translate(3vw, 5vh); } }
+        @keyframes rotatePlanet { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
-        /* VARIATIONS DES PLANÈTES */
-        .p-gold { width: 25px; height: 25px; background: var(--cosplay-gold); top: 10%; left: 10%; box-shadow: 0 0 30px var(--cosplay-gold); cursor: pointer; z-index: 500; }
-        .p-blue { width: 80px; height: 80px; background: radial-gradient(circle at 30% 30%, #00ffff, #004444); top: 60%; right: 15%; box-shadow: 0 0 50px rgba(0,255,255,0.3); animation-duration: 25s, 60s; }
-        .p-purple { width: 120px; height: 120px; background: radial-gradient(circle at 30% 30%, #8800ff, #220044); bottom: -20px; left: 10%; box-shadow: 0 0 60px rgba(136,0,255,0.2); opacity: 0.6; animation-duration: 35s, 100s; }
-        .p-red { width: 45px; height: 45px; background: radial-gradient(circle at 30% 30%, #ff0055, #440011); top: 25%; right: 40%; box-shadow: 0 0 30px rgba(255,0,85,0.4); animation-duration: 15s, 45s; }
+        .p-gold { width: 22px; height: 22px; background: var(--cosplay-gold); top: 50px; left: 50px; box-shadow: 0 0 20px var(--cosplay-gold); cursor: pointer; z-index: 500; }
+        .p-blue { width: 50px; height: 50px; background: cyan; top: 20%; right: 15%; box-shadow: 0 0 30px cyan; opacity: 0.3; animation-duration: 25s, 50s; }
+        .p-red { width: 70px; height: 70px; background: var(--standard-magenta); bottom: 15%; left: 8%; box-shadow: 0 0 40px var(--standard-magenta); opacity: 0.2; animation-duration: 35s, 80s; }
+        .p-purple { width: 100px; height: 100px; background: #8800ff; top: 15%; right: 40%; box-shadow: 0 0 50px #8800ff; opacity: 0.15; animation-duration: 45s, 120s; }
 
         /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
-        #galerie-container, #fan-cosplay-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .box { background: rgba(0, 0, 0, 0.94); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(8px); display: flex; flex-direction: column; }
+        #galerie-container, #fan-cosplay-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
         
         .hud-technique {
             position: absolute; top: 10px; right: 10px; width: 155px;
-            background: rgba(0, 20, 40, 0.9); border-left: 2px solid var(--bleu-tech);
+            background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech);
             padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px;
-            text-align: left; z-index: 10; animation: pulseHUD 2s infinite ease-in-out;
+            text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out;
         }
-        @keyframes pulseHUD { 0%, 100% { border-left-color: var(--bleu-tech); } 50% { border-left-color: transparent; } }
+        @keyframes pulseScan { 0% { border-left-color: #00ffff; } 50% { border-left-color: #005555; } 100% { border-left-color: #00ffff; } }
 
         .btn-action {
             background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech);
@@ -110,7 +105,7 @@
                 <button class="btn-nav-master" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
             </div>
             
-            <div id="protocol-display" style="display:none; background:rgba(0,10,0,0.95); border:1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:10px; color:var(--vhs-vert); border-radius:5px; text-align:left;">
+            <div id="protocol-display" style="display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:10px; text-align:left; color:var(--vhs-vert); line-height:1.4; border-radius: 5px;">
                 <div id="protocol-content"></div>
                 <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
             </div>
@@ -124,13 +119,13 @@
 
             <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px;">
                 <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR : STUDIO DE FUSION (W4.7)</p>
-                <input type="text" id="img-url" placeholder="Lien image" style="background:black; color:white; width:85%; padding:5px; margin-bottom:5px;">
-                <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb)" style="background:black; color:white; width:85%; padding:5px; margin-bottom:5px;">
-                <textarea id="img-tech" placeholder="Logs Workflows..." style="background:black; color:var(--vhs-vert); width:85%; height:60px; padding:5px; font-family:monospace;"></textarea>
+                <input type="text" id="img-url" placeholder="Lien image" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
+                <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
+                <textarea id="img-tech" placeholder="Logs Workflows..." style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:60px; padding:5px; margin-bottom:10px; font-family:monospace; font-size:10px;"></textarea>
                 
-                <div style="margin:10px 0;">
+                <div style="margin-bottom:10px;">
                     TYPE : 
-                    <select id="img-type" style="background:black; color:white;" onchange="toggleTomeField()">
+                    <select id="img-type" style="background:black; color:white; border:1px solid #444;" onchange="toggleTomeField()">
                         <option value="Livre">LIVRE</option>
                         <option value="Cosplay">COSPLAY (Blueprint)</option>
                         <option value="Fan-Cosplay">FAN-COSPLAY (Photo)</option>
@@ -160,6 +155,7 @@
         const romansConfig = [
             { id: 1, nom: "Shadrasy", tomes: 154, public: true },
             { id: 2, nom: "Projet 2", tomes: 96, public: false },
+            { id: 3, nom: "Projet 3", tomes: 50, public: false },
             { id: 4, nom: "Roman 4", tomes: 96, public: true },
             { id: 5, nom: "Projet 5", tomes: 96, public: false },
             { id: 6, nom: "Projet 6", tomes: 96, public: false },
@@ -214,8 +210,8 @@
             const date = document.getElementById('img-date').value;
             const projet = urlParams.get('projet') || 1;
             const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${projet}, type: "${type}", date: "${date}", nom: "Hinaru (Creator)" },`;
-            document.getElementById('output-code').value = code;
-            document.getElementById('output-code').style.display = 'block';
+            const output = document.getElementById('output-code');
+            output.value = code; output.style.display = 'block'; output.select();
         }
 
         function chargerGalerie(filtreType = null) {
