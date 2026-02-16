@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Le Maître du Temps (V65)</title>
+    <title>Archives - L'Odyssée Temporelle (V66)</title>
     <style>
         :root { 
             --noir-fond: #000103; 
@@ -20,17 +20,19 @@
             background: var(--noir-fond);
         }
 
-        /* --- 1. DÉCORS (Z-INDEX NÉGATIF) --- */
+        /* --- 1. DÉCORS ET GAZ (Z-INDEX NÉGATIF) --- */
         .nebula-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -20; pointer-events: none; }
         .hii-regions { background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%), radial-gradient(circle at 85% 60%, rgba(255, 0, 50, 0.1) 0%, transparent 40%); animation: drift 15s infinite alternate ease-in-out; }
-        .hannys-voorwerp { position: fixed; top: 5%; left: 15%; width: 300px; height: 200px; background: var(--fluo-hanny); filter: blur(50px); border-radius: 60% 40% 70% 30%; z-index: -18; pointer-events: none; }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
+        .light-echo { position: fixed; top: 60%; left: 50%; width: 2px; height: 2px; background: white; border-radius: 50%; z-index: -12; animation: echo-expand 10s infinite; pointer-events: none; }
+        
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes drift { from { opacity: 0.6; } to { opacity: 1; } }
+        @keyframes echo-expand { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(45); opacity: 0; } }
 
-        /* --- 2. LES 6 PLANÈTES --- */
+        /* --- 2. ARMADA DE 6 PLANÈTES --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation: float 100s linear infinite alternate; pointer-events: none; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; }
+        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; border: 1px solid rgba(255,255,255,0.1); }
         .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
         .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; }
         .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; }
@@ -40,15 +42,13 @@
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(10vw, 5vh) rotate(10deg); } }
 
         /* --- 3. PHÉNOMÈNES RARES --- */
-        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite ease-in-out; pointer-events: none; }
+        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite alternate; pointer-events: none; }
         .hoag-object { position: fixed; top: 25%; left: 35%; width: 60px; height: 60px; z-index: -8; pointer-events: none; }
         .hoag-core { width: 15px; height: 15px; background: #ffeeaa; border-radius: 50%; margin: 22px auto; box-shadow: 0 0 10px #ffcc00; }
         .hoag-ring { position: absolute; top: 0; width: 60px; height: 60px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; }
         .green-pea { position: fixed; width: 4px; height: 4px; background: var(--pois-vert); border-radius: 50%; box-shadow: 0 0 10px var(--pois-vert); z-index: -11; }
         .gp1 { top: 15%; right: 30%; } .gp2 { bottom: 35%; left: 20%; }
-        .light-echo { position: fixed; top: 60%; left: 50%; width: 2px; height: 2px; background: white; border-radius: 50%; z-index: -12; animation: echo-expand 10s infinite; pointer-events: none; }
-        @keyframes echo-expand { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(40); opacity: 0; } }
-        @keyframes ring-pulse { 0%, 100% { opacity: 0.3; scale: 0.95; } 50% { opacity: 0.8; scale: 1.05; } }
+        @keyframes ring-pulse { from { opacity: 0.3; scale: 0.9; } to { opacity: 0.8; scale: 1.1; } }
 
         /* --- 4. INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
@@ -63,7 +63,6 @@
 </head>
 <body>
     <div class="nebula-layer hii-regions"></div>
-    <div class="hannys-voorwerp"></div>
     <div class="star-field"></div>
     <div class="light-echo"></div>
 
@@ -81,14 +80,12 @@
     <div class="container">
         <span style="font-size: 4rem;">👁️</span>
         <h1>NÉBULEUSE VISUELLE</h1>
-        
         <div class="gallery-grid" id="main-gallery"></div>
-
         <a href="index.html" class="btn-portal">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
-        // 1. CONFIGURATION DE TES SORTIES (Modifie les dates et les liens ici)
+        // 1. ARCHIVES : Ajoute tes futures images ici
         const archives = [
             { date: "2026-02-16", url: "illustration1.jpg", ref: "ALPHA_GENESIS" },
             { date: "2026-02-17", url: "illustration2.jpg", ref: "BETA_SIGNAL" },
@@ -99,7 +96,7 @@
         const galleryContainer = document.getElementById('main-gallery');
         const today = new Date();
         
-        // 2. MODE ADMIN : Si l'URL finit par ?admin=true, tout apparaît
+        // 2. PARAMÈTRE SECRET : Ajoute ?admin=true à ton URL pour tout voir
         const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
 
         archives.forEach((item, index) => {
@@ -111,15 +108,13 @@
             card.style.animationDelay = `${index * -1.5}s`;
 
             if (isReleased) {
-                // IMAGE DÉVERROUILLÉE
                 card.innerHTML = `
                     <div class="image-box" style="border-style: solid; border-color: #00ff41;">
                         <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
                     </div>
-                    <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem; letter-spacing: 2px;">SIGNAL DÉCODÉ : ${item.ref}</p>
+                    <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem;">SIGNAL DÉCODÉ : ${item.ref}</p>
                 `;
             } else {
-                // IMAGE ENCORE CRYPTÉE
                 card.innerHTML = `
                     <div class="image-box" style="background: repeating-linear-gradient(45deg, #050505, #111 10px); opacity: 0.4;">
                         <span style="color: #444; font-size: 0.7rem;">[ SIGNAL CRYPTÉ : ${item.date} ]</span>
