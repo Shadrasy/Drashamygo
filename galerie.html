@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.1 Master Edition)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.2 Master Edition)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -47,15 +47,24 @@
 
         .p-gold { width: 22px; height: 22px; background: var(--cosplay-gold); top: 50px; left: 50px; box-shadow: 0 0 20px var(--cosplay-gold); cursor: pointer; z-index: 500; }
         .p-blue { width: 50px; height: 50px; background: cyan; top: 20%; right: 15%; box-shadow: 0 0 30px cyan; opacity: 0.3; animation-duration: 25s, 50s; }
-        .p-red { width: 70px; height: 70px; background: var(--standard-magenta); bottom: 15%; left: 8%; box-shadow: 0 0 40px var(--standard-magenta); opacity: 0.2; animation-duration: 35s, 80s; }
         .p-purple { width: 100px; height: 100px; background: #8800ff; top: 15%; right: 40%; box-shadow: 0 0 50px #8800ff; opacity: 0.15; animation-duration: 45s, 120s; }
+        .p-red { width: 45px; height: 45px; background: radial-gradient(circle at 30% 30%, #ff0055, #440011); top: 25%; right: 40%; box-shadow: 0 0 30px rgba(255,0,85,0.4); animation-duration: 15s, 45s; }
 
         /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
-        #galerie-container, #fan-cosplay-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        #galerie-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        
+        /* Correction Grille Cosplay */
+        #fan-cosplay-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 30px; 
+            margin-top: 20px; 
+        }
+
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
@@ -78,6 +87,7 @@
 
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
         .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
+        #protocol-display { display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:10px; text-align:left; color:var(--vhs-vert); line-height:1.4; border-radius: 5px; }
         
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
     </style>
@@ -105,7 +115,7 @@
                 <button class="btn-nav-master" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
             </div>
             
-            <div id="protocol-display" style="display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:10px; text-align:left; color:var(--vhs-vert); line-height:1.4; border-radius: 5px;">
+            <div id="protocol-display">
                 <div id="protocol-content"></div>
                 <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
             </div>
@@ -131,11 +141,11 @@
                         <option value="Fan-Cosplay">FAN-COSPLAY (Photo)</option>
                         <option value="World">WORLD</option>
                     </select>
-                    <span id="tome-input-area"> TOME : <input type="number" id="img-tome" value="1" style="width:45px; background:black; color:white;"></span>
-                    DATE : <input type="datetime-local" id="img-date" style="background:black; color:white;">
+                    <span id="tome-input-area"> TOME : <input type="number" id="img-tome" value="1" style="width:45px; background:black; color:white; border:1px solid #444;"></span>
+                    DATE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
                 </div>
                 <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE FUSION</button>
-                <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none;"></textarea>
+                <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
             <button class="btn-nav-master" style="color:red; margin-top:20px;" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
