@@ -36,4 +36,63 @@
         .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
         .relativistic-jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, var(--jet-faisceau), white, var(--jet-faisceau), transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--jet-faisceau); z-index: -1; animation: jet-flicker 0.1s infinite alternate; }
         @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse { to { transform: scale(1.1); box-shadow: 0 0 100px 30px rgba(2
+        @keyframes pulse { to { transform: scale(1.1); box-shadow: 0 0 100px 30px rgba(255, 255, 255, 0.4); } }
+        @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
+
+        /* --- 4. LE RETOUR DES PLANÈTES --- */
+        .orbit { position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3; animation: orbit-spin linear infinite; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9); }
+        @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* P1: Petite lune rapide */
+        .orb1 { animation-duration: 20s; } .p1 { width: 40px; height: 40px; background: #888; transform: translateX(180px); }
+        /* P2: Planète bleue moyenne */
+        .orb2 { animation-duration: 45s; animation-delay: -10s; } .p2 { width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #2244aa, #000); transform: translateX(-280px); }
+        /* P3: Géante rouge lente */
+        .orb3 { animation-duration: 80s; animation-delay: -30s; } .p3 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #aa2222, #000); transform: translateY(380px); }
+        /* P4: Lointaine violette */
+        .orb4 { animation-duration: 120s; animation-delay: -5s; } .p4 { width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #6622aa, #000); transform: translateY(-450px); }
+
+        /* --- 5. INTERFACE --- */
+        .container { max-width: 850px; margin: 100px auto; padding: 20px; position: relative; z-index: 10; text-align: center; }
+        h1 { font-size: 4rem; letter-spacing: 15px; text-shadow: 0 0 20px rgba(255,255,255,0.5); margin-bottom: 60px; }
+        .box { background: rgba(0,0,0,0.85); border: 1px solid #333; padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px); display: inline-block; width: 40%; margin: 2%; vertical-align: top; }
+        .icon { font-size: 4rem; display: block; margin-bottom: 10px; }
+        .btn { display: inline-block; border: 2px solid white; color: white; padding: 12px 30px; text-decoration: none; letter-spacing: 3px; font-weight: bold; background: rgba(255,255,255,0.05); transition: 0.3s; margin-top: 20px; }
+        .btn:hover { background: white; color: black; box-shadow: 0 0 20px white; }
+    </style>
+</head>
+<body>
+    <div class="cosmic-redshift"></div>
+    <div class="spiral-arms"></div>
+    <div class="tidal-tail"></div>
+    <div class="supernova-remnant"></div>
+    <div class="galactic-bulge"></div>
+    <div class="stars"></div>
+
+    <div class="black-hole-container">
+        <div class="relativistic-jet"></div>
+        <div class="accretion-disk"></div>
+        <div class="black-hole"></div>
+    </div>
+
+    <div class="orbit orb1"><div class="planet p1"></div></div>
+    <div class="orbit orb2"><div class="planet p2"></div></div>
+    <div class="orbit orb3"><div class="planet p3"></div></div>
+    <div class="orbit orb4"><div class="planet p4"></div></div>
+
+    <div class="container">
+        <h1>ARCHIVES</h1>
+        <div class="box">
+            <span class="icon">✍️</span>
+            <h2>THÉORIES</h2>
+            <a href="theories.html" class="btn">PROPOSER</a>
+        </div>
+        <div class="box">
+            <span class="icon">👁️</span>
+            <h2>GALERIE</h2>
+            <a href="galerie.html" class="btn">TRAVERSER</a>
+        </div>
+    </div>
+</body>
+</html>
