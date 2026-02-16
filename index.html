@@ -3,42 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Astre Créateur</title>
+    <title>Archives - L'Odyssée Galactique</title>
     <style>
-        :root { --noir-fond: #010105; --lumiere-bleue: rgba(0, 100, 255, 0.4); }
-        body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
+        :root { 
+            --noir-fond: #010108; 
+            --lumiere-bleue: rgba(0, 100, 255, 0.4); 
+            --bulbe-jaune: rgba(255, 200, 50, 0.25);
+            --jet-faisceau: rgba(200, 230, 255, 0.6);
+            --vhs-vert: #00ff41;
+            --extinction-rouge: rgba(150, 0, 0, 0.15);
+        }
+
+        body { 
+            margin: 0; background-color: var(--noir-fond); color: white; 
+            font-family: 'Courier New', monospace; overflow-x: hidden; 
+        }
         
-        /* --- EFFETS DE NÉBULEUSE --- */
-        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 85% 20%, var(--lumiere-bleue) 0%, transparent 60%); z-index: -10; }
-        .nebula-gas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -9; background: radial-gradient(circle at 30% 70%, rgba(100, 0, 255, 0.1) 0%, transparent 50%); animation: gas-pulse 10s infinite alternate ease-in-out; }
-        @keyframes gas-pulse { from { opacity: 0.5; } to { opacity: 1; } }
+        /* --- 1. DYNAMIQUE STRUCTURELLE & OPTIQUE --- */
+        
+        /* Redshift & Extinction : Assombrissement et rougissement des bords */
+        .cosmic-redshift {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at center, transparent 40%, var(--extinction-rouge) 100%);
+            pointer-events: none;
+        }
 
-        /* --- SYSTÈME D'ÉTOILES --- */
+        /* Bras Spiraux : Ondes de densité tourbillonnantes */
+        .spiral-arms {
+            position: fixed; top: 50%; left: 50%; width: 250vmax; height: 250vmax;
+            transform: translate(-50%, -50%); z-index: -8;
+            background: conic-gradient(from 0deg, 
+                transparent, rgba(100, 200, 255, 0.05) 10%, 
+                transparent 25%, rgba(255, 255, 255, 0.03) 40%, 
+                transparent 50%);
+            animation: spin 300s linear infinite;
+        }
+
+        /* Queue de Marée : Long filament étiré */
+        .tidal-tail {
+            position: fixed; top: 60%; left: -20%; width: 120vw; height: 100px;
+            background: linear-gradient(90deg, transparent, rgba(200, 200, 255, 0.1), transparent);
+            filter: blur(40px); transform: rotate(-15deg); z-index: -9;
+        }
+
+        /* --- 2. PHÉNOMÈNES DE HAUTE ÉNERGIE --- */
+
+        /* Jet Relativiste : Faisceau depuis le Trou Noir */
+        .relativistic-jet {
+            position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px;
+            background: linear-gradient(0deg, transparent, var(--jet-faisceau), white, var(--jet-faisceau), transparent);
+            transform: translate(-50%, -50%) rotate(45deg);
+            box-shadow: 0 0 30px var(--jet-faisceau); z-index: -1;
+            animation: jet-flicker 0.1s infinite alternate;
+        }
+        @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
+
+        /* Rémanents de Supernova : Filaments colorés diffus */
+        .supernova-remnant {
+            position: fixed; top: 70%; left: 10%; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255, 0, 100, 0.1), transparent 70%);
+            filter: blur(50px); border-radius: 50%; z-index: -7;
+        }
+
+        /* Bulbe & Barre Galactique : Centre lumineux jaune */
+        .galactic-bulge {
+            position: fixed; top: 10%; right: 8%; width: 200px; height: 200px;
+            background: radial-gradient(circle, var(--bulbe-jaune), transparent 70%);
+            transform: translate(12.5%, 12.5%); z-index: -3; pointer-events: none;
+        }
+
+        /* --- SYSTÈME D'ÉTOILES & MÉTÉORES --- */
         .stars { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -5; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 300px 300px; opacity: 0.7; animation: spin 240s linear infinite; }
-        .stars-twinkle { position: fixed; width: 100%; height: 100%; z-index: -6; background-image: radial-gradient(1px 1px at 50px 50px, #fff, transparent); background-size: 150px 150px; animation: twinkle 3s infinite alternate; }
-        @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-        /* --- MÉTÉORES --- */
-        .meteor { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white; z-index: -4; opacity: 0; animation: shoot linear infinite; }
-        .m1 { top: 5%; left: -10%; animation-duration: 8s; animation-delay: 2s; }
-        .m2 { top: 40%; left: -10%; animation-duration: 12s; animation-delay: 5s; }
-        .m3 { top: 80%; left: -10%; animation-duration: 10s; animation-delay: 0s; }
-        @keyframes shoot { 0% { transform: translate(0,0) rotate(25deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 50vh) rotate(25deg); opacity: 0; } 100% { opacity: 0; } }
-
-        /* --- TROU NOIR AVEC ANNEAU --- */
+        /* --- TROU NOIR (Noyau Actif / Quasar) --- */
         .black-hole-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
         .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px 20px rgba(255, 255, 255, 0.2), inset 0 0 50px rgba(0, 100, 255, 0.5); animation: pulse 4s infinite alternate ease-in-out; }
-        .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin 4s linear infinite; }
+        .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
+        @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pulse { to { transform: scale(1.1); box-shadow: 0 0 100px 30px rgba(255, 255, 255, 0.4); } }
-
-        /* --- PLANETES --- */
-        .orbit { position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3; animation: spin linear infinite; }
-        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.9); }
-        .orb1 { animation-duration: 20s; } .p1 { width: 40px; height: 40px; background: #888; transform: translateX(180px); }
-        .orb2 { animation-duration: 45s; animation-delay: -10s; } .p2 { width: 100px; height: 100px; background: radial-gradient(circle at 30% 30%, #2244aa, #000); transform: translateX(-280px); }
-        .orb3 { animation-duration: 80s; animation-delay: -30s; } .p3 { width: 160px; height: 160px; background: radial-gradient(circle at 30% 30%, #aa2222, #000); transform: translateY(380px); }
-        .orb4 { animation-duration: 120s; animation-delay: -5s; } .p4 { width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #6622aa, #000); transform: translateY(-450px); }
 
         /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 100px auto; padding: 20px; position: relative; z-index: 10; text-align: center; }
@@ -50,24 +93,19 @@
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
-    <div class="nebula-gas"></div>
-    <div class="stars"></div>
-    <div class="stars-twinkle"></div>
+    <div class="cosmic-redshift"></div>
+    <div class="spiral-arms"></div>
+    <div class="tidal-tail"></div>
+    <div class="supernova-remnant"></div>
+    <div class="galactic-bulge"></div>
     
-    <div class="meteor m1"></div>
-    <div class="meteor m2"></div>
-    <div class="meteor m3"></div>
+    <div class="stars"></div>
 
     <div class="black-hole-container">
+        <div class="relativistic-jet"></div>
         <div class="accretion-disk"></div>
         <div class="black-hole"></div>
     </div>
-
-    <div class="orbit orb1"><div class="planet p1"></div></div>
-    <div class="orbit orb2"><div class="planet p2"></div></div>
-    <div class="orbit orb3"><div class="planet p3"></div></div>
-    <div class="orbit orb4"><div class="planet p4"></div></div>
 
     <div class="container">
         <h1>ARCHIVES</h1>
