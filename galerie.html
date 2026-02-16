@@ -12,7 +12,7 @@
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
-            --bleu-tech: #00a8ff; /* Bleu pour le type Série/Jeu */
+            --bleu-tech: #00a8ff; 
         }
 
         body {
@@ -34,16 +34,13 @@
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; transition: 0.5s; position: relative; }
         .image-frame { width: 100%; height: 400px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         
-        /* État Débloqué */
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
         .unlocked img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s; }
         .unlocked img:hover { filter: brightness(1.2); }
 
-        /* État Verrouillé */
         .locked { opacity: 0.5; }
         .crypt { color: #444; font-size: 0.8rem; letter-spacing: 2px; }
 
-        /* Infos & Tags */
         .info { text-align: left; border-top: 1px solid #222; padding-top: 15px; }
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
@@ -70,7 +67,6 @@
     </div>
 
     <script>
-        // --- LE CALENDRIER MULTI-PROJETS ---
         const archives = [
             { 
                 date: "2026-02-16", 
