@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V78)</title>
+    <title>Archives - Nébuleuse Visuelle (V80)</title>
     
     <script src="security.js"></script>
 
@@ -89,59 +89,37 @@
     </div>
 
     <script>
-        // --- LA BIBLIOTHÈQUE DES 14 UNIVERS ---
         const multiVerse = {
-            // LES 4 ROMANS PUBLICS (Ton Plan de Vol)
-            "roman1": [
-                { 
-                    date: "2026-02-16", 
-                    url: "illustration1.jpg", 
-                    ref: "SHADRASY : Le Souffle Originel", 
-                    type: "ROMAN", 
-                    link: "https://lien-roman1.com" 
-                }
-            ],
-            "roman2": [
-                { 
-                    date: "2032-01-01", 
-                    url: "guilde_aube.jpg", 
-                    ref: "La Guilde de l'Aube", 
-                    type: "ROMAN", 
-                    link: "https://lien-roman2.com" 
-                }
-            ],
-            "roman3": [ 
-                { 
-                    date: "2034-01-01", 
-                    url: "projet_3.jpg", 
-                    ref: "PROJET_III (TITRE_INCONNU)", 
-                    type: "ROMAN", 
-                    link: "#" 
-                } 
-            ],
-            "roman4": [ 
-                { 
-                    date: "2036-01-01", 
-                    url: "projet_4.jpg", 
-                    ref: "PROJET_IV (TITRE_INCONNU)", 
-                    type: "ROMAN", 
-                    link: "#" 
-                } 
-            ],
-            
-            // LES 10 HÉRITAGES (Cachés et réservés pour 2031 et au-delà)
-            "h_7x92": [ { date: "2031-03-05", url: "h1.jpg", ref: "ARCHIVE_PRIVEE_01", type: "HÉRITAGE", link: "#" } ],
-            "h_v410": [ { date: "2031-03-05", url: "h2.jpg", ref: "ARCHIVE_PRIVEE_02", type: "HÉRITAGE", link: "#" } ],
-            "h_x999": [ { date: "2031-03-05", url: "h3.jpg", ref: "ARCHIVE_PRIVEE_03", type: "HÉRITAGE", link: "#" } ]
-            // ... Ajoute tes 7 autres codes d'Héritage ici
+            // --- GÉNÉRATION 1 : LES ORIGINES (Fixées) ---
+            "roman1": [ { date: "2026-02-16", url: "illustration1.jpg", ref: "SHADRASY : Le Souffle Originel", type: "ROMAN", link: "https://lien-roman1.com" } ],
+            "roman2": [ { date: "2032-01-01", url: "guilde_aube.jpg", ref: "La Guilde de l'Aube", type: "ROMAN", link: "https://lien-roman2.com" } ],
+            "roman3": [ { date: "2034-01-01", url: "r3.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
+            "roman4": [ { date: "2036-01-01", url: "r4.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
+
+            // --- GÉNÉRATION 2 : ROMANS 5 & 6 (Indéfini) ---
+            "roman5": [ { date: "2099-12-31", url: "r5.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+            "roman6": [ { date: "2099-12-31", url: "r6.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+
+            // --- GÉNÉRATION 3 : ROMANS 7 & 8 (Indéfini) ---
+            "roman7": [ { date: "2099-12-31", url: "r7.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+            "roman8": [ { date: "2099-12-31", url: "r8.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+
+            // --- GÉNÉRATION 4 : ROMANS 9 & 10 (Indéfini) ---
+            "roman9": [ { date: "2099-12-31", url: "r9.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+            "roman10": [ { date: "2099-12-31", url: "r10.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+
+            // --- GÉNÉRATION 5 : ROMANS 11 & 12 (Indéfini) ---
+            "roman11": [ { date: "2099-12-31", url: "r11.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+            "roman12": [ { date: "2099-12-31", url: "r12.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+
+            // --- GÉNÉRATION 6 : ROMANS 13 & 14 (Indéfini) ---
+            "roman13": [ { date: "2099-12-31", url: "r13.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
+            "roman14": [ { date: "2099-12-31", url: "r14.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ]
         };
 
         function chargerGalerie() {
             const urlParams = new URLSearchParams(window.location.search);
-            
-            // --- TA CLÉ SECRÈTE : Hinaru ---
             const admin = urlParams.get('Hinaru') === 'true';
-            
             const projetActuel = urlParams.get('projet') || 'roman1';
             const archives = multiVerse[projetActuel];
             const aujourdhui = new Date().toISOString().split('T')[0];
