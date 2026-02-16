@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Scan Système (V71)</title>
+    <title>Archives - Scan Système (V74)</title>
+    
+    <script src="security.js"></script>
+
     <style>
         :root { 
             --noir-fond: #000105; 
@@ -20,11 +23,9 @@
             background-size: 100% 4px, 3px 100%;
         }
 
-        /* --- EFFET SCANLINE --- */
         .scanline { position: fixed; top: 0; width: 100%; height: 15px; background: var(--lumiere-bleue); opacity: 0.6; animation: move-scan 8s linear infinite; z-index: 1000; pointer-events: none; }
         @keyframes move-scan { from { top: -100px; } to { top: 100vh; } }
 
-        /* --- HEADER AVEC COMPTEUR --- */
         .osd-header { 
             padding: 25px; 
             border-bottom: 2px solid var(--bleu-tech); 
@@ -42,7 +43,6 @@
 
         .main-layout { display: flex; flex-wrap: wrap; padding: 30px; gap: 30px; justify-content: center; }
 
-        /* --- RADAR --- */
         .radar-box { flex: 1; min-width: 400px; max-width: 500px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--lumiere-bleue) 0%, transparent 60%); }
         .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 5s infinite linear; box-shadow: 0 0 15px var(--bleu-tech); }
         @keyframes radar-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -53,85 +53,10 @@
         .rp2 { top: 65%; left: 75%; background: #ffcc00; color: #ffcc00; }
         .rp3 { top: 15%; left: 65%; background: var(--rouge-alerte); color: var(--rouge-alerte); }
 
-        /* --- DATA --- */
         .data-box { flex: 1; min-width: 400px; max-width: 600px; border: 2px solid var(--bleu-tech); padding: 25px; background: rgba(0, 10, 30, 0.5); }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th { text-align: left; padding: 12px; border-bottom: 2px solid var(--bleu-tech); color: white; }
         td { padding: 12px; border-bottom: 1px solid rgba(0, 168, 255, 0.3); }
         .val-high { color: var(--rouge-alerte); font-weight: bold; }
 
-        .btn-return { display: block; margin: 50px auto; padding: 15px 40px; border: 2px solid var(--bleu-tech); color: var(--bleu-tech); text-decoration: none; text-align: center; width: fit-content; transition: 0.3s; font-weight: bold; background: rgba(0, 168, 255, 0.05); }
-        .btn-return:hover { background: var(--bleu-tech); color: #000; box-shadow: 0 0 30px var(--bleu-tech); }
-    </style>
-</head>
-<body>
-    <div class="scanline"></div>
-
-    <header class="osd-header">
-        <div>
-            [ SCANNER DEEP SPACE - V71 ]<br>
-            <span class="status">● ANALYSE DES FLUX EN COURS...</span>
-        </div>
-        <div id="visitor-module">
-            SIGNALS_TRACKED: <span id="count-value">SCANNING...</span>
-        </div>
-    </header>
-
-    <div class="main-layout">
-        <div class="radar-box">
-            <div class="radar-line"></div>
-            <div class="radar-circle" style="width: 120px; height: 120px;"></div>
-            <div class="radar-circle" style="width: 240px; height: 240px;"></div>
-            <div class="radar-circle" style="width: 360px; height: 360px;"></div>
-            <div class="r-planet rp1"></div>
-            <div class="r-planet rp2"></div>
-            <div class="r-planet rp3"></div>
-            <div style="position: absolute; bottom: 15px; left: 15px; font-size: 0.8rem; opacity: 0.8;">TRACKING ORBITAL : ENGAGÉ</div>
-        </div>
-
-        <div class="data-box">
-            <h3>ANOMALIES DÉTECTÉES</h3>
-            <table>
-                <tr><th>OBJET</th><th>TYPE</th><th>SIGNAL</th></tr>
-                <tr><td>OBJET DE HOAG</td><td>ANNEAU PARFAIT</td><td class="val-high">CRITIQUE</td></tr>
-                <tr><td>CROIX EINSTEIN</td><td>MIRAGE GRAVIT.</td><td class="val-high">DÉVIATION</td></tr>
-                <tr><td>P3 (GÉANTE ROUGE)</td><td>PLANÈTE CLASSE X</td><td>STABLE</td></tr>
-            </table>
-            <div style="margin-top: 30px; font-size: 0.8rem; color: rgba(255,255,255,0.7); border-top: 1px dashed rgba(0, 168, 255, 0.3); padding-top: 15px;">
-                > LOG : "Détection de nouveaux signaux entrants. Origine : Lecteurs du multivers."
-            </div>
-        </div>
-    </div>
-
-    <a href="index.html" class="btn-return">RETOUR AUX ARCHIVES</a>
-
-    <script>
-        async function updateCounter() {
-            // Namespace unique pour ton roman
-            const namespace = "archives_roman_2026_system_scan"; 
-            const key = "visites_uniques_global";
-            
-            const today = new Date().toISOString().split('T')[0];
-            const lastVisit = localStorage.getItem('last_visit_system');
-
-            let apiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
-            
-            // Si c'est une nouvelle journée pour ce visiteur
-            if (lastVisit !== today) {
-                apiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
-                localStorage.setItem('last_visit_system', today);
-            }
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                document.getElementById('count-value').innerText = data.value.toLocaleString();
-            } catch (error) {
-                document.getElementById('count-value').innerText = "OFFLINE";
-            }
-        }
-
-        updateCounter();
-    </script>
-</body>
-</html>
+        .btn-return
