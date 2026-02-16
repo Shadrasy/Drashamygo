@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.5 Master Edition)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.6 Master Edition)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -100,16 +100,17 @@
         <h1>NÉBULEUSE VISUELLE</h1>
         
         <div id="master-panel" style="display:none;">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.5)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.6)</p>
             <div id="nav-buttons" style="margin-bottom:15px; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
             
-            <button class="btn-action" style="border-color:orange; color:orange;" onclick="toggleStreamerMode()" id="streamer-btn">[ STREAMER MODE : OFF ]</button>
-
-            <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px;">
-                <p style="color:orange;">⚡ STUDIO DE FUSION</p>
-                <input type="text" id="img-url" placeholder="Lien image" style="background:black; color:white; width:80%;">
-                <button class="btn-action" onclick="genererCodeSignal()">GÉNÉRER SIGNAL</button>
+            <div style="margin-bottom:15px;">
+                <button class="btn-action" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PIPELINE 13 ]</button>
+                <button class="btn-action" style="border-color:orange; color:orange;" onclick="toggleStreamerMode()" id="streamer-btn">[ STREAMER MODE : OFF ]</button>
             </div>
+        </div>
+
+        <div id="protocol-display" style="display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); padding:15px; font-size:10px; color:var(--vhs-vert); margin-bottom:20px;">
+            <div id="protocol-content"></div>
         </div>
 
         <div class="section-title">Archives Tactiques</div>
@@ -128,7 +129,8 @@
             { id: 14, nom: "Projet 14", public: false }
         ];
 
-        const isHinaru = new URLSearchParams(window.location.search).get('Hinaru') === 'true';
+        const urlParams = new URLSearchParams(window.location.search);
+        const isHinaru = urlParams.get('Hinaru') === 'true';
         let streamerActive = false;
 
         if (isHinaru) document.getElementById('master-panel').style.display = 'block';
@@ -145,11 +147,17 @@
             window.location.href = url.toString();
         }
 
+        function afficherProtocole(type) {
+            const display = document.getElementById('protocol-display');
+            display.style.display = 'block';
+            document.getElementById('protocol-content').innerHTML = "SYSTEM LOGS: W1.5 Décor 3D | W4.7 Fusion | W10 Rendu 4K";
+        }
+
         function chargerGalerie() {
             const container = document.getElementById('galerie-container');
             const fanContainer = document.getElementById('fan-cosplay-container');
             const nav = document.getElementById('nav-buttons');
-            const projetActuel = parseInt(new URLSearchParams(window.location.search).get('projet')) || 1;
+            const projetActuel = parseInt(urlParams.get('projet')) || 1;
             
             container.innerHTML = ""; fanContainer.innerHTML = ""; nav.innerHTML = "";
 
@@ -158,11 +166,7 @@
                 btn.className = "btn-nav-master";
                 btn.innerText = `R${r.id}`;
                 if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
-                btn.onclick = () => { 
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('projet', r.id);
-                    window.location.href = url.toString();
-                };
+                btn.onclick = () => { window.location.search = `?projet=${r.id}${isHinaru ? '&Hinaru=true' : ''}`; };
                 nav.appendChild(btn);
             });
 
@@ -189,12 +193,17 @@
                             </div>`;
                         fanContainer.appendChild(box);
                     } else {
+                        // RE-ACTIVATION DE LA 3D ET DU RESET
+                        let media = item.glb ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" auto-rotate camera-controls shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:contain;">`;
+                        let buttons = item.glb ? `<button class="btn-action" style="border-color:orange; color:orange;" onclick="document.getElementById('m-${index}').cameraOrbit='0deg 75deg 105%';">[ RESET CAMERA ]</button>` : "";
+                        
                         box.innerHTML = `
                             <div class="image-frame">
-                                <img src="${item.url}" style="width:100%;">
-                                <div class="hud-technique"><b>SCAN</b><br>> ${item.type}<br>> SYNC_OK</div>
+                                ${media}
+                                <div class="hud-technique"><b>SCAN</b><br>> ${item.type}<br>> DATABASE_LINKED</div>
                             </div>
-                            <div style="font-size:0.7rem;">DATABASE_ID: #${index+1000}</div>`;
+                            ${buttons}
+                            <div style="font-size:0.7rem; text-align:left; margin-top:5px;"><span style="color:var(--vhs-vert);">DATABASE_ID: #${index+1000}</span></div>`;
                         container.appendChild(box);
                     }
                 });
