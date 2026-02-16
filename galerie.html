@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle & Distorsions</title>
+    <title>Archives - Le Grand Inventaire Cosmique</title>
     <style>
         :root { 
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
-            --rose-hii: rgba(255, 50, 150, 0.25); /* Régions H II */
-            --bleu-reflexion: rgba(0, 150, 255, 0.2); /* Nébuleuses par réflexion */
+            --rose-hii: rgba(255, 50, 150, 0.2);
+            --fluo-hanny: rgba(0, 255, 120, 0.15); /* Objet de Hanny */
+            --pois-vert: #39ff14; /* Green Pea */
             --einstein-glow: rgba(255, 255, 255, 0.4);
         }
 
@@ -19,92 +20,87 @@
             background: var(--noir-fond);
         }
 
-        /* --- PHÉNOMÈNES DE GAZ (NÉBULEUSES) --- */
+        /* --- 1. PHÉNOMÈNES DE GAZ ET STRUCTURES RARES --- */
         .nebula-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -15; pointer-events: none; }
         
-        /* Régions H II (Rose/Rouge - Naissance d'étoiles) */
-        .hii-regions {
-            background: 
-                radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%),
-                radial-gradient(circle at 85% 60%, rgba(255, 0, 50, 0.15) 0%, transparent 40%);
-            animation: nebula-drift 15s infinite alternate ease-in-out;
+        /* Objet de Hanny (Nuage vert fluorescent) */
+        .hannys-voorwerp {
+            position: fixed; top: 5%; left: 15%; width: 300px; height: 200px;
+            background: var(--fluo-hanny); filter: blur(50px);
+            border-radius: 60% 40% 70% 30%; z-index: -14;
+            animation: nebula-drift 20s infinite alternate ease-in-out;
         }
 
-        /* Nébuleuses Sombres (Filaments qui bloquent la lumière) */
-        .dark-nebula {
-            position: fixed; top: 20%; left: 30%; width: 400px; height: 150px;
-            background: rgba(0, 0, 0, 0.85); filter: blur(40px);
-            border-radius: 40% 60% 30% 70%; z-index: -4; opacity: 0.9;
-            transform: rotate(-15deg);
+        /* Galaxies "Pois Verts" (Points compacts) */
+        .green-pea {
+            position: fixed; width: 5px; height: 5px; background: var(--pois-vert);
+            border-radius: 50%; box-shadow: 0 0 12px var(--pois-vert); z-index: -6;
         }
+        .gp1 { top: 20%; right: 35%; } .gp2 { bottom: 40%; left: 20%; }
 
-        @keyframes nebula-drift { from { opacity: 0.6; } to { opacity: 1; } }
-
-        /* --- DISTORSIONS GRAVITATIONNELLES --- */
+        /* --- 2. COLLISIONS ET INTERACTIONS --- */
         
-        /* 1. Anneau d'Einstein (Autour d'une masse invisible) */
-        .einstein-ring {
-            position: fixed; top: 15%; left: 50%; width: 100px; height: 100px;
-            border: 2px solid var(--einstein-glow); border-radius: 50%;
-            box-shadow: 0 0 20px var(--einstein-glow), inset 0 0 20px var(--einstein-glow);
-            z-index: -3; transform: translate(-50%, -50%);
-            animation: ring-pulse 4s infinite ease-in-out;
+        /* Galaxie Méduse (Tentacules de gaz) */
+        .medusa-galaxy {
+            position: fixed; top: 40%; right: 10%; width: 40px; height: 40px;
+            background: rgba(100, 200, 255, 0.5); border-radius: 50%; filter: blur(5px); z-index: -5;
+        }
+        .medusa-galaxy::after {
+            content: ""; position: absolute; top: 50%; left: -80px; width: 100px; height: 30px;
+            background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.2));
+            box-shadow: 0 10px 15px rgba(100, 200, 255, 0.1), 0 -10px 15px rgba(100, 200, 255, 0.1);
         }
 
-        /* 2. Croix d'Einstein (4 points de lumière - Mirage) */
-        .einstein-cross {
-            position: fixed; bottom: 15%; right: 40%; width: 60px; height: 60px; z-index: -3;
-        }
-        .quasar-point {
-            position: absolute; width: 6px; height: 6px; background: white;
-            border-radius: 50%; box-shadow: 0 0 15px white;
-        }
-        /* Positionnement des 4 points de la croix */
-        .qp1 { top: 0; left: 50%; transform: translateX(-50%); }
-        .qp2 { bottom: 0; left: 50%; transform: translateX(-50%); }
-        .qp3 { left: 0; top: 50%; transform: translateY(-50%); }
-        .qp4 { right: 0; top: 50%; transform: translateY(-50%); }
+        /* --- 3. EFFETS OPTIQUES AVANCÉS --- */
 
-        @keyframes ring-pulse { 0%, 100% { opacity: 0.3; scale: 0.95; } 50% { opacity: 0.8; scale: 1.05; } }
+        /* Écho de Lumière (Bulle qui s'étend) */
+        .light-echo {
+            position: fixed; top: 60%; left: 50%; width: 2px; height: 2px;
+            background: white; border-radius: 50%; z-index: -7;
+            animation: echo-expand 10s infinite;
+        }
+        @keyframes echo-expand {
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0px white; }
+            100% { transform: scale(30); opacity: 0; box-shadow: 0 0 40px rgba(255,255,255,0.1); }
+        }
 
-        /* --- ÉTOILES ET POUSSIÈRE --- */
-        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -10; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 400px 400px; opacity: 0.5; animation: spin 350s linear infinite; }
+        /* Micro-lentille Gravitationnelle (Flash bref) */
+        .microlens {
+            position: fixed; top: 15%; left: 30%; width: 2px; height: 2px; background: white;
+            animation: flash 6s infinite; z-index: -6;
+        }
+        @keyframes flash { 0%, 90% { transform: scale(1); opacity: 0.5; } 95% { transform: scale(4); opacity: 1; box-shadow: 0 0 20px white; } }
+
+        /* --- 4. DISTORSIONS ET ÉTOILES (CONSERVÉS) --- */
+        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -3; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite ease-in-out; }
+        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -10; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; }
+        
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* --- ARMADA DE PLANÈTES (Restaurée) --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation: float 100s linear infinite alternate; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; }
-        .p-ice { width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; }
-        .p-crystal { width: 50px; height: 50px; background: white; top: 5%; left: 45%; box-shadow: 0 0 30px white; }
-
-        @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(8vw, 5vh); } }
+        @keyframes ring-pulse { 0%, 100% { opacity: 0.3; scale: 0.95; } 50% { opacity: 0.8; scale: 1.05; } }
+        @keyframes nebula-drift { from { opacity: 0.6; } to { opacity: 1; } }
 
         /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 10; }
         h1 { font-size: 3rem; letter-spacing: 12px; margin: 20px 0; text-shadow: 0 0 20px rgba(255,255,255,0.4); }
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 60px; }
         .art-card { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; backdrop-filter: blur(10px); animation: card-float 7s infinite alternate ease-in-out; }
-        .image-box { width: 100%; height: 400px; background: #050505; border: 1px dashed #222; display: flex; align-items: center; justify-content: center; color: #444; font-size: 0.8rem; }
+        .image-box { width: 100%; height: 400px; background: #050505; border: 1px dashed #333; display: flex; align-items: center; justify-content: center; color: #444; font-size: 0.8rem; }
         @keyframes card-float { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; background: rgba(255,255,255,0.05); }
+        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; background: rgba(255,255,255,0.05); transition: 0.3s; }
+        .btn-portal:hover { background: white; color: black; box-shadow: 0 0 30px white; }
     </style>
 </head>
 <body>
-    <div class="nebula-layer hii-regions"></div>
-    <div class="dark-nebula"></div>
+    <div class="hannys-voorwerp"></div>
+    <div class="medusa-galaxy"></div>
+    <div class="light-echo"></div>
+    <div class="microlens"></div>
     
     <div class="einstein-ring"></div>
-    <div class="einstein-cross">
-        <div class="quasar-point qp1"></div>
-        <div class="quasar-point qp2"></div>
-        <div class="quasar-point qp3"></div>
-        <div class="quasar-point qp4"></div>
-    </div>
+    <div class="green-pea gp1"></div>
+    <div class="green-pea gp2"></div>
 
     <div class="star-field"></div>
-    <div class="nebula-planet p-ring"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-crystal"></div>
 
     <div class="container">
         <span style="font-size: 4rem;">👁️</span>
@@ -112,16 +108,16 @@
         
         <div class="gallery-grid">
             <div class="art-card">
-                <div class="image-box">[ REGION H II DETECTÉE ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">OBJET: EMISSION_ROSE</p>
+                <div class="image-box">[ ANALYSE MÉDUSE ]</div>
+                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">EFFET: RAM_PRESSURE</p>
             </div>
             <div class="art-card" style="animation-delay: -2s;">
-                <div class="image-box">[ MIRAGE GRAVITATIONNEL ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">OBJET: CROIX_EINSTEIN</p>
+                <div class="image-box">[ ÉCHO DE LUMIÈRE ]</div>
+                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">OBJET: SUPERNOVA_REFLEXION</p>
             </div>
             <div class="art-card" style="animation-delay: -4s;">
-                <div class="image-box">[ LENTILLE MASSIVE ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">OBJET: ANNEAU_LUMIERE</p>
+                <div class="image-box">[ OBJET DE HANNY ]</div>
+                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">GAZ: VERT_FLUORESCENT</p>
             </div>
         </div>
 
