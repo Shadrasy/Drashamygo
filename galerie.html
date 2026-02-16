@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V80)</title>
+    <title>Archives - Nébuleuse Visuelle (V83)</title>
     
     <script src="security.js"></script>
 
@@ -23,14 +23,14 @@
             background: var(--noir-fond);
         }
 
-        /* --- 1. DÉCORS ET GAZ --- */
+        /* --- 1. DÉCORS COSMIQUES --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         .light-echo { position: fixed; top: 60%; left: 50%; width: 2px; height: 2px; background: white; border-radius: 50%; z-index: -12; animation: echo-expand 10s infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes echo-expand { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(45); opacity: 0; } }
 
-        /* --- 2. ARMADA DE 6 PLANÈTES --- */
+        /* --- 2. ARMADA DE PLANÈTES --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation: float 100s linear infinite alternate; pointer-events: none; }
         .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; border: 1px solid rgba(255,255,255,0.1); }
         .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
@@ -41,16 +41,7 @@
         .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; }
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(10vw, 5vh) rotate(10deg); } }
 
-        /* --- 3. PHÉNOMÈNES RARES --- */
-        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite alternate; pointer-events: none; }
-        .hoag-object { position: fixed; top: 25%; left: 35%; width: 60px; height: 60px; z-index: -8; pointer-events: none; }
-        .hoag-core { width: 15px; height: 15px; background: #ffeeaa; border-radius: 50%; margin: 22px auto; box-shadow: 0 0 10px #ffcc00; }
-        .hoag-ring { position: absolute; top: 0; width: 60px; height: 60px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; }
-        .green-pea { position: fixed; width: 4px; height: 4px; background: var(--pois-vert); border-radius: 50%; box-shadow: 0 0 10px var(--pois-vert); z-index: -11; }
-        .gp1 { top: 15%; right: 30%; } .gp2 { bottom: 35%; left: 20%; }
-        @keyframes ring-pulse { from { opacity: 0.3; scale: 0.9; } to { opacity: 0.8; scale: 1.1; } }
-
-        /* --- 4. INTERFACE --- */
+        /* --- 3. INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); margin-bottom: 50px; }
         #galerie-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
@@ -58,7 +49,6 @@
         .image-frame { width: 100%; height: 400px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
         .unlocked img { width: 100%; height: 100%; object-fit: cover; }
-        .locked { opacity: 0.5; }
         .crypt { color: #444; font-size: 0.8rem; letter-spacing: 2px; }
         .info { text-align: left; border-top: 1px solid #222; padding-top: 15px; }
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
@@ -67,6 +57,12 @@
         .btn-access { display: block; margin-top: 15px; padding: 10px; border: 1px solid white; color: white; text-decoration: none; text-align: center; font-size: 0.7rem; font-weight: bold; transition: 0.3s; }
         .btn-access:hover { background: white; color: black; }
         .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; }
+        
+        /* PANNEAU MAÎTRE */
+        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
+        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
+        .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; transition: 0.3s; font-family: 'Courier New', monospace; }
+        .btn-logout:hover { background: #ff3232; color: black; }
     </style>
 </head>
 <body>
@@ -77,54 +73,68 @@
     <div class="nebula-planet p-ring"></div><div class="nebula-planet p-ice"></div>
     <div class="nebula-planet p-crystal"></div><div class="nebula-planet p-toxic"></div>
     <div class="nebula-planet p-gold"></div><div class="nebula-planet p-moon"></div>
-    <div class="einstein-ring"></div>
-    <div class="hoag-object"><div class="hoag-ring"></div><div class="hoag-core"></div></div>
-    <div class="green-pea gp1"></div><div class="green-pea gp2"></div>
 
     <div class="container">
         <span style="font-size: 4rem;">👁️</span>
         <h1>NÉBULEUSE VISUELLE</h1>
+        
+        <div id="master-panel">
+            <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 PANNEAU DE CONTRÔLE HINARU</p>
+            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
+            <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION MAÎTRE DU TEMPS</button>
+        </div>
+
         <div id="galerie-container"></div>
         <a href="index.html" class="btn-portal">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
         const multiVerse = {
-            // --- GÉNÉRATION 1 : LES ORIGINES (Fixées) ---
+            // --- GÉNÉRATION 1 : LES ORIGINES ---
             "roman1": [ { date: "2026-02-16", url: "illustration1.jpg", ref: "SHADRASY : Le Souffle Originel", type: "ROMAN", link: "https://lien-roman1.com" } ],
             "roman2": [ { date: "2032-01-01", url: "guilde_aube.jpg", ref: "La Guilde de l'Aube", type: "ROMAN", link: "https://lien-roman2.com" } ],
             "roman3": [ { date: "2034-01-01", url: "r3.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
             "roman4": [ { date: "2036-01-01", url: "r4.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
 
-            // --- GÉNÉRATION 2 : ROMANS 5 & 6 (Indéfini) ---
-            "roman5": [ { date: "2099-12-31", url: "r5.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-            "roman6": [ { date: "2099-12-31", url: "r6.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-
-            // --- GÉNÉRATION 3 : ROMANS 7 & 8 (Indéfini) ---
-            "roman7": [ { date: "2099-12-31", url: "r7.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-            "roman8": [ { date: "2099-12-31", url: "r8.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-
-            // --- GÉNÉRATION 4 : ROMANS 9 & 10 (Indéfini) ---
-            "roman9": [ { date: "2099-12-31", url: "r9.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-            "roman10": [ { date: "2099-12-31", url: "r10.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-
-            // --- GÉNÉRATION 5 : ROMANS 11 & 12 (Indéfini) ---
-            "roman11": [ { date: "2099-12-31", url: "r11.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-            "roman12": [ { date: "2099-12-31", url: "r12.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-
-            // --- GÉNÉRATION 6 : ROMANS 13 & 14 (Indéfini) ---
-            "roman13": [ { date: "2099-12-31", url: "r13.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ],
-            "roman14": [ { date: "2099-12-31", url: "r14.jpg", ref: "[ SIGNAL EN ATTENTE DE GÉNÉRATION ]", type: "HÉRITAGE", link: "#" } ]
+            // --- GÉNÉRATIONS FUTURES (Indéfini 2099) ---
+            "roman5": [ { date: "2099-12-31", url: "r5.jpg", ref: "[ SIGNAL EN ATTENTE G2 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman6": [ { date: "2099-12-31", url: "r6.jpg", ref: "[ SIGNAL EN ATTENTE G2 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman7": [ { date: "2099-12-31", url: "r7.jpg", ref: "[ SIGNAL EN ATTENTE G3 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman8": [ { date: "2099-12-31", url: "r8.jpg", ref: "[ SIGNAL EN ATTENTE G3 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman9": [ { date: "2099-12-31", url: "r9.jpg", ref: "[ SIGNAL EN ATTENTE G4 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman10": [ { date: "2099-12-31", url: "r10.jpg", ref: "[ SIGNAL EN ATTENTE G4 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman11": [ { date: "2099-12-31", url: "r11.jpg", ref: "[ SIGNAL EN ATTENTE G5 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman12": [ { date: "2099-12-31", url: "r12.jpg", ref: "[ SIGNAL EN ATTENTE G5 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman13": [ { date: "2099-12-31", url: "r13.jpg", ref: "[ SIGNAL EN ATTENTE G6 ]", type: "HÉRITAGE", link: "#" } ],
+            "roman14": [ { date: "2099-12-31", url: "r14.jpg", ref: "[ SIGNAL EN ATTENTE G6 ]", type: "HÉRITAGE", link: "#" } ]
         };
 
         function chargerGalerie() {
             const urlParams = new URLSearchParams(window.location.search);
             const admin = urlParams.get('Hinaru') === 'true';
             const projetActuel = urlParams.get('projet') || 'roman1';
+            
+            // --- GESTION DU PANNEAU MAÎTRE ---
+            if (admin) {
+                document.getElementById('master-panel').style.display = 'block';
+                const nav = document.getElementById('nav-buttons');
+                nav.innerHTML = "";
+                Object.keys(multiVerse).forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-nav-master";
+                    btn.innerText = key.toUpperCase();
+                    btn.onclick = () => { window.location.href = `?projet=${key}&Hinaru=true`; };
+                    if(key === projetActuel) {
+                        btn.style.borderColor = "var(--vhs-vert)";
+                        btn.style.color = "var(--vhs-vert)";
+                    }
+                    nav.appendChild(btn);
+                });
+            }
+
             const archives = multiVerse[projetActuel];
             const aujourdhui = new Date().toISOString().split('T')[0];
             const container = document.getElementById('galerie-container');
-            
             container.innerHTML = ""; 
 
             if (!archives) {
@@ -135,7 +145,6 @@
             archives.forEach(item => {
                 const estDebloque = admin || aujourdhui >= item.date;
                 const tagClass = item.type === "ROMAN" ? "tag-roman" : "tag-multi";
-                
                 const box = document.createElement('div');
                 box.className = estDebloque ? 'box unlocked' : 'box locked';
                 
@@ -157,7 +166,6 @@
                 container.appendChild(box);
             });
         }
-
         window.onload = chargerGalerie;
     </script>
 </body>
