@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Mur des Théories (V63)</title>
+    <title>Archives - Mur des Théories (V72)</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://api.countapi.xyz; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer">
+    
     <style>
         :root { 
             --noir-fond: #010105; 
@@ -21,7 +26,7 @@
             background-attachment: fixed;
         }
 
-        /* --- 1. SYSTÈME DE FOND (SANS BLOQUER LE CLIC) --- */
+        /* --- 1. SYSTÈME DE FOND --- */
         .nebula-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -15; background: radial-gradient(circle at 50% 50%, var(--gaz-nebuleuse) 0%, transparent 80%); animation: nebula-pulse 12s infinite alternate ease-in-out; pointer-events: none; }
         .stars, .stars-2, .stars-slow { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -12; pointer-events: none; }
         .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; opacity: 0.6; animation: drift 150s linear infinite; }
@@ -31,8 +36,8 @@
         @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
         @keyframes nebula-pulse { from { transform: scale(1); opacity: 0.6; } to { transform: scale(1.2); opacity: 1; } }
 
-        /* --- 2. 5 ÉTOILES FILANTES --- */
-        .shooting-star { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white, -20px 0 30px rgba(255,255,255,0.2); z-index: -5; opacity: 0; animation: shoot linear infinite; pointer-events: none; }
+        /* --- 2. LES 5 ÉTOILES FILANTES --- */
+        .shooting-star { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white; z-index: -5; opacity: 0; animation: shoot linear infinite; pointer-events: none; }
         .m1 { top: 10%; left: -10%; animation-duration: 12s; animation-delay: 2s; }
         .m2 { top: 30%; left: -10%; animation-duration: 15s; animation-delay: 7s; }
         .m3 { top: 50%; left: -10%; animation-duration: 10s; animation-delay: 0s; }
@@ -41,63 +46,47 @@
         @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 80vh) rotate(35deg); opacity: 0; } 100% { opacity: 0; } }
 
         /* --- 3. TROU NOIR ET SES 5 PLANÈTES --- */
-        .black-hole-left { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -2; background: black; border-radius: 50%; box-shadow: 0 0 80px 20px rgba(136, 0, 255, 0.4), inset 0 0 50px rgba(255, 255, 255, 0.2); animation: bh-pulse 4s infinite alternate ease-in-out; }
-        @keyframes bh-pulse { to { transform: scale(1.1); } }
-
-        .orbit { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -3; animation: spin-orbit linear infinite; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.1); }
+        .black-hole-left { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -2; background: black; border-radius: 50%; box-shadow: 0 0 80px 20px rgba(136, 0, 255, 0.4); animation: pulse 4s infinite alternate; }
+        .orbit { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -3; animation: spin-orbit linear infinite; pointer-events: none; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8); }
         @keyframes spin-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse { to { transform: scale(1.1); } }
 
-        /* Les 5 Planètes Spécifiques */
         .orb1 { animation-duration: 35s; } .p1 { width: 35px; height: 35px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); transform: translateX(190px); }
         .orb2 { animation-duration: 55s; } .p2 { width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #ffcc00, #332200); transform: translateX(-270px); }
         .orb3 { animation-duration: 85s; } .p3 { width: 30px; height: 30px; background: #e0ffff; transform: translateY(330px); box-shadow: 0 0 15px white; }
         .orb4 { animation-duration: 120s; } .p4 { width: 95px; height: 95px; background: radial-gradient(circle at 30% 30%, #8b0000, #200000); transform: translateX(430px); }
         .orb5 { animation-duration: 45s; } .p5 { width: 18px; height: 18px; background: #fff; transform: translateY(-390px); box-shadow: 0 0 10px white; }
 
-        /* --- 4. STRUCTURES RARES ET GÉOMÉTRIQUES --- */
+        /* --- 4. PHÉNOMÈNES RARES --- */
         .hoag-object { position: fixed; top: 15%; right: 15%; width: 80px; height: 80px; z-index: -8; pointer-events: none; }
-        .hoag-core { position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; background: #ffeeaa; border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 15px #ffcc00; }
-        .hoag-ring { position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; transform: translate(-50%, -50%); animation: spin-orbit 20s linear infinite; }
-        
+        .hoag-core { width: 20px; height: 20px; background: #ffeeaa; border-radius: 50%; margin: 30px auto; box-shadow: 0 0 15px #ffcc00; }
+        .hoag-ring { position: absolute; top: 0; width: 80px; height: 80px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; animation: spin-orbit 20s linear infinite; }
         .green-pea { position: fixed; width: 5px; height: 5px; background: var(--pois-vert); border-radius: 50%; box-shadow: 0 0 10px var(--pois-vert); z-index: -11; }
         .gp1 { top: 20%; left: 40%; } .gp2 { bottom: 30%; right: 10%; }
-        
-        .light-echo { position: fixed; top: 40%; left: 70%; width: 10px; height: 10px; background: white; border-radius: 50%; z-index: -9; animation: echo-expand 8s infinite; pointer-events: none; }
-        @keyframes echo-expand { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(15); opacity: 0; } }
-        
-        .hannys-voorwerp { position: fixed; top: 10%; left: 25%; width: 250px; height: 180px; background: var(--fluo-hanny); filter: blur(45px); border-radius: 50%; z-index: -14; pointer-events: none; }
-        .microlens { position: fixed; top: 60%; right: 20%; width: 3px; height: 3px; background: white; z-index: -5; animation: lens-flash 5s infinite; }
-        @keyframes lens-flash { 0%, 90% { transform: scale(1); } 95% { transform: scale(4); filter: brightness(5); } }
+        .hannys-voorwerp { position: fixed; top: 10%; left: 25%; width: 250px; height: 180px; background: var(--fluo-hanny); filter: blur(45px); z-index: -14; pointer-events: none; }
 
-        /* --- 5. INTERFACE (CONSERVÉE ET SÉCURISÉE) --- */
+        /* --- 5. INTERFACE --- */
         .container { max-width: 850px; margin: 80px auto; padding: 20px; position: relative; z-index: 100; }
-        h1 { text-align: center; font-size: 3.5rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); margin-bottom: 40px; }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; border-radius: 2px; backdrop-filter: blur(10px); }
-        .signal-entry { background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; font-size: 0.9rem; }
-        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; box-sizing: border-box; }
-        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; font-weight: bold; cursor: pointer; width: 100%; letter-spacing: 2px; transition: 0.3s; }
-        .btn-send:hover { background: white; box-shadow: 0 0 20px var(--vhs-vert); }
-        .btn-back { display: block; text-align: center; margin-top: 40px; color: #888; text-decoration: none; border: 1px dashed #333; padding: 10px; transition: 0.3s; }
-        .btn-back:hover { color: white; border-color: white; }
+        h1 { text-align: center; font-size: 3.5rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; backdrop-filter: blur(10px); }
+        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; cursor: pointer; width: 100%; letter-spacing: 2px; font-weight: bold; }
+        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; }
+        .btn-back { display: block; text-align: center; margin-top: 40px; color: #888; text-decoration: none; border: 1px dashed #333; padding: 10px; }
     </style>
 </head>
 <body>
+    <script src="security.js"></script>
+
     <div class="nebula-overlay"></div>
-    <div class="stars"></div>
-    <div class="stars-2"></div>
-    <div class="stars-slow"></div>
+    <div class="stars"></div><div class="stars-2"></div><div class="stars-slow"></div>
     <div class="hannys-voorwerp"></div>
-    
     <div class="shooting-star m1"></div><div class="shooting-star m2"></div><div class="shooting-star m3"></div><div class="shooting-star m4"></div><div class="shooting-star m5"></div>
 
-    <div class="hoag-object"><div class="hoag-core"></div><div class="hoag-ring"></div></div>
+    <div class="hoag-object"><div class="hoag-ring"></div><div class="hoag-core"></div></div>
     <div class="green-pea gp1"></div><div class="green-pea gp2"></div>
-    <div class="light-echo"></div>
-    <div class="microlens"></div>
 
     <div class="black-hole-left"></div>
-
     <div class="orbit orb1"><div class="planet p1"></div></div>
     <div class="orbit orb2"><div class="planet p2"></div></div>
     <div class="orbit orb3"><div class="planet p3"></div></div>
@@ -108,14 +97,18 @@
         <span style="font-size: 4rem; display: block; text-align: center;">✍️</span>
         <h1>MUR DES THÉORIES</h1>
         <div class="box">
-            <form>
+            <form onsubmit="return checkSignalFrequency()">
+                <input type="text" name="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
+                
                 <label style="color:var(--vhs-vert); display:block; margin-bottom:15px; letter-spacing: 2px;">ANALYSE DU SPECTRE :</label>
                 <textarea rows="4" placeholder="Tapez votre théorie ici..."></textarea>
                 <input type="url" placeholder="Lien signal vidéo de référence">
-                <button type="button" class="btn-send" onclick="alert('Signal transmis aux archives.')">TRANSMETTRE AU CENTRE</button>
+                
+                <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
+            
             <div style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
-                <div class="signal-entry">
+                <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px;">
                     <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">SIGNAL #842 - V63</span>
                     "L'Objet de Hoag confirme une structure sans lien physique visible. L'armada planétaire reste stable autour du noyau."
                 </div>
