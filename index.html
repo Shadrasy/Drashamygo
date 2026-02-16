@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archives - L'Astre Créateur Suprême</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
         :root { 
             --noir-fond: #010108; 
@@ -52,16 +55,21 @@
         .orb4 { animation-duration: 120s; } .p4 { width: 60px; height: 60px; background: radial-gradient(circle at 30%, #62a, #000); transform: translateY(-450px); }
 
         /* --- 4. INTERFACE --- */
-        .container { position: relative; z-index: 9999; max-width: 1200px; margin: 100px auto; text-align: center; }
+        .container { position: relative; z-index: 100; max-width: 1200px; margin: 100px auto; text-align: center; }
         h1 { font-size: 4rem; letter-spacing: 15px; text-shadow: 0 0 25px rgba(255,255,255,0.6); margin-bottom: 60px; }
         .box { background: rgba(0,0,0,0.85); border: 1px solid #444; padding: 30px 15px; display: inline-block; width: 28%; margin: 1%; backdrop-filter: blur(12px); border-radius: 4px; vertical-align: top; }
         .icon { font-size: 4rem; display: block; margin-bottom: 15px; }
-        .btn { display: inline-block; border: 2px solid white; color: white; padding: 12px 20px; text-decoration: none; letter-spacing: 3px; font-weight: bold; background: rgba(255,255,255,0.05); transition: 0.3s; margin-top: 20px; font-size: 0.8rem; }
+        .btn { display: inline-block; border: 2px solid white; color: white; padding: 12px 20px; text-decoration: none; letter-spacing: 3px; font-weight: bold; background: rgba(255,255,255,0.05); transition: 0.3s; margin-top: 20px; font-size: 0.8rem; cursor: pointer; }
         .btn:hover { background: white; color: black; box-shadow: 0 0 30px white; transform: scale(1.05); }
 
         /* --- 5. OSD & VISITOR TRACKER --- */
         .osd { position: fixed; top: 30px; left: 30px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 9999; line-height: 1.5; pointer-events: none; }
         #visitor-module { margin-top: 15px; border-top: 1px solid rgba(0, 255, 65, 0.3); padding-top: 10px; letter-spacing: 2px; }
+
+        /* --- 6. ZONE QR CODE MAÎTRE --- */
+        #qr-master-zone { margin-top: 50px; display: block; }
+        #qrcode { background: white; padding: 15px; display: none; border-radius: 5px; margin: 20px auto; width: 150px; }
+        .qr-label { color: var(--vhs-vert); font-size: 10px; margin-top: 10px; display: none; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -106,22 +114,47 @@
             <h2>GALERIE</h2>
             <a href="galerie.html" class="btn">TRAVERSER</a>
         </div>
+
+        <div id="qr-master-zone">
+            <div id="qrcode"></div>
+            <p id="qr-text" class="qr-label">QR-CODE UNIQUE GÉNÉRÉ</p>
+            <button class="btn" onclick="genererPortailQR()">CRÉER PORTAIL QR</button>
+        </div>
     </div>
 
     <script>
+        // --- FONCTION GÉNÉRATEUR QR CODE ---
+        function genererPortailQR() {
+            const container = document.getElementById("qrcode");
+            const label = document.getElementById("qr-text");
+            container.innerHTML = ""; // Efface le précédent
+            
+            // Définit l'URL unique (Accueil des archives)
+            const urlUnique = "https://shadrasy.github.io/Drashamygo/index.html";
+            
+            new QRCode(container, {
+                text: urlUnique,
+                width: 150,
+                height: 150,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+            
+            container.style.display = "block";
+            label.style.display = "block";
+        }
+
+        // --- COMPTEUR DE VISITES ---
         async function updateCounter() {
-            // Remplace "archives_roman_2026" par une clé unique à ton projet
             const namespace = "archives_roman_2026_shadrasy"; 
             const key = "visites_uniques";
-            
             const today = new Date().toISOString().split('T')[0];
             const lastVisit = localStorage.getItem('last_visit_date');
 
-            // On vérifie si l'utilisateur est déjà venu AUJOURD'HUI
             let apiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
             
             if (lastVisit !== today) {
-                // Nouvelle visite unique (nouvelle journée ou nouvel utilisateur)
                 apiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
                 localStorage.setItem('last_visit_date', today);
             }
@@ -131,7 +164,6 @@
                 const data = await response.json();
                 document.getElementById('count-value').innerText = data.value.toLocaleString();
             } catch (error) {
-                // Si l'API est en maintenance, on affiche un message système
                 document.getElementById('count-value').innerText = "OFFLINE";
             }
         }
