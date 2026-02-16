@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V83)</title>
+    <title>Archives - Nébuleuse Visuelle (V84)</title>
     
     <script src="security.js"></script>
 
@@ -31,14 +31,17 @@
         @keyframes echo-expand { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(45); opacity: 0; } }
 
         /* --- 2. ARMADA DE PLANÈTES --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation: float 100s linear infinite alternate; pointer-events: none; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; border: 1px solid rgba(255,255,255,0.1); }
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation: float 100s linear infinite alternate; }
+        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; border: 1px solid rgba(255,255,255,0.1); pointer-events: none; }
         .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
-        .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; }
-        .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; }
-        .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; }
-        .p-gold { width: 20px; height: 20px; background: #ffcc00; top: 40%; left: 25%; box-shadow: 0 0 15px #ffcc00; }
-        .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; }
+        .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; pointer-events: none; }
+        .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; pointer-events: none; }
+        .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; pointer-events: none; }
+        
+        /* LA PLANÈTE CLÉ DORÉE */
+        .p-gold { width: 20px; height: 20px; background: #ffcc00; top: 40%; left: 25%; box-shadow: 0 0 15px #ffcc00; cursor: pointer; pointer-events: auto !important; }
+        
+        .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; pointer-events: none; }
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(10vw, 5vh) rotate(10deg); } }
 
         /* --- 3. INTERFACE --- */
@@ -60,7 +63,8 @@
         
         /* PANNEAU MAÎTRE */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
-        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
+        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; transition: 0.2s; }
+        .btn-nav-master:hover { border-color: var(--vhs-vert); color: var(--vhs-vert); }
         .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; transition: 0.3s; font-family: 'Courier New', monospace; }
         .btn-logout:hover { background: #ff3232; color: black; }
     </style>
@@ -70,9 +74,12 @@
     <div class="star-field"></div>
     <div class="light-echo"></div>
 
-    <div class="nebula-planet p-ring"></div><div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-crystal"></div><div class="nebula-planet p-toxic"></div>
-    <div class="nebula-planet p-gold"></div><div class="nebula-planet p-moon"></div>
+    <div class="nebula-planet p-ring"></div>
+    <div class="nebula-planet p-ice"></div>
+    <div class="nebula-planet p-crystal"></div>
+    <div class="nebula-planet p-toxic"></div>
+    <div class="nebula-planet p-gold" title="Activer Portail" onclick="activerModeMaitre()"></div>
+    <div class="nebula-planet p-moon"></div>
 
     <div class="container">
         <span style="font-size: 4rem;">👁️</span>
@@ -90,13 +97,10 @@
 
     <script>
         const multiVerse = {
-            // --- GÉNÉRATION 1 : LES ORIGINES ---
             "roman1": [ { date: "2026-02-16", url: "illustration1.jpg", ref: "SHADRASY : Le Souffle Originel", type: "ROMAN", link: "https://lien-roman1.com" } ],
             "roman2": [ { date: "2032-01-01", url: "guilde_aube.jpg", ref: "La Guilde de l'Aube", type: "ROMAN", link: "https://lien-roman2.com" } ],
             "roman3": [ { date: "2034-01-01", url: "r3.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
             "roman4": [ { date: "2036-01-01", url: "r4.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
-
-            // --- GÉNÉRATIONS FUTURES (Indéfini 2099) ---
             "roman5": [ { date: "2099-12-31", url: "r5.jpg", ref: "[ SIGNAL EN ATTENTE G2 ]", type: "HÉRITAGE", link: "#" } ],
             "roman6": [ { date: "2099-12-31", url: "r6.jpg", ref: "[ SIGNAL EN ATTENTE G2 ]", type: "HÉRITAGE", link: "#" } ],
             "roman7": [ { date: "2099-12-31", url: "r7.jpg", ref: "[ SIGNAL EN ATTENTE G3 ]", type: "HÉRITAGE", link: "#" } ],
@@ -109,12 +113,17 @@
             "roman14": [ { date: "2099-12-31", url: "r14.jpg", ref: "[ SIGNAL EN ATTENTE G6 ]", type: "HÉRITAGE", link: "#" } ]
         };
 
+        function activerModeMaitre() {
+            const url = new URL(window.location.href);
+            url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.href;
+        }
+
         function chargerGalerie() {
             const urlParams = new URLSearchParams(window.location.search);
             const admin = urlParams.get('Hinaru') === 'true';
             const projetActuel = urlParams.get('projet') || 'roman1';
             
-            // --- GESTION DU PANNEAU MAÎTRE ---
             if (admin) {
                 document.getElementById('master-panel').style.display = 'block';
                 const nav = document.getElementById('nav-buttons');
@@ -137,11 +146,6 @@
             const container = document.getElementById('galerie-container');
             container.innerHTML = ""; 
 
-            if (!archives) {
-                container.innerHTML = "<div class='crypt'>ERREUR : FRÉQUENCE INCONNUE</div>";
-                return;
-            }
-
             archives.forEach(item => {
                 const estDebloque = admin || aujourdhui >= item.date;
                 const tagClass = item.type === "ROMAN" ? "tag-roman" : "tag-multi";
@@ -159,8 +163,7 @@
                         <span class="type-tag ${tagClass}">${item.type}</span>
                         <span class="status">${estDebloque ? 'SIGNAL DÉCODÉ : ' + item.ref : 'VERROUILLÉ'}</span>
                         <p class="date">RÉCEPTION : ${item.date}</p>
-                        ${estDebloque ? `<a href="${item.link}" target="_blank" class="btn-access">ACCÉDER AU CONTENU</a>` : ''}
-                        ${admin ? `<p style="color:orange; font-size:10px; margin-top:10px;">MAÎTRE DU TEMPS : CLÉ HINARU ACTIVE</p>` : ''}
+                        ${admin ? `<p style="color:orange; font-size:10px; margin-top:10px;">MODE MAÎTRE DU TEMPS ACTIF</p>` : ''}
                     </div>
                 `;
                 container.appendChild(box);
