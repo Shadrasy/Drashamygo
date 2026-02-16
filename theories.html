@@ -3,39 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galerie - Nébuleuse</title>
+    <title>Archives - Mur des Théories</title>
     <style>
-        body { margin: 0; background: #010105; color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
-        /* Nébuleuse centrale animée */
-        .nebula { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(100, 0, 255, 0.2) 0%, transparent 70%), radial-gradient(circle at 20% 80%, rgba(0, 200, 255, 0.15) 0%, transparent 60%); z-index: -10; animation: nebula-pulse 10s infinite alternate; }
-        @keyframes nebula-pulse { from { opacity: 0.8; } to { opacity: 1; } }
-        .stars { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -5; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 200px 200px; opacity: 0.5; animation: spin 300s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        :root { 
+            --noir-fond: #010105; 
+            --vhs-vert: #00ff41;
+            --lumiere-violette: rgba(136, 0, 255, 0.3);
+        }
 
-        .container { max-width: 1000px; margin: auto; padding: 50px; text-align: center; position: relative; z-index: 10; }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
+        body {
+            margin: 0; background-color: var(--noir-fond); color: white;
+            font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
+            background: radial-gradient(circle at 15% 20%, var(--lumiere-violette) 0%, transparent 60%), var(--noir-fond);
+            background-attachment: fixed;
+        }
+
+        /* --- ÉTOILES ET ANIMATIONS DE FOND --- */
+        .stars {
+            position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -5;
+            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 100px 150px, #fff, transparent);
+            background-size: 300px 300px; opacity: 0.6; animation: drift 150s linear infinite;
+        }
+        @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(-15deg); } }
+
+        /* --- TROU NOIR À GAUCHE (VIVANT) --- */
+        .black-hole-left {
+            position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -2;
+            background: black; border-radius: 50%;
+            box-shadow: 0 0 80px 20px rgba(136, 0, 255, 0.4), inset 0 0 50px rgba(255, 255, 255, 0.2);
+            animation: pulse 4s infinite alternate ease-in-out;
+        }
+        @keyframes pulse { to { transform: scale(1.1); box-shadow: 0 0 100px 30px rgba(136, 0, 255, 0.6); } }
+
+        /* --- PLANÈTES UNIQUES DU CÔTÉ GAUCHE --- */
+        .orbit { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -3; animation: spin linear infinite; display: flex; align-items: center; justify-content: center; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8); }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* P-Emeraude */
+        .orb1 { animation-duration: 30s; } .p1 { width: 40px; height: 40px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); transform: translateX(160px); }
+        /* P-Or */
+        .orb2 { animation-duration: 60s; animation-delay: -10s; } .p2 { width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #ffcc00, #332200); transform: translateX(-240px); }
+        /* P-Cristal */
+        .orb3 { animation-duration: 90s; } .p3 { width: 30px; height: 30px; background: rgba(200, 255, 255, 0.8); transform: translateY(300px); box-shadow: 0 0 20px white; }
+
+        /* --- INTERFACE INTERACTIVE --- */
+        .container { max-width: 800px; margin: 80px auto; padding: 20px; position: relative; z-index: 10; text-align: center; }
+        h1 { font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+        .form-box { 
+            background: rgba(0, 0, 0, 0.9); border: 1px solid #333; 
+            padding: 40px; margin-top: 40px; text-align: left;
+            backdrop-filter: blur(10px);
+        }
+
+        label { color: var(--vhs-vert); display: block; margin-bottom: 10px; letter-spacing: 2px; font-size: 0.9rem; }
         
-        /* Cadres qui flottent */
-        .art-card { background: rgba(0,0,0,0.8); border: 1px solid #333; height: 300px; display: flex; align-items: center; justify-content: center; color: #555; animation: float 6s infinite alternate ease-in-out; backdrop-filter: blur(5px); }
-        .art-card:hover { border-color: white; color: white; box-shadow: 0 0 20px rgba(100, 100, 255, 0.3); }
-        @keyframes float { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        textarea, input[type="url"] {
+            width: 100%; background: #050505; border: 1px solid #444; color: white;
+            padding: 15px; font-family: 'Courier New', monospace; margin-bottom: 25px;
+            box-sizing: border-box;
+        }
+        textarea:focus, input:focus { border-color: var(--vhs-vert); outline: none; }
 
-        .btn-back { border: 1px solid white; color: white; padding: 12px 40px; text-decoration: none; display: inline-block; margin-top: 60px; letter-spacing: 3px; background: rgba(255,255,255,0.05); transition: 0.3s; }
-        .btn-back:hover { background: white; color: black; }
+        .btn-send { 
+            background: var(--vhs-vert); color: black; border: none; 
+            padding: 15px 40px; font-weight: bold; cursor: pointer; 
+            letter-spacing: 3px; width: 100%; transition: 0.3s;
+        }
+        .btn-send:hover { background: white; box-shadow: 0 0 20px var(--vhs-vert); }
+
+        .btn-back { 
+            display: inline-block; margin-top: 40px; color: #666; 
+            text-decoration: none; border: 1px dashed #444; padding: 10px 20px;
+        }
+        .btn-back:hover { color: white; border-color: white; }
     </style>
 </head>
 <body>
-    <div class="nebula"></div><div class="stars"></div>
+    <div class="stars"></div>
+    <div class="black-hole-left"></div>
+
+    <div class="orbit orb1"><div class="planet p1"></div></div>
+    <div class="orbit orb2"><div class="planet p2"></div></div>
+    <div class="orbit orb3"><div class="planet p3"></div></div>
 
     <div class="container">
-        <span style="font-size: 4rem; display:block; margin-bottom:20px;">👁️</span>
-        <h1 style="letter-spacing: 10px;">NÉBULEUSE VISUELLE</h1>
-        <div class="gallery-grid">
-            <div class="art-card" style="animation-delay: 0s;">EMPLACEMENT IMAGE 01</div>
-            <div class="art-card" style="animation-delay: -2s;">EMPLACEMENT IMAGE 02</div>
-            <div class="art-card" style="animation-delay: -4s;">EMPLACEMENT IMAGE 03</div>
+        <span style="font-size: 4rem;">✍️</span>
+        <h1>MUR DES THÉORIES</h1>
+        
+        <div class="form-box">
+            <form>
+                <label>VOTRE THÉORIE SUR LE PHÉNOMÈNE :</label>
+                <textarea rows="6" placeholder="Écrivez ici vos observations..."></textarea>
+
+                <label>LIEN VIDÉO DE RÉFÉRENCE (YouTube / Signal) :</label>
+                <input type="url" placeholder="https://www.youtube.com/watch?v=...">
+
+                <button type="button" class="btn-send" onclick="alert('Signal transmis aux archives.')">TRANSMETTRE AU CENTRE</button>
+            </form>
         </div>
-        <a href="index.html" class="btn-back">REPASSER LE PORTAIL</a>
+
+        <a href="index.html" class="btn-back"> < RETOUR AU CENTRE D'ANALYSE </a>
     </div>
 </body>
 </html>
