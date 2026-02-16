@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V88)</title>
+    <title>Archives - Nébuleuse Visuelle (V90)</title>
     
     <script src="security.js"></script>
 
@@ -35,7 +35,7 @@
         .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; }
         .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; }
         
-        /* PLANÈTE DORÉE (TON BOUTON FANTÔME) */
+        /* PLANÈTE DORÉE (DOUBLE-CLIC & POSITION MAÎTRE) */
         .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 15%; left: 10%; box-shadow: 0 0 20px #ffcc00; cursor: pointer; pointer-events: auto !important; z-index: 500; }
         
         .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; }
@@ -76,7 +76,7 @@
     <div class="nebula-planet p-ice"></div>
     <div class="nebula-planet p-crystal"></div>
     <div class="nebula-planet p-toxic"></div>
-    <div class="nebula-planet p-gold" onclick="activerModeMaitre()"></div>
+    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()"></div>
     <div class="nebula-planet p-moon"></div>
 
     <div class="container">
@@ -125,7 +125,7 @@
             if (admin) {
                 document.getElementById('master-panel').style.display = 'block';
                 const nav = document.getElementById('nav-buttons');
-                nav.innerHTML = ""; // Vide les anciens boutons
+                nav.innerHTML = "";
                 Object.keys(multiVerse).forEach(key => {
                     const btn = document.createElement('button');
                     btn.className = "btn-nav-master";
@@ -138,7 +138,7 @@
 
             const archives = multiVerse[projetActuel];
             const container = document.getElementById('galerie-container');
-            container.innerHTML = ""; // Vide la galerie avant d'afficher
+            container.innerHTML = "";
             
             archives.forEach(item => {
                 const estDebloque = admin || aujourdhui >= item.date;
