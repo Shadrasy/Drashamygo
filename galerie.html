@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.6 Master Edition)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.7 Omni-Master Edition)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -34,7 +34,7 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- DÉCOR NÉBULEUSE & PLANÈTES ANIMÉES --- */
+        /* --- DÉCOR NÉBULEUSE & PLANÈTES --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 400s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -59,6 +59,7 @@
         #galerie-container, #fan-cosplay-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
+        .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
         
         /* BADGE ORIGINAL CREATOR CUSTOM */
         .creator-badge {
@@ -83,6 +84,13 @@
         }
         .btn-action:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px var(--bleu-tech); }
 
+        /* --- MASTER PANEL ELEMENTS --- */
+        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
+        .master-input { background: black; color: white; border: 1px solid #444; padding: 8px; font-size: 10px; margin-bottom: 10px; width: 85%; }
+        .master-select { background: black; color: white; border: 1px solid #444; padding: 5px; font-size: 10px; }
+        
+        #protocol-display { display:none; background:rgba(0,15,0,0.98); border: 1px solid var(--vhs-vert); padding:20px; font-size:11px; text-align:left; color:var(--vhs-vert); margin-bottom:30px; border-radius: 5px; line-height: 1.6; }
+
         .theory-input { background: #000; color: var(--cosplay-gold); border: 1px solid var(--bordeaux); padding: 5px; width: 90%; font-size: 9px; margin-top: 5px; font-family: monospace; }
         .twitch-link { color: #a970ff; text-decoration: none; font-size: 10px; font-weight: bold; }
     </style>
@@ -98,34 +106,77 @@
 
     <div class="container">
         <h1>NÉBULEUSE VISUELLE</h1>
-        
-        <div id="master-panel" style="display:none;">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.6)</p>
-            <div id="nav-buttons" style="margin-bottom:15px; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
+        <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; color:red;">SIGNALS_TRACKED: OFFLINE</div>
+
+        <div id="master-panel">
+            <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 CONTRÔLE MAÎTRE HINARU (V100.7 OMNI)</p>
             
-            <div style="margin-bottom:15px;">
-                <button class="btn-action" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PIPELINE 13 ]</button>
+            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom:20px;"></div>
+            
+            <div style="margin-bottom:20px; display:flex; gap:10px; justify-content:center; flex-wrap: wrap;">
+                <button class="btn-action" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PIPELINE 13 MOD ]</button>
+                <button class="btn-action" onclick="afficherProtocole('industriel')" style="border-color:var(--standard-magenta); color:var(--standard-magenta);">[ STANDARDS MÉTIER ]</button>
+                <button class="btn-action" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
                 <button class="btn-action" style="border-color:orange; color:orange;" onclick="toggleStreamerMode()" id="streamer-btn">[ STREAMER MODE : OFF ]</button>
             </div>
+
+            <div id="protocol-display">
+                <div id="protocol-content"></div>
+                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
+            </div>
+
+            <div style="border-top:1px dashed var(--vhs-vert); padding-top:20px; text-align: left;">
+                <p style="color:orange; font-weight:bold; margin-bottom:15px;">⚡ PROGRAMMATEUR : STUDIO DE FUSION (W4.7)</p>
+                <input type="text" id="img-url" class="master-input" placeholder="Lien image (.png/.jpg)">
+                <input type="text" id="glb-url" class="master-input" placeholder="Lien objet 3D (.glb)">
+                <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows (Module W1 à W13)..."></textarea>
+                
+                <div style="margin-bottom:15px; font-size:10px;">
+                    TYPE : 
+                    <select id="img-type" class="master-select" onchange="toggleTomeField()">
+                        <option value="Livre">LIVRE</option>
+                        <option value="Anime">ANIME</option>
+                        <option value="Serie">SERIE</option>
+                        <option value="Cosplay">COSPLAY (Blueprint)</option>
+                        <option value="Fan-Cosplay">FAN-COSPLAY (Photo)</option>
+                        <option value="World">WORLD</option>
+                    </select>
+                    <span id="tome-input-area" style="margin-left:10px;"> TOME : <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white; border:1px solid #444;"></span>
+                    <span style="margin-left:10px;"> DATE : <input type="datetime-local" id="img-date" class="master-select"></span>
+                </div>
+                
+                <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; padding:10px;">GÉNÉRER LE CODE FUSION</button>
+                <textarea id="output-code" class="master-input" style="width:95%; height:80px; margin-top:15px; display:none; background:#050505; color:cyan; border-color:cyan;"></textarea>
+            </div>
+            <button class="btn-action" style="color:red; margin-top:20px; border-color:red;" onclick="window.location.href='galerie.html'">DÉCONNEXION SYSTÈME</button>
         </div>
 
-        <div id="protocol-display" style="display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); padding:15px; font-size:10px; color:var(--vhs-vert); margin-bottom:20px;">
-            <div id="protocol-content"></div>
-        </div>
-
-        <div class="section-title">Archives Tactiques</div>
+        <div id="chrono-title" class="section-title">Archives Tactiques (Signals Tracked)</div>
         <div id="galerie-container"></div>
 
-        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold);">[ TRANSMISSIONS : THEORIES SYNC ]</div>
+        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold); border-color:var(--cosplay-gold);">
+            [ TRANSMISSIONS RÉELLES : COSPLAY & THÉORIES ]
+        </div>
         <div id="fan-cosplay-container"></div>
         
-        <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
+        <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px; font-size: 10px;">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
         const romansConfig = [
             { id: 1, nom: "Shadrasy", public: true },
+            { id: 2, nom: "Projet 2", public: false },
+            { id: 3, nom: "Projet 3", public: false },
             { id: 4, nom: "Roman 4", public: true },
+            { id: 5, nom: "Projet 5", public: false },
+            { id: 6, nom: "Projet 6", public: false },
+            { id: 7, nom: "Projet 7", public: false },
+            { id: 8, nom: "Projet 8", public: false },
+            { id: 9, nom: "Projet 9", public: false },
+            { id: 10, nom: "Projet 10", public: false },
+            { id: 11, nom: "Projet 11", public: false },
+            { id: 12, nom: "Projet 12", public: false },
+            { id: 13, nom: "Projet 13", public: false },
             { id: 14, nom: "Projet 14", public: false }
         ];
 
@@ -133,12 +184,23 @@
         const isHinaru = urlParams.get('Hinaru') === 'true';
         let streamerActive = false;
 
-        if (isHinaru) document.getElementById('master-panel').style.display = 'block';
+        if (isHinaru) {
+            const status = document.getElementById('signals-status');
+            status.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
+            status.style.color = "var(--vhs-vert)";
+            document.getElementById('master-panel').style.display = 'block';
+        }
 
         function toggleStreamerMode() {
             streamerActive = !streamerActive;
-            document.getElementById('master-panel').style.opacity = streamerActive ? "0.2" : "1";
+            const panel = document.getElementById('master-panel');
+            panel.style.opacity = streamerActive ? "0.15" : "1";
             document.getElementById('streamer-btn').innerText = streamerActive ? "[ STREAMER MODE : ON ]" : "[ STREAMER MODE : OFF ]";
+        }
+
+        function toggleTomeField() {
+            const type = document.getElementById('img-type').value;
+            document.getElementById('tome-input-area').style.display = (type === 'World' || type === 'Fan-Cosplay') ? 'none' : 'inline';
         }
 
         function activerModeMaitre() {
@@ -149,8 +211,30 @@
 
         function afficherProtocole(type) {
             const display = document.getElementById('protocol-display');
+            const content = document.getElementById('protocol-content');
             display.style.display = 'block';
-            document.getElementById('protocol-content').innerHTML = "SYSTEM LOGS: W1.5 Décor 3D | W4.7 Fusion | W10 Rendu 4K";
+            if(type === 'methode') {
+                content.innerHTML = `<p style="color:cyan; font-weight:bold;">[ CINEMATIC PRO : 13 MODULES ]</p>• W1.5 : Environnement & Décor 3D.<br>• W4.7 : Studio de Fusion Assets.<br>• W10 : Post-traitement & Rendu 4K.`;
+            } else if(type === 'industriel') {
+                content.innerHTML = `<p style="color:#ff00ff; font-weight:bold;">[ STANDARDS MÉTIER ]</p>• COHÉRENCE : Brandon Sanderson Hard Magic Rules.<br>• PIPELINE : Lucasfilm Cinematic Structure.<br>• BADGE : Original Author Authentication.`;
+            } else {
+                content.innerHTML = `<p style="color:yellow; font-weight:bold;">[ PROTOCOLE SILENCE ]</p>• "Le visuel installe l'âme, le texte installe l'action."<br>• Règle d'Or : Ne jamais rompre la cohérence de la Nébuleuse.`;
+            }
+        }
+
+        function genererCodeSignal() {
+            const url = document.getElementById('img-url').value;
+            const glb = document.getElementById('glb-url').value;
+            const tech = document.getElementById('img-tech').value;
+            const type = document.getElementById('img-type').value;
+            const tome = document.getElementById('img-tome').value;
+            const date = document.getElementById('img-date').value;
+            const proj = urlParams.get('projet') || 1;
+            
+            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${proj}, type: "${type}", tome: ${tome}, date: "${date}", nom: "Hinaru (Creator)" },`;
+            const out = document.getElementById('output-code');
+            out.value = code;
+            out.style.display = 'block';
         }
 
         function chargerGalerie() {
@@ -158,22 +242,33 @@
             const fanContainer = document.getElementById('fan-cosplay-container');
             const nav = document.getElementById('nav-buttons');
             const projetActuel = parseInt(urlParams.get('projet')) || 1;
+            const now = new Date();
             
             container.innerHTML = ""; fanContainer.innerHTML = ""; nav.innerHTML = "";
+            document.getElementById('cosplay-section-title').style.display = 'none';
 
             romansConfig.forEach(r => {
-                const btn = document.createElement('button');
-                btn.className = "btn-nav-master";
-                btn.innerText = `R${r.id}`;
-                if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
-                btn.onclick = () => { window.location.search = `?projet=${r.id}${isHinaru ? '&Hinaru=true' : ''}`; };
-                nav.appendChild(btn);
+                if (isHinaru || r.public) {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-nav-master";
+                    btn.style.cssText = "background:black; color:white; border:1px solid white; cursor:pointer; padding:5px 10px; font-size:9px; margin:2px;";
+                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
+                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
+                    btn.onclick = () => { 
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('projet', r.id);
+                        window.location.href = url.toString();
+                    };
+                    nav.appendChild(btn);
+                }
             });
 
             if (typeof archivesData !== 'undefined') {
                 archivesData.filter(item => item.roman === projetActuel).forEach((item, index) => {
+                    const releaseDate = new Date(item.date);
+                    const estDebloque = isHinaru || (now >= releaseDate);
                     const box = document.createElement('div');
-                    box.className = 'box unlocked';
+                    box.className = estDebloque ? 'box unlocked' : 'box locked';
                     
                     if (item.type === "Fan-Cosplay") {
                         document.getElementById('cosplay-section-title').style.display = 'block';
@@ -189,21 +284,15 @@
                             <div style="font-size:0.7rem; color:var(--cosplay-gold); text-align:left;">
                                 <b>ID : ${item.nom.toUpperCase()}</b> ${twitch}<br>
                                 <input type="text" placeholder="SOUMETTRE THÉORIE..." class="theory-input">
-                                <button class="btn-action" style="font-size:6px;" onclick="alert('SIGNAL ENVOYÉ AU MASTER')">[ SUBMIT ]</button>
+                                <button class="btn-action" style="font-size:6px; margin-top:5px;" onclick="alert('SIGNAL ENVOYÉ AU MASTER')">[ TRANSMIT THEORY ]</button>
                             </div>`;
                         fanContainer.appendChild(box);
                     } else {
-                        // RE-ACTIVATION DE LA 3D ET DU RESET
-                        let media = item.glb ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" auto-rotate camera-controls shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:contain;">`;
-                        let buttons = item.glb ? `<button class="btn-action" style="border-color:orange; color:orange;" onclick="document.getElementById('m-${index}').cameraOrbit='0deg 75deg 105%';">[ RESET CAMERA ]</button>` : "";
+                        let media = estDebloque ? (item.glb ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" auto-rotate camera-controls shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:contain;">`) : `[ SIGNAL_CRYPTÉ ]`;
+                        let buttons = (estDebloque && item.glb) ? `<button class="btn-action" style="border-color:orange; color:orange; margin-top:10px;" onclick="document.getElementById('m-${index}').cameraOrbit='0deg 75deg 105%'; document.getElementById('m-${index}').cameraTarget='auto auto auto'">[ RESET CAMERA ]</button>` : "";
+                        let hud = (estDebloque && item.tech) ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br><span style="color:yellow; font-size:7px;">ARCH: DATABASE_LINKED</span><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
                         
-                        box.innerHTML = `
-                            <div class="image-frame">
-                                ${media}
-                                <div class="hud-technique"><b>SCAN</b><br>> ${item.type}<br>> DATABASE_LINKED</div>
-                            </div>
-                            ${buttons}
-                            <div style="font-size:0.7rem; text-align:left; margin-top:5px;"><span style="color:var(--vhs-vert);">DATABASE_ID: #${index+1000}</span></div>`;
+                        box.innerHTML = `<div class="image-frame">${media}${hud}</div>${buttons}<div style="font-size:0.7rem; text-align:left; margin-top:10px;"><span class="type-tag" style="border-color:var(--vhs-vert)">${item.type.toUpperCase()}</span><br>DATABASE_ID: #${index+1000}</div>`;
                         container.appendChild(box);
                     }
                 });
