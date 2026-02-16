@@ -19,7 +19,7 @@
             font-family: 'Courier New', monospace; overflow-x: hidden; 
         }
         
-        /* --- 1. DÉCORS GALACTIQUES (POINTER-EVENTS NONE) --- */
+        /* --- 1. DÉCORS GALACTIQUES --- */
         .bg-layer { position: fixed; inset: 0; pointer-events: none; }
         .redshift { background: radial-gradient(circle, transparent 40%, var(--extinction-rouge) 100%); z-index: -1; }
         .spiral { background: conic-gradient(from 0deg, transparent, rgba(100, 200, 255, 0.05) 10%, transparent 50%); width: 250vmax; height: 250vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; }
@@ -33,14 +33,7 @@
         @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
         @keyframes gas-pulse { from { opacity: 0.5; } to { opacity: 1; } }
 
-        /* --- 2. MÉTÉORES --- */
-        .meteor { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white; z-index: -4; opacity: 0; animation: shoot linear infinite; }
-        .m1 { top: 5%; left: -10%; animation-duration: 8s; animation-delay: 2s; }
-        .m2 { top: 40%; left: -10%; animation-duration: 12s; animation-delay: 5s; }
-        .m3 { top: 80%; left: -10%; animation-duration: 10s; animation-delay: 0s; }
-        @keyframes shoot { 0% { transform: translate(0,0) rotate(25deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 50vh) rotate(25deg); opacity: 0; } 100% { opacity: 0; } }
-
-        /* --- 3. QUASAR CENTRAL --- */
+        /* --- 2. QUASAR CENTRAL --- */
         .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; pointer-events: none; }
         .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px white, inset 0 0 50px rgba(0, 100, 255, 0.5); animation: pulse 4s infinite alternate; }
         .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
@@ -49,7 +42,7 @@
         @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
 
-        /* --- 4. ARMADA DES 4 PLANÈTES --- */
+        /* --- 3. ARMADA DES 4 PLANÈTES --- */
         .orbit { position: fixed; top: 50%; left: 50%; z-index: -3; animation: orbit-spin linear infinite; pointer-events: none; }
         .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 20px black; }
         @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -58,26 +51,26 @@
         .orb3 { animation-duration: 80s; animation-delay: -30s; } .p3 { width: 140px; height: 140px; background: radial-gradient(circle at 30%, #a22, #000); transform: translateY(380px); }
         .orb4 { animation-duration: 120s; } .p4 { width: 60px; height: 60px; background: radial-gradient(circle at 30%, #62a, #000); transform: translateY(-450px); }
 
-        /* --- 5. INTERFACE À 3 BOÎTES --- */
+        /* --- 4. INTERFACE --- */
         .container { position: relative; z-index: 9999; max-width: 1200px; margin: 100px auto; text-align: center; }
         h1 { font-size: 4rem; letter-spacing: 15px; text-shadow: 0 0 25px rgba(255,255,255,0.6); margin-bottom: 60px; }
-        
-        .box { 
-            background: rgba(0,0,0,0.85); border: 1px solid #444; 
-            padding: 30px 15px; display: inline-block; 
-            width: 28%; margin: 1%; /* Ajustement pour 3 colonnes */
-            backdrop-filter: blur(12px); border-radius: 4px; vertical-align: top;
-        }
-        
+        .box { background: rgba(0,0,0,0.85); border: 1px solid #444; padding: 30px 15px; display: inline-block; width: 28%; margin: 1%; backdrop-filter: blur(12px); border-radius: 4px; vertical-align: top; }
         .icon { font-size: 4rem; display: block; margin-bottom: 15px; }
         .btn { display: inline-block; border: 2px solid white; color: white; padding: 12px 20px; text-decoration: none; letter-spacing: 3px; font-weight: bold; background: rgba(255,255,255,0.05); transition: 0.3s; margin-top: 20px; font-size: 0.8rem; }
         .btn:hover { background: white; color: black; box-shadow: 0 0 30px white; transform: scale(1.05); }
 
-        .osd { position: fixed; top: 30px; left: 30px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 9999; line-height: 1.5; }
+        /* --- 5. OSD & VISITOR TRACKER --- */
+        .osd { position: fixed; top: 30px; left: 30px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 9999; line-height: 1.5; pointer-events: none; }
+        #visitor-module { margin-top: 15px; border-top: 1px solid rgba(0, 255, 65, 0.3); padding-top: 10px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-    <div class="osd">PLAY ▷<br>00:31:05:26<br>SCAN : UNIVERSE LOADED</div>
+    <div class="osd">
+        PLAY ▷<br>00:31:05:26<br>SCAN : UNIVERSE LOADED
+        <div id="visitor-module">
+            SIGNALS_TRACKED: <span id="count-value">SCANNING...</span>
+        </div>
+    </div>
 
     <div class="bg-layer redshift"></div>
     <div class="bg-layer spiral"></div>
@@ -86,7 +79,6 @@
     <div class="bg-layer nebula-gas"></div>
     <div class="supernova"></div>
     <div class="bulge"></div>
-    <div class="meteor m1"></div><div class="meteor m2"></div><div class="meteor m3"></div>
 
     <div class="quasar-container">
         <div class="jet"></div><div class="accretion-disk"></div><div class="black-hole"></div>
@@ -99,24 +91,52 @@
 
     <div class="container">
         <h1>ARCHIVES</h1>
-        
         <div class="box">
             <span class="icon">✍️</span>
             <h2>THÉORIES</h2>
             <a href="theories.html" class="btn">PROPOSER</a>
         </div>
-
         <div class="box">
             <span class="icon">📡</span>
             <h2>SYSTÈME</h2>
             <a href="systeme.html" class="btn">ANALYSER</a>
         </div>
-
         <div class="box">
             <span class="icon">👁️</span>
             <h2>GALERIE</h2>
             <a href="galerie.html" class="btn">TRAVERSER</a>
         </div>
     </div>
+
+    <script>
+        async function updateCounter() {
+            // Remplace "archives_roman_2026" par une clé unique à ton projet
+            const namespace = "archives_roman_2026_shadrasy"; 
+            const key = "visites_uniques";
+            
+            const today = new Date().toISOString().split('T')[0];
+            const lastVisit = localStorage.getItem('last_visit_date');
+
+            // On vérifie si l'utilisateur est déjà venu AUJOURD'HUI
+            let apiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+            
+            if (lastVisit !== today) {
+                // Nouvelle visite unique (nouvelle journée ou nouvel utilisateur)
+                apiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+                localStorage.setItem('last_visit_date', today);
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                document.getElementById('count-value').innerText = data.value.toLocaleString();
+            } catch (error) {
+                // Si l'API est en maintenance, on affiche un message système
+                document.getElementById('count-value').innerText = "OFFLINE";
+            }
+        }
+
+        updateCounter();
+    </script>
 </body>
 </html>
