@@ -22,6 +22,7 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
+        /* --- DÉCORS --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -33,6 +34,7 @@
         .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 20%; left: 10%; }
         .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 15%; right: 15%; }
 
+        /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
@@ -95,6 +97,7 @@
                     <select id="img-type" style="background:black; color:white; border:1px solid #444;" onchange="toggleTomeField()">
                         <option value="Livre">LIVRE (Recto)</option>
                         <option value="Dos">DOS (Verso)</option>
+                        <option value="Chapitre">CHAPITRE (Intérieur)</option>
                         <option value="Anime">ANIME (Concept)</option>
                         <option value="Serie">SÉRIE (3D/Lieux)</option>
                         <option value="World">WORLD (Encyclopédie)</option>
@@ -229,7 +232,12 @@
                 const romanActuel = romansConfig.find(r => r.id === projetActuel);
                 const dataFiltrée = archivesData.filter(item => {
                     const matchRoman = item.roman === projetActuel;
-                    const matchType = filtreType ? (filtreType === 'Livre' ? (item.type === 'Livre' || item.type === 'Dos') : item.type === filtreType) : true;
+                    // Ajustement ici : Si on filtre 'Livre', on prend Livre, Dos et Chapitre
+                    const matchType = filtreType ? (
+                        filtreType === 'Livre' 
+                        ? (item.type === 'Livre' || item.type === 'Dos' || item.type === 'Chapitre') 
+                        : item.type === filtreType
+                    ) : true;
                     return matchRoman && matchType;
                 });
 
