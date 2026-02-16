@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V99.7 Cinematic)</title>
+    <title>Archives - Nébuleuse Visuelle (V99.7.1 Cinematic)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -105,7 +105,9 @@
                         <option value="Fan-Cosplay">FAN-COSPLAY (Photo)</option>
                         <option value="World">WORLD</option>
                     </select>
-                    TOME : <input type="number" id="img-tome" value="1" style="width:45px; background:black; color:white; border:1px solid #444;">
+                    <span id="tome-input-area">
+                        TOME : <input type="number" id="img-tome" value="1" style="width:45px; background:black; color:white; border:1px solid #444;">
+                    </span>
                     DATE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
                 </div>
                 <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE FUSION</button>
@@ -142,7 +144,8 @@
 
         function toggleTomeField() {
             const type = document.getElementById('img-type').value;
-            document.getElementById('img-tome').style.display = (type === 'World' || type === 'Fan-Cosplay') ? 'none' : 'inline';
+            // Correction ici : On cache le span complet
+            document.getElementById('tome-input-area').style.display = (type === 'World' || type === 'Fan-Cosplay') ? 'none' : 'inline';
         }
 
         function afficherProtocole(type) {
@@ -170,7 +173,8 @@
             const tech = document.getElementById('img-tech').value;
             const type = document.getElementById('img-type').value;
             const date = document.getElementById('img-date').value;
-            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: 1, type: "${type}", date: "${date}", nom: "Hinaru (Creator)" },`;
+            const projet = urlParams.get('projet') || 1;
+            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${projet}, type: "${type}", date: "${date}", nom: "Hinaru (Creator)" },`;
             document.getElementById('output-code').value = code;
             document.getElementById('output-code').style.display = 'block';
         }
@@ -178,14 +182,36 @@
         function chargerGalerie() {
             const container = document.getElementById('galerie-container');
             const fanContainer = document.getElementById('fan-cosplay-container');
+            const nav = document.getElementById('nav-buttons');
+            const projetActuel = parseInt(urlParams.get('projet')) || 1;
             const now = new Date();
             
             container.innerHTML = "";
             fanContainer.innerHTML = "";
+            nav.innerHTML = "";
             document.getElementById('cosplay-section-title').style.display = 'none';
 
+            // Navigation Romans
+            romansConfig.forEach(r => {
+                if (isHinaru || r.public) {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-nav-master";
+                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
+                    btn.onclick = () => { 
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('projet', r.id);
+                        window.location.href = url.toString();
+                    };
+                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
+                    nav.appendChild(btn);
+                }
+            });
+
             if (typeof archivesData !== 'undefined') {
-                archivesData.forEach((item, index) => {
+                // Filtre par roman actuel
+                const dataFiltrée = archivesData.filter(item => item.roman === projetActuel);
+
+                dataFiltrée.forEach((item, index) => {
                     const releaseDate = new Date(item.date);
                     const estDebloque = isHinaru || (now >= releaseDate);
                     
