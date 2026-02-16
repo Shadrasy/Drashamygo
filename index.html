@@ -2,91 +2,32 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives du Multivers - Portail Actif</title>
+    <title>Archives - Astre Créateur</title>
     <style>
-        :root { 
-            --noir-fond: #010105; 
-            --vhs-vert: #00ff41;
-            --lumiere-creatrice: rgba(100, 200, 255, 0.3);
-        }
-
-        body {
-            margin: 0; background-color: var(--noir-fond); color: white;
-            font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
-            /* FOND : LE TROU NOIR EST À DROITE */
-            background: radial-gradient(circle at 85% 20%, var(--lumiere-creatrice) 0%, transparent 60%), var(--noir-fond);
-            background-attachment: fixed;
-        }
-
-        /* --- SYSTÈME D'ÉTOILES DENSE (SANS GRILLAGE) --- */
-        .stars-field {
-            position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -5;
-            background-image: 
-                radial-gradient(1px 1px at 25px 35px, #fff, transparent),
-                radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent);
-            background-size: 400px 400px; opacity: 0.7; animation: galaxy-drift 200s linear infinite;
-        }
-        @keyframes galaxy-drift { from { transform: rotate(0deg); } to { transform: rotate(10deg); } }
-
-        /* --- LE TROU NOIR CRÉATEUR (FIXE À DROITE) --- */
-        .creator-portal {
-            position: fixed; top: 10%; right: 8%; width: 140px; height: 140px; z-index: -2;
-            background: black; border-radius: 50%;
-            box-shadow: 0 0 60px 15px rgba(255, 255, 255, 0.3), inset 0 0 40px rgba(100, 200, 255, 0.6);
-            animation: pulse-portal 6s infinite alternate ease-in-out;
-        }
-        @keyframes pulse-portal { from { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
-
-        /* --- INTERFACE ET SECTIONS --- */
-        header { padding: 80px 20px; text-align: center; position: relative; z-index: 500; }
-        h1 { font-size: 3.5rem; letter-spacing: 15px; margin: 0; text-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
-
-        .container { max-width: 850px; margin: auto; padding: 20px; position: relative; z-index: 500; }
-        
-        .box { 
-            background: rgba(0, 0, 0, 0.9); border: 1px solid #222; 
-            padding: 40px; margin-bottom: 40px; backdrop-filter: blur(10px); 
-        }
-
-        .btn { 
-            display: inline-block; border: 1px solid white; color: white; 
-            padding: 15px 35px; text-decoration: none; font-weight: bold; 
-            background: rgba(255,255,255,0.05); letter-spacing: 5px; transition: 0.3s;
-        }
-        .btn:hover { background: white; color: black; box-shadow: 0 0 20px white; }
-
-        /* --- PLANÈTES EN ORBITE --- */
-        .orbit { position: fixed; top: 50%; left: 50%; width: 0; height: 0; z-index: -3; animation: spin linear infinite; }
-        .p-red { width: 180px; height: 180px; background: radial-gradient(circle at 30% 30%, #881111, #110000); border-radius: 50%; transform: translateX(-300px); box-shadow: inset -15px -15px 40px black; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        body { margin: 0; background: radial-gradient(circle at 85% 20%, rgba(0, 100, 255, 0.3) 0%, transparent 60%), #010105; color: white; font-family: 'Courier New', monospace; overflow-x: hidden; }
+        .black-hole { position: fixed; top: 10%; right: 8%; width: 140px; height: 140px; background: black; border-radius: 50%; box-shadow: 0 0 60px 15px white, inset 0 0 40px rgba(0, 100, 255, 0.6); animation: pulse 6s infinite alternate ease-in-out; }
+        @keyframes pulse { from { transform: scale(1); } 100% { transform: scale(1.1); } }
+        .container { max-width: 800px; margin: 100px auto; padding: 20px; position: relative; z-index: 10; }
+        .box { background: rgba(0,0,0,0.8); border: 1px solid #222; padding: 40px; margin-bottom: 40px; text-align: center; backdrop-filter: blur(10px); }
+        .icon { font-size: 3rem; margin-bottom: 20px; display: block; }
+        .btn { display: inline-block; border: 2px solid white; color: white; padding: 15px 40px; text-decoration: none; letter-spacing: 5px; font-weight: bold; background: rgba(255,255,255,0.1); transition: 0.3s; }
+        .btn:hover { background: white; color: black; box-shadow: 0 0 30px white; }
     </style>
 </head>
 <body>
-    <div class="stars-field"></div>
-    <div class="creator-portal"></div>
-
-    <header>
-        <h1>ARCHIVES</h1>
-        <p style="color: #444; letter-spacing: 5px;">[ SIGNAL MULTIVERS : POINT D'ENTRÉE ]</p>
-    </header>
-
+    <div class="black-hole"></div>
     <div class="container">
+        <h1>ARCHIVES</h1>
         <div class="box">
-            <h2 style="letter-spacing: 5px; text-transform: uppercase;">Mur des Théories</h2>
-            <p style="color: #888; margin-bottom: 25px;">Consultez les rapports du centre ou transmettez votre analyse.</p>
-            <a href="theories.html" class="btn">OUVRIR RAPPORTS</a>
+            <span class="icon">✍️</span>
+            <h2>MUR DES THÉORIES</h2>
+            <a href="theories.html" class="btn">PROPOSER</a>
         </div>
-
         <div class="box">
-            <h2 style="letter-spacing: 5px; text-transform: uppercase;">Exploration Visuelle</h2>
-            <p style="color: #888; margin-bottom: 25px;">Traversez le trou noir pour accéder à la nébuleuse des illustrations.</p>
+            <span class="icon">👁️</span>
+            <h2>GALERIE VISUELLE</h2>
             <a href="galerie.html" class="btn">TRAVERSER LE PORTAIL</a>
         </div>
     </div>
-
-    <div class="orbit" style="animation-duration: 100s;"><div class="p-red"></div></div>
-
-    <div style="position: fixed; top: 25px; left: 25px; color: var(--vhs-vert); font-size: 0.8rem;">PLAY ▷<br>PORTAL STATUS: STABLE</div>
 </body>
 </html>
