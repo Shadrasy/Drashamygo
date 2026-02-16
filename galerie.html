@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V99.7.1 Cinematic)</title>
+    <title>Archives - Nébuleuse Visuelle (V99.8 Cinematic Master)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -91,6 +91,13 @@
                 <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
             </div>
 
+            <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
+                <button class="btn-nav-master" onclick="chargerGalerie('Livre')">LIVRE</button>
+                <button class="btn-nav-master" onclick="chargerGalerie('Anime')">ANIME</button>
+                <button class="btn-nav-master" onclick="chargerGalerie('Serie')">SÉRIE</button>
+                <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
+            </div>
+
             <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px;">
                 <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR : STUDIO DE FUSION (W4.7)</p>
                 <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
@@ -113,6 +120,7 @@
                 <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE FUSION</button>
                 <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
+            <button class="btn-nav-master" style="color:red; margin-top:20px;" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
         <div id="chrono-title" class="section-title">Archives Tactiques (Pipeline 13 Modules)</div>
@@ -144,7 +152,6 @@
 
         function toggleTomeField() {
             const type = document.getElementById('img-type').value;
-            // Correction ici : On cache le span complet
             document.getElementById('tome-input-area').style.display = (type === 'World' || type === 'Fan-Cosplay') ? 'none' : 'inline';
         }
 
@@ -179,7 +186,7 @@
             document.getElementById('output-code').style.display = 'block';
         }
 
-        function chargerGalerie() {
+        function chargerGalerie(filtreType = null) {
             const container = document.getElementById('galerie-container');
             const fanContainer = document.getElementById('fan-cosplay-container');
             const nav = document.getElementById('nav-buttons');
@@ -191,7 +198,6 @@
             nav.innerHTML = "";
             document.getElementById('cosplay-section-title').style.display = 'none';
 
-            // Navigation Romans
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
@@ -208,8 +214,11 @@
             });
 
             if (typeof archivesData !== 'undefined') {
-                // Filtre par roman actuel
-                const dataFiltrée = archivesData.filter(item => item.roman === projetActuel);
+                const dataFiltrée = archivesData.filter(item => {
+                    const matchRoman = item.roman === projetActuel;
+                    const matchFiltre = filtreType ? (filtreType === 'Livre' ? (item.type === 'Livre' || item.type === 'Dos' || item.type === 'Chapitre') : item.type === filtreType) : true;
+                    return matchRoman && matchFiltre;
+                });
 
                 dataFiltrée.forEach((item, index) => {
                     const releaseDate = new Date(item.date);
@@ -240,6 +249,9 @@
                         let buttons = "";
                         if(estDebloque && item.glb) {
                             buttons += `<button class="btn-action" onclick="document.getElementById('m-${index}').requestFullscreen()">[ LABORATOIRE 3D ]</button>`;
+                            // AJOUT DU RESET CAMERA
+                            buttons += `<button class="btn-action" style="border-color:orange; color:orange;" onclick="document.getElementById('m-${index}').cameraOrbit='0deg 75deg 105%' ; document.getElementById('m-${index}').cameraTarget='auto auto auto'">[ RESET CAMERA ]</button>`;
+                            
                             if(item.type === "Cosplay") {
                                 buttons += `<button class="btn-action btn-cosplay" onclick="window.open('${item.url}', '_blank')">[ DOWNLOAD BLUEPRINT ]</button>`;
                                 buttons += `<button class="btn-action btn-cosplay" onclick="alert('Chargement squelette W6...')">[ 360° SKELETON ]</button>`;
