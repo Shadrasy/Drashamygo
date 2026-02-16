@@ -3,167 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V94)</title>
-    
+    <title>Archives - Nébuleuse Visuelle (V95)</title>
     <script src="security.js"></script>
-
     <style>
         :root { 
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
-            --bleu-tech: #00a8ff; 
             --einstein-glow: rgba(255, 255, 255, 0.4);
         }
-
         body {
             margin: 0; background-color: var(--noir-fond); color: white;
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
-            background: var(--noir-fond);
         }
-
-        /* --- 1. ANIMATIONS --- */
-        @keyframes float { 
-            0% { transform: translate(0, 0) rotate(0deg); } 
-            100% { transform: translate(3vw, 3vh) rotate(5deg); } 
-        }
-        @keyframes container-float {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-15px); }
-        }
-
-        /* --- 2. DÉCORS --- */
+        /* --- DÉCORS --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- 3. ARMADA --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: float 20s ease-in-out infinite alternate; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation-duration: 25s; }
-        .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
-        .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; animation-duration: 30s; }
-        .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; animation-duration: 18s; }
-        .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; animation-duration: 22s; }
+        /* --- INTERFACE OSD --- */
+        #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
+        .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
+        h1 { font-size: 2.5rem; letter-spacing: 8px; text-shadow: 0 0 15px var(--vhs-vert); margin-bottom: 30px; }
         
-        /* LA PLANÈTE DORÉE (PORTE DÉROBÉE) */
-        .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 15%; left: 10%; box-shadow: 0 0 20px #ffcc00; cursor: pointer; pointer-events: auto !important; z-index: 500; animation-duration: 15s; }
-        
-        .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; animation-duration: 40s; }
-
-        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite alternate; pointer-events: none; }
-        @keyframes ring-pulse { from { opacity: 0.3; scale: 0.9; } to { opacity: 0.8; scale: 1.1; } }
-
-        /* --- 4. INTERFACE --- */
-        .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; animation: container-float 6s ease-in-out infinite alternate; }
-        h1 { font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); margin-bottom: 50px; }
-        #galerie-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; transition: 0.5s; position: relative; backdrop-filter: blur(5px); animation: container-float 8s ease-in-out infinite alternate; }
-        .image-frame { width: 100%; height: 400px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
-        .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        #galerie-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #222; padding: 15px; position: relative; backdrop-filter: blur(5px); }
+        .image-frame { width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 15px; }
+        .unlocked .image-frame { border: 1px solid var(--vhs-vert); }
         .unlocked img { width: 100%; height: 100%; object-fit: cover; }
-        .info { text-align: left; border-top: 1px solid #222; padding-top: 15px; }
-        .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
-        .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
-        .btn-access { display: block; margin-top: 15px; padding: 10px; border: 1px solid white; color: white; text-decoration: none; text-align: center; font-size: 0.7rem; font-weight: bold; transition: 0.3s; }
-        .btn-access:hover { background: white; color: black; }
-
+        
         /* PANNEAU MAÎTRE */
-        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
-        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
-        .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; transition: 0.3s; }
+        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; display: none; }
+        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 8px; font-size: 10px; margin: 2px; }
+        .p-gold { width: 22px; height: 22px; background: #ffcc00; position: fixed; top: 15%; left: 10%; border-radius: 50%; cursor: pointer; z-index: 500; }
     </style>
 </head>
 <body>
     <div class="nebula-layer"></div>
     <div class="star-field"></div>
-    <div class="einstein-ring"></div>
-
-    <div class="nebula-planet p-ring"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-crystal"></div>
-    <div class="nebula-planet p-toxic"></div>
-    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" onclick="event.preventDefault()"></div>
-    <div class="nebula-planet p-moon"></div>
+    <div class="p-gold" ondblclick="activerModeMaitre()"></div>
 
     <div class="container">
         <h1>NÉBULEUSE VISUELLE</h1>
+        <div id="signals-status">SIGNALS_TRACKED: OFFLINE</div>
+
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 PANNEAU DE CONTRÔLE HINARU</p>
-            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
-            <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
+            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU</p>
+            <div id="nav-buttons"></div>
         </div>
+
         <div id="galerie-container"></div>
-        <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
-        const multiVerse = {
-            "roman1": [ { date: "2026-02-16", url: "illustration1.jpg", ref: "SHADRASY : Le Souffle Originel", type: "ROMAN", link: "https://lien-roman1.com" } ],
-            "roman2": [ { date: "2032-01-01", url: "guilde_aube.jpg", ref: "La Guilde de l'Aube", type: "ROMAN", link: "https://lien-roman2.com" } ],
-            "roman3": [ { date: "2034-01-01", url: "r3.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
-            "roman4": [ { date: "2036-01-01", url: "r4.jpg", ref: "TITRE À VENIR", type: "ROMAN", link: "#" } ],
-            "roman5": [ { date: "2099-12-31", url: "r5.jpg", ref: "[ SIGNAL EN ATTENTE G2 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman6": [ { date: "2099-12-31", url: "r6.jpg", ref: "[ SIGNAL EN ATTENTE G2 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman7": [ { date: "2099-12-31", url: "r7.jpg", ref: "[ SIGNAL EN ATTENTE G3 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman8": [ { date: "2099-12-31", url: "r8.jpg", ref: "[ SIGNAL EN ATTENTE G3 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman9": [ { date: "2099-12-31", url: "r9.jpg", ref: "[ SIGNAL EN ATTENTE G4 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman10": [ { date: "2099-12-31", url: "r10.jpg", ref: "[ SIGNAL EN ATTENTE G4 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman11": [ { date: "2099-12-31", url: "r11.jpg", ref: "[ SIGNAL EN ATTENTE G5 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman12": [ { date: "2099-12-31", url: "r12.jpg", ref: "[ SIGNAL EN ATTENTE G5 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman13": [ { date: "2099-12-31", url: "r13.jpg", ref: "[ SIGNAL EN ATTENTE G6 ]", type: "HÉRITAGE", link: "#" } ],
-            "roman14": [ { date: "2099-12-31", url: "r14.jpg", ref: "[ SIGNAL EN ATTENTE G6 ]", type: "HÉRITAGE", link: "#" } ]
-        };
+        // --- CONFIGURATION DES ROMANS ---
+        const romansConfig = [
+            { id: 1, nom: "Shadrasy", tomes: 154, public: true },
+            { id: 2, nom: "Roman 2", tomes: 96, public: false },
+            { id: 3, nom: "Roman 3", tomes: 96, public: false },
+            { id: 4, nom: "Roman 4", tomes: 96, public: false },
+            { id: 5, nom: "Roman 5", tomes: 96, public: false },
+            { id: 6, nom: "Roman 6", tomes: 96, public: false },
+            { id: 7, nom: "Roman 7", tomes: 96, public: false },
+            { id: 8, nom: "Roman 8", tomes: 96, public: false },
+            { id: 9, nom: "Roman 9", tomes: 96, public: false },
+            { id: 10, nom: "Roman 10", tomes: 96, public: false },
+            { id: 11, nom: "Roman 11", tomes: 96, public: false },
+            { id: 12, nom: "Roman 12", tomes: 96, public: false },
+            { id: 13, nom: "Roman 13", tomes: 96, public: false },
+            { id: 14, nom: "Roman 14", tomes: 96, public: false }
+        ];
 
-        function activerModeMaitre() {
-            const url = new URL(window.location.href);
-            url.searchParams.set('Hinaru', 'true');
-            window.location.href = url.href;
+        // --- DÉTECTION MODE MAÎTRE ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const isHinaru = urlParams.get('Hinaru') === 'true';
+
+        // --- GESTION OSD ---
+        const osdStatus = document.getElementById('signals-status');
+        if (isHinaru) {
+            osdStatus.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
+            osdStatus.style.color = "#00ff41";
+            document.getElementById('master-panel').style.display = 'block';
+        } else {
+            osdStatus.innerHTML = "SIGNALS_TRACKED: OFFLINE";
+            osdStatus.style.color = "#444";
         }
 
+        function activerModeMaitre() {
+            window.location.href = "?Hinaru=true";
+        }
+
+        // --- GÉNÉRATION DE LA GALERIE ---
         function chargerGalerie() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const admin = urlParams.get('Hinaru') === 'true';
-            const projetActuel = urlParams.get('projet') || 'roman1';
-            const aujourdhui = new Date().toISOString().split('T')[0];
-            
-            if (admin) {
-                document.getElementById('master-panel').style.display = 'block';
-                const nav = document.getElementById('nav-buttons');
-                nav.innerHTML = "";
-                Object.keys(multiVerse).forEach(key => {
+            const container = document.getElementById('galerie-container');
+            const nav = document.getElementById('nav-buttons');
+            const projetSelectionne = parseInt(urlParams.get('projet')) || 1;
+            const now = new Date();
+
+            // Génération des boutons de navigation (Maître ou Public si autorisé)
+            romansConfig.forEach(r => {
+                if (isHinaru || r.public) {
                     const btn = document.createElement('button');
                     btn.className = "btn-nav-master";
-                    btn.innerText = key.toUpperCase();
-                    btn.onclick = () => { window.location.href = `?projet=${key}&Hinaru=true`; };
-                    if(key === projetActuel) btn.style.color = "var(--vhs-vert)";
+                    btn.innerText = `R${r.id} (${r.tomes} TOMES)`;
+                    btn.onclick = () => { window.location.href = `?projet=${r.id}${isHinaru ? '&Hinaru=true' : ''}`; };
+                    if(r.id === projetSelectionne) btn.style.borderColor = "var(--vhs-vert)";
                     nav.appendChild(btn);
-                });
-            }
+                }
+            });
 
-            const archives = multiVerse[projetActuel];
-            const container = document.getElementById('galerie-container');
-            container.innerHTML = "";
-            
-            archives.forEach(item => {
-                const estDebloque = admin || aujourdhui >= item.date;
-                const tagClass = item.type === "ROMAN" ? "tag-roman" : "tag-multi";
+            // Affichage des slots du roman sélectionné
+            const romanActuel = romansConfig.find(r => r.id === projetSelectionne);
+            for (let i = 1; i <= romanActuel.tomes; i++) {
+                // Simulation de data (à remplacer par ton fichier de données réel)
+                const releaseDate = new Date("2027-01-01"); // Exemple
+                const estDebloque = isHinaru || (now >= releaseDate);
+
                 const box = document.createElement('div');
                 box.className = estDebloque ? 'box unlocked' : 'box locked';
                 box.innerHTML = `
                     <div class="image-frame">
-                        ${estDebloque ? `<img src="${item.url}" alt="${item.ref}">` : `<div style="color:#444; letter-spacing:2px;">[ SIGNAL CRYPTÉ ]</div>`}
+                        ${estDebloque ? `<div style="color:var(--vhs-vert)">[ ILLU TOME ${i} ]</div>` : `[ DATA_LOCKED ]`}
                     </div>
-                    <div class="info">
-                        <span class="type-tag ${tagClass}">${item.type}</span>
-                        <span class="status">${estDebloque ? 'DÉCODÉ : ' + item.ref : 'VERROUILLÉ'}</span>
-                        <p style="font-size:0.8rem; color:#666; margin:5px 0;">DATE : ${item.date}</p>
-                        ${estDebloque ? `<a href="${item.link}" target="_blank" class="btn-access">ACCÉDER</a>` : ''}
-                        ${admin ? `<p style="color:orange; font-size:10px; margin-top:10px;">MODE MAÎTRE : ACTIF</p>` : ''}
+                    <div style="font-size:0.7rem;">
+                        TOME ${i} / ${romanActuel.tomes}<br>
+                        ${isHinaru ? `<span style="color:orange">MASTER_VIEW: ACTIVE</span>` : ''}
                     </div>
                 `;
                 container.appendChild(box);
-            });
+            }
         }
+
         window.onload = chargerGalerie;
     </script>
 </body>
