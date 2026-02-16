@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V73)</title>
+    <title>Archives - Nébuleuse Visuelle (V75)</title>
     
     <script src="security.js"></script>
 
@@ -12,7 +12,7 @@
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
-            --einstein-glow: rgba(255, 255, 255, 0.4);
+            --bleu-tech: #00a8ff; /* Bleu pour le type Série/Jeu */
         }
 
         body {
@@ -20,87 +20,83 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- 1. DÉCORS GALACTIQUES --- */
+        /* --- DÉCORS --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
-        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
+        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- 2. PLANÈTES ET PHÉNOMÈNES --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); pointer-events: none; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; }
-        .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; }
-        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; z-index: -10; transform: translate(-50%, -50%); }
-
-        /* --- 3. INTERFACE DE LA GALERIE --- */
+        /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); margin-bottom: 50px; }
         
         #galerie-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
 
-        /* STYLE DES BOITES DE SIGNAL */
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; transition: 0.5s; }
-        .image-frame { width: 100%; height: 400px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; transition: 0.5s; position: relative; }
+        .image-frame { width: 100%; height: 400px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         
         /* État Débloqué */
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
-        .unlocked img { width: 100%; height: 100%; object-fit: cover; }
-        .unlocked .status { color: var(--vhs-vert); }
+        .unlocked img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: 0.3s; }
+        .unlocked img:hover { filter: brightness(1.2); }
 
         /* État Verrouillé */
-        .locked { opacity: 0.6; }
+        .locked { opacity: 0.5; }
         .crypt { color: #444; font-size: 0.8rem; letter-spacing: 2px; }
 
-        .info { margin-top: 20px; font-size: 0.8rem; text-align: left; border-top: 1px solid #222; padding-top: 15px; }
-        .date { color: #666; font-size: 0.7rem; margin-top: 5px; }
+        /* Infos & Tags */
+        .info { text-align: left; border-top: 1px solid #222; padding-top: 15px; }
+        .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
+        .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
+        .tag-multi { color: var(--bleu-tech); border-color: var(--bleu-tech); }
+        
+        .status { font-weight: bold; display: block; font-size: 0.85rem; margin-bottom: 5px; }
+        .date { color: #666; font-size: 0.7rem; }
 
-        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; transition: 0.3s; }
-        .btn-portal:hover { background: white; color: black; box-shadow: 0 0 30px white; }
+        .btn-access { display: block; margin-top: 15px; padding: 10px; border: 1px solid white; color: white; text-decoration: none; text-align: center; font-size: 0.7rem; font-weight: bold; transition: 0.3s; }
+        .btn-access:hover { background: white; color: black; }
+
+        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; }
     </style>
 </head>
 <body>
     <div class="nebula-layer"></div>
     <div class="star-field"></div>
-    <div class="nebula-planet p-ring"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="einstein-ring"></div>
 
     <div class="container">
         <span style="font-size: 4rem;">👁️</span>
         <h1>NÉBULEUSE VISUELLE</h1>
-        
         <div id="galerie-container"></div>
-
         <a href="index.html" class="btn-portal">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
-        // --- LE CALENDRIER DE L'ARCHIVISTE ---
+        // --- LE CALENDRIER MULTI-PROJETS ---
         const archives = [
             { 
                 date: "2026-02-16", 
                 url: "illustration1.jpg", 
                 ref: "ALPHA_GENESIS", 
-                note: "Signal originel détecté." 
+                type: "ROMAN", 
+                link: "https://lien-roman.com"
             },
             { 
                 date: "2026-02-23", 
-                url: "illustration2.jpg", 
-                ref: "BETA_SIGNAL", 
-                note: "Premier contact établi." 
+                url: "concept_serie.jpg", 
+                ref: "BETA_SERIE", 
+                type: "SÉRIE_TV", 
+                link: "https://lien-infos-serie.com"
             },
             { 
                 date: "2026-03-02", 
-                url: "illustration3.jpg", 
-                ref: "GAMMA_BURST", 
-                note: "Instabilité du noyau." 
+                url: "game_screen.jpg", 
+                ref: "GAMMA_GAME", 
+                type: "JEU_VIDÉO", 
+                link: "https://lien-demo-jeu.com"
             }
         ];
 
-        // --- LE MOTEUR DE DÉCODAGE ---
         function chargerGalerie() {
             const admin = new URLSearchParams(window.location.search).get('admin') === 'true';
-            
-            // On utilise la date du 16 Février 2026
             const aujourdhui = new Date().toISOString().split('T')[0];
             const container = document.getElementById('galerie-container');
             
@@ -108,6 +104,7 @@
 
             archives.forEach(item => {
                 const estDebloque = admin || aujourdhui >= item.date;
+                const tagClass = item.type === "ROMAN" ? "tag-roman" : "tag-multi";
                 
                 const box = document.createElement('div');
                 box.className = estDebloque ? 'box unlocked' : 'box locked';
@@ -115,14 +112,16 @@
                 box.innerHTML = `
                     <div class="image-frame">
                         ${estDebloque ? 
-                            `<img src="${item.url}" alt="${item.ref}">` : 
+                            `<a href="${item.link}" target="_blank"><img src="${item.url}" alt="${item.ref}"></a>` : 
                             `<div class="crypt">[ SIGNAL CRYPTÉ ]</div>`
                         }
                     </div>
                     <div class="info">
+                        <span class="type-tag ${tagClass}">${item.type}</span>
                         <span class="status">${estDebloque ? 'SIGNAL DÉCODÉ : ' + item.ref : 'REF: ' + item.ref + ' (VERROUILLÉ)'}</span>
-                        <p class="date">DATE DE RÉCEPTION : ${item.date}</p>
-                        ${admin ? `<p style="color:orange; font-size:10px;">NOTE ADMIN : ${item.note}</p>` : ''}
+                        <p class="date">RÉCEPTION : ${item.date}</p>
+                        ${estDebloque ? `<a href="${item.link}" target="_blank" class="btn-access">ACCÉDER AU CONTENU</a>` : ''}
+                        ${admin ? `<p style="color:orange; font-size:10px; margin-top:10px;">MODE ADMIN : ACCÈS TOTAL AUTORISÉ</p>` : ''}
                     </div>
                 `;
                 container.appendChild(box);
