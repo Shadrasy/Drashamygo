@@ -3,128 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle</title>
+    <title>Archives - Mur des Théories</title>
     <style>
         :root { 
             --noir-fond: #010105; 
             --vhs-vert: #00ff41;
-            --rose-nebuleuse: rgba(255, 0, 150, 0.2);
-            --bleu-nebuleuse: rgba(0, 100, 255, 0.25);
-            --vert-toxique: rgba(0, 255, 136, 0.15);
+            --lumiere-violette: rgba(136, 0, 255, 0.35);
+            --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: white;
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
-            background: var(--noir-fond);
+            background: radial-gradient(circle at 15% 20%, var(--lumiere-violette) 0%, transparent 60%), var(--noir-fond);
+            background-attachment: fixed;
         }
 
-        /* --- PHÉNOMÈNE 1 : NÉBULEUSE PULSANTE --- */
-        .nebula-gas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -15;
-            background: 
-                radial-gradient(circle at 50% 50%, var(--rose-nebuleuse) 0%, transparent 70%),
-                radial-gradient(circle at 20% 30%, var(--bleu-nebuleuse) 0%, transparent 60%),
-                radial-gradient(circle at 80% 80%, var(--vert-toxique) 0%, transparent 50%);
-            animation: nebula-breathe 10s infinite alternate ease-in-out;
+        /* --- EFFET NÉBULEUSE VIVANTE --- */
+        .nebula-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -12;
+            background: radial-gradient(circle at 50% 50%, var(--gaz-nebuleuse) 0%, transparent 80%);
+            animation: nebula-pulse 12s infinite alternate ease-in-out;
         }
-        @keyframes nebula-breathe { 
-            from { opacity: 0.7; transform: scale(1); } 
-            to { opacity: 1; transform: scale(1.1); } 
-        }
+        @keyframes nebula-pulse { from { transform: scale(1); opacity: 0.6; } to { transform: scale(1.2); opacity: 1; } }
 
-        /* --- PHÉNOMÈNE 2 : ÉTOILES ET POUSSIÈRE --- */
-        .star-field, .star-dust { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -10; }
-        .star-field { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 400px 400px; opacity: 0.5; animation: spin 350s linear infinite; }
-        .star-dust { background-image: radial-gradient(1px 1px at 50px 50px, rgba(255,255,255,0.8), transparent), radial-gradient(2px 2px at 200px 150px, var(--vhs-vert), transparent); background-size: 250px 250px; opacity: 0.3; animation: spin 200s linear infinite reverse; }
+        /* --- SYSTÈME D'ÉTOILES MULTI-VITESSES --- */
+        .stars, .stars-2, .stars-slow { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -10; }
+        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; opacity: 0.6; animation: drift 150s linear infinite; }
+        .stars-2 { background-image: radial-gradient(1px 1px at 80px 120px, #fff, transparent); background-size: 200px 200px; opacity: 0.4; animation: drift 100s linear infinite reverse; }
+        .stars-slow { background-image: radial-gradient(1.5px 1.5px at 150px 250px, rgba(255,255,255,0.3), transparent); background-size: 500px 500px; opacity: 0.3; animation: drift 400s linear infinite; }
+
+        @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+
+        /* --- 5 ÉTOILES FILANTES --- */
+        .shooting-star { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white, -20px 0 30px rgba(255,255,255,0.2); z-index: -5; opacity: 0; animation: shoot linear infinite; }
+        .m1 { top: 10%; left: -10%; animation-duration: 12s; animation-delay: 2s; }
+        .m2 { top: 30%; left: -10%; animation-duration: 15s; animation-delay: 7s; }
+        .m3 { top: 50%; left: -10%; animation-duration: 10s; animation-delay: 0s; }
+        .m4 { top: 70%; left: -10%; animation-duration: 20s; animation-delay: 12s; }
+        .m5 { top: 20%; left: -10%; animation-duration: 18s; animation-delay: 4s; }
+        @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 80vh) rotate(35deg); opacity: 0; } 100% { opacity: 0; } }
+
+        /* --- TROU NOIR --- */
+        .black-hole-left {
+            position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -2;
+            background: black; border-radius: 50%;
+            box-shadow: 0 0 80px 20px rgba(136, 0, 255, 0.4), inset 0 0 50px rgba(255, 255, 255, 0.2);
+            animation: pulse 4s infinite alternate ease-in-out;
+        }
+        @keyframes pulse { to { transform: scale(1.1); } }
+
+        /* --- RESTAURATION DES 5 PLANÈTES --- */
+        .orbit { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -3; animation: spin linear infinite; display: flex; align-items: center; justify-content: center; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8); }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- PHÉNOMÈNE 3 : MÉTÉORES (ÉTOILES FILANTES) --- */
-        .meteor {
-            position: fixed; width: 6px; height: 1px; background: white; z-index: -8; opacity: 0;
-            box-shadow: 0 0 15px white, -20px 0 30px rgba(255,255,255,0.2);
-            animation: shoot-meteor linear infinite;
-        }
-        .m1 { top: 15%; animation-duration: 8s; animation-delay: 1s; }
-        .m2 { top: 45%; animation-duration: 12s; animation-delay: 5s; }
-        .m3 { top: 75%; animation-duration: 10s; animation-delay: 8s; }
-        @keyframes shoot-meteor {
-            0% { transform: translate(-10vw, 0) rotate(25deg) scaleX(0); opacity: 0; }
-            5% { opacity: 1; scaleX(15); }
-            20% { transform: translate(110vw, 40vh) rotate(25deg); opacity: 0; }
-            100% { opacity: 0; }
-        }
-
-        /* --- PLANÈTES ANIMÉES (ORBITES ET ROTATIONS) --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); }
-        
-        /* Planète à anneaux : dérive + rotation interne */
-        .p-ring { 
-            width: 110px; height: 110px; background: #ddd; top: 15%; right: 15%; 
-            animation: orbital-float 60s infinite alternate ease-in-out;
-        }
-        .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
-        
-        /* Planète de Glace : Rotation interne visible */
-        .p-ice { 
-            width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); 
-            bottom: 20%; left: 10%; animation: self-rotate 40s linear infinite, orbital-float 80s infinite alternate-reverse;
-        }
-        
-        /* Planète Toxique : Pulsation de couleur */
-        .p-toxic { 
-            width: 90px; height: 90px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); 
-            bottom: 10%; right: 25%; animation: toxic-pulse 4s infinite alternate;
-        }
-
-        @keyframes orbital-float { from { transform: translate(0,0); } to { transform: translate(5vw, 10vh); } }
-        @keyframes self-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes toxic-pulse { from { filter: hue-rotate(0deg) brightness(1); } to { filter: hue-rotate(45deg) brightness(1.3); } }
+        .orb1 { animation-duration: 35s; } .p1 { width: 35px; height: 35px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); transform: translateX(190px); }
+        .orb2 { animation-duration: 55s; } .p2 { width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #ffcc00, #332200); transform: translateX(-270px); }
+        .orb3 { animation-duration: 85s; } .p3 { width: 30px; height: 30px; background: #e0ffff; transform: translateY(330px); box-shadow: 0 0 15px white; }
+        .orb4 { animation-duration: 120s; } .p4 { width: 95px; height: 95px; background: radial-gradient(circle at 30% 30%, #8b0000, #200000); transform: translateX(430px); }
+        .orb5 { animation-duration: 45s; } .p5 { width: 18px; height: 18px; background: #fff; transform: translateY(-390px); box-shadow: 0 0 10px white; }
 
         /* --- INTERFACE --- */
-        .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 10; }
-        h1 { font-size: 3rem; letter-spacing: 12px; margin: 20px 0; text-shadow: 0 0 20px rgba(255,255,255,0.4); }
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 60px; }
-        .art-card { background: rgba(0, 0, 0, 0.9); border: 1px solid #333; padding: 20px; backdrop-filter: blur(10px); animation: card-float 7s infinite alternate ease-in-out; }
-        .image-box { width: 100%; height: 400px; background: #050505; border: 1px dashed #222; display: flex; align-items: center; justify-content: center; color: #444; font-size: 0.8rem; }
-        @keyframes card-float { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; font-size: 0.9rem; letter-spacing: 5px; background: rgba(255,255,255,0.05); transition: 0.3s; }
-        .btn-portal:hover { background: white; color: black; box-shadow: 0 0 30px white; }
+        .container { max-width: 850px; margin: 80px auto; padding: 20px; position: relative; z-index: 10; }
+        h1 { text-align: center; font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; margin-top: 40px; backdrop-filter: blur(10px); }
+        .signals-feed { margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px; }
+        .signal-entry { background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; font-size: 0.9rem; }
+        .signal-entry span { color: var(--vhs-vert); font-size: 0.7rem; display: block; margin-bottom: 5px; }
+        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; box-sizing: border-box; }
+        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; font-weight: bold; cursor: pointer; width: 100%; letter-spacing: 3px; }
+        .btn-back { display: block; text-align: center; margin-top: 40px; color: #666; text-decoration: none; border: 1px dashed #222; padding: 10px; }
+        .btn-back:hover { color: white; border-color: white; }
     </style>
 </head>
 <body>
-    <div class="nebula-gas"></div>
-    <div class="star-field"></div>
-    <div class="star-dust"></div>
+    <div class="nebula-overlay"></div>
+    <div class="stars"></div>
+    <div class="stars-2"></div>
+    <div class="stars-slow"></div>
     
-    <div class="meteor m1"></div>
-    <div class="meteor m2"></div>
-    <div class="meteor m3"></div>
-    
-    <div class="nebula-planet p-ring"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-toxic"></div>
+    <div class="shooting-star m1"></div>
+    <div class="shooting-star m2"></div>
+    <div class="shooting-star m3"></div>
+    <div class="shooting-star m4"></div>
+    <div class="shooting-star m5"></div>
+
+    <div class="black-hole-left"></div>
+
+    <div class="orbit orb1"><div class="planet p1"></div></div>
+    <div class="orbit orb2"><div class="planet p2"></div></div>
+    <div class="orbit orb3"><div class="planet p3"></div></div>
+    <div class="orbit orb4"><div class="planet p4"></div></div>
+    <div class="orbit orb5"><div class="planet p5"></div></div>
 
     <div class="container">
-        <span style="font-size: 4rem;">👁️</span>
-        <h1>NÉBULEUSE VISUELLE</h1>
+        <h1>MUR DES THÉORIES</h1>
         
-        <div class="gallery-grid">
-            <div class="art-card">
-                <div class="image-box">[ SIGNAL ILLUSTRATION 01 ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">ARCHIVE_DATA: PHENOMENE_ALPHA</p>
-            </div>
-            <div class="art-card" style="animation-delay: -2s;">
-                <div class="image-box">[ SIGNAL ILLUSTRATION 02 ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">ARCHIVE_DATA: PHENOMENE_BETA</p>
-            </div>
-            <div class="art-card" style="animation-delay: -4s;">
-                <div class="image-box">[ SIGNAL ILLUSTRATION 03 ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">ARCHIVE_DATA: PHENOMENE_GAMMA</p>
+        <div class="box">
+            <form>
+                <label style="color:var(--vhs-vert); display:block; margin-bottom:15px; letter-spacing: 2px;">TRANSMETTRE UNE ANALYSE :</label>
+                <textarea rows="4" placeholder="Tapez votre théorie ici..."></textarea>
+                <input type="url" placeholder="Lien vidéo de référence (optionnel)">
+                <button type="button" class="btn-send" onclick="alert('Signal transmis aux archives.')">ENVOYER AU CENTRE</button>
+            </form>
+
+            <div class="signals-feed">
+                <h3 style="letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 25px; color: #888;">HISTORIQUE DES SIGNAUX :</h3>
+                <div class="signal-entry">
+                    <span>SIGNAL #842 - 05/03/2031</span>
+                    "Le trou noir ne semble pas absorber la matière, il la réorganise. Hypothèse de centre créateur confirmée."
+                </div>
+                <div class="signal-entry">
+                    <span>SIGNAL #791 - 04/03/2031</span>
+                    "Observation d'une dérive orbitale synchrone sur les planètes lointaines. Lien gravitationnel détecté."
+                </div>
             </div>
         </div>
 
-        <a href="index.html" class="btn-portal">REPASSER LE PORTAIL</a>
+        <a href="index.html" class="btn-back"> < REPASSER LE PORTAIL VERS LE CENTRE </a>
     </div>
 </body>
 </html>
