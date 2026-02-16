@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Le Grand Inventaire (V64)</title>
+    <title>Archives - Le Maître du Temps (V65)</title>
     <style>
         :root { 
             --noir-fond: #000103; 
@@ -20,48 +20,44 @@
             background: var(--noir-fond);
         }
 
-        /* --- 1. FONDS ET GAZ (POINTER-EVENTS NONE POUR NE PAS BLOQUER LE CLIC) --- */
+        /* --- 1. DÉCORS (Z-INDEX NÉGATIF) --- */
         .nebula-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -20; pointer-events: none; }
         .hii-regions { background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%), radial-gradient(circle at 85% 60%, rgba(255, 0, 50, 0.1) 0%, transparent 40%); animation: drift 15s infinite alternate ease-in-out; }
         .hannys-voorwerp { position: fixed; top: 5%; left: 15%; width: 300px; height: 200px; background: var(--fluo-hanny); filter: blur(50px); border-radius: 60% 40% 70% 30%; z-index: -18; pointer-events: none; }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
-
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes drift { from { opacity: 0.6; } to { opacity: 1; } }
 
-        /* --- 2. ARMADA DE 6 PLANÈTES RESTAURÉE --- */
+        /* --- 2. LES 6 PLANÈTES --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); animation: float 100s linear infinite alternate; pointer-events: none; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; border: 1px solid rgba(255,255,255,0.1); }
+        .p-ring { width: 110px; height: 110px; background: #ddd; top: 10%; right: 15%; }
         .p-ring::after { content: ""; position: absolute; top: 50%; left: 50%; width: 180px; height: 15px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; transform: translate(-50%, -50%) rotate(25deg); }
         .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 15%; left: 8%; }
         .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; }
         .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; }
         .p-gold { width: 20px; height: 20px; background: #ffcc00; top: 40%; left: 25%; box-shadow: 0 0 15px #ffcc00; }
         .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; }
-
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(10vw, 5vh) rotate(10deg); } }
 
-        /* --- 3. PHÉNOMÈNES RARES ET DISTORSIONS --- */
+        /* --- 3. PHÉNOMÈNES RARES --- */
         .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite ease-in-out; pointer-events: none; }
         .hoag-object { position: fixed; top: 25%; left: 35%; width: 60px; height: 60px; z-index: -8; pointer-events: none; }
         .hoag-core { width: 15px; height: 15px; background: #ffeeaa; border-radius: 50%; margin: 22px auto; box-shadow: 0 0 10px #ffcc00; }
         .hoag-ring { position: absolute; top: 0; width: 60px; height: 60px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; }
-        .medusa-galaxy { position: fixed; top: 40%; right: 10%; width: 40px; height: 40px; background: rgba(100, 200, 255, 0.3); border-radius: 50%; filter: blur(4px); z-index: -7; pointer-events: none; }
-        .medusa-galaxy::after { content: ""; position: absolute; top: 50%; left: -60px; width: 80px; height: 20px; background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.15)); }
         .green-pea { position: fixed; width: 4px; height: 4px; background: var(--pois-vert); border-radius: 50%; box-shadow: 0 0 10px var(--pois-vert); z-index: -11; }
         .gp1 { top: 15%; right: 30%; } .gp2 { bottom: 35%; left: 20%; }
         .light-echo { position: fixed; top: 60%; left: 50%; width: 2px; height: 2px; background: white; border-radius: 50%; z-index: -12; animation: echo-expand 10s infinite; pointer-events: none; }
         @keyframes echo-expand { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(40); opacity: 0; } }
         @keyframes ring-pulse { 0%, 100% { opacity: 0.3; scale: 0.95; } 50% { opacity: 0.8; scale: 1.05; } }
 
-        /* --- 4. INTERFACE (Z-INDEX 100 POUR LE CLIC) --- */
+        /* --- 4. INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 3rem; letter-spacing: 12px; margin: 20px 0; text-shadow: 0 0 20px rgba(255,255,255,0.4); }
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 60px; }
         .art-card { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; backdrop-filter: blur(10px); animation: card-float 7s infinite alternate ease-in-out; }
-        .image-box { width: 100%; height: 400px; background: #050505; border: 1px dashed #333; display: flex; align-items: center; justify-content: center; color: #444; font-size: 0.8rem; }
+        .image-box { width: 100%; height: 400px; background: #050505; border: 1px dashed #333; display: flex; align-items: center; justify-content: center; color: #444; font-size: 0.8rem; overflow: hidden; }
         @keyframes card-float { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; background: rgba(255,255,255,0.05); transition: 0.3s; position: relative; z-index: 101; }
+        .btn-portal { display: inline-block; margin-top: 80px; color: white; text-decoration: none; border: 1px solid white; padding: 15px 40px; background: rgba(255,255,255,0.05); transition: 0.3s; }
         .btn-portal:hover { background: white; color: black; box-shadow: 0 0 30px white; }
     </style>
 </head>
@@ -80,107 +76,59 @@
 
     <div class="einstein-ring"></div>
     <div class="hoag-object"><div class="hoag-ring"></div><div class="hoag-core"></div></div>
-    <div class="medusa-galaxy"></div>
     <div class="green-pea gp1"></div><div class="green-pea gp2"></div>
 
     <div class="container">
         <span style="font-size: 4rem;">👁️</span>
         <h1>NÉBULEUSE VISUELLE</h1>
         
-       <script>
-    // --- 1. CONFIGURATION DE TES SORTIES ---
-    // Date format: "AAAA-MM-JJ"
-    const archives = [
-        { date: "2026-02-16", url: "image1.jpg", ref: "PHENOMENE_ALPHA" },
-        { date: "2026-02-17", url: "image2.jpg", ref: "SIGNAL_BETA" },
-        { date: "2026-02-20", url: "image3.jpg", ref: "ANOMALIE_GAMMA" },
-        { date: "2026-03-01", url: "image4.jpg", ref: "ARCHIVE_DELTA" }
-    ];
-
-    const galleryContainer = document.getElementById('main-gallery');
-    const today = new Date();
-    
-    // --- 2. MODE ADMIN (Secret) ---
-    // Si l'URL contient ?admin=true, tout se déverrouille
-    const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-
-           <script>
-    // --- 1. CONFIGURATION DE TES SORTIES ---
-    // Date format: "AAAA-MM-JJ"
-    const archives = [
-        { date: "2026-02-16", url: "image1.jpg", ref: "PHENOMENE_ALPHA" },
-        { date: "2026-02-17", url: "image2.jpg", ref: "SIGNAL_BETA" },
-        { date: "2026-02-20", url: "image3.jpg", ref: "ANOMALIE_GAMMA" },
-        { date: "2026-03-01", url: "image4.jpg", ref: "ARCHIVE_DELTA" }
-    ];
-
-    const galleryContainer = document.getElementById('main-gallery');
-    const today = new Date();
-    
-    // --- 2. MODE ADMIN (Secret) ---
-    // Si l'URL contient ?admin=true, tout se déverrouille
-    const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
-
-    archives.forEach((item, index) => {
-        const releaseDate = new Date(item.date);
-        const isReleased = today >= releaseDate || isAdmin;
-
-        const card = document.createElement('div');
-        card.className = 'art-card';
-        // On garde tes délais d'animation pour que ça flotte toujours !
-        card.style.animationDelay = `${index * -2}s`;
-
-        if (isReleased) {
-            // AFFICHAGE DE L'IMAGE
-            card.innerHTML = `
-                <div class="image-box" style="border-style: solid; border-color: #00ff41;">
-                    <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem;">SIGNAL REÇU : ${item.ref}</p>
-            `;
-        } else {
-            // AFFICHAGE DU VERROU
-            card.innerHTML = `
-                <div class="image-box" style="background: repeating-linear-gradient(45deg, #050505, #111 10px); opacity: 0.5;">
-                    <span style="color: #444;">[ SIGNAL CRYPTÉ : ${item.date} ]</span>
-                </div>
-                <p style="color: #444; margin-top: 20px; font-size: 0.7rem;">REF: ${item.ref} (VERROUILLÉ)</p>
-            `;
-        }
-        galleryContainer.appendChild(card);
-    });
-</script>
-    archives.forEach((item, index) => {
-        const releaseDate = new Date(item.date);
-        const isReleased = today >= releaseDate || isAdmin;
-
-        const card = document.createElement('div');
-        card.className = 'art-card';
-        // On garde tes délais d'animation pour que ça flotte toujours !
-        card.style.animationDelay = `${index * -2}s`;
-
-        if (isReleased) {
-            // AFFICHAGE DE L'IMAGE
-            card.innerHTML = `
-                <div class="image-box" style="border-style: solid; border-color: #00ff41;">
-                    <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
-                </div>
-                <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem;">SIGNAL REÇU : ${item.ref}</p>
-            `;
-        } else {
-            // AFFICHAGE DU VERROU
-            card.innerHTML = `
-                <div class="image-box" style="background: repeating-linear-gradient(45deg, #050505, #111 10px); opacity: 0.5;">
-                    <span style="color: #444;">[ SIGNAL CRYPTÉ : ${item.date} ]</span>
-                </div>
-                <p style="color: #444; margin-top: 20px; font-size: 0.7rem;">REF: ${item.ref} (VERROUILLÉ)</p>
-            `;
-        }
-        galleryContainer.appendChild(card);
-    });
-</script>
+        <div class="gallery-grid" id="main-gallery"></div>
 
         <a href="index.html" class="btn-portal">REPASSER LE PORTAIL</a>
     </div>
+
+    <script>
+        // 1. CONFIGURATION DE TES SORTIES (Modifie les dates et les liens ici)
+        const archives = [
+            { date: "2026-02-16", url: "illustration1.jpg", ref: "ALPHA_GENESIS" },
+            { date: "2026-02-17", url: "illustration2.jpg", ref: "BETA_SIGNAL" },
+            { date: "2026-02-20", url: "illustration3.jpg", ref: "GAMMA_BURST" },
+            { date: "2026-03-01", url: "illustration4.jpg", ref: "DELTA_ORIZON" }
+        ];
+
+        const galleryContainer = document.getElementById('main-gallery');
+        const today = new Date();
+        
+        // 2. MODE ADMIN : Si l'URL finit par ?admin=true, tout apparaît
+        const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+
+        archives.forEach((item, index) => {
+            const releaseDate = new Date(item.date);
+            const isReleased = today >= releaseDate || isAdmin;
+
+            const card = document.createElement('div');
+            card.className = 'art-card';
+            card.style.animationDelay = `${index * -1.5}s`;
+
+            if (isReleased) {
+                // IMAGE DÉVERROUILLÉE
+                card.innerHTML = `
+                    <div class="image-box" style="border-style: solid; border-color: #00ff41;">
+                        <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
+                    </div>
+                    <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem; letter-spacing: 2px;">SIGNAL DÉCODÉ : ${item.ref}</p>
+                `;
+            } else {
+                // IMAGE ENCORE CRYPTÉE
+                card.innerHTML = `
+                    <div class="image-box" style="background: repeating-linear-gradient(45deg, #050505, #111 10px); opacity: 0.4;">
+                        <span style="color: #444; font-size: 0.7rem;">[ SIGNAL CRYPTÉ : ${item.date} ]</span>
+                    </div>
+                    <p style="color: #444; margin-top: 20px; font-size: 0.7rem;">REF: ${item.ref} (VERROUILLÉ)</p>
+                `;
+            }
+            galleryContainer.appendChild(card);
+        });
+    </script>
 </body>
 </html>
