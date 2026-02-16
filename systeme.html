@@ -3,57 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Scan Système (V68)</title>
+    <title>Archives - Scan Système (V71)</title>
     <style>
         :root { 
             --noir-fond: #000105; 
-            /* NOUVELLE PALETTE BLEU & ROUGE */
-            --bleu-tech: #00a8ff; /* Bleu vibrant pour l'interface */
-            --rouge-alerte: #ff0055; /* Rouge pour les éléments critiques */
-            --lumiere-bleue: rgba(0, 168, 255, 0.15); /* Lueur d'ambiance */
+            --bleu-tech: #00a8ff; 
+            --rouge-alerte: #ff0055; 
+            --lumiere-bleue: rgba(0, 168, 255, 0.15); 
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: var(--bleu-tech);
             font-family: 'Courier New', monospace; overflow-x: hidden;
-            /* Fond avec des lignes de balayage bleutées subtiles */
             background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
                               linear-gradient(90deg, rgba(255, 0, 50, 0.05), rgba(0, 100, 255, 0.05), rgba(50, 0, 255, 0.05));
             background-size: 100% 4px, 3px 100%;
         }
 
-        /* --- EFFET SCANLINE BLEU --- */
-        .scanline { position: fixed; top: 0; width: 100%; height: 15px; background: var(--lumiere-bleue); opacity: 0.6; animation: move-scan 8s linear infinite; z-index: 1000; pointer-events: none; box-shadow: 0 0 10px var(--bleu-tech); }
+        /* --- EFFET SCANLINE --- */
+        .scanline { position: fixed; top: 0; width: 100%; height: 15px; background: var(--lumiere-bleue); opacity: 0.6; animation: move-scan 8s linear infinite; z-index: 1000; pointer-events: none; }
         @keyframes move-scan { from { top: -100px; } to { top: 100vh; } }
 
-        .osd-header { padding: 25px; border-bottom: 2px solid var(--bleu-tech); display: flex; justify-content: space-between; letter-spacing: 2px; text-shadow: 0 0 10px var(--bleu-tech); }
-        .status { animation: blink 1s infinite; font-weight: bold; color: var(--bleu-tech); }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        /* --- HEADER AVEC COMPTEUR --- */
+        .osd-header { 
+            padding: 25px; 
+            border-bottom: 2px solid var(--bleu-tech); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            letter-spacing: 2px; 
+            text-shadow: 0 0 10px var(--bleu-tech); 
+        }
+        .status { animation: blink 1s infinite; font-weight: bold; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        #visitor-module { font-size: 0.9rem; border-left: 1px solid var(--bleu-tech); padding-left: 20px; }
+        #count-value { color: white; font-weight: bold; }
 
         .main-layout { display: flex; flex-wrap: wrap; padding: 30px; gap: 30px; justify-content: center; }
 
-        /* --- RADAR PLANÉTAIRE BLEU --- */
-        .radar-box { flex: 1; min-width: 400px; max-width: 500px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--lumiere-bleue) 0%, transparent 60%); box-shadow: inset 0 0 30px rgba(0, 168, 255, 0.2); }
-        .radar-circle { position: absolute; border: 1px solid rgba(0, 168, 255, 0.4); border-radius: 50%; }
+        /* --- RADAR --- */
+        .radar-box { flex: 1; min-width: 400px; max-width: 500px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle, var(--lumiere-bleue) 0%, transparent 60%); }
         .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 5s infinite linear; box-shadow: 0 0 15px var(--bleu-tech); }
         @keyframes radar-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .radar-circle { position: absolute; border: 1px solid rgba(0, 168, 255, 0.4); border-radius: 50%; }
 
-        /* Mini-Planètes pour le Radar (Nouvelles couleurs) */
         .r-planet { position: absolute; width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 15px currentColor; }
-        .rp1 { top: 25%; left: 35%; background: #00ffff; color: #00ffff; } /* Cyan */
-        .rp2 { top: 65%; left: 75%; background: #ffcc00; color: #ffcc00; } /* Or */
-        .rp3 { top: 15%; left: 65%; background: var(--rouge-alerte); color: var(--rouge-alerte); } /* Rouge */
+        .rp1 { top: 25%; left: 35%; background: #00ffff; color: #00ffff; }
+        .rp2 { top: 65%; left: 75%; background: #ffcc00; color: #ffcc00; }
+        .rp3 { top: 15%; left: 65%; background: var(--rouge-alerte); color: var(--rouge-alerte); }
 
-        /* --- TABLEAU DE DONNÉES BLEU --- */
-        .data-box { flex: 1; min-width: 400px; max-width: 600px; border: 2px solid var(--bleu-tech); padding: 25px; background: rgba(0, 10, 30, 0.5); box-shadow: inset 0 0 30px rgba(0, 168, 255, 0.1); }
-        h3 { margin-top: 0; letter-spacing: 3px; border-bottom: 1px solid var(--bleu-tech); padding-bottom: 10px; text-shadow: 0 0 10px var(--bleu-tech); }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 20px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--bleu-tech); color: white; letter-spacing: 1px; }
+        /* --- DATA --- */
+        .data-box { flex: 1; min-width: 400px; max-width: 600px; border: 2px solid var(--bleu-tech); padding: 25px; background: rgba(0, 10, 30, 0.5); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--bleu-tech); color: white; }
         td { padding: 12px; border-bottom: 1px solid rgba(0, 168, 255, 0.3); }
-        .val-high { color: var(--rouge-alerte); font-weight: bold; text-shadow: 0 0 10px var(--rouge-alerte); }
-        .val-ok { color: #00ffff; }
+        .val-high { color: var(--rouge-alerte); font-weight: bold; }
 
-        .btn-return { display: block; margin: 50px auto; padding: 15px 40px; border: 2px solid var(--bleu-tech); color: var(--bleu-tech); text-decoration: none; text-align: center; width: fit-content; transition: 0.3s; font-weight: bold; letter-spacing: 2px; background: rgba(0, 168, 255, 0.05); }
+        .btn-return { display: block; margin: 50px auto; padding: 15px 40px; border: 2px solid var(--bleu-tech); color: var(--bleu-tech); text-decoration: none; text-align: center; width: fit-content; transition: 0.3s; font-weight: bold; background: rgba(0, 168, 255, 0.05); }
         .btn-return:hover { background: var(--bleu-tech); color: #000; box-shadow: 0 0 30px var(--bleu-tech); }
     </style>
 </head>
@@ -61,8 +68,13 @@
     <div class="scanline"></div>
 
     <header class="osd-header">
-        <div>[ SCANNER DEEP SPACE - V68.1 ]</div>
-        <div class="status">● SYSTÈME ACTIF : ANALYSE EN COURS...</div>
+        <div>
+            [ SCANNER DEEP SPACE - V71 ]<br>
+            <span class="status">● ANALYSE DES FLUX EN COURS...</span>
+        </div>
+        <div id="visitor-module">
+            SIGNALS_TRACKED: <span id="count-value">SCANNING...</span>
+        </div>
     </header>
 
     <div class="main-layout">
@@ -80,20 +92,46 @@
         <div class="data-box">
             <h3>ANOMALIES DÉTECTÉES</h3>
             <table>
-                <tr><th>OBJET</th><th>TYPE</th><th>STATUT DU SIGNAL</th></tr>
-                <tr><td>OBJET DE HOAG</td><td>ANNEAU PARFAIT</td><td class="val-high">CRITIQUE (INSTABLE)</td></tr>
-                <tr><td>REGION H II</td><td>NAISSANCE STELLAIRE</td><td class="val-ok">STABLE (ACTIF)</td></tr>
-                <tr><td>OBJET DE HANNY</td><td>GAZ IONISÉ FLUO</td><td class="val-ok">ÉLEVÉ (CONSTANT)</td></tr>
-                <tr><td>CROIX EINSTEIN</td><td>MIRAGE GRAVIT.</td><td class="val-high">DÉVIATION MAJEURE</td></tr>
-                <tr><td>P3 (GÉANTE ROUGE)</td><td>PLANÈTE CLASSE X</td><td class="val-ok">ORBITE CONFIRMÉE</td></tr>
+                <tr><th>OBJET</th><th>TYPE</th><th>SIGNAL</th></tr>
+                <tr><td>OBJET DE HOAG</td><td>ANNEAU PARFAIT</td><td class="val-high">CRITIQUE</td></tr>
+                <tr><td>CROIX EINSTEIN</td><td>MIRAGE GRAVIT.</td><td class="val-high">DÉVIATION</td></tr>
+                <tr><td>P3 (GÉANTE ROUGE)</td><td>PLANÈTE CLASSE X</td><td>STABLE</td></tr>
             </table>
             <div style="margin-top: 30px; font-size: 0.8rem; color: rgba(255,255,255,0.7); border-top: 1px dashed rgba(0, 168, 255, 0.3); padding-top: 15px;">
-                > DERNIER LOG : "Distorsion temporelle de 0.04s détectée dans le secteur Gamma. Surveillance recommandée."
+                > LOG : "Détection de nouveaux signaux entrants. Origine : Lecteurs du multivers."
             </div>
         </div>
     </div>
 
     <a href="index.html" class="btn-return">RETOUR AUX ARCHIVES</a>
 
+    <script>
+        async function updateCounter() {
+            // Namespace unique pour ton roman
+            const namespace = "archives_roman_2026_system_scan"; 
+            const key = "visites_uniques_global";
+            
+            const today = new Date().toISOString().split('T')[0];
+            const lastVisit = localStorage.getItem('last_visit_system');
+
+            let apiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
+            
+            // Si c'est une nouvelle journée pour ce visiteur
+            if (lastVisit !== today) {
+                apiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
+                localStorage.setItem('last_visit_system', today);
+            }
+
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                document.getElementById('count-value').innerText = data.value.toLocaleString();
+            } catch (error) {
+                document.getElementById('count-value').innerText = "OFFLINE";
+            }
+        }
+
+        updateCounter();
+    </script>
 </body>
 </html>
