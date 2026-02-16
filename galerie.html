@@ -87,20 +87,98 @@
         <span style="font-size: 4rem;">👁️</span>
         <h1>NÉBULEUSE VISUELLE</h1>
         
-        <div class="gallery-grid">
-            <div class="art-card">
-                <div class="image-box">[ ANALYSE MÉDUSE ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">REF: RAM_PRESSURE_01</p>
-            </div>
-            <div class="art-card" style="animation-delay: -2s;">
-                <div class="image-box">[ OBJET DE HOAG ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">REF: RING_GALAXY_ANOMALY</p>
-            </div>
-            <div class="art-card" style="animation-delay: -4s;">
-                <div class="image-box">[ LENTILLE MASSIVE ]</div>
-                <p style="color: #666; margin-top: 20px; font-size: 0.7rem;">REF: EINSTEIN_RING_V64</p>
-            </div>
-        </div>
+       <script>
+    // --- 1. CONFIGURATION DE TES SORTIES ---
+    // Date format: "AAAA-MM-JJ"
+    const archives = [
+        { date: "2026-02-16", url: "image1.jpg", ref: "PHENOMENE_ALPHA" },
+        { date: "2026-02-17", url: "image2.jpg", ref: "SIGNAL_BETA" },
+        { date: "2026-02-20", url: "image3.jpg", ref: "ANOMALIE_GAMMA" },
+        { date: "2026-03-01", url: "image4.jpg", ref: "ARCHIVE_DELTA" }
+    ];
+
+    const galleryContainer = document.getElementById('main-gallery');
+    const today = new Date();
+    
+    // --- 2. MODE ADMIN (Secret) ---
+    // Si l'URL contient ?admin=true, tout se déverrouille
+    const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+
+           <script>
+    // --- 1. CONFIGURATION DE TES SORTIES ---
+    // Date format: "AAAA-MM-JJ"
+    const archives = [
+        { date: "2026-02-16", url: "image1.jpg", ref: "PHENOMENE_ALPHA" },
+        { date: "2026-02-17", url: "image2.jpg", ref: "SIGNAL_BETA" },
+        { date: "2026-02-20", url: "image3.jpg", ref: "ANOMALIE_GAMMA" },
+        { date: "2026-03-01", url: "image4.jpg", ref: "ARCHIVE_DELTA" }
+    ];
+
+    const galleryContainer = document.getElementById('main-gallery');
+    const today = new Date();
+    
+    // --- 2. MODE ADMIN (Secret) ---
+    // Si l'URL contient ?admin=true, tout se déverrouille
+    const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+
+    archives.forEach((item, index) => {
+        const releaseDate = new Date(item.date);
+        const isReleased = today >= releaseDate || isAdmin;
+
+        const card = document.createElement('div');
+        card.className = 'art-card';
+        // On garde tes délais d'animation pour que ça flotte toujours !
+        card.style.animationDelay = `${index * -2}s`;
+
+        if (isReleased) {
+            // AFFICHAGE DE L'IMAGE
+            card.innerHTML = `
+                <div class="image-box" style="border-style: solid; border-color: #00ff41;">
+                    <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem;">SIGNAL REÇU : ${item.ref}</p>
+            `;
+        } else {
+            // AFFICHAGE DU VERROU
+            card.innerHTML = `
+                <div class="image-box" style="background: repeating-linear-gradient(45deg, #050505, #111 10px); opacity: 0.5;">
+                    <span style="color: #444;">[ SIGNAL CRYPTÉ : ${item.date} ]</span>
+                </div>
+                <p style="color: #444; margin-top: 20px; font-size: 0.7rem;">REF: ${item.ref} (VERROUILLÉ)</p>
+            `;
+        }
+        galleryContainer.appendChild(card);
+    });
+</script>
+    archives.forEach((item, index) => {
+        const releaseDate = new Date(item.date);
+        const isReleased = today >= releaseDate || isAdmin;
+
+        const card = document.createElement('div');
+        card.className = 'art-card';
+        // On garde tes délais d'animation pour que ça flotte toujours !
+        card.style.animationDelay = `${index * -2}s`;
+
+        if (isReleased) {
+            // AFFICHAGE DE L'IMAGE
+            card.innerHTML = `
+                <div class="image-box" style="border-style: solid; border-color: #00ff41;">
+                    <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <p style="color: #00ff41; margin-top: 20px; font-size: 0.7rem;">SIGNAL REÇU : ${item.ref}</p>
+            `;
+        } else {
+            // AFFICHAGE DU VERROU
+            card.innerHTML = `
+                <div class="image-box" style="background: repeating-linear-gradient(45deg, #050505, #111 10px); opacity: 0.5;">
+                    <span style="color: #444;">[ SIGNAL CRYPTÉ : ${item.date} ]</span>
+                </div>
+                <p style="color: #444; margin-top: 20px; font-size: 0.7rem;">REF: ${item.ref} (VERROUILLÉ)</p>
+            `;
+        }
+        galleryContainer.appendChild(card);
+    });
+</script>
 
         <a href="index.html" class="btn-portal">REPASSER LE PORTAIL</a>
     </div>
