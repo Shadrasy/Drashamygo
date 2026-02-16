@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Galerie - Nébuleuse</title>
+    <style>
+        body { margin: 0; background: radial-gradient(circle at 50% 50%, rgba(100, 0, 255, 0.15) 0%, transparent 80%), #010105; color: white; font-family: 'Courier New', monospace; }
+        .container { max-width: 1000px; margin: auto; padding: 50px; text-align: center; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .art-card { background: #000; border: 1px solid #222; height: 300px; display: flex; align-items: center; justify-content: center; color: #444; }
+        .art-card:hover { border-color: white; transform: translateY(-10px); transition: 0.3s; }
+        .btn-back { border: 1px solid white; color: white; padding: 10px 30px; text-decoration: none; display: inline-block; margin-top: 40px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <span style="font-size: 3rem;">👁️</span>
+        <h1>NÉBULEUSE VISUELLE</h1>
+        <div class="gallery-grid">
+            <div class="art-card">IMAGE 01</div>
+            <div class="art-card">IMAGE 02</div>
+            <div class="art-card">IMAGE 03</div>
+        </div>
+        <a href="index.html" class="btn-back">REPASSER LE PORTAIL</a>
+    </div>
+</body>
+</html>
