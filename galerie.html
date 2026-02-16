@@ -4,38 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archives - Nébuleuse Visuelle (V95)</title>
+    
     <script src="security.js"></script>
+    <script src="archives-data.js"></script>
+
     <style>
         :root { 
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
+            --bleu-tech: #00a8ff; 
             --einstein-glow: rgba(255, 255, 255, 0.4);
         }
+
         body {
             margin: 0; background-color: var(--noir-fond); color: white;
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
-        /* --- DÉCORS --- */
+
+        /* --- 1. DÉCORS --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* --- INTERFACE OSD --- */
-        #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
+        .p-gold { width: 22px; height: 22px; background: #ffcc00; position: fixed; top: 15%; left: 10%; box-shadow: 0 0 20px #ffcc00; cursor: pointer; border-radius: 50%; z-index: 500; }
+
+        /* --- 2. INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
-        h1 { font-size: 2.5rem; letter-spacing: 8px; text-shadow: 0 0 15px var(--vhs-vert); margin-bottom: 30px; }
+        h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         
-        #galerie-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #222; padding: 15px; position: relative; backdrop-filter: blur(5px); }
-        .image-frame { width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 15px; }
-        .unlocked .image-frame { border: 1px solid var(--vhs-vert); }
-        .unlocked img { width: 100%; height: 100%; object-fit: cover; }
+        #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
+
+        #galerie-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); }
+        .image-frame { width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
+        .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
         
-        /* PANNEAU MAÎTRE */
-        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; display: none; }
-        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 8px; font-size: 10px; margin: 2px; }
-        .p-gold { width: 22px; height: 22px; background: #ffcc00; position: fixed; top: 15%; left: 10%; border-radius: 50%; cursor: pointer; z-index: 500; }
+        .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
+        .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
+
+        /* --- 3. PANNEAU MAÎTRE --- */
+        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
+        .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
+        .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -48,15 +59,25 @@
         <div id="signals-status">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU</p>
-            <div id="nav-buttons"></div>
+            <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 CONTRÔLE MAÎTRE HINARU</p>
+            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
+            
+            <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
+                <span style="font-size:10px;">FILTRER PAR TYPE :</span>
+                <button class="btn-nav-master" onclick="filtrerType('Livre')">LIVRE</button>
+                <button class="btn-nav-master" onclick="filtrerType('Anime')">ANIME</button>
+                <button class="btn-nav-master" onclick="filtrerType('Serie')">SÉRIE</button>
+                <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
+            </div>
+
+            <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
         <div id="galerie-container"></div>
+        <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
-        // --- CONFIGURATION DES ROMANS ---
         const romansConfig = [
             { id: 1, nom: "Shadrasy", tomes: 154, public: true },
             { id: 2, nom: "Roman 2", tomes: 96, public: false },
@@ -74,67 +95,83 @@
             { id: 14, nom: "Roman 14", tomes: 96, public: false }
         ];
 
-        // --- DÉTECTION MODE MAÎTRE ---
         const urlParams = new URLSearchParams(window.location.search);
         const isHinaru = urlParams.get('Hinaru') === 'true';
-
-        // --- GESTION OSD ---
         const osdStatus = document.getElementById('signals-status');
+
+        // Initialisation OSD
         if (isHinaru) {
             osdStatus.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
             osdStatus.style.color = "#00ff41";
             document.getElementById('master-panel').style.display = 'block';
-        } else {
-            osdStatus.innerHTML = "SIGNALS_TRACKED: OFFLINE";
-            osdStatus.style.color = "#444";
         }
 
         function activerModeMaitre() {
-            window.location.href = "?Hinaru=true";
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('Hinaru', 'true');
+            window.location.href = currentUrl.toString();
         }
 
-        // --- GÉNÉRATION DE LA GALERIE ---
-        function chargerGalerie() {
+        function filtrerType(typeCible) {
+            chargerGalerie(typeCible);
+        }
+
+        function chargerGalerie(filtreType = null) {
             const container = document.getElementById('galerie-container');
             const nav = document.getElementById('nav-buttons');
-            const projetSelectionne = parseInt(urlParams.get('projet')) || 1;
+            const projetActuel = parseInt(urlParams.get('projet')) || 1;
             const now = new Date();
+            
+            container.innerHTML = "";
+            nav.innerHTML = "";
 
-            // Génération des boutons de navigation (Maître ou Public si autorisé)
+            // 1. Génération de la Navigation (Maître voit tout, Public voit R1)
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
                     btn.className = "btn-nav-master";
-                    btn.innerText = `R${r.id} (${r.tomes} TOMES)`;
-                    btn.onclick = () => { window.location.href = `?projet=${r.id}${isHinaru ? '&Hinaru=true' : ''}`; };
-                    if(r.id === projetSelectionne) btn.style.borderColor = "var(--vhs-vert)";
+                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
+                    btn.onclick = () => { 
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('projet', r.id);
+                        window.location.href = url.toString();
+                    };
+                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
                     nav.appendChild(btn);
                 }
             });
 
-            // Affichage des slots du roman sélectionné
-            const romanActuel = romansConfig.find(r => r.id === projetSelectionne);
-            for (let i = 1; i <= romanActuel.tomes; i++) {
-                // Simulation de data (à remplacer par ton fichier de données réel)
-                const releaseDate = new Date("2027-01-01"); // Exemple
+            // 2. Chargement des données réelles (archivesData doit être défini dans archives-data.js)
+            const romanActuel = romansConfig.find(r => r.id === projetActuel);
+            
+            // On filtre les données par roman ET par type (si demandé)
+            const dataFiltrée = archivesData.filter(item => {
+                const matchRoman = item.roman === projetActuel;
+                const matchType = filtreType ? item.type === filtreType : true;
+                return matchRoman && matchType;
+            });
+
+            dataFiltrée.forEach(item => {
+                const releaseDate = new Date(item.date);
                 const estDebloque = isHinaru || (now >= releaseDate);
 
                 const box = document.createElement('div');
                 box.className = estDebloque ? 'box unlocked' : 'box locked';
                 box.innerHTML = `
                     <div class="image-frame">
-                        ${estDebloque ? `<div style="color:var(--vhs-vert)">[ ILLU TOME ${i} ]</div>` : `[ DATA_LOCKED ]`}
+                        ${estDebloque ? `<img src="${item.url}" style="width:100%">` : `<div style="color:#444">[ SIGNAL_CRYPTÉ ]</div>`}
                     </div>
-                    <div style="font-size:0.7rem;">
-                        TOME ${i} / ${romanActuel.tomes}<br>
-                        ${isHinaru ? `<span style="color:orange">MASTER_VIEW: ACTIVE</span>` : ''}
+                    <div style="font-size:0.7rem; text-align:left;">
+                        <span class="type-tag ${item.type === 'Livre' ? 'tag-roman' : ''}">${item.type.toUpperCase()}</span><br>
+                        TOME ${item.tome} / ${romanActuel.tomes}<br>
+                        ${isHinaru ? `<span style="color:orange">MASTER_VIEW: ${item.date}</span>` : ''}
                     </div>
                 `;
                 container.appendChild(box);
-            }
+            });
         }
 
-        window.onload = chargerGalerie;
+        window.onload = () => chargerGalerie();
     </script>
 </body>
 </html>
