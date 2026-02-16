@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.8 Master Absolute)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9 Omni-Absolute)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -56,14 +56,7 @@
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
-        /* CORRECTION GRILLES SÉPARÉES */
-        #galerie-container, #fan-cosplay-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 30px; 
-            margin-bottom: 40px; 
-        }
-
+        #galerie-container, #fan-cosplay-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         
@@ -76,12 +69,14 @@
             text-shadow: 0 0 5px var(--cosplay-gold);
         }
 
+        /* PULSE SCAN ANIMATION */
         .hud-technique {
             position: absolute; top: 10px; right: 10px; width: 155px;
             background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech);
             padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px;
             text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out;
         }
+        @keyframes pulseScan { 0% { border-left-color: var(--bleu-tech); opacity: 1; } 50% { border-left-color: transparent; opacity: 0.5; } }
 
         .btn-action {
             background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech);
@@ -92,11 +87,9 @@
 
         /* --- MASTER PANEL --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
-        .master-input { background: black; color: white; border: 1px solid #444; padding: 8px; font-size: 10px; margin-bottom: 10px; width: 85%; }
+        .master-input { background: black; color: white; border: 1px solid #444; padding: 8px; font-size: 10px; margin-bottom: 10px; width: 85%; font-family: monospace; }
         .master-select { background: black; color: white; border: 1px solid #444; padding: 5px; font-size: 10px; }
         
-        #protocol-display { display:none; background:rgba(0,15,0,0.98); border: 1px solid var(--vhs-vert); padding:20px; font-size:11px; text-align:left; color:var(--vhs-vert); margin-bottom:30px; border-radius: 5px; line-height: 1.6; }
-
         .theory-input { background: #000; color: var(--cosplay-gold); border: 1px solid var(--bordeaux); padding: 5px; width: 90%; font-size: 9px; margin-top: 5px; font-family: monospace; }
         .twitch-link { color: #a970ff; text-decoration: none; font-size: 10px; font-weight: bold; }
     </style>
@@ -115,23 +108,17 @@
         <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; color:red;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.8)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom:20px;"></div>
             
             <div style="margin-bottom:20px; display:flex; gap:10px; justify-content:center; flex-wrap: wrap;">
                 <button class="btn-action" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PIPELINE 13 MOD ]</button>
                 <button class="btn-action" onclick="afficherProtocole('industriel')" style="border-color:var(--standard-magenta); color:var(--standard-magenta);">[ STANDARDS MÉTIER ]</button>
-                <button class="btn-action" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
                 <button class="btn-action" style="border-color:orange; color:orange;" onclick="toggleStreamerMode()" id="streamer-btn">[ STREAMER MODE : OFF ]</button>
             </div>
 
-            <div id="protocol-display">
-                <div id="protocol-content"></div>
-                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
-            </div>
-
             <div style="border-top:1px dashed var(--vhs-vert); padding-top:20px; text-align: left;">
-                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR : STUDIO DE FUSION</p>
+                <p style="color:orange; font-weight:bold; margin-bottom:10px;">⚡ PROGRAMMATEUR : STUDIO DE FUSION</p>
                 <input type="text" id="img-url" class="master-input" placeholder="Lien image (.png/.jpg)">
                 <input type="text" id="glb-url" class="master-input" placeholder="Lien objet 3D (.glb)">
                 <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows..."></textarea>
@@ -144,12 +131,13 @@
                         <option value="Fan-Cosplay">FAN-COSPLAY</option>
                         <option value="World">WORLD</option>
                     </select>
-                    <span id="tome-input-area" style="margin-left:10px;"> TOME : <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white;"></span>
+                    <span id="tome-input-area" style="margin-left:10px;"> TOME : <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white; border: 1px solid #444;"></span>
+                    <span style="margin-left:10px;"> DATE : <input type="datetime-local" id="img-date" class="master-select"></span>
                 </div>
-                <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE FUSION</button>
-                <textarea id="output-code" class="master-input" style="width:95%; height:80px; margin-top:15px; display:none; background:#050505; color:cyan;"></textarea>
+                <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; width:100%;">GÉNÉRER LE CODE SIGNAL</button>
+                <textarea id="output-code" class="master-input" style="width:95%; height:80px; margin-top:15px; display:none; background:#050505; color:cyan; border-color:cyan;"></textarea>
             </div>
-            <button class="btn-action" style="color:red; margin-top:20px; border-color:red;" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
+            <button class="btn-action" style="color:red; margin-top:20px; border-color:red; width:100%;" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
         <div id="galerie-container"></div>
@@ -165,7 +153,18 @@
     <script>
         const romansConfig = [
             { id: 1, nom: "Shadrasy", public: true },
+            { id: 2, nom: "Projet 2", public: false },
+            { id: 3, nom: "Projet 3", public: false },
             { id: 4, nom: "Roman 4", public: true },
+            { id: 5, nom: "Projet 5", public: false },
+            { id: 6, nom: "Projet 6", public: false },
+            { id: 7, nom: "Projet 7", public: false },
+            { id: 8, nom: "Projet 8", public: false },
+            { id: 9, nom: "Projet 9", public: false },
+            { id: 10, nom: "Projet 10", public: false },
+            { id: 11, nom: "Projet 11", public: false },
+            { id: 12, nom: "Projet 12", public: false },
+            { id: 13, nom: "Projet 13", public: false },
             { id: 14, nom: "Projet 14", public: false }
         ];
 
@@ -181,7 +180,8 @@
 
         function toggleStreamerMode() {
             streamerActive = !streamerActive;
-            document.getElementById('master-panel').style.opacity = streamerActive ? "0.15" : "1";
+            const panel = document.getElementById('master-panel');
+            panel.style.opacity = streamerActive ? "0.15" : "1";
             document.getElementById('streamer-btn').innerText = streamerActive ? "[ STREAMER MODE : ON ]" : "[ STREAMER MODE : OFF ]";
         }
 
@@ -196,16 +196,14 @@
             window.location.href = url.toString();
         }
 
-        function afficherProtocole(type) {
-            const display = document.getElementById('protocol-display');
-            display.style.display = 'block';
-            document.getElementById('protocol-content').innerHTML = "SYSTEM LOGS: W1.5 Décor 3D | W4.7 Fusion | W10 Rendu 4K";
-        }
-
         function genererCodeSignal() {
             const url = document.getElementById('img-url').value;
             const glb = document.getElementById('glb-url').value;
-            const code = `{ url: "${url}", glb: "${glb}", roman: 1, type: "Livre", nom: "Hinaru (Creator)" },`;
+            const tech = document.getElementById('img-tech').value;
+            const type = document.getElementById('img-type').value;
+            const date = document.getElementById('img-date').value;
+            const proj = urlParams.get('projet') || 1;
+            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${proj}, type: "${type}", date: "${date}", nom: "Hinaru (Creator)" },`;
             const out = document.getElementById('output-code');
             out.value = code; out.style.display = 'block';
         }
@@ -218,19 +216,22 @@
             const now = new Date();
             
             container.innerHTML = ""; fanContainer.innerHTML = ""; nav.innerHTML = "";
+            document.getElementById('cosplay-section-title').style.display = 'none';
 
             romansConfig.forEach(r => {
-                const btn = document.createElement('button');
-                btn.className = "btn-nav-master";
-                btn.style.cssText = "background:black; color:white; border:1px solid white; cursor:pointer; padding:5px 10px; font-size:9px; margin:2px;";
-                btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
-                if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
-                btn.onclick = () => { 
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('projet', r.id);
-                    window.location.href = url.toString();
-                };
-                nav.appendChild(btn);
+                if (isHinaru || r.public) {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-nav-master";
+                    btn.style.cssText = "background:black; color:white; border:1px solid white; cursor:pointer; padding:5px 10px; font-size:9px; margin:2px;";
+                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
+                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
+                    btn.onclick = () => { 
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('projet', r.id);
+                        window.location.href = url.toString();
+                    };
+                    nav.appendChild(btn);
+                }
             });
 
             if (typeof archivesData !== 'undefined') {
@@ -249,7 +250,6 @@
                         box.innerHTML = `<div class="image-frame" style="border-color:var(--bordeaux);">${badge}<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;"></div><div style="font-size:0.7rem; color:var(--cosplay-gold); text-align:left;"><b>ID : ${item.nom.toUpperCase()}</b> ${twitch}<br><input type="text" placeholder="SOUMETTRE THÉORIE..." class="theory-input"><button class="btn-action" style="font-size:6px; margin-top:5px;" onclick="alert('SIGNAL TRANSMIS')">[ TRANSMIT ]</button></div>`;
                         fanContainer.appendChild(box);
                     } else {
-                        // CORRECTION ICI : Ajout camera-orbit initial
                         let media = estDebloque ? (item.glb ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" camera-orbit="0deg 75deg 105%" auto-rotate camera-controls shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:contain;">`) : `[ SIGNAL_CRYPTÉ ]`;
                         let buttons = (estDebloque && item.glb) ? `<button class="btn-action" style="border-color:orange; color:orange; margin-top:10px;" onclick="document.getElementById('m-${index}').cameraOrbit='0deg 75deg 105%'; document.getElementById('m-${index}').cameraTarget='auto auto auto'">[ RESET CAMERA ]</button>` : "";
                         let hud = (estDebloque && item.tech) ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br><span style="color:yellow; font-size:7px;">ARCH: DATABASE_LINKED</span><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
