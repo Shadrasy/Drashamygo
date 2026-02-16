@@ -147,7 +147,7 @@
     </div>
 
     <script>
-        // --- LISTE COMPLÈTE DES 14 ROMANS RÉACTIVÉE ---
+        // --- LISTE COMPLÈTE RESTAURÉE ---
         const romansConfig = [
             { id: 1, nom: "Shadrasy", tomes: 154, public: true },
             { id: 2, nom: "Projet 2", tomes: 96, public: false },
@@ -220,7 +220,6 @@
             container.innerHTML = ""; fanContainer.innerHTML = ""; nav.innerHTML = "";
             document.getElementById('cosplay-section-title').style.display = 'none';
 
-            // NAVIGATION GÉNÉRATION
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
