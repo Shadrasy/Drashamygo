@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V97)</title>
+    <title>Archives - Nébuleuse Visuelle (V98)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -41,7 +41,6 @@
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
         
-        /* Titres de sections */
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
         #galerie-container, #world-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
@@ -49,17 +48,22 @@
         .image-frame { width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
         
-        /* Style spécial pour les objets 3D */
         model-viewer { width: 100%; height: 100%; --poster-color: transparent; }
 
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
         .tag-world { color: orange; border-color: orange; }
+        
+        /* Log Technique sous l'image */
+        .tech-log { font-size: 8px; color: #888; text-align: left; margin-top: 10px; border-top: 1px solid #222; padding-top: 5px; font-family: monospace; white-space: pre-line; }
 
         /* --- 4. PANNEAU MAÎTRE --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
         .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
         .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; }
+        
+        /* Zone Protocoles */
+        #protocol-display { display:none; background:rgba(0,20,0,0.95); border:1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:10px; text-align:left; color:var(--vhs-vert); line-height:1.4; }
     </style>
 </head>
 <body>
@@ -78,18 +82,22 @@
             <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 CONTRÔLE MAÎTRE HINARU</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
             
-            <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
-                <button class="btn-nav-master" onclick="filtrerType('Livre')">LIVRE</button>
-                <button class="btn-nav-master" onclick="filtrerType('Anime')">ANIME</button>
-                <button class="btn-nav-master" onclick="filtrerType('Serie')">SÉRIE</button>
-                <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
+            <div style="margin-top:10px; display:flex; gap:5px; justify-content:center;">
+                <button class="btn-nav-master" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PROTOCOLE MÉTHODE ]</button>
+                <button class="btn-nav-master" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
+            </div>
+            
+            <div id="protocol-display">
+                <div id="protocol-content"></div>
+                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:8px; margin-top:10px; cursor:pointer;">FERMER</button>
             </div>
 
             <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px; text-align:center;">
-                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL (Lieux, 3D & Tomes)</p>
-                <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:80%; padding:5px; margin-bottom:5px;">
-                <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb) - Optionnel" style="background:black; color:white; border:1px solid #444; width:80%; padding:5px; margin-bottom:10px;">
-                
+                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL</p>
+                <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
+                <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
+                <textarea id="img-tech" placeholder="Logs Workflows (ex: W1: Décor, W9: Unification...)" style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:40px; padding:5px; margin-bottom:10px; font-family:monospace; font-size:9px;"></textarea>
+
                 <div style="margin-bottom:10px;">
                     TYPE : 
                     <select id="img-type" style="background:black; color:white; border:1px solid #444;" onchange="toggleTomeField()">
@@ -99,23 +107,23 @@
                         <option value="World">WORLD (Encyclopédie)</option>
                     </select>
                     <span id="tome-input-area">
-                        TOME : <input type="number" id="img-tome" value="1" style="width:50px; background:black; color:white; border:1px solid #444;">
+                        TOME : <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white; border:1px solid #444;">
                     </span>
                 </div>
                 <div style="margin-bottom:10px;">
                     DATE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
                 </div>
                 <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE</button>
-                <textarea id="output-code" style="width:90%; height:60px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333; font-family:monospace;"></textarea>
+                <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
 
             <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
         <div id="world-section-title" class="section-title" style="display:none;">Archives du Monde (Lieux & Équipements)</div>
-        <div id="world-container" style="margin-bottom:50px;"></div>
+        <div id="world-container"></div>
 
-        <div id="chrono-title" class="section-title">Chronologie des Tomes</div>
+        <div class="section-title">Chronologie des Tomes</div>
         <div id="galerie-container"></div>
         
         <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
@@ -148,6 +156,28 @@
             document.getElementById('master-panel').style.display = 'block';
         }
 
+        function afficherProtocole(type) {
+            const display = document.getElementById('protocol-display');
+            const content = document.getElementById('protocol-content');
+            display.style.display = 'block';
+
+            if(type === 'methode') {
+                content.innerHTML = `
+                    <p style="color:cyan; font-weight:bold;">[ PROTOCOLE MÉTHODE : ARCHITECTURE VISUELLE ]</p>
+                    • PHASE ALPHA : Création des assets bruts (W1-W3).<br>
+                    • PHASE BÊTA : Intégration technique et 3D TripoSR (W4-W7).<br>
+                    • PHASE GAMMA : Fusion, Unification lumière (0.25) et Upscale (W8-W11).<br>
+                    • COUVERTURE : Design synchronisé Recto/Verso pour continuité totale.`;
+            } else {
+                content.innerHTML = `
+                    <p style="color:yellow; font-weight:bold;">[ PROTOCOLE SILENCE : IMMERSION NARRATIVE ]</p>
+                    • LONGÉVITÉ D'IMMERSION : Absence de texte pour éviter la rupture cognitive.<br>
+                    • FIL CONDUCTEUR : L'image renforce le récit sans parasiter l'attention.<br>
+                    • STORYBOARD READY : Format pur prêt pour l'adaptation immédiate en Anime.<br>
+                    • PHILOSOPHIE : Le visuel installe l'âme, le texte installe l'action.`;
+            }
+        }
+
         function toggleTomeField() {
             const type = document.getElementById('img-type').value;
             document.getElementById('tome-input-area').style.display = (type === 'World') ? 'none' : 'inline';
@@ -162,6 +192,7 @@
         function genererCodeSignal() {
             const url = document.getElementById('img-url').value;
             const glb = document.getElementById('glb-url').value;
+            const tech = document.getElementById('img-tech').value;
             const tome = document.getElementById('img-tome').value;
             const date = document.getElementById('img-date').value;
             const type = document.getElementById('img-type').value;
@@ -169,7 +200,7 @@
             
             if(!url || !date) { alert("ERREUR : URL et DATE obligatoires."); return; }
 
-            const code = `  { url: "${url}", glb: "${glb}", roman: ${projet}, tome: ${type === 'World' ? 0 : tome}, date: "${date}", type: "${type}" },`;
+            const code = `  { url: "${url}", glb: "${glb}", tech: "${tech}", roman: ${projet}, tome: ${type === 'World' ? 0 : tome}, date: "${date}", type: "${type}" },`;
             const output = document.getElementById('output-code');
             output.value = code;
             output.style.display = 'block';
@@ -233,6 +264,7 @@
                             <span class="type-tag ${item.type === 'World' ? 'tag-world' : 'tag-roman'}">${item.type.toUpperCase()}</span><br>
                             ${item.type === 'World' ? 'ASSET GÉNÉRAL' : `TOME ${item.tome} / ${romanActuel.tomes}`}<br>
                             ${isHinaru ? `<span style="color:orange">MASTER: ${item.date}</span>` : ''}
+                            ${estDebloque && item.tech ? `<div class="tech-log">[ LOG TECHNIQUE ]\n${item.tech}</div>` : ''}
                         </div>
                     `;
 
