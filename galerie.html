@@ -40,7 +40,6 @@
             100% { transform: translate(2vw, 4vh) rotate(10deg); } 
         }
 
-        /* Positionnement précis demandé */
         .p-gold { 
             width: 22px; height: 22px; background: #ffcc00; 
             top: 50px; left: 50px; 
@@ -81,7 +80,7 @@
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
 
-        /* PANNEAU MAÎTRE */
+        /* --- 4. PANNEAU MAÎTRE --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
         .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
         .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; }
@@ -111,6 +110,27 @@
                 <button class="btn-nav-master" onclick="filtrerType('Serie')">SÉRIE</button>
                 <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
             </div>
+
+            <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px; text-align:center;">
+                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL TEMPOREL</p>
+                <input type="text" id="img-url" placeholder="Nom du fichier (ex: shadrasy_01.jpg)" style="background:black; color:white; border:1px solid #444; width:80%; padding:5px; margin-bottom:10px;">
+                <div style="margin-bottom:10px;">
+                    TOME : <input type="number" id="img-tome" value="1" style="width:50px; background:black; color:white; border:1px solid #444;">
+                    TYPE : 
+                    <select id="img-type" style="background:black; color:white; border:1px solid #444;">
+                        <option value="Livre">LIVRE</option>
+                        <option value="Anime">ANIME</option>
+                        <option value="Serie">SÉRIE</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:10px;">
+                    DATE DE SORTIE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
+                </div>
+                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE</button>
+                <textarea id="output-code" style="width:90%; height:60px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333; font-family:monospace;"></textarea>
+                <p id="copy-hint" style="color:#666; font-size:8px; display:none;">Copié ! Colle cette ligne dans ton fichier archives-data.js</p>
+            </div>
+
             <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
@@ -152,9 +172,25 @@
             window.location.href = currentUrl.toString();
         }
 
-        function filtrerType(typeCible) {
-            chargerGalerie(typeCible);
+        function genererCodeSignal() {
+            const url = document.getElementById('img-url').value;
+            const tome = document.getElementById('img-tome').value;
+            const date = document.getElementById('img-date').value;
+            const type = document.getElementById('img-type').value;
+            const projet = urlParams.get('projet') || 1;
+            
+            if(!url || !date) { alert("ERREUR : URL et DATE obligatoires."); return; }
+
+            const code = `  { url: "${url}", roman: ${projet}, tome: ${tome}, date: "${date}", type: "${type}" },`;
+            const output = document.getElementById('output-code');
+            output.value = code;
+            output.style.display = 'block';
+            output.select();
+            document.execCommand('copy');
+            document.getElementById('copy-hint').style.display = 'block';
         }
+
+        function filtrerType(typeCible) { chargerGalerie(typeCible); }
 
         function chargerGalerie(filtreType = null) {
             const container = document.getElementById('galerie-container');
