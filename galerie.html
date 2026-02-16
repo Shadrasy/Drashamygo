@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V98)</title>
+    <title>Archives - Nébuleuse Visuelle (V98.5)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -14,7 +14,7 @@
             --noir-fond: #000103; 
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
-            --bleu-tech: #00a8ff; 
+            --bleu-tech: #00ffff; 
         }
 
         body {
@@ -22,7 +22,7 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- DÉCORS --- */
+        /* --- DÉCORS & AMBIANCE --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -30,50 +30,65 @@
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: float 15s ease-in-out infinite alternate; }
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(2vw, 4vh) rotate(10deg); } }
         .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 50px; left: 50px; box-shadow: 0 0 20px #ffcc00; cursor: pointer; z-index: 500; border-radius: 50%; }
-        .p-ring { width: 110px; height: 110px; background: #ddd; top: 20%; right: 10%; box-shadow: inset -15px -15px 40px rgba(0,0,0,0.9); }
-        .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 20%; left: 10%; }
-        .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 15%; right: 15%; }
 
-        /* --- INTERFACE --- */
+        /* --- INTERFACE TACTIQUE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
-        #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
         
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
         #galerie-container, #world-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); }
-        .image-frame { width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
-        .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
+        .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
         
-        model-viewer { width: 100%; height: 100%; --poster-color: transparent; }
+        /* --- HUD DE FUSION (NOUVEAU) --- */
+        .hud-technique {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 140px;
+            background: rgba(0, 20, 40, 0.85);
+            border-left: 2px solid var(--bleu-tech);
+            padding: 10px;
+            color: var(--bleu-tech);
+            font-family: monospace;
+            font-size: 8px;
+            text-align: left;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+            border-radius: 0 5px 5px 0;
+            pointer-events: none;
+            animation: pulseScan 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseScan {
+            0% { border-left-color: #00ffff; box-shadow: -5px 0 5px rgba(0,255,255,0.2); }
+            50% { border-left-color: #005555; box-shadow: -2px 0 2px rgba(0,255,255,0.1); }
+            100% { border-left-color: #00ffff; box-shadow: -5px 0 5px rgba(0,255,255,0.2); }
+        }
+
         .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
         .tag-world { color: orange; border-color: orange; }
-        
-        .tech-log { font-size: 9px; color: #00ff41; text-align: left; margin-top: 10px; border-top: 1px solid #222; padding-top: 8px; font-family: monospace; white-space: pre-line; background: rgba(0,255,65,0.15); padding: 8px; border-radius: 4px; }
 
+        /* --- PANNEAU MAÎTRE --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
         .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
-        .btn-logout { background: transparent; color: #ff3232; border: 1px solid #ff3232; padding: 8px 20px; cursor: pointer; font-size: 11px; margin-top: 20px; }
-        
         #protocol-display { display:none; background:rgba(0,20,0,0.95); border: 1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:11px; text-align:left; color:var(--vhs-vert); line-height:1.5; }
     </style>
 </head>
 <body>
     <div class="nebula-layer"></div>
     <div class="star-field"></div>
-    <div class="nebula-planet p-ring"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-toxic"></div>
     <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()"></div>
 
     <div class="container">
         <h1>NÉBULEUSE VISUELLE</h1>
-        <div id="signals-status">SIGNALS_TRACKED: OFFLINE</div>
+        <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 CONTRÔLE MAÎTRE HINARU</p>
+            <p style="color:var(--vhs-vert); font-weight:bold; margin-top:0;">📡 CONTRÔLE MAÎTRE HINARU (W1-W11)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;"></div>
             
             <div style="margin-top:10px; display:flex; gap:10px; justify-content:center;">
@@ -83,14 +98,14 @@
             
             <div id="protocol-display">
                 <div id="protocol-content"></div>
-                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">FERMER LE TERMINAL</button>
+                <button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:9px; margin-top:10px; cursor:pointer;">X FERMER LE TERMINAL</button>
             </div>
 
-            <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px; text-align:center;">
-                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL</p>
+            <div style="margin-top:20px; border-top:1px dashed var(--vhs-vert); padding-top:15px; font-size:11px;">
+                <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL (FUSION 3D READY)</p>
                 <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
                 <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
-                <textarea id="img-tech" placeholder="Logs Workflows (ex: W1: Décor, W9: Unification...)" style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:45px; padding:5px; margin-bottom:10px; font-family:monospace;"></textarea>
+                <textarea id="img-tech" placeholder="Logs Workflows (ex: W4.5 Parenting OK, W11 4K...)" style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:50px; padding:5px; margin-bottom:10px; font-family:monospace;"></textarea>
 
                 <div style="margin-bottom:10px;">
                     TYPE : 
@@ -106,28 +121,26 @@
                         TOME : <input type="number" id="img-tome" value="1" style="width:45px; background:black; color:white; border:1px solid #444;">
                     </span>
                 </div>
-                <div style="margin-bottom:10px;">
-                    DATE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
-                </div>
-                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE</button>
+                <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444; margin-bottom:10px;">
+                <br>
+                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE FUSION</button>
                 <p id="copy-msg" style="color:cyan; font-size:8px; display:none; margin-top:5px;">SIGNAL COPIÉ !</p>
                 <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
 
-            <div style="margin-top:20px; padding-top:10px; border-top:1px solid #333;">
-                <button class="btn-nav-master" onclick="filtrerType('Livre')">FILTRER : LIVRE</button>
-                <button class="btn-nav-master" onclick="filtrerType('Anime')">FILTRER : ANIME</button>
-                <button class="btn-nav-master" onclick="filtrerType('Serie')">FILTRER : SÉRIE</button>
-                <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">VOIR TOUT</button>
+            <div style="margin-top:15px; border-top:1px solid #333; padding-top:10px;">
+                <button class="btn-nav-master" onclick="filtrerType('Livre')">LIVRE</button>
+                <button class="btn-nav-master" onclick="filtrerType('Anime')">ANIME</button>
+                <button class="btn-nav-master" onclick="filtrerType('Serie')">SÉRIE</button>
+                <button class="btn-nav-master" style="color:var(--vhs-vert)" onclick="chargerGalerie()">TOUT VOIR</button>
             </div>
-
-            <button class="btn-logout" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
+            <button class="btn-nav-master" style="color:red; margin-top:20px;" onclick="window.location.href='galerie.html'">DÉCONNEXION</button>
         </div>
 
         <div id="world-section-title" class="section-title" style="display:none;">Archives du Monde (Lieux & Équipements)</div>
         <div id="world-container"></div>
 
-        <div id="chrono-title" class="section-title">Chronologie des Tomes</div>
+        <div class="section-title">Chronologie des Tomes</div>
         <div id="galerie-container"></div>
         
         <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
@@ -136,19 +149,7 @@
     <script>
         const romansConfig = [
             { id: 1, nom: "Shadrasy", tomes: 154, public: true },
-            { id: 2, nom: "Roman 2", tomes: 96, public: false },
-            { id: 3, nom: "Roman 3", tomes: 96, public: false },
-            { id: 4, nom: "Roman 4", tomes: 96, public: false },
-            { id: 5, nom: "Roman 5", tomes: 96, public: false },
-            { id: 6, nom: "Roman 6", tomes: 96, public: false },
-            { id: 7, nom: "Roman 7", tomes: 96, public: false },
-            { id: 8, nom: "Roman 8", tomes: 96, public: false },
-            { id: 9, nom: "Roman 9", tomes: 96, public: false },
-            { id: 10, nom: "Roman 10", tomes: 96, public: false },
-            { id: 11, nom: "Roman 11", tomes: 96, public: false },
-            { id: 12, nom: "Roman 12", tomes: 96, public: false },
-            { id: 13, nom: "Roman 13", tomes: 96, public: false },
-            { id: 14, nom: "Roman 14", tomes: 96, public: false }
+            { id: 2, nom: "Roman 2", tomes: 96, public: false }
         ];
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -165,9 +166,9 @@
             const content = document.getElementById('protocol-content');
             display.style.display = 'block';
             if(type === 'methode') {
-                content.innerHTML = `<p style="color:cyan; font-weight:bold;">[ PROTOCOLE MÉTHODE : ARCHITECTURE VISUELLE ]</p>• PHASE ALPHA : Création des assets bruts (W1-W3).<br>• PHASE BÊTA : Intégration technique et 3D TripoSR (W4-W7).<br>• PHASE GAMMA : Fusion, Unification lumière (0.25) et Upscale (W8-W11).<br>• COUVERTURE : Design synchronisé Recto/Verso pour continuité totale.`;
+                content.innerHTML = `<p style="color:cyan; font-weight:bold;">[ PROTOCOLE MÉTHODE : ARCHITECTURE VISUELLE ]</p>• PHASE ALPHA : Assets bruts (W1-W3).<br>• PHASE BÊTA : 3D & Fusion (W4-W4.5).<br>• PHASE GAMMA : Lumière & Unification (W9-W11).`;
             } else {
-                content.innerHTML = `<p style="color:yellow; font-weight:bold;">[ PROTOCOLE SILENCE : IMMERSION NARRATIVE ]</p>• LONGÉVITÉ D'IMMERSION : Absence de texte pour éviter la rupture cognitive.<br>• FIL CONDUCTEUR : L'image renforce le récit sans parasiter l'attention.<br>• STORYBOARD READY : Format pur prêt pour l'adaptation immédiate en Anime.<br>• PHILOSOPHIE : Le visuel installe l'âme, le texte installe l'action.`;
+                content.innerHTML = `<p style="color:yellow; font-weight:bold;">[ PROTOCOLE SILENCE : IMMERSION ]</p>• Absence de texte pour éviter la rupture cognitive.<br>• Le visuel installe l'âme, le texte installe l'action.`;
             }
         }
 
@@ -190,8 +191,8 @@
             const date = document.getElementById('img-date').value;
             const type = document.getElementById('img-type').value;
             const projet = urlParams.get('projet') || 1;
-            if(!url || !date) { alert("ERREUR : URL et DATE obligatoires."); return; }
-            const code = `{ url: "${url}", glb: "${glb}", tech: "${tech}", roman: ${projet}, tome: ${type === 'World' ? 0 : tome}, date: "${date}", type: "${type}" },`;
+            
+            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${projet}, tome: ${type === 'World' ? 0 : tome}, date: "${date}", type: "${type}" },`;
             const output = document.getElementById('output-code');
             output.value = code;
             output.style.display = 'block';
@@ -232,12 +233,7 @@
                 const romanActuel = romansConfig.find(r => r.id === projetActuel);
                 const dataFiltrée = archivesData.filter(item => {
                     const matchRoman = item.roman === projetActuel;
-                    // Ajustement ici : Si on filtre 'Livre', on prend Livre, Dos et Chapitre
-                    const matchType = filtreType ? (
-                        filtreType === 'Livre' 
-                        ? (item.type === 'Livre' || item.type === 'Dos' || item.type === 'Chapitre') 
-                        : item.type === filtreType
-                    ) : true;
+                    const matchType = filtreType ? (filtreType === 'Livre' ? (item.type === 'Livre' || item.type === 'Dos' || item.type === 'Chapitre') : item.type === filtreType) : true;
                     return matchRoman && matchType;
                 });
 
@@ -256,13 +252,19 @@
                         }
                     }
 
+                    // Construction du HUD si tech est présent
+                    let hud = "";
+                    if(estDebloque && item.tech) {
+                        const lines = item.tech.split('\n').map(l => `<div>> ${l}</div>`).join('');
+                        hud = `<div class="hud-technique"><div style="border-bottom:1px solid; margin-bottom:5px;">SCAN_RESULT</div>${lines}</div>`;
+                    }
+
                     box.innerHTML = `
-                        <div class="image-frame">${media}</div>
+                        <div class="image-frame">${media}${hud}</div>
                         <div style="font-size:0.7rem; text-align:left;">
                             <span class="type-tag ${item.type === 'World' ? 'tag-world' : 'tag-roman'}">${item.type.toUpperCase()}</span><br>
                             ${item.type === 'World' ? 'ASSET GÉNÉRAL' : `TOME ${item.tome} / ${romanActuel.tomes}`}<br>
                             ${isHinaru ? `<span style="color:orange">MASTER: ${item.date}</span>` : ''}
-                            ${estDebloque && item.tech ? `<div class="tech-log">[ LOG TECHNIQUE ]\n${item.tech}</div>` : ''}
                         </div>`;
 
                     if(item.type === 'World') {
