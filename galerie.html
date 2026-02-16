@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V87)</title>
+    <title>Archives - Nébuleuse Visuelle (V88)</title>
     
     <script src="security.js"></script>
 
@@ -35,11 +35,15 @@
         .p-crystal { width: 45px; height: 45px; background: rgba(200, 240, 255, 0.9); top: 5%; left: 45%; box-shadow: 0 0 30px white; }
         .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 10%; right: 25%; }
         
-        /* PLANÈTE DORÉE (DÉGAGÉE ET PRIORITAIRE) */
+        /* PLANÈTE DORÉE (TON BOUTON FANTÔME) */
         .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 15%; left: 10%; box-shadow: 0 0 20px #ffcc00; cursor: pointer; pointer-events: auto !important; z-index: 500; }
         
         .p-moon { width: 15px; height: 15px; background: #555; top: 70%; right: 40%; }
         @keyframes float { 0% { transform: translate(0, 0); } 100% { transform: translate(5vw, 5vh); } }
+
+        /* EFFET VISUEL : EINSTEIN RING */
+        .einstein-ring { position: fixed; top: 15%; left: 50%; width: 100px; height: 100px; border: 2px solid var(--einstein-glow); border-radius: 50%; box-shadow: 0 0 20px var(--einstein-glow); z-index: -10; transform: translate(-50%, -50%); animation: ring-pulse 4s infinite alternate; pointer-events: none; }
+        @keyframes ring-pulse { from { opacity: 0.3; scale: 0.9; } to { opacity: 0.8; scale: 1.1; } }
 
         /* --- 3. INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
@@ -66,6 +70,7 @@
 <body>
     <div class="nebula-layer"></div>
     <div class="star-field"></div>
+    <div class="einstein-ring"></div>
 
     <div class="nebula-planet p-ring"></div>
     <div class="nebula-planet p-ice"></div>
@@ -120,6 +125,7 @@
             if (admin) {
                 document.getElementById('master-panel').style.display = 'block';
                 const nav = document.getElementById('nav-buttons');
+                nav.innerHTML = ""; // Vide les anciens boutons
                 Object.keys(multiVerse).forEach(key => {
                     const btn = document.createElement('button');
                     btn.className = "btn-nav-master";
@@ -132,6 +138,7 @@
 
             const archives = multiVerse[projetActuel];
             const container = document.getElementById('galerie-container');
+            container.innerHTML = ""; // Vide la galerie avant d'afficher
             
             archives.forEach(item => {
                 const estDebloque = admin || aujourdhui >= item.date;
@@ -147,6 +154,7 @@
                         <span class="status">${estDebloque ? 'DÉCODÉ : ' + item.ref : 'VERROUILLÉ'}</span>
                         <p style="font-size:0.8rem; color:#666; margin:5px 0;">DATE : ${item.date}</p>
                         ${estDebloque ? `<a href="${item.link}" target="_blank" class="btn-access">ACCÉDER</a>` : ''}
+                        ${admin ? `<p style="color:orange; font-size:10px; margin-top:10px;">MODE MAÎTRE : ACTIF</p>` : ''}
                     </div>
                 `;
                 container.appendChild(box);
