@@ -22,7 +22,6 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- DÉCORS & AMBIANCE --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -31,7 +30,6 @@
         @keyframes float { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(2vw, 4vh) rotate(10deg); } }
         .p-gold { width: 22px; height: 22px; background: #ffcc00; top: 50px; left: 50px; box-shadow: 0 0 20px #ffcc00; cursor: pointer; z-index: 500; border-radius: 50%; }
 
-        /* --- INTERFACE TACTIQUE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         
@@ -42,7 +40,7 @@
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         .unlocked .image-frame { border: 1px solid var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
         
-        /* --- HUD DE FUSION (NOUVEAU) --- */
+        /* --- HUD DE FUSION SCAN --- */
         .hud-technique {
             position: absolute;
             top: 10px;
@@ -72,7 +70,6 @@
         .tag-roman { color: var(--vhs-vert); border-color: var(--vhs-vert); }
         .tag-world { color: orange; border-color: orange; }
 
-        /* --- PANNEAU MAÎTRE --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; }
         .btn-nav-master { background: black; color: white; border: 1px solid white; cursor: pointer; padding: 5px 10px; font-size: 10px; margin: 2px; }
         #protocol-display { display:none; background:rgba(0,20,0,0.95); border: 1px solid var(--vhs-vert); margin-top:15px; padding:15px; font-size:11px; text-align:left; color:var(--vhs-vert); line-height:1.5; }
@@ -105,7 +102,7 @@
                 <p style="color:orange; font-weight:bold;">⚡ PROGRAMMATEUR DE SIGNAL (FUSION 3D READY)</p>
                 <input type="text" id="img-url" placeholder="Lien image (.png/.jpg)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
                 <input type="text" id="glb-url" placeholder="Lien objet 3D (.glb)" style="background:black; color:white; border:1px solid #444; width:85%; padding:5px; margin-bottom:5px;">
-                <textarea id="img-tech" placeholder="Logs Workflows (ex: W4.5 Parenting OK, W11 4K...)" style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:50px; padding:5px; margin-bottom:10px; font-family:monospace;"></textarea>
+                <textarea id="img-tech" placeholder="Logs Workflows (ex: [ STATUS : FUSION COMPLÈTE ]...)" style="background:black; color:var(--vhs-vert); border:1px solid #444; width:85%; height:60px; padding:5px; margin-bottom:10px; font-family:monospace; font-size:10px;"></textarea>
 
                 <div style="margin-bottom:10px;">
                     TYPE : 
@@ -123,7 +120,7 @@
                 </div>
                 <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444; margin-bottom:10px;">
                 <br>
-                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE FUSION</button>
+                <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; padding:8px 15px;">GÉNÉRER LE CODE FUSION</button>
                 <p id="copy-msg" style="color:cyan; font-size:8px; display:none; margin-top:5px;">SIGNAL COPIÉ !</p>
                 <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
@@ -192,6 +189,7 @@
             const type = document.getElementById('img-type').value;
             const projet = urlParams.get('projet') || 1;
             
+            // Correction ici pour supporter les retours à la ligne dans l'objet généré
             const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${projet}, tome: ${type === 'World' ? 0 : tome}, date: "${date}", type: "${type}" },`;
             const output = document.getElementById('output-code');
             output.value = code;
@@ -252,15 +250,15 @@
                         }
                     }
 
-                    // Construction du HUD si tech est présent
-                    let hud = "";
-                    if(estDebloque && item.tech) {
+                    // On construit le HUD seulement si tech existe
+                    let hudHTML = "";
+                    if(estDebloque && item.tech && item.tech.trim() !== "") {
                         const lines = item.tech.split('\n').map(l => `<div>> ${l}</div>`).join('');
-                        hud = `<div class="hud-technique"><div style="border-bottom:1px solid; margin-bottom:5px;">SCAN_RESULT</div>${lines}</div>`;
+                        hudHTML = `<div class="hud-technique"><div style="border-bottom:1px solid; margin-bottom:5px; opacity:0.6;">SCAN_RESULT</div>${lines}</div>`;
                     }
 
                     box.innerHTML = `
-                        <div class="image-frame">${media}${hud}</div>
+                        <div class="image-frame">${media}${hudHTML}</div>
                         <div style="font-size:0.7rem; text-align:left;">
                             <span class="type-tag ${item.type === 'World' ? 'tag-world' : 'tag-roman'}">${item.type.toUpperCase()}</span><br>
                             ${item.type === 'World' ? 'ASSET GÉNÉRAL' : `TOME ${item.tome} / ${romanActuel.tomes}`}<br>
