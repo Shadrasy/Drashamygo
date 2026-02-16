@@ -15,7 +15,6 @@
             --vhs-vert: #00ff41;
             --rose-hii: rgba(255, 50, 150, 0.2);
             --bleu-tech: #00a8ff; 
-            --einstein-glow: rgba(255, 255, 255, 0.4);
         }
 
         body {
@@ -23,6 +22,7 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
         }
 
+        /* --- DÉCORS --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 350s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -34,6 +34,7 @@
         .p-ice { width: 75px; height: 75px; background: radial-gradient(circle at 30% 30%, #44ccff, #001133); bottom: 20%; left: 10%; }
         .p-toxic { width: 85px; height: 85px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); bottom: 15%; right: 15%; }
 
+        /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         #signals-status { font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; transition: 0.3s; }
@@ -94,7 +95,8 @@
                 <div style="margin-bottom:10px;">
                     TYPE : 
                     <select id="img-type" style="background:black; color:white; border:1px solid #444;" onchange="toggleTomeField()">
-                        <option value="Livre">LIVRE (Tome)</option>
+                        <option value="Livre">LIVRE (Recto)</option>
+                        <option value="Dos">DOS (Verso)</option>
                         <option value="Anime">ANIME (Concept)</option>
                         <option value="Serie">SÉRIE (3D/Lieux)</option>
                         <option value="World">WORLD (Encyclopédie)</option>
@@ -107,6 +109,7 @@
                     DATE : <input type="datetime-local" id="img-date" style="background:black; color:white; border:1px solid #444;">
                 </div>
                 <button class="btn-nav-master" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER LE CODE</button>
+                <p id="copy-msg" style="color:cyan; font-size:8px; display:none;">SIGNAL COPIÉ !</p>
                 <textarea id="output-code" style="width:90%; height:50px; margin-top:10px; background:#111; color:var(--vhs-vert); font-size:9px; display:none; border:1px solid #333;"></textarea>
             </div>
 
@@ -123,7 +126,7 @@
         <div id="world-section-title" class="section-title" style="display:none;">Archives du Monde (Lieux & Équipements)</div>
         <div id="world-container"></div>
 
-        <div id="chrono-title" class="section-title">Chronologie des Tomes</div>
+        <div class="section-title">Chronologie des Tomes</div>
         <div id="galerie-container"></div>
         
         <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px;">REPASSER LE PORTAIL</a>
@@ -193,6 +196,8 @@
             output.style.display = 'block';
             output.select();
             document.execCommand('copy');
+            document.getElementById('copy-msg').style.display = 'block';
+            setTimeout(() => { document.getElementById('copy-msg').style.display = 'none'; }, 2000);
         }
 
         function filtrerType(t) { chargerGalerie(t); }
@@ -226,7 +231,7 @@
                 const romanActuel = romansConfig.find(r => r.id === projetActuel);
                 const dataFiltrée = archivesData.filter(item => {
                     const matchRoman = item.roman === projetActuel;
-                    const matchType = filtreType ? item.type === filtreType : true;
+                    const matchType = filtreType ? (filtreType === 'Livre' ? (item.type === 'Livre' || item.type === 'Dos') : item.type === filtreType) : true;
                     return matchRoman && matchType;
                 });
 
