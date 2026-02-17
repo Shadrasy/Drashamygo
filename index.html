@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Mur des Théories (V100.9.9 OMNI-MASTER)</title>
+    <title>Archives - L'Astre Créateur Suprême (OMNI-CENTRAL)</title>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="security.js"></script>
 
     <style>
         :root { 
-            --noir-fond: #010105; 
+            --noir-fond: #000108; 
             --vhs-vert: #00ff41;
-            --lumiere-violette: rgba(136, 0, 255, 0.35);
-            --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
-            --fluo-hanny: rgba(0, 255, 120, 0.2);
-            --pois-vert: #39ff14;
+            --bleu-tech: #00ffff;
             --cosplay-gold: #ffcc00;
         }
 
-        body {
-            margin: 0; background-color: var(--noir-fond); color: white;
-            font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
+        body { 
+            margin: 0; background-color: var(--noir-fond); color: white; 
+            font-family: 'Courier New', monospace; overflow-x: hidden; 
         }
 
-        /* --- MOTEUR VHS SCANLINE --- */
+        /* --- EFFET VHS SCANLINE --- */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -31,13 +29,11 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- 1. SYSTÈME DE FOND --- */
-        .nebula-overlay { position: fixed; inset: 0; z-index: -20; background: radial-gradient(circle at 50% 50%, var(--gaz-nebuleuse) 0%, transparent 80%); animation: nebula-pulse 12s infinite alternate ease-in-out; pointer-events: none; }
+        /* --- DÉCORS ET ÉTOILES --- */
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spinGalaxy 400s linear infinite; pointer-events: none; }
         @keyframes spinGalaxy { to { transform: rotate(360deg); } }
-        @keyframes nebula-pulse { from { opacity: 0.6; } to { opacity: 1; } }
 
-        /* --- 2. RÉCEPTEUR GPS OMNI (6 PLANÈTES MASSIVES) --- */
+        /* --- MOTEUR GPS ORBITAL (ÉMETTEUR) --- */
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: -5; opacity: 1;
             box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8);
@@ -46,106 +42,104 @@
 
         @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
         @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
-        @keyframes orbitC { from { transform: rotate(0deg) translateX(20vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(20vw) rotate(360deg); } }
-        @keyframes rotateAtmosphere { from { filter: hue-rotate(0deg) brightness(1); } to { filter: hue-rotate(360deg) brightness(1.2); } }
-
+        
         .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); cursor: pointer; z-index: 500; animation: orbitA 45s linear infinite; }
-        .p-blue { width: 110px; height: 110px; background: #0077ff; animation: orbitB 65s linear infinite reverse, rotateAtmosphere 30s linear infinite; }
-        .p-red { width: 150px; height: 150px; background: #cc0033; animation: orbitA 80s linear infinite reverse, rotateAtmosphere 40s linear infinite; }
-        .p-purple { width: 190px; height: 190px; background: #5500ff; animation: orbitC 100s linear infinite, rotateAtmosphere 50s linear infinite; }
-        .p-ice { width: 90px; height: 90px; background: #e0f7fa; box-shadow: 0 0 30px #fff; animation: orbitB 55s linear infinite; }
-        .p-toxic { width: 120px; height: 120px; background: #11ff00; animation: orbitC 75s linear infinite reverse, rotateAtmosphere 35s linear infinite; }
+        .p-blue { width: 110px; height: 110px; background: #0077ff; animation: orbitB 65s linear infinite reverse; }
 
-        /* --- 3. PHÉNOMÈNES RARES --- */
-        .shooting-star { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white; z-index: -10; opacity: 0; animation: shoot linear infinite; pointer-events: none; }
-        @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 80vh) rotate(35deg); opacity: 0; } 100% { opacity: 0; } }
-        .m1 { top: 10%; left: -10%; animation-duration: 12s; }
-        .m2 { top: 40%; left: -10%; animation-duration: 18s; animation-delay: 5s; }
+        /* --- INTERFACE --- */
+        .osd-master { position: fixed; top: 30px; left: 30px; color: var(--vhs-vert); font-size: 0.8rem; z-index: 1000; line-height: 1.5; }
+        .container { position: relative; z-index: 100; max-width: 1200px; margin: 80px auto; text-align: center; }
+        
+        h1 { font-size: 3.5rem; letter-spacing: 15px; text-shadow: 0 0 25px var(--bleu-tech); margin-bottom: 50px; }
+        
+        .nav-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        .box { background: rgba(0,0,0,0.9); border: 1px solid #333; padding: 30px; width: 280px; backdrop-filter: blur(10px); transition: 0.4s; cursor: pointer; text-decoration: none; color: white; }
+        .box:hover { border-color: var(--vhs-vert); transform: translateY(-10px); box-shadow: 0 10px 30px rgba(0,255,65,0.1); }
+        .icon { font-size: 3rem; display: block; margin-bottom: 20px; }
 
-        .hoag-object { position: fixed; top: 15%; right: 15%; width: 80px; height: 80px; z-index: -8; pointer-events: none; }
-        .hoag-core { width: 20px; height: 20px; background: #ffeeaa; border-radius: 50%; margin: 30px auto; box-shadow: 0 0 15px #ffcc00; }
-        .hoag-ring { position: absolute; top: 0; width: 80px; height: 80px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; animation: spinGalaxy 20s linear infinite; }
-        .hannys-voorwerp { position: fixed; top: 10%; left: 25%; width: 250px; height: 180px; background: var(--fluo-hanny); filter: blur(45px); z-index: -14; pointer-events: none; }
-
-        /* --- 4. INTERFACE --- */
-        .container { max-width: 850px; margin: 80px auto; padding: 20px; position: relative; z-index: 100; }
-        h1 { text-align: center; font-size: 3.5rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); margin-bottom: 40px; }
-        .box { background: rgba(0, 0, 0, 0.95); border: 1px solid #333; padding: 40px; backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(136, 0, 255, 0.1); }
-        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; cursor: pointer; width: 100%; letter-spacing: 2px; font-weight: bold; transition: 0.3s; }
-        .btn-send:hover { box-shadow: 0 0 20px var(--vhs-vert); transform: scale(1.02); }
-        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; box-sizing: border-box; outline: none; }
-        textarea:focus { border-color: var(--vhs-vert); }
-        .btn-back { display: block; text-align: center; margin-top: 40px; color: #888; text-decoration: none; border: 1px dashed #333; padding: 15px; transition: 0.3s; }
-        .btn-back:hover { color: white; border-color: white; background: rgba(255,255,255,0.05); }
+        #qrcode { background: white; padding: 15px; display: none; border-radius: 5px; margin: 20px auto; width: 150px; box-shadow: 0 0 20px white; }
     </style>
 </head>
 <body>
-    <div class="nebula-overlay"></div>
-    <div class="star-field"></div>
-    
-    <div class="hannys-voorwerp"></div>
-    <div class="shooting-star m1"></div><div class="shooting-star m2"></div>
-    <div class="hoag-object"><div class="hoag-ring"></div><div class="hoag-core"></div></div>
 
-    <div id="galaxy-receptor">
-        <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="Accès Maître"></div>
-        <div class="nebula-planet p-blue"></div>
-        <div class="nebula-planet p-red"></div>
-        <div class="nebula-planet p-purple"></div>
-        <div class="nebula-planet p-ice"></div>
-        <div class="nebula-planet p-toxic"></div>
+    <div class="osd-master">
+        MODE: BROADCAST_MASTER<br>
+        SYNC: <span id="sync-timer">INITIALIZING...</span><br>
+        V-TRACKER: <span id="visitor-count">0000</span>
     </div>
 
+    <div class="star-field"></div>
+
+    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()"></div>
+    <div class="nebula-planet p-blue"></div>
+
     <div class="container">
-        <span style="font-size: 4rem; display: block; text-align: center; filter: drop-shadow(0 0 10px var(--vhs-vert));">✍️</span>
-        <h1>MUR DES THÉORIES</h1>
-        
-        <div class="box">
-            <form onsubmit="return checkSignalFrequency()">
-                <input type="text" name="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
-                
-                <label style="color:var(--vhs-vert); display:block; margin-bottom:15px; letter-spacing: 2px;">ANALYSE DU SPECTRE :</label>
-                <textarea rows="4" placeholder="Tapez votre théorie ici..." required></textarea>
-                <input type="url" placeholder="Lien signal vidéo de référence (optionnel)">
-                
-                <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE COMMANDER</button>
-            </form>
-            
-            <div style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
-                <div id="log-display" style="background: rgba(0, 255, 65, 0.03); border-left: 3px solid var(--vhs-vert); padding: 25px;">
-                    <span style="color:var(--vhs-vert); font-size:0.7rem; display:block; margin-bottom: 10px;">SIGNAL_GPS #100.9.9 - STATUS: STANDBY</span>
-                    <span id="last-signal">"L'armada planétaire est stable. En attente de nouvelles fréquences théoriques..."</span>
-                </div>
-            </div>
+        <h1>ARCHIVES OMNI</h1>
+
+        <div class="nav-grid">
+            <a href="galerie.html" class="box">
+                <span class="icon">👁️</span>
+                <h2>GALERIE</h2>
+                <p style="font-size: 10px; color: #888;">VISUALISER LES 14 ROMANS</p>
+            </a>
+
+            <a href="theories.html" class="box">
+                <span class="icon">✍️</span>
+                <h2>THÉORIES</h2>
+                <p style="font-size: 10px; color: #888;">TRANSMETTRE DES SIGNAUX</p>
+            </a>
+
+            <a href="systeme.html" class="box">
+                <span class="icon">📡</span>
+                <h2>SYSTÈME</h2>
+                <p style="font-size: 10px; color: #888;">ANALYSE RADAR & GPS</p>
+            </a>
         </div>
-        
-        <a href="index.html" class="btn-back"> < REPASSER LE PORTAIL VERS LE CENTRE COMMANDER </a>
+
+        <div style="margin-top: 60px;">
+            <div id="qrcode"></div>
+            <button class="box" style="width: auto; padding: 15px 40px;" onclick="genererPortailQR()">
+                GENÉRER PORTAIL QR
+            </button>
+        </div>
     </div>
 
     <script>
-        function checkSignalFrequency() {
-            const theory = document.querySelector('textarea').value;
-            const logDisplay = document.getElementById('last-signal');
-            
-            if(theory.length < 10) {
-                alert("SIGNAL TROP FAIBLE : Développez votre théorie pour percer le redshift.");
-                return false;
-            }
-            
-            // Simulation visuelle de transmission
-            alert("TRANSMISSION RÉUSSIE : Signal indexé dans la base de données OMNI.");
-            logDisplay.innerText = "DERNIER SIGNAL REÇU : " + theory.substring(0, 50) + "... (Cryptage en cours)";
-            document.querySelector('form').reset();
-            return false; // Empêche le rechargement de page pour la démo
+        // --- 1. MOTEUR DE BROADCAST GPS ---
+        function diffuserSignalGPS() {
+            const tempsReel = Date.now();
+            const etat = {
+                phase: tempsReel,
+                mode: "OMNI_MASTER_SYNC",
+                status: "ACTIVE"
+            };
+            localStorage.setItem('hinaru_cosmos_sync', JSON.stringify(etat));
+            document.getElementById('sync-timer').innerText = tempsReel.toString().slice(-6);
+        }
+        setInterval(diffuserSignalGPS, 1000);
+
+        // --- 2. GÉNÉRATEUR QR CODE ---
+        function genererPortailQR() {
+            const container = document.getElementById("qrcode");
+            container.innerHTML = "";
+            new QRCode(container, {
+                text: window.location.href,
+                width: 150, height: 150,
+                colorDark : "#000", colorLight : "#fff"
+            });
+            container.style.display = "block";
         }
 
-        // Écoute du signal Master pour confirmer la liaison GPS
-        function checkSync() {
-            if(localStorage.getItem('hinaru_cosmos_sync')) {
-                console.log("GPS_LINK: OK");
-            }
+        // --- 3. TRACKER DE VISITES ---
+        async function updateTracker() {
+            const namespace = "archives_roman_2026_shadrasy"; 
+            try {
+                const response = await fetch(`https://api.countapi.xyz/get/${namespace}/visites_uniques`);
+                const data = await response.json();
+                document.getElementById('visitor-count').innerText = data.value.toLocaleString();
+            } catch (e) { document.getElementById('visitor-count').innerText = "LOCAL"; }
         }
-        setInterval(checkSync, 5000);
+        updateTracker();
     </script>
 </body>
 </html>
