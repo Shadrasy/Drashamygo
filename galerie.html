@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.6 Master Total)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.8 Omni-Absolute)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -11,22 +11,14 @@
 
     <style>
         :root { 
-            --noir-fond: #000103; 
-            --vhs-vert: #00ff41;
-            --rose-hii: rgba(255, 50, 150, 0.15);
-            --bleu-tech: #00ffff; 
-            --standard-magenta: #ff00ff;
-            --cosplay-gold: #ffcc00;
-            --bordeaux: #6d071a;
-            --bleu-nuit: #001a33;
+            --noir-fond: #000103; --vhs-vert: #00ff41; --rose-hii: rgba(255, 50, 150, 0.15);
+            --bleu-tech: #00ffff; --standard-magenta: #ff00ff; --cosplay-gold: #ffcc00;
+            --bordeaux: #6d071a; --bleu-nuit: #001a33;
         }
 
-        body {
-            margin: 0; background-color: var(--noir-fond); color: white;
-            font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
-        }
+        body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; }
 
-        /* --- EFFET SCANLINE VHS --- */
+        /* EFFET VHS */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -34,15 +26,11 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- DÉCOR NÉBULEUSE & PLANÈTES ANIMÉES --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 400s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .nebula-planet { 
-            position: fixed; border-radius: 50%; z-index: -5; 
-            animation: floatMove 20s ease-in-out infinite alternate, rotatePlanet 30s linear infinite; 
-        }
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: floatMove 20s ease-in-out infinite alternate, rotatePlanet 30s linear infinite; }
         @keyframes floatMove { 0% { transform: translate(0, 0); } 100% { transform: translate(3vw, 5vh); } }
         @keyframes rotatePlanet { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
@@ -51,43 +39,25 @@
         .p-red { width: 70px; height: 70px; background: var(--standard-magenta); bottom: 25%; right: 10%; box-shadow: 0 0 40px var(--standard-magenta); opacity: 0.2; }
         .p-purple { width: 100px; height: 100px; background: #8800ff; top: 60%; left: 5%; box-shadow: 0 0 50px #8800ff; opacity: 0.15; }
 
-        /* --- INTERFACE & GRILLES --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
-        #galerie-container, #fan-cosplay-container { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; 
-        }
-
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; transition: 0.3s; }
+        #galerie-container, #fan-cosplay-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         
-        .creator-badge {
-            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%);
-            color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 8px; padding: 4px 8px;
-            position: absolute; top: 0; left: 0; z-index: 20; text-shadow: 0 0 5px var(--cosplay-gold);
-        }
-
-        .hud-technique {
-            position: absolute; top: 10px; right: 10px; width: 155px;
-            background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech);
-            padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px;
-            text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out;
-        }
+        .creator-badge { background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%); color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 8px; padding: 4px 8px; position: absolute; top: 0; left: 0; z-index: 20; text-shadow: 0 0 5px var(--cosplay-gold); }
+        .hud-technique { position: absolute; top: 10px; right: 10px; width: 155px; background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech); padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px; text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out; }
         @keyframes pulseScan { 0% { border-left-color: var(--bleu-tech); opacity: 1; } 50% { border-left-color: transparent; opacity: 0.5; } }
 
-        .btn-action {
-            background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech);
-            cursor: pointer; font-size: 8px; padding: 6px; margin: 2px 0; font-family: monospace; transition: 0.3s; text-transform: uppercase;
-        }
+        .btn-action { background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); cursor: pointer; font-size: 8px; padding: 6px; margin: 2px 0; font-family: monospace; transition: 0.3s; text-transform: uppercase; }
         .btn-action:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px var(--bleu-tech); }
 
-        /* --- MASTER PANEL --- */
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; text-align: left; }
         .master-input { background: black; color: white; border: 1px solid #444; padding: 8px; font-size: 10px; margin-bottom: 10px; width: 85%; font-family: monospace; }
         .master-select { background: black; color: white; border: 1px solid #444; padding: 5px; font-size: 10px; }
-        #protocol-display { display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); padding:15px; font-size:10px; text-align:left; color:var(--vhs-vert); margin-bottom:20px; line-height:1.5; }
+        #protocol-display { display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); padding:15px; font-size:10px; text-align:left; color:var(--vhs-vert); margin-bottom:20px; line-height:1.5; border-radius: 5px;}
 
         .theory-input { background: #000; color: var(--cosplay-gold); border: 1px solid var(--bordeaux); padding: 5px; width: 90%; font-size: 9px; margin-top: 5px; font-family: monospace; }
         .twitch-link { color: #a970ff; text-decoration: none; font-size: 10px; font-weight: bold; }
@@ -103,7 +73,7 @@
         <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; color:red;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.6 OMNI)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.8)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom:20px;"></div>
             
             <div style="margin-bottom:20px; display:flex; gap:10px; justify-content:center; flex-wrap: wrap;">
@@ -118,7 +88,7 @@
                 <p style="color:orange; font-weight:bold; margin-bottom:10px;">⚡ PROGRAMMATEUR : STUDIO DE FUSION (W4.7)</p>
                 <input type="text" id="img-url" class="master-input" placeholder="Lien image (.png/.jpg)">
                 <input type="text" id="glb-url" class="master-input" placeholder="Lien objet 3D (.glb)">
-                <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows (W1 à W13)..."></textarea>
+                <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows (Module W1 à W13)..."></textarea>
                 <div style="margin-bottom:15px; font-size:10px;">
                     TYPE : <select id="img-type" class="master-select" onchange="toggleTomeField()">
                         <option value="Livre">LIVRE</option><option value="Anime">ANIME</option><option value="Serie">SERIE</option>
@@ -130,7 +100,7 @@
                 <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; width:100%;">GÉNÉRER LE CODE SIGNAL</button>
                 <textarea id="output-code" class="master-input" style="width:95%; height:70px; margin-top:15px; display:none; background:#050505; color:cyan; border-color:cyan;"></textarea>
             </div>
-            <button class="btn-action" style="color:red; margin-top:20px; border-color:red; width:100%;" onclick="window.location.href='galerie.html'">DÉCONNEXION SYSTÈME</button>
+            <button class="btn-action" style="color:red; margin-top:20px; border-color:red; width:100%;" onclick="window.location.href='galerie.html'">DÉCONNEXION ARCHIVES</button>
         </div>
 
         <div id="galerie-container"></div>
@@ -141,13 +111,20 @@
 
     <script>
         const romansConfig = [
-            { id: 1, nom: "Shadrasy", public: true }, { id: 2, nom: "Nébuleuse Alpha", public: false },
-            { id: 3, nom: "Projet Onyx", public: false }, { id: 4, nom: "Roman 4", public: true },
-            { id: 5, nom: "Protocole Silence", public: false }, { id: 6, nom: "Code Hinaru", public: false },
-            { id: 7, nom: "Saga Origin", public: false }, { id: 8, nom: "Echo Stellaire", public: false },
-            { id: 9, nom: "Signal Perdu", public: false }, { id: 10, nom: "Archives W10", public: false },
-            { id: 11, nom: "Module Externe", public: false }, { id: 12, nom: "L'Eveil", public: false },
-            { id: 13, nom: "Pipeline Final", public: false }, { id: 14, nom: "Projet 14", public: false }
+            { id: 1, nom: "Shadrasy", public: true },
+            { id: 2, nom: "Nébuleuse Alpha", public: false },
+            { id: 3, nom: "Projet Onyx", public: false },
+            { id: 4, nom: "Roman 4", public: true },
+            { id: 5, nom: "Protocole Silence", public: false },
+            { id: 6, nom: "Code Hinaru", public: false },
+            { id: 7, nom: "Saga Origin", public: false },
+            { id: 8, nom: "Echo Stellaire", public: false },
+            { id: 9, nom: "Signal Perdu", public: false },
+            { id: 10, nom: "Archives W10", public: false },
+            { id: 11, nom: "Module Externe", public: false },
+            { id: 12, nom: "L'Eveil", public: false },
+            { id: 13, nom: "Pipeline Final", public: false },
+            { id: 14, nom: "Projet 14", public: false }
         ];
 
         const urlParams = new URLSearchParams(window.location.search);
