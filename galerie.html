@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.21 OMNI-REMASTER)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.23 OMNI-TOTAL)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -30,36 +30,66 @@
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spinGalaxy 400s linear infinite; pointer-events: none; }
         @keyframes spinGalaxy { to { transform: rotate(360deg); } }
 
-        /* --- MOTEUR GPS STABILISÉ --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; top: 50%; left: 50%; opacity: 0.8; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(25vw) rotate(0deg); } to { transform: rotate(360deg) translateX(25vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(20vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(20vh) rotate(360deg); } }
-        @keyframes orbitC { from { transform: rotate(0deg) translateX(15vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(15vw) rotate(360deg); } }
-
-        /* PLANETE DOREE : PRIORITÉ HAUTE (z-index élevé pour le clic) */
-        .p-gold { 
-            width: 30px; height: 30px; 
-            background: var(--cosplay-gold); 
-            box-shadow: 0 0 35px var(--cosplay-gold); 
-            cursor: pointer; 
-            animation: orbitA 45s linear infinite; 
-            z-index: 1001; /* Doit être au-dessus du body::after (999) */
+        /* --- MOTEUR GPS RECENTRÉ & STABILISÉ --- */
+        .nebula-planet {
+            position: fixed;
+            top: 45%; /* Centrage vertical sur le contenu */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: -1; 
+            opacity: 0.7;
         }
-        .p-blue { width: 80px; height: 80px; background: #0077ff; animation: orbitB 65s linear infinite reverse; }
-        .p-red { width: 100px; height: 100px; background: #cc0033; animation: orbitA 80s linear infinite reverse; }
-        .p-purple { width: 120px; height: 120px; background: #5500ff; animation: orbitC 100s linear infinite; }
-        .p-ice { width: 60px; height: 60px; background: #e0f7fa; box-shadow: 0 0 30px #fff; animation: orbitB 55s linear infinite; }
-        .p-toxic { width: 90px; height: 90px; background: #11ff00; animation: orbitC 75s linear infinite reverse; }
 
-        /* --- INTERFACE --- */
+        /* Orbites Compactes pour visibilité totale */
+        @keyframes orbit-galerie { 
+            from { transform: rotate(0deg) translateX(22vw) rotate(0deg); } 
+            to { transform: rotate(360deg) translateX(22vw) rotate(-360deg); } 
+        }
+        @keyframes orbit-theories { 
+            from { transform: rotate(0deg) translateY(18vh) rotate(0deg); } 
+            to { transform: rotate(-360deg) translateY(18vh) rotate(360deg); } 
+        }
+        @keyframes orbit-master { 
+            from { transform: rotate(0deg) translateX(15vw) rotate(0deg); } 
+            to { transform: rotate(360deg) translateX(15vw) rotate(-360deg); } 
+        }
+
+        .p-galerie { width: 80px; height: 80px; background: #0077ff; box-shadow: 0 0 30px #0077ff; animation: orbit-galerie 50s linear infinite; }
+        .p-theories { width: 100px; height: 100px; background: #ff00ff; box-shadow: 0 0 30px #ff00ff; animation: orbit-theories 65s linear infinite; }
+        .p-archives { width: 50px; height: 50px; background: #00ff41; box-shadow: 0 0 20px #00ff41; animation: orbit-galerie 40s linear infinite reverse; }
+        
+        .p-gold { 
+            width: 35px; height: 35px; 
+            background: var(--cosplay-gold); 
+            box-shadow: 0 0 40px var(--cosplay-gold); 
+            animation: orbit-master 35s linear infinite; 
+            z-index: 1001; /* Au-dessus pour le double-clic */
+            cursor: crosshair;
+        }
+
+        /* Anomalie Trou Noir Alpha */
+        #black-hole-alpha {
+            position: fixed; top: 20%; right: 15%; width: 120px; height: 120px;
+            background: black; border-radius: 50%; 
+            box-shadow: 0 0 50px #4b0082, inset 0 0 30px #4b0082;
+            border: 1px dashed rgba(255,255,255,0.2); z-index: -2;
+            animation: drift 20s infinite alternate ease-in-out;
+        }
+        @keyframes drift { from { transform: translate(0,0); } to { transform: translate(-30px, 20px); } }
+
+        /* --- INTERFACE LISIBLE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 3.5rem; letter-spacing: 15px; text-shadow: 0 0 25px var(--vhs-vert); margin-bottom: 40px; }
         .section-title { color: var(--vhs-vert); border-bottom: 2px solid #333; padding: 15px; margin: 60px 0 30px 0; letter-spacing: 8px; font-size: 1.5rem; text-transform: uppercase; background: rgba(0,255,65,0.02); }
+        
         #galerie-container, #fan-cosplay-container, #world-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; margin-bottom: 40px; }
         .box { background: rgba(0, 0, 0, 0.98); border: 1px solid #444; padding: 25px; position: relative; backdrop-filter: blur(12px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 380px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #333; margin-bottom: 20px; }
+        
         .creator-badge { background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%); color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 10px; padding: 6px 12px; position: absolute; top: 0; left: 0; z-index: 20; }
         .hud-technique { position: absolute; bottom: 10px; right: 10px; width: 180px; background: rgba(0, 5, 15, 0.95); border-left: 3px solid var(--bleu-tech); padding: 12px; color: var(--bleu-tech); font-family: monospace; font-size: 10px; text-align: left; z-index: 30; line-height: 1.4; }
+        
         .btn-action { background: none; border: 2px solid var(--bleu-tech); color: var(--bleu-tech); cursor: pointer; font-size: 11px; padding: 10px; margin: 5px 0; font-family: monospace; transition: 0.3s; text-transform: uppercase; font-weight: bold; }
         .btn-action:hover { background: var(--bleu-tech); color: black; box-shadow: 0 0 20px var(--bleu-tech); }
 
@@ -70,20 +100,18 @@
 <body>
     <div class="nebula-layer"></div><div class="star-field"></div>
     
-    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="DOUBLE-CLIC : ACCÈS MAÎTRE HINARU"></div>
-    
-    <div class="nebula-planet p-blue"></div>
-    <div class="nebula-planet p-red"></div>
-    <div class="nebula-planet p-purple"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-toxic"></div>
+    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
+    <div class="nebula-planet p-galerie"></div>
+    <div class="nebula-planet p-theories"></div>
+    <div class="nebula-planet p-archives"></div>
+    <div id="black-hole-alpha"></div>
 
     <div class="container">
         <h1>NÉBULEUSE VISUELLE</h1>
         <div id="signals-status" style="font-weight: bold; font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; color:red; background: rgba(0,0,0,0.5); padding: 10px; display: inline-block; border: 1px solid;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold; font-size: 16px; margin-bottom: 25px;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.21)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold; font-size: 16px; margin-bottom: 25px;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.23)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom:30px;"></div>
             
             <div style="margin-bottom:30px; display:flex; gap:15px; justify-content:center; flex-wrap: wrap;">
@@ -101,7 +129,7 @@
                 <p style="color:orange; font-weight:bold; margin-bottom:20px;">⚡ PROGRAMMATEUR : STUDIO DE FUSION</p>
                 <input type="text" id="img-url" class="master-input" placeholder="Lien image principale">
                 <input type="text" id="glb-url" class="master-input" placeholder="Lien objet 3D (.glb)">
-                <textarea id="img-tech" class="master-input" style="height:80px;" placeholder="Logs Workflows..."></textarea>
+                <textarea id="img-tech" class="master-input" style="height:80px;" placeholder="Logs techniques..."></textarea>
                 <div style="margin-bottom:25px; font-size:12px; display:flex; gap:15px; flex-wrap:wrap;">
                     TYPE: <select id="img-type" class="master-input" style="width:auto; margin-bottom:0;" onchange="toggleTomeField()">
                         <option value="Livre">LIVRE</option><option value="Anime">ANIME</option><option value="Serie">SERIE</option>
@@ -157,9 +185,9 @@
             const content = document.getElementById('protocol-content');
             display.style.display = 'block';
             const protocoles = {
-                'methode': "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation 3D<br>• W6-W9 : Studio Fusion (Texturing)<br>• W10-W13 : Rendu Master 4K Final.",
-                'industriel': "<b>[ STANDARDS MÉTIER ]</b><br>• Brandon Sanderson Hard Magic Rules.<br>• Lucasfilm Asset Pipeline Standards.",
-                'philosophie': "<b>[ PROTOCOLE SILENCE ]</b><br>• Règle Master : Le visuel installe l'âme.<br>• Zéro pollution visuelle hors interface."
+                'methode': "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation 3D<br>• W6-W9 : Studio Fusion<br>• W10-W13 : Rendu Master Final 4K",
+                'industriel': "<b>[ STANDARDS MÉTIER ]</b><br>• Hard Lore Consistency<br>• Industrial Pipeline Standards",
+                'philosophie': "<b>[ PROTOCOLE SILENCE ]</b><br>• Le visuel installe l'âme.<br>• Zéro pollution visuelle."
             };
             content.innerHTML = protocoles[type] || "SIGNAL INCONNU";
         }
@@ -170,6 +198,8 @@
             const worldContainer = document.getElementById('world-container');
             const nav = document.getElementById('nav-buttons');
             
+            container.innerHTML = ""; fanContainer.innerHTML = ""; worldContainer.innerHTML = ""; nav.innerHTML = "";
+
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
@@ -177,13 +207,22 @@
                     btn.style.cssText = "border-color:white; color:white; margin:5px; padding:8px 15px;";
                     btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
                     if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
-                    btn.onclick = () => { window.location.search = `?projet=${r.id}${isHinaru ? '&Hinaru=true' : ''}`; };
+                    btn.onclick = () => { 
+                        const newUrl = new URL(window.location.href);
+                        newUrl.searchParams.set('projet', r.id);
+                        if(isHinaru) newUrl.searchParams.set('Hinaru', 'true');
+                        window.location.href = newUrl.toString();
+                    };
                     nav.appendChild(btn);
                 }
             });
 
             if (typeof archivesData !== 'undefined') {
+                const now = new Date();
                 archivesData.filter(item => item.roman === projetActuel).forEach((item, index) => {
+                    const releaseDate = new Date(item.date);
+                    if (!isHinaru && now < releaseDate) return;
+
                     const box = document.createElement('div');
                     box.className = 'box';
                     const hud = item.tech ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
@@ -200,21 +239,19 @@
             }
         }
 
-        // --- FONCTION ACCES MAITRE ---
         function activerModeMaitre() { 
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('Hinaru', 'true');
-            window.location.href = currentUrl.toString(); 
+            const url = new URL(window.location.href);
+            url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.toString(); 
         }
 
-        function toggleTomeField() { document.getElementById('tome-input-area').style.display = (document.getElementById('img-type').value === 'World') ? 'none' : 'inline'; }
-        
+        function toggleTomeField() { 
+            const t = document.getElementById('img-type').value;
+            document.getElementById('tome-input-area').style.display = (t === 'World' || t === 'Fan-Cosplay') ? 'none' : 'inline'; 
+        }
+
         function genererCodeSignal() {
-            const url = document.getElementById('img-url').value;
-            const glb = document.getElementById('glb-url').value;
-            const tech = document.getElementById('img-tech').value;
-            const type = document.getElementById('img-type').value;
-            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${projetActuel}, type: "${type}", tome: ${document.getElementById('img-tome').value}, date: "${document.getElementById('img-date').value}", nom: "Hinaru (Creator)" },`;
+            const code = `{ url: "${document.getElementById('img-url').value}", glb: "${document.getElementById('glb-url').value}", tech: \`${document.getElementById('img-tech').value}\`, roman: ${projetActuel}, type: "${document.getElementById('img-type').value}", tome: ${document.getElementById('img-tome').value}, date: "${document.getElementById('img-date').value}", nom: "Hinaru (Creator)" },`;
             const out = document.getElementById('output-code'); out.value = code; out.style.display = 'block';
         }
 
