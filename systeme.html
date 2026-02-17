@@ -27,35 +27,22 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- 1. DÉCORS GALACTIQUES RÉINJECTÉS --- */
+        /* --- DÉCORS --- */
         .nebula-overlay { position: fixed; inset: 0; z-index: -20; background: radial-gradient(circle at 50% 50%, var(--gaz-nebuleuse) 0%, transparent 80%); animation: nebula-pulse 12s infinite alternate ease-in-out; pointer-events: none; }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spinGalaxy 400s linear infinite; pointer-events: none; }
         .supernova { position: fixed; bottom: -10%; left: -5%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0, 168, 255, 0.1), transparent 70%); filter: blur(50px); z-index: -10; }
-        
         @keyframes spinGalaxy { to { transform: rotate(360deg); } }
-        @keyframes nebula-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
 
-        /* --- 2. TROU NOIR (SCANNER VERSION) --- */
-        .black-hole-scan { 
-            position: fixed; top: 15%; right: 10%; width: 120px; height: 120px; z-index: -2; 
-            background: black; border-radius: 50%; 
-            box-shadow: 0 0 40px 10px rgba(0, 168, 255, 0.3); 
-            animation: bh-pulse 4s infinite alternate; 
-            border: 1px dashed var(--bleu-tech);
-        }
-        @keyframes bh-pulse { to { transform: scale(1.05); opacity: 0.7; } }
-
-        /* --- 3. MOTEUR GPS CENTRALISÉ --- */
+        /* --- PLANÈTES / CIBLES --- */
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: -5;
             top: 50%; left: 50%; border: 1px solid currentColor;
             background: rgba(0,0,0,0.8);
             transition: 0.3s; cursor: crosshair;
         }
-
         .nebula-planet:hover { border: 2px solid var(--vhs-vert); box-shadow: 0 0 50px var(--vhs-vert); filter: brightness(1.5); z-index: 1000; }
 
-        /* Trajectoires synchronisées */
+        /* Trajectoires synchronisées OMNI */
         .p-archives { width: 45px; height: 45px; color: #0077ff; animation: orbitA 50s linear infinite; }
         .p-theories { width: 60px; height: 60px; color: #ff00ff; animation: orbitB 65s linear infinite reverse; }
         .p-master   { width: 20px; height: 20px; color: var(--cosplay-gold); box-shadow: 0 0 15px var(--cosplay-gold); animation: orbitA 35s linear infinite reverse; }
@@ -67,30 +54,33 @@
         @keyframes orbitB { from { transform: rotate(0deg) translateY(28vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(28vh) rotate(360deg); } }
         @keyframes orbitC { from { transform: rotate(0deg) translateX(22vw) rotate(0deg); } to { transform: rotate(360deg) translateX(22vw) rotate(-360deg); } }
 
-        /* --- 4. RADAR HUD --- */
+        /* --- RADAR HUD --- */
         .radar-box { flex: 1; min-width: 450px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0, 15, 40, 0.6); backdrop-filter: blur(5px); }
         .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 4s infinite linear; }
         @keyframes radar-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .osd-header { padding: 25px; border-bottom: 2px solid var(--bleu-tech); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); position: relative; z-index: 100; }
+        
+        /* Tooltip style */
+        #radar-info { color: var(--vhs-vert); font-size: 11px; line-height: 1.6; }
+        .highlight { color: white; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="nebula-overlay"></div>
     <div class="star-field"></div>
     <div class="supernova"></div>
-    <div class="black-hole-scan"></div>
 
-    <div class="nebula-planet p-archives" title="TARGET: ARCHIVES"></div>
-    <div class="nebula-planet p-theories" title="TARGET: THEORIES"></div>
-    <div class="nebula-planet p-master" title="TARGET: MASTER_CORE"></div>
-    <div class="nebula-planet p-red" title="TARGET: RED_WORLD"></div>
-    <div class="nebula-planet p-purple" title="TARGET: PURPLE_VOID"></div>
-    <div class="nebula-planet p-toxic" title="TARGET: TOXIC_ZONE"></div>
+    <div class="nebula-planet p-archives" data-name="ARCHIVES SECTOR" data-info="DATABASE R1-R14"></div>
+    <div class="nebula-planet p-theories" data-name="THEORY HUB" data-info="MULTIVERSE SIGNALS"></div>
+    <div class="nebula-planet p-master"   data-name="MASTER CORE" data-info="HINARU CONTROL"></div>
+    <div class="nebula-planet p-red"      data-name="RED GIANT" data-info="LORE DENSITY: HIGH"></div>
+    <div class="nebula-planet p-purple"   data-name="VOID PURPLE" data-info="STABILITY: 44%"></div>
+    <div class="nebula-planet p-toxic"    data-name="TOXIC ZONE" data-info="DANGER: BIOLOGICAL"></div>
 
     <header class="osd-header">
-        <div>[ SYSTEM CONTROL CENTRE ]<br><span style="color: #fff; font-size: 10px;">OMNI-DIRECTIONAL GPS SYNC : COMMANDER_MODE</span></div>
-        <div style="text-align: right; font-size: 11px;">STATUS: <span id="sync-status" style="color: #00ff41;">BROADCASTING...</span><br>SIGNAL: ACTIVE</div>
+        <div>[ SYSTEM CONTROL CENTRE ]<br><span style="color: #fff; font-size: 10px;">OMNI-DIRECTIONAL GPS SYNC</span></div>
+        <div id="sync-status" style="color: #00ff41;">STATUS: BROADCASTING...</div>
     </header>
 
     <div style="display: flex; padding: 40px; gap: 30px; justify-content: center; position: relative; z-index: 100;">
@@ -98,30 +88,58 @@
             <div class="radar-line"></div>
             <div style="position: absolute; border: 1px solid rgba(0,168,255,0.2); border-radius: 50%; width: 150px; height: 150px;"></div>
             <div style="position: absolute; border: 1px solid rgba(0,168,255,0.4); border-radius: 50%; width: 350px; height: 350px;"></div>
-            <div id="gps-display" style="position: absolute; bottom: 20px; font-size: 9px; color: cyan;">GPS_COORD: BROADCASTING</div>
+            <div id="gps-display" style="position: absolute; bottom: 20px; font-size: 9px; color: cyan;">GPS_COORD: STANDBY</div>
         </div>
 
-        <div style="flex: 1; border: 2px solid var(--bleu-tech); padding: 20px; background: rgba(0,0,0,0.85);">
-            <h3>FLUX DE DONNÉES MASTER</h3>
-            <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : GALERIE (R1-R14)</p>
-            <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : THÉORIES (OK)</p>
-            <p style="font-size: 12px; color: #fff;">> OBJET DÉTECTÉ : TROU NOIR ALPHA (10:15)</p>
-            <hr style="border: 0; border-top: 1px dashed var(--bleu-tech);">
-            <p style="color: #00ff41; font-size: 11px;">"SYSTÈME UNIFIÉ. Le scanner détecte la présence de l'Astre Créateur."</p>
+        <div style="flex: 1; border: 2px solid var(--bleu-tech); padding: 25px; background: rgba(0,0,0,0.85); min-width: 300px;">
+            <h3 style="margin-top:0;">📡 LECTURE RADAR</h3>
+            <div id="radar-info">
+                > MODE: <span class="highlight">SCAN GLOBAL</span><br>
+                > CIBLE: <span id="target-name" class="highlight">AUCUNE</span><br>
+                > DATA: <span id="target-data" class="highlight">EN ATTENTE...</span><br>
+                > POS: <span id="target-pos" class="highlight">---</span>
+            </div>
+            <hr style="border: 0; border-top: 1px dashed var(--bleu-tech); margin: 20px 0;">
+            <p style="color: #00ff41; font-size: 11px;">"SYSTÈME UNIFIÉ. Survoler un objet pour extraire les métadonnées."</p>
         </div>
     </div>
 
-    <a href="index.html" style="display: block; margin: auto; width: 250px; padding: 15px; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); text-align: center; text-decoration: none; font-weight: bold; position: relative; z-index: 100;">RETOUR AU PONT PRINCIPAL</a>
+    <a href="index.html" style="display: block; margin: auto; width: 250px; padding: 15px; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); text-align: center; text-decoration: none; font-weight: bold; position: relative; z-index: 100;">RETOUR AU HUB</a>
 
     <script>
+        const planets = document.querySelectorAll('.nebula-planet');
+        const targetName = document.getElementById('target-name');
+        const targetData = document.getElementById('target-data');
+        const targetPos = document.getElementById('target-pos');
+
+        // Moteur de synchronisation et détection de position
         function synchroniserEspace() {
-            const etatEspace = { vitesse: "lente", phase: Date.now(), mode: "GPS_SYNC" };
-            localStorage.setItem('hinaru_cosmos_sync', JSON.stringify(etatEspace));
-            const gpsDisplay = document.getElementById('gps-display');
-            if(gpsDisplay) gpsDisplay.innerText = `GPS_SYNC_TIME: ${etatEspace.phase}`;
+            const time = Date.now();
+            localStorage.setItem('hinaru_cosmos_sync', JSON.stringify({ vitesse: "lente", phase: time, mode: "GPS_SYNC" }));
+            document.getElementById('gps-display').innerText = `GPS_SYNC_TIME: ${time}`;
+            
+            // Mise à jour de la position de la cible verrouillée
+            const activePlanet = document.querySelector('.nebula-planet:hover');
+            if (activePlanet) {
+                const rect = activePlanet.getBoundingClientRect();
+                targetPos.innerText = `X:${Math.round(rect.left)} Y:${Math.round(rect.top)}`;
+            }
         }
-        setInterval(synchroniserEspace, 1000);
-        window.onload = synchroniserEspace;
+
+        // Interaction Radar
+        planets.forEach(p => {
+            p.addEventListener('mouseenter', () => {
+                targetName.innerText = p.getAttribute('data-name');
+                targetData.innerText = p.getAttribute('data-info');
+            });
+            p.addEventListener('mouseleave', () => {
+                targetName.innerText = "AUCUNE";
+                targetData.innerText = "EN ATTENTE...";
+                targetPos.innerText = "---";
+            });
+        });
+
+        setInterval(synchroniserEspace, 100); // Scan plus rapide pour la fluidité radar
     </script>
 </body>
 </html>
