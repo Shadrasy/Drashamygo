@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.4 OMNI-MASTER TOTAL)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.6 Master Total)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -91,7 +91,6 @@
 
         .theory-input { background: #000; color: var(--cosplay-gold); border: 1px solid var(--bordeaux); padding: 5px; width: 90%; font-size: 9px; margin-top: 5px; font-family: monospace; }
         .twitch-link { color: #a970ff; text-decoration: none; font-size: 10px; font-weight: bold; }
-        .type-tag { font-size: 0.6rem; padding: 2px 8px; border: 1px solid; margin-bottom: 10px; display: inline-block; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -104,7 +103,7 @@
         <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; color:red;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.4)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.6 OMNI)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom:20px;"></div>
             
             <div style="margin-bottom:20px; display:flex; gap:10px; justify-content:center; flex-wrap: wrap;">
@@ -116,46 +115,39 @@
             <div id="protocol-display"><div id="protocol-content"></div></div>
 
             <div style="border-top:1px dashed var(--vhs-vert); padding-top:20px;">
-    <p style="color:orange; font-weight:bold; margin-bottom:10px;">⚡ PROGRAMMATEUR : STUDIO DE FUSION (W4.7)</p>
-    <input type="text" id="img-url" class="master-input" placeholder="Lien image (.png/.jpg)">
-    <input type="text" id="glb-url" class="master-input" placeholder="Lien objet 3D (.glb)">
-    <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows (W1 à W13)..."></textarea>
-    
-    <div style="margin-bottom:15px; font-size:10px;">
-        TYPE : 
-        <select id="img-type" class="master-select" onchange="toggleTomeField()">
-            <option value="Livre">LIVRE</option>
-            <option value="Anime">ANIME</option>
-            <option value="Serie">SERIE</option>
-            <option value="Cosplay">COSPLAY</option>
-            <option value="Fan-Cosplay">FAN-COSPLAY</option>
-            <option value="World">WORLD</option>
-        </select>
-        <span id="tome-input-area" style="margin-left:10px;"> TOME : <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white; border:1px solid #444;"></span>
-        <span style="margin-left:10px;"> DATE : <input type="datetime-local" id="img-date" class="master-select"></span>
+                <p style="color:orange; font-weight:bold; margin-bottom:10px;">⚡ PROGRAMMATEUR : STUDIO DE FUSION (W4.7)</p>
+                <input type="text" id="img-url" class="master-input" placeholder="Lien image (.png/.jpg)">
+                <input type="text" id="glb-url" class="master-input" placeholder="Lien objet 3D (.glb)">
+                <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows (W1 à W13)..."></textarea>
+                <div style="margin-bottom:15px; font-size:10px;">
+                    TYPE : <select id="img-type" class="master-select" onchange="toggleTomeField()">
+                        <option value="Livre">LIVRE</option><option value="Anime">ANIME</option><option value="Serie">SERIE</option>
+                        <option value="Cosplay">COSPLAY</option><option value="Fan-Cosplay">FAN-COSPLAY</option><option value="World">WORLD</option>
+                    </select>
+                    <span id="tome-input-area" style="margin-left:10px;"> TOME : <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white; border:1px solid #444;"></span>
+                    <span style="margin-left:10px;"> DATE : <input type="datetime-local" id="img-date" class="master-select"></span>
+                </div>
+                <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; width:100%;">GÉNÉRER LE CODE SIGNAL</button>
+                <textarea id="output-code" class="master-input" style="width:95%; height:70px; margin-top:15px; display:none; background:#050505; color:cyan; border-color:cyan;"></textarea>
+            </div>
+            <button class="btn-action" style="color:red; margin-top:20px; border-color:red; width:100%;" onclick="window.location.href='galerie.html'">DÉCONNEXION SYSTÈME</button>
+        </div>
+
+        <div id="galerie-container"></div>
+        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES : COSPLAY & THÉORIES ]</div>
+        <div id="fan-cosplay-container"></div>
+        <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px; font-size: 10px;">REPASSER LE PORTAIL</a>
     </div>
-    
-    <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; width:100%;">GÉNÉRER LE CODE SIGNAL</button>
-    <textarea id="output-code" class="master-input" style="width:95%; height:70px; margin-top:15px; display:none; background:#050505; color:cyan; border-color:cyan;"></textarea>
-</div>
 
     <script>
-       const romansConfig = [
-            { id: 1, nom: "Shadrasy", public: true },
-            { id: 2, nom: "Nébuleuse Alpha", public: false },
-            { id: 3, nom: "Projet Onyx", public: false },
-            { id: 4, nom: "Roman 4", public: true },
-            { id: 5, nom: "Protocole Silence", public: false },
-            { id: 6, nom: "Code Hinaru", public: false },
-            { id: 7, nom: "Saga Origin", public: false },
-            { id: 8, nom: "Echo Stellaire", public: false },
-            { id: 9, nom: "Signal Perdu", public: false },
-            { id: 10, nom: "Archives W10", public: false },
-            { id: 11, nom: "Module Externe", public: false },
-            { id: 12, nom: "L'Eveil", public: false },
-            { id: 13, nom: "Pipeline Final", public: false },
-            { id: 14, nom: "Projet 14", public: false }
-        ];
+        const romansConfig = [
+            { id: 1, nom: "Shadrasy", public: true }, { id: 2, nom: "Nébuleuse Alpha", public: false },
+            { id: 3, nom: "Projet Onyx", public: false }, { id: 4, nom: "Roman 4", public: true },
+            { id: 5, nom: "Protocole Silence", public: false }, { id: 6, nom: "Code Hinaru", public: false },
+            { id: 7, nom: "Saga Origin", public: false }, { id: 8, nom: "Echo Stellaire", public: false },
+            { id: 9, nom: "Signal Perdu", public: false }, { id: 10, nom: "Archives W10", public: false },
+            { id: 11, nom: "Module Externe", public: false }, { id: 12, nom: "L'Eveil", public: false },
+            { id: 13, nom: "Pipeline Final", public: false }, { id: 14, nom: "Projet 14", public: false }
         ];
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -186,31 +178,29 @@
         }
 
         function afficherProtocole(type) {
-    const display = document.getElementById('protocol-display');
-    display.style.display = 'block';
-    if(type === 'methode') {
-        document.getElementById('protocol-content').innerHTML = "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation & 3D Assets (Worldbuilding)<br>• W6-W9 : Rigging & Fusion Studio (Integration)<br>• W10-W13 : Cinematic Rendering & Rendu Final 4K";
-    } else if(type === 'industriel') {
-        document.getElementById('protocol-content').innerHTML = "<b>[ STANDARDS INDUSTRIELS ]</b><br>• Brandon Sanderson Hard Magic Rules : Cohérence du Lore.<br>• Lucasfilm Asset Pipeline : Structure de production.<br>• Hinaru Creator Authentication : Certification de l'auteur.";
-    } else {
-        document.getElementById('protocol-content').innerHTML = "<b>[ PROTOCOLE SILENCE ]</b><br>• Le visuel installe l'âme, le texte installe l'action.<br>• Règle d'or : Ne jamais rompre la suspension d'incrédulité du lecteur.";
-    }
-}
+            const display = document.getElementById('protocol-display');
+            display.style.display = 'block';
+            if(type === 'methode') {
+                document.getElementById('protocol-content').innerHTML = "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation & 3D Assets (Worldbuilding)<br>• W6-W9 : Rigging & Fusion Studio (Integration)<br>• W10-W13 : Cinematic Rendering & Rendu Final 4K";
+            } else if(type === 'industriel') {
+                document.getElementById('protocol-content').innerHTML = "<b>[ STANDARDS INDUSTRIELS ]</b><br>• Brandon Sanderson Hard Magic Rules (Hard Magic Systems)<br>• Lucasfilm Asset Pipeline (Structure de Production)<br>• Hinaru Creator Authentication (Badge Master)";
+            } else {
+                document.getElementById('protocol-content').innerHTML = "<b>[ PROTOCOLE SILENCE ]</b><br>• Le visuel installe l'âme, le texte installe l'action.<br>• Ne jamais briser la suspension d'incrédulité.";
+            }
+        }
 
         function genererCodeSignal() {
-    const url = document.getElementById('img-url').value;
-    const glb = document.getElementById('glb-url').value;
-    const tech = document.getElementById('img-tech').value;
-    const type = document.getElementById('img-type').value;
-    const tome = document.getElementById('img-tome').value;
-    const date = document.getElementById('img-date').value;
-    const proj = new URLSearchParams(window.location.search).get('projet') || 1;
-    
-    const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${proj}, type: "${type}", tome: ${tome}, date: "${date}", nom: "Hinaru (Creator)" },`;
-    const out = document.getElementById('output-code');
-    out.value = code;
-    out.style.display = 'block';
-}
+            const url = document.getElementById('img-url').value;
+            const glb = document.getElementById('glb-url').value;
+            const tech = document.getElementById('img-tech').value;
+            const type = document.getElementById('img-type').value;
+            const tome = document.getElementById('img-tome').value;
+            const date = document.getElementById('img-date').value;
+            const proj = urlParams.get('projet') || 1;
+            const code = `{ url: "${url}", glb: "${glb}", tech: \`${tech}\`, roman: ${proj}, type: "${type}", tome: ${tome}, date: "${date}", nom: "Hinaru (Creator)" },`;
+            const out = document.getElementById('output-code');
+            out.value = code; out.style.display = 'block';
+        }
 
         function chargerGalerie() {
             const container = document.getElementById('galerie-container');
