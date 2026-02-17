@@ -27,33 +27,24 @@
         }
 
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
-        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 400s linear infinite; pointer-events: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* CHAMP D'ÉTOILES DENSE & FIXE (Base Galaxie) */
+        .star-field { 
+            position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -15; 
+            background-image: 
+                radial-gradient(1.5px 1.5px at 50px 80px, #fff, transparent),
+                radial-gradient(2px 2px at 150px 250px, #fff, transparent),
+                radial-gradient(1.2px 1.2px at 400px 500px, var(--cosplay-gold), transparent);
+            background-size: 400px 400px, 550px 550px, 700px 700px;
+            animation: spinGalaxy 400s linear infinite; pointer-events: none; 
+        }
+        @keyframes spinGalaxy { to { transform: rotate(360deg); } }
 
-        /* --- MOTEUR DE NAVIGATION GPS SPATIAL --- */
+        /* --- MOTEUR DE NAVIGATION GPS SPATIAL (CALM & LARGE) --- */
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: -5; opacity: 1;
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.7);
-            animation: rotateAtmosphere 30s linear infinite;
-        }
-
-        /* Trajectoire Planète 1 (Cercle large sens horaire) */
-        @keyframes orbit1 {
-            from { transform: rotate(0deg) translateX(35vw) rotate(0deg); }
-            to { transform: rotate(360deg) translateX(35vw) rotate(-360deg); }
-        }
-        /* Trajectoire Planète 2 (Ellipse verticale) */
-        @keyframes orbit2 {
-            from { transform: rotate(0deg) translateY(25vh) rotate(0deg); }
-            to { transform: rotate(-360deg) translateY(25vh) rotate(360deg); }
-        }
-        /* Trajectoire Planète 3 (Grand huit / Infini) */
-        @keyframes orbit3 {
-            0% { top: 10%; left: 10%; }
-            25% { top: 50%; left: 80%; }
-            50% { top: 80%; left: 10%; }
-            75% { top: 40%; left: 50%; }
-            100% { top: 10%; left: 10%; }
+            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8);
+            top: 50%; left: 50%;
         }
 
         @keyframes rotateAtmosphere { 
@@ -61,29 +52,44 @@
             to { filter: hue-rotate(360deg) brightness(1.2); } 
         }
 
-        /* Attribution des routes GPS aux mondes */
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); top: 50%; left: 50%; box-shadow: 0 0 30px var(--cosplay-gold); cursor: pointer; z-index: 500; animation: orbit1 25s linear infinite, rotateAtmosphere 30s linear infinite; }
-        .p-blue { width: 100px; height: 100px; background: #0088ff; top: 50%; left: 50%; animation: orbit1 40s linear infinite reverse, rotateAtmosphere 30s linear infinite; }
-        .p-red { width: 140px; height: 140px; background: #ff0044; top: 50%; left: 50%; animation: orbit2 35s linear infinite, rotateAtmosphere 30s linear infinite; }
-        .p-purple { width: 180px; height: 180px; background: #6600ff; animation: orbit3 60s ease-in-out infinite, rotateAtmosphere 30s linear infinite; }
-        .p-ice { width: 80px; height: 80px; background: #e0f7fa; top: 50%; left: 50%; animation: orbit2 50s linear infinite reverse, rotateAtmosphere 30s linear infinite; }
-        .p-toxic { width: 110px; height: 110px; background: #22ff00; animation: orbit3 45s ease-in-out infinite reverse, rotateAtmosphere 30s linear infinite; }
+        /* Orbite 1 : Large Circulaire */
+        @keyframes orbitA {
+            from { transform: rotate(0deg) translateX(38vw) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); }
+        }
+        /* Orbite 2 : Ellipse Verticale */
+        @keyframes orbitB {
+            from { transform: rotate(0deg) translateY(30vh) rotate(0deg); }
+            to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); }
+        }
+        /* Orbite 3 : Mouvement Lent Profond */
+        @keyframes orbitC {
+            from { transform: rotate(0deg) translateX(20vw) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(20vw) rotate(-360deg); }
+        }
+
+        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); cursor: pointer; z-index: 500; animation: orbitA 45s linear infinite; }
+        .p-blue { width: 110px; height: 110px; background: #0077ff; animation: orbitB 65s linear infinite reverse, rotateAtmosphere 30s linear infinite; }
+        .p-red { width: 150px; height: 150px; background: #cc0033; animation: orbitA 80s linear infinite reverse, rotateAtmosphere 40s linear infinite; }
+        .p-purple { width: 190px; height: 190px; background: #5500ff; animation: orbitC 100s linear infinite, rotateAtmosphere 50s linear infinite; }
+        .p-ice { width: 90px; height: 90px; background: #e0f7fa; box-shadow: 0 0 30px #fff; animation: orbitB 55s linear infinite; }
+        .p-toxic { width: 120px; height: 120px; background: #11ff00; animation: orbitC 75s linear infinite reverse, rotateAtmosphere 35s linear infinite; }
 
         /* --- INTERFACE --- */
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: 2.5rem; letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
         .section-title { color: var(--vhs-vert); border-bottom: 1px solid #333; padding: 10px; margin: 40px 0 20px 0; letter-spacing: 5px; font-size: 1.2rem; text-transform: uppercase; }
         
-        #galerie-container, #fan-cosplay-container, #world-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
-        .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
+        #galerie-container, #fan-cosplay-container, #world-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px; margin-bottom: 40px; }
+        .box { background: rgba(0, 0, 0, 0.96); border: 1px solid #333; padding: 25px; position: relative; backdrop-filter: blur(8px); display: flex; flex-direction: column; }
+        .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #444; margin-bottom: 20px; }
         
         .creator-badge { background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%); color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 8px; padding: 4px 8px; position: absolute; top: 0; left: 0; z-index: 20; text-shadow: 0 0 5px var(--cosplay-gold); }
-        .hud-technique { position: absolute; top: 10px; right: 10px; width: 155px; background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech); padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px; text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out; }
+        .hud-technique { position: absolute; top: 10px; right: 10px; width: 155px; background: rgba(0, 20, 40, 0.9); border-left: 2px solid var(--bleu-tech); padding: 12px; color: var(--bleu-tech); font-family: monospace; font-size: 7px; text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out; }
         @keyframes pulseScan { 0% { border-left-color: var(--bleu-tech); opacity: 1; } 50% { border-left-color: transparent; opacity: 0.5; } }
 
         .btn-action { background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); cursor: pointer; font-size: 8px; padding: 6px; margin: 2px 0; font-family: monospace; transition: 0.3s; text-transform: uppercase; }
-        .btn-action:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px var(--bleu-tech); }
+        .btn-action:hover { background: rgba(255, 255, 255, 0.05); box-shadow: 0 0 10px var(--bleu-tech); }
 
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; text-align: left; }
         .master-input { background: black; color: white; border: 1px solid #444; padding: 8px; font-size: 10px; margin-bottom: 10px; width: 85%; font-family: monospace; }
@@ -252,7 +258,7 @@
                         box.innerHTML = `<div class="image-frame" style="border-color:var(--bordeaux);">${badge}<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;"></div><div style="font-size:0.7rem; color:var(--cosplay-gold); text-align:left;"><b>ID : ${item.nom.toUpperCase()}</b> ${twitch}<br><input type="text" placeholder="SOUMETTRE THÉORIE..." class="theory-input"><button class="btn-action" style="font-size:6px; margin-top:5px;" onclick="alert('SIGNAL TRANSMIS')">[ TRANSMIT ]</button></div>`;
                         fanContainer.appendChild(box);
                     } else {
-                        let media = estDebloque ? (item.glb ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" camera-orbit="0deg 75deg 105%" auto-rotate camera-controls shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`) : `[ SIGNAL_CRYPTÉ ]`;
+                        let media = estDebloque ? (item.glb ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" camera-orbit="0deg 75deg 105%" auto-rotate camera-controls shadow-intensity="1.5" style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`) : `[ SIGNAL_CRYPTÉ ]`;
                         let buttons = (estDebloque && item.glb) ? `<button class="btn-action" style="border-color:orange; color:orange; margin-top:10px;" onclick="document.getElementById('m-${index}').cameraOrbit='0deg 75deg 105%'; document.getElementById('m-${index}').cameraTarget='auto auto auto'">[ RESET CAMERA ]</button>` : "";
                         
                         box.innerHTML = `<div class="image-frame">${badge}${media}${hud}</div>${buttons}<div style="font-size:0.7rem; text-align:left; margin-top:10px;"><span class="type-tag" style="border-color:var(--vhs-vert)">${item.type.toUpperCase()}</span><br>DATABASE_ID: #${index+1000} | TOME: ${item.tome || 'N/A'}</div>`;
