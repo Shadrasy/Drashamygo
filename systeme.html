@@ -3,167 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Scan Système (V100.9.9 OMNI-MASTER)</title>
+    <title>Archives - Scan Système OMNI-GPS</title>
     
     <script src="security.js"></script>
 
     <style>
         :root { 
-            --noir-fond: #000105; 
-            --bleu-tech: #00a8ff; 
-            --rouge-alerte: #ff0055; 
-            --lumiere-bleue: rgba(0, 168, 255, 0.15); 
-            --cosplay-gold: #ffcc00;
-            --rose-hii: rgba(255, 50, 150, 0.2);
+            --noir-fond: #000105; --bleu-tech: #00a8ff; --rouge-alerte: #ff0055; 
+            --lumiere-bleue: rgba(0, 168, 255, 0.15); --cosplay-gold: #ffcc00;
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: var(--bleu-tech);
-            font-family: 'Courier New', monospace; overflow-x: hidden;
+            font-family: 'Courier New', monospace; overflow: hidden;
             background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), 
                               linear-gradient(90deg, rgba(255, 0, 50, 0.05), rgba(0, 100, 255, 0.05), rgba(50, 0, 255, 0.05));
             background-size: 100% 4px, 3px 100%;
         }
 
-        /* --- MOTEUR DE NAVIGATION GPS SPATIAL --- */
-        .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
-        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 400s linear infinite; pointer-events: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
+        /* --- MOTEUR GPS CENTRALISÉ --- */
         .nebula-planet { 
-            position: fixed; border-radius: 50%; z-index: -5; opacity: 1;
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.7);
-            top: 50%; left: 50%;
+            position: fixed; border-radius: 50%; z-index: -5;
+            top: 50%; left: 50%; border: 1px solid currentColor;
+            background: rgba(0,0,0,0.8);
         }
 
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
-        @keyframes orbitC { from { transform: rotate(0deg) translateX(20vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(20vw) rotate(360deg); } }
-        @keyframes rotateAtmosphere { from { filter: hue-rotate(0deg) brightness(1); } to { filter: hue-rotate(360deg) brightness(1.2); } }
+        /* Trajectoires GPS Synchronisées avec Galerie/Théories */
+        @keyframes orbitA { from { transform: rotate(0deg) translateX(35vw) rotate(0deg); } to { transform: rotate(360deg) translateX(35vw) rotate(-360deg); } }
+        @keyframes orbitB { from { transform: rotate(0deg) translateY(28vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(28vh) rotate(360deg); } }
 
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); animation: orbitA 45s linear infinite; }
-        .p-blue { width: 110px; height: 110px; background: #0077ff; animation: orbitB 65s linear infinite reverse, rotateAtmosphere 30s linear infinite; }
-        .p-red { width: 150px; height: 150px; background: #cc0033; animation: orbitA 80s linear infinite reverse, rotateAtmosphere 40s linear infinite; }
-        .p-purple { width: 190px; height: 190px; background: #5500ff; animation: orbitC 100s linear infinite, rotateAtmosphere 50s linear infinite; }
-        .p-ice { width: 90px; height: 90px; background: #e0f7fa; box-shadow: 0 0 30px #fff; animation: orbitB 55s linear infinite; }
-        .p-toxic { width: 120px; height: 120px; background: #11ff00; animation: orbitC 75s linear infinite reverse, rotateAtmosphere 35s linear infinite; }
+        /* Chaque planète représente une section du site */
+        .p-archives { width: 45px; height: 45px; color: #0077ff; animation: orbitA 50s linear infinite; }
+        .p-theories { width: 60px; height: 60px; color: #ff00ff; animation: orbitB 65s linear infinite reverse; }
+        .p-master { width: 20px; height: 20px; color: var(--cosplay-gold); box-shadow: 0 0 15px var(--cosplay-gold); animation: orbitA 35s linear infinite reverse; }
 
-        /* --- EFFET SCANLINE --- */
-        .scanline { position: fixed; top: 0; width: 100%; height: 15px; background: var(--lumiere-bleue); opacity: 0.6; animation: move-scan 8s linear infinite; z-index: 1000; pointer-events: none; }
-        @keyframes move-scan { from { top: -100px; } to { top: 100vh; } }
-
-        /* --- HEADER --- */
-        .osd-header { padding: 25px; border-bottom: 2px solid var(--bleu-tech); display: flex; justify-content: space-between; align-items: center; letter-spacing: 2px; text-shadow: 0 0 10px var(--bleu-tech); position: relative; z-index: 100; background: rgba(0,1,5,0.8); }
-        .status { animation: blink 1s infinite; font-weight: bold; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .main-layout { display: flex; flex-wrap: wrap; padding: 30px; gap: 30px; justify-content: center; position: relative; z-index: 100; }
-
-        /* --- RADAR --- */
-        .radar-box { flex: 1; min-width: 400px; max-width: 500px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0, 10, 30, 0.7); backdrop-filter: blur(5px); }
-        .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 5s infinite linear; box-shadow: 0 0 15px var(--bleu-tech); }
+        /* --- RADAR HUD --- */
+        .radar-box { flex: 1; min-width: 450px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0, 15, 40, 0.7); backdrop-filter: blur(5px); }
+        .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 4s infinite linear; }
         @keyframes radar-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .radar-circle { position: absolute; border: 1px solid rgba(0, 168, 255, 0.4); border-radius: 50%; }
 
-        /* Points sur le radar */
-        .r-planet { position: absolute; width: 6px; height: 6px; border-radius: 50%; animation: pulsePoint 2s infinite alternate; }
-        @keyframes pulsePoint { from { opacity: 0.3; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
-        .rp1 { top: 25%; left: 35%; background: #00ffff; box-shadow: 0 0 10px #00ffff; }
-        .rp2 { top: 65%; left: 75%; background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
-        .rp3 { top: 15%; left: 65%; background: var(--rouge-alerte); box-shadow: 0 0 10px var(--rouge-alerte); }
-
-        /* --- DATA --- */
-        .data-box { flex: 1; min-width: 400px; max-width: 600px; border: 2px solid var(--bleu-tech); padding: 25px; background: rgba(0, 10, 30, 0.8); backdrop-filter: blur(5px); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--bleu-tech); color: white; }
-        td { padding: 12px; border-bottom: 1px solid rgba(0, 168, 255, 0.3); font-size: 0.9rem; }
-        .val-high { color: var(--rouge-alerte); font-weight: bold; }
-
-        .btn-return { display: block; margin: 50px auto; padding: 15px 40px; border: 2px solid var(--bleu-tech); color: var(--bleu-tech); text-decoration: none; text-align: center; width: fit-content; transition: 0.3s; font-weight: bold; background: rgba(0, 168, 255, 0.05); position: relative; z-index: 100; }
-        .btn-return:hover { background: var(--bleu-tech); color: #000; box-shadow: 0 0 30px var(--bleu-tech); }
+        .osd-header { padding: 25px; border-bottom: 2px solid var(--bleu-tech); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); }
     </style>
 </head>
 <body>
-    <div class="nebula-layer"></div>
-    <div class="star-field"></div>
-    <div class="nebula-planet p-gold"></div>
-    <div class="nebula-planet p-blue"></div>
-    <div class="nebula-planet p-red"></div>
-    <div class="nebula-planet p-purple"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-toxic"></div>
-
-    <div class="scanline"></div>
+    <div class="nebula-planet p-archives" title="TRACKING: ARCHIVES_SECTION"></div>
+    <div class="nebula-planet p-theories" title="TRACKING: THEORIES_SECTION"></div>
+    <div class="nebula-planet p-master" title="TRACKING: MASTER_CORE"></div>
 
     <header class="osd-header">
-        <div>
-            [ SCANNER DEEP SPACE - V100.9.9 ]<br>
-            <span class="status">● ANALYSE DES FLUX OMNI-DIRECTIONNELS...</span>
-        </div>
-        <div id="visitor-module">
-            SIGNALS_TRACKED: <span id="count-value">SCANNING...</span>
-        </div>
+        <div>[ SYSTEM CONTROL CENTRE ]<br><span style="color: #fff; font-size: 10px;">OMNI-DIRECTIONAL GPS SYNC</span></div>
+        <div style="text-align: right; font-size: 11px;">STATUS: ACTIVE<br>LINK: ARCHIVES_DATA.JS</div>
     </header>
 
-    <div class="main-layout">
+    <div style="display: flex; padding: 40px; gap: 30px; justify-content: center;">
         <div class="radar-box">
             <div class="radar-line"></div>
-            <div class="radar-circle" style="width: 120px; height: 120px;"></div>
-            <div class="radar-circle" style="width: 240px; height: 240px;"></div>
-            <div class="radar-circle" style="width: 360px; height: 360px;"></div>
-            
-            <div class="r-planet rp1"></div>
-            <div class="r-planet rp2"></div>
-            <div class="r-planet rp3"></div>
-            
-            <div style="position: absolute; bottom: 15px; left: 15px; font-size: 0.8rem; opacity: 0.8; color: var(--bleu-tech);">
-                MODE: GPS_NAVIGATION_SYNCED
-            </div>
+            <div style="border: 1px solid rgba(0,168,255,0.4); border-radius: 50%; width: 350px; height: 350px;"></div>
+            <div style="position: absolute; bottom: 20px; font-size: 9px;">GPS_COORD: SYNC_WAITING...</div>
         </div>
 
-        <div class="data-box">
-            <h3>ANOMALIES DÉTECTÉES</h3>
-            <table>
-                <tr><th>OBJET</th><th>TYPE</th><th>SIGNAL</th></tr>
-                <tr><td>P1 (GÉANTE BLEUE)</td><td>ORBITE A</td><td style="color: #00ffff;">SYNC</td></tr>
-                <tr><td>P2 (PROTO-MONDE)</td><td>ORBITE B</td><td class="val-high">DÉVIATION</td></tr>
-                <tr><td>P4 (ZONE TOXIQUE)</td><td>ORBITE C</td><td style="color: #11ff00;">STABLE</td></tr>
-                <tr><td>G-MASTER</td><td>CENTRAL CORE</td><td style="color: var(--cosplay-gold);">ACTIVE</td></tr>
-                <tr>
-                    <td>DATE_SCAN</td>
-                    <td>MULTIVERS</td>
-                    <td style="color: #ffcc00;">17/02/2026</td>
-                </tr>
-            </table>
-            <div style="margin-top: 30px; font-size: 0.8rem; color: rgba(255,255,255,0.7); border-top: 1px dashed rgba(0, 168, 255, 0.3); padding-top: 15px;">
-                > LOG : "Détection de 6 masses planétaires en mouvement orbital. Synchronisation GPS terminée."
-            </div>
+        <div style="flex: 1; border: 2px solid var(--bleu-tech); padding: 20px; background: rgba(0,0,0,0.8);">
+            <h3>FLUX DE DONNÉES</h3>
+            <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : GALERIE (R1-R14)</p>
+            <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : THÉORIES (COSPLAY)</p>
+            <hr style="border: 0; border-top: 1px dashed var(--bleu-tech);">
+            <p style="color: yellow; font-size: 11px;">"Toutes les trajectoires sont nominales. Aucune collision détectée entre les archives et les théories."</p>
         </div>
     </div>
 
-    <a href="index.html" class="btn-return">RETOUR AU CENTRE DE CONTRÔLE</a>
-
-    <script>
-        // Le script de compteur reste identique pour garder tes stats
-        async function updateCounter() {
-            const namespace = "archives_roman_2026_system_scan"; 
-            const key = "visites_uniques_global";
-            const today = new Date().toISOString().split('T')[0];
-            const lastVisit = localStorage.getItem('last_visit_system');
-            let apiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
-            if (lastVisit !== today) {
-                apiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
-                localStorage.setItem('last_visit_system', today);
-            }
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                document.getElementById('count-value').innerText = data.value.toLocaleString();
-            } catch (error) {
-                document.getElementById('count-value').innerText = "OFFLINE";
-            }
-        }
-        updateCounter();
-    </script>
+    <a href="index.html" style="display: block; margin: auto; width: 250px; padding: 15px; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); text-align: center; text-decoration: none; font-weight: bold;">RETOUR AU PONT PRINCIPAL</a>
 </body>
 </html>
