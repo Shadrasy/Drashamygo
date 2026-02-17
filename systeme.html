@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Scan OMNI-TRIAD (V100.9.14)</title>
+    <title>Archives - Scan OMNI-TRIAD GLOW (V100.9.15)</title>
     
     <script src="security.js"></script>
 
@@ -11,6 +11,7 @@
         :root { 
             --noir-fond: #000105; --bleu-tech: #00a8ff; 
             --vhs-vert: #00ff41; --cosplay-gold: #ffcc00;
+            --pink-neon: #ff00ff;
         }
 
         body {
@@ -18,7 +19,7 @@
             font-family: 'Courier New', monospace; overflow: hidden;
         }
 
-        /* --- EFFET VHS --- */
+        /* --- EFFET VHS MASTER --- */
         body::after {
             content: " "; display: block; position: fixed; inset: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -29,93 +30,113 @@
         .star-field { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- LES 3 PLANÈTES (LES 3 UNIVERS) --- */
+        /* --- PLANÈTES AVEC EFFET DE LUEUR (GLOW) --- */
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: 10;
-            top: 50%; left: 50%; border: 1px solid currentColor;
-            background: rgba(0,0,0,0.6); transition: 0.2s linear; cursor: crosshair;
+            top: 50%; left: 50%; border: 1px solid white;
+            background: rgba(0,0,0,0.8); transition: 0.3s; cursor: crosshair;
         }
 
-        /* Trajectoires épurées */
-        .p-galerie { width: 70px; height: 70px; color: #0077ff; animation: orbitA 55s linear infinite; }
-        .p-theories { width: 90px; height: 90px; color: #ff00ff; animation: orbitB 70s linear infinite reverse; }
-        .p-archives { width: 40px; height: 40px; color: var(--vhs-vert); animation: orbitA 40s linear infinite reverse; }
+        .p-galerie { 
+            width: 70px; height: 70px; color: var(--bleu-tech); 
+            box-shadow: 0 0 20px var(--bleu-tech), inset 0 0 15px var(--bleu-tech);
+            animation: orbitA 55s linear infinite; 
+        }
+        .p-theories { 
+            width: 90px; height: 90px; color: var(--pink-neon); 
+            box-shadow: 0 0 25px var(--pink-neon), inset 0 0 20px var(--pink-neon);
+            animation: orbitB 70s linear infinite reverse; 
+        }
+        .p-archives { 
+            width: 40px; height: 40px; color: var(--vhs-vert); 
+            box-shadow: 0 0 15px var(--vhs-vert), inset 0 0 10px var(--vhs-vert);
+            animation: orbitA 40s linear infinite reverse; 
+        }
 
         @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
         @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
 
-        /* --- LENTILLE RADAR --- */
+        /* --- LENTILLE RADAR AVEC EFFET NÉON --- */
         .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 100; }
         .radar-lens { 
-            width: 450px; height: 450px; border: 1px solid rgba(0, 168, 255, 0.4); border-radius: 50%; 
-            position: relative; box-shadow: inset 0 0 50px rgba(0, 168, 255, 0.1);
+            width: 450px; height: 450px; border: 1px solid var(--bleu-tech); border-radius: 50%; 
+            position: relative; box-shadow: 0 0 30px rgba(0, 168, 255, 0.3), inset 0 0 50px rgba(0, 168, 255, 0.1);
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.05) 0%, transparent 70%);
         }
+
         .radar-sweep { 
-            position: absolute; width: 50%; height: 2px; top: 50%; left: 50%;
+            position: absolute; width: 50%; height: 3px; top: 50%; left: 50%;
             background: linear-gradient(90deg, transparent, var(--bleu-tech));
             transform-origin: left center; animation: sweep 4s infinite linear;
+            box-shadow: 0 0 10px var(--bleu-tech);
         }
         @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- PANEL INFO --- */
+        /* --- INTERFACE INFO --- */
         .info-box { 
-            position: fixed; bottom: 30px; left: 30px; width: 300px; 
-            background: rgba(0,0,0,0.8); border-left: 3px solid var(--bleu-tech); 
-            padding: 20px; z-index: 200;
+            position: fixed; bottom: 30px; left: 30px; width: 320px; 
+            background: rgba(0,0,0,0.9); border-left: 4px solid var(--bleu-tech); 
+            padding: 20px; z-index: 200; box-shadow: 10px 10px 20px rgba(0,0,0,0.5);
         }
+
+        #display span { transition: color 0.2s; }
     </style>
 </head>
 <body>
     <div class="star-field"></div>
 
-    <div class="nebula-planet p-galerie" data-name="SECTEUR GALERIE" data-status="VISUAL_DATA_ACTIVE"></div>
-    <div class="nebula-planet p-theories" data-name="SECTEUR THÉORIES" data-status="SIGNAL_HANNYS_VOORWERP"></div>
-    <div class="nebula-planet p-archives" data-name="SECTEUR ARCHIVES" data-status="HISTORY_LOG_LOCKED"></div>
+    <div class="nebula-planet p-galerie" data-name="SECTEUR GALERIE" data-status="STABLE" data-color="var(--bleu-tech)"></div>
+    <div class="nebula-planet p-theories" data-name="SECTEUR THÉORIES" data-status="EMISSION ANALOGIQUE" data-color="var(--pink-neon)"></div>
+    <div class="nebula-planet p-archives" data-name="SECTEUR ARCHIVES" data-status="LOGS ENCRYPTÉS" data-color="var(--vhs-vert)"></div>
 
     <div class="radar-container">
         <div class="radar-lens">
             <div class="radar-sweep"></div>
-            <div style="position: absolute; top: 50%; left: 50%; width: 100%; height: 1px; background: rgba(0,168,255,0.2); transform: translate(-50%,-50%);"></div>
-            <div style="position: absolute; top: 50%; left: 50%; height: 100%; width: 1px; background: rgba(0,168,255,0.2); transform: translate(-50%,-50%);"></div>
+            <div style="position: absolute; top: 50%; left: 50%; width: 100%; height: 1px; background: rgba(0,168,255,0.3); transform: translate(-50%,-50%);"></div>
+            <div style="position: absolute; top: 50%; left: 50%; height: 100%; width: 1px; background: rgba(0,168,255,0.3); transform: translate(-50%,-50%);"></div>
         </div>
     </div>
 
     <div class="info-box">
-        <span style="color:var(--bleu-tech); font-size: 10px;">OMNI-SCANNER V100.9.14</span><br>
-        <div id="display" style="font-size: 12px; margin-top: 10px; line-height: 1.6;">
-            > TARGET: <span id="t-name" style="color:white;">SEARCHING...</span><br>
-            > STATUS: <span id="t-status" style="color:var(--vhs-vert);">---</span><br>
-            > COORD: <span id="t-coord" style="color:cyan;">X:00 Y:00</span>
+        <span style="color:var(--bleu-tech); font-size: 10px; font-weight: bold; letter-spacing: 2px;">OMNI-SCANNER CENTRAL</span><br>
+        <div id="display" style="font-size: 12px; margin-top: 15px; line-height: 1.8;">
+            > CIBLE : <span id="t-name" style="color:white;">RECHERCHE...</span><br>
+            > ÉTAT  : <span id="t-status" style="color:white;">---</span><br>
+            > POSITION : <span id="t-coord" style="color:cyan;">X:00 Y:00</span>
         </div>
     </div>
 
-    <header style="position:fixed; top:20px; right:20px; text-align:right; font-size:10px; z-index:200;">
-        <span id="clock">00:00:00</span><br>
-        <a href="index.html" style="color:var(--bleu-tech); text-decoration:none; border: 1px solid; padding: 5px; display:inline-block; margin-top:10px;">HUB CENTRAL</a>
+    <header style="position:fixed; top:25px; right:30px; text-align:right; font-size:11px; z-index:200; letter-spacing: 1px;">
+        SYNC_GPS: <span id="clock" style="color:var(--vhs-vert);">00:00:00</span><br>
+        <a href="index.html" style="color:var(--bleu-tech); text-decoration:none; border: 1px solid; padding: 6px 12px; display:inline-block; margin-top:12px; transition: 0.3s;">PONT PRINCIPAL</a>
     </header>
 
     <script>
-        const planets = document.querySelectorAll('.nebula-planet');
         const tName = document.getElementById('t-name');
         const tStatus = document.getElementById('t-status');
         const tCoord = document.getElementById('t-coord');
 
         function update() {
-            const time = new Date();
-            document.getElementById('clock').innerText = time.toLocaleTimeString();
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
             
-            // Broadcast GPS
-            localStorage.setItem('hinaru_cosmos_sync', JSON.stringify({ phase: Date.now(), mode: "TRIAD_SCAN" }));
+            // Broadcast GPS vers tout le site
+            localStorage.setItem('hinaru_cosmos_sync', JSON.stringify({ phase: Date.now(), mode: "TRIAD_GLOW" }));
 
             const active = document.querySelector('.nebula-planet:hover');
             if (active) {
                 const rect = active.getBoundingClientRect();
+                const color = active.getAttribute('data-color');
+                
                 tName.innerText = active.getAttribute('data-name');
+                tName.style.color = color;
                 tStatus.innerText = active.getAttribute('data-status');
+                tStatus.style.color = color;
                 tCoord.innerText = `X:${Math.round(rect.left)} Y:${Math.round(rect.top)}`;
             } else {
-                tName.innerText = "SEARCHING...";
+                tName.innerText = "RECHERCHE...";
+                tName.style.color = "white";
                 tStatus.innerText = "---";
+                tStatus.style.color = "white";
                 tCoord.innerText = "X:00 Y:00";
             }
         }
