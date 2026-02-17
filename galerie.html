@@ -36,7 +36,7 @@
         @keyframes orbitB { from { transform: rotate(0deg) translateY(20vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(20vh) rotate(360deg); } }
         @keyframes orbitC { from { transform: rotate(0deg) translateX(15vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(15vw) rotate(360deg); } }
 
-        .p-gold { width: 30px; height: 30px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); cursor: pointer; animation: orbitA 45s linear infinite; }
+        .p-gold { width: 30px; height: 30px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); cursor: pointer; animation: orbitA 45s linear infinite; z-index: 500 !important; }
         .p-blue { width: 80px; height: 80px; background: #0077ff; animation: orbitB 65s linear infinite reverse; }
         .p-red { width: 100px; height: 100px; background: #cc0033; animation: orbitA 80s linear infinite reverse; }
         .p-purple { width: 120px; height: 120px; background: #5500ff; animation: orbitC 100s linear infinite; }
@@ -62,7 +62,8 @@
 <body>
     <div class="nebula-layer"></div><div class="star-field"></div>
     
-    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="Accès Maître"></div>
+    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="DOUBLE-CLIC: ACCÈS MAÎTRE"></div>
+    
     <div class="nebula-planet p-blue"></div>
     <div class="nebula-planet p-red"></div>
     <div class="nebula-planet p-purple"></div>
@@ -161,7 +162,6 @@
             const worldContainer = document.getElementById('world-container');
             const nav = document.getElementById('nav-buttons');
             
-            // 1. Boutons de navigation
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
@@ -174,7 +174,6 @@
                 }
             });
 
-            // 2. Rendu des données
             if (typeof archivesData !== 'undefined') {
                 archivesData.filter(item => item.roman === projetActuel).forEach((item, index) => {
                     const box = document.createElement('div');
@@ -193,8 +192,15 @@
             }
         }
 
-        function activerModeMaitre() { window.location.search = `?projet=${projetActuel}&Hinaru=true`; }
+        // FONCTION DE DÉVERROUILLAGE MAÎTRE
+        function activerModeMaitre() { 
+            const url = new URL(window.location.href);
+            url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.toString(); 
+        }
+
         function toggleTomeField() { document.getElementById('tome-input-area').style.display = (document.getElementById('img-type').value === 'World') ? 'none' : 'inline'; }
+        
         function genererCodeSignal() {
             const url = document.getElementById('img-url').value;
             const glb = document.getElementById('glb-url').value;
