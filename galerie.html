@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.20 OMNI-REMASTER)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.21 OMNI-REMASTER)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -36,7 +36,15 @@
         @keyframes orbitB { from { transform: rotate(0deg) translateY(20vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(20vh) rotate(360deg); } }
         @keyframes orbitC { from { transform: rotate(0deg) translateX(15vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(15vw) rotate(360deg); } }
 
-        .p-gold { width: 30px; height: 30px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); cursor: pointer; animation: orbitA 45s linear infinite; z-index: 500 !important; }
+        /* PLANETE DOREE : PRIORITÉ HAUTE (z-index élevé pour le clic) */
+        .p-gold { 
+            width: 30px; height: 30px; 
+            background: var(--cosplay-gold); 
+            box-shadow: 0 0 35px var(--cosplay-gold); 
+            cursor: pointer; 
+            animation: orbitA 45s linear infinite; 
+            z-index: 1001; /* Doit être au-dessus du body::after (999) */
+        }
         .p-blue { width: 80px; height: 80px; background: #0077ff; animation: orbitB 65s linear infinite reverse; }
         .p-red { width: 100px; height: 100px; background: #cc0033; animation: orbitA 80s linear infinite reverse; }
         .p-purple { width: 120px; height: 120px; background: #5500ff; animation: orbitC 100s linear infinite; }
@@ -62,7 +70,7 @@
 <body>
     <div class="nebula-layer"></div><div class="star-field"></div>
     
-    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="DOUBLE-CLIC: ACCÈS MAÎTRE"></div>
+    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="DOUBLE-CLIC : ACCÈS MAÎTRE HINARU"></div>
     
     <div class="nebula-planet p-blue"></div>
     <div class="nebula-planet p-red"></div>
@@ -75,7 +83,7 @@
         <div id="signals-status" style="font-weight: bold; font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; color:red; background: rgba(0,0,0,0.5); padding: 10px; display: inline-block; border: 1px solid;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold; font-size: 16px; margin-bottom: 25px;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.20)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold; font-size: 16px; margin-bottom: 25px;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.21)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom:30px;"></div>
             
             <div style="margin-bottom:30px; display:flex; gap:15px; justify-content:center; flex-wrap: wrap;">
@@ -192,11 +200,11 @@
             }
         }
 
-        // FONCTION DE DÉVERROUILLAGE MAÎTRE
+        // --- FONCTION ACCES MAITRE ---
         function activerModeMaitre() { 
-            const url = new URL(window.location.href);
-            url.searchParams.set('Hinaru', 'true');
-            window.location.href = url.toString(); 
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('Hinaru', 'true');
+            window.location.href = currentUrl.toString(); 
         }
 
         function toggleTomeField() { document.getElementById('tome-input-area').style.display = (document.getElementById('img-type').value === 'World') ? 'none' : 'inline'; }
