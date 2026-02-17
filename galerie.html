@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.9 Omni-Absolute)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.9 OMNI-MASTER)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -18,7 +18,7 @@
 
         body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; }
 
-        /* --- 1. MOTEUR DE RENDU VHS MASTER --- */
+        /* MOTEUR VHS SCANLINE */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -46,27 +46,11 @@
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(5px); display: flex; flex-direction: column; }
         .image-frame { position: relative; width: 100%; height: 350px; background: #050505; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #333; margin-bottom: 20px; }
         
-        /* --- 2. BADGE CREATOR MASTER --- */
-        .creator-badge {
-            background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%);
-            color: white; border: 1px solid var(--cosplay-gold);
-            font-weight: bold; font-size: 8px; padding: 4px 8px;
-            position: absolute; top: 0; left: 0; z-index: 20; text-shadow: 0 0 5px var(--cosplay-gold);
-        }
-
-        /* --- 3. HUD SCAN --- */
-        .hud-technique {
-            position: absolute; top: 10px; right: 10px; width: 155px;
-            background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech);
-            padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px;
-            text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out;
-        }
+        .creator-badge { background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%); color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 8px; padding: 4px 8px; position: absolute; top: 0; left: 0; z-index: 20; text-shadow: 0 0 5px var(--cosplay-gold); }
+        .hud-technique { position: absolute; top: 10px; right: 10px; width: 155px; background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech); padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px; text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out; }
         @keyframes pulseScan { 0% { border-left-color: var(--bleu-tech); opacity: 1; } 50% { border-left-color: transparent; opacity: 0.5; } }
 
-        .btn-action {
-            background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech);
-            cursor: pointer; font-size: 8px; padding: 6px; margin: 2px 0; font-family: monospace; transition: 0.3s; text-transform: uppercase;
-        }
+        .btn-action { background: none; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); cursor: pointer; font-size: 8px; padding: 6px; margin: 2px 0; font-family: monospace; transition: 0.3s; text-transform: uppercase; }
         .btn-action:hover { background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px var(--bleu-tech); }
 
         #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; text-align: left; }
@@ -86,7 +70,7 @@
         <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; color:red;">SIGNALS_TRACKED: OFFLINE</div>
 
         <div id="master-panel">
-            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (OMNI-MASTER)</p>
+            <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.9 OMNI)</p>
             <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom:20px;"></div>
             
             <div style="margin-bottom:20px; display:flex; gap:10px; justify-content:center; flex-wrap: wrap;">
@@ -95,6 +79,7 @@
                 <button class="btn-action" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
                 <button class="btn-action" style="border-color:orange; color:orange;" onclick="toggleStreamerMode()" id="streamer-btn">[ STREAMER MODE : OFF ]</button>
             </div>
+
             <div id="protocol-display"><div id="protocol-content"></div><button onclick="document.getElementById('protocol-display').style.display='none'" style="background:none; border:1px solid red; color:red; font-size:8px; margin-top:10px; cursor:pointer;">X FERMER TERMINAL</button></div>
 
             <div style="border-top:1px dashed var(--vhs-vert); padding-top:20px;">
@@ -118,10 +103,8 @@
 
         <div id="world-section-title" class="section-title" style="display:none;">[ ARCHIVES DU MONDE : LORE & ASSETS ]</div>
         <div id="world-container"></div>
-
         <div id="galerie-container"></div>
-
-        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES : COSPLAY & THÉORIES ]</div>
+        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold); border-color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES : COSPLAY & THÉORIES ]</div>
         <div id="fan-cosplay-container"></div>
         
         <a href="index.html" style="color:white; text-decoration:none; border:1px solid white; padding:10px 20px; display:inline-block; margin-top:40px; font-size: 10px;">REPASSER LE PORTAIL</a>
@@ -143,9 +126,8 @@
         let streamerActive = false;
 
         if (isHinaru) {
-            const status = document.getElementById('signals-status');
-            status.innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
-            status.style.color = "var(--vhs-vert)";
+            document.getElementById('signals-status').innerHTML = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
+            document.getElementById('signals-status').style.color = "var(--vhs-vert)";
             document.getElementById('master-panel').style.display = 'block';
         }
 
@@ -171,11 +153,11 @@
             const content = document.getElementById('protocol-content');
             display.style.display = 'block';
             if(type === 'methode') {
-                content.innerHTML = "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation & 3D Assets<br>• W6-W9 : Rigging & Fusion Studio<br>• W10-W13 : Cinematic Rendering & Rendu Final 4K";
+                content.innerHTML = "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation & 3D Assets (Lore Deep-Dive)<br>• W6-W9 : Rigging, Texturing & Studio Fusion (Asset Integration)<br>• W10-W13 : Cinematic Rendering & Rendu Master 4K Final";
             } else if(type === 'industriel') {
-                content.innerHTML = "<b>[ STANDARDS INDUSTRIELS ]</b><br>• Brandon Sanderson Hard Magic Rules (Cohérence)<br>• Lucasfilm Asset Pipeline (Structure)<br>• Hinaru Creator Authentication (Badge Master)";
+                content.innerHTML = "<b>[ STANDARDS INDUSTRIELS ]</b><br>• Brandon Sanderson Hard Magic Rules (Hard Lore Consistency)<br>• Lucasfilm Asset Pipeline (Industrial Production Standard)<br>• Hinaru Creator Authentication (Badge de Certification Master)";
             } else {
-                content.innerHTML = "<b>[ PROTOCOLE SILENCE ]</b><br>• Le visuel installe l'âme, le texte installe l'action.<br>• Ne jamais briser la suspension d'incrédulité.";
+                content.innerHTML = "<b>[ PROTOCOLE SILENCE ]</b><br>• Règle Master : Le visuel installe l'âme, le texte installe l'action.<br>• Zéro pollution visuelle : Ne jamais briser la suspension d'incrédulité.";
             }
         }
 
