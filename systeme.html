@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Scan Système OMNI-GPS (CERVEAU CENTRAL)</title>
+    <title>Archives - Scan Système OMNI-GPS (V100.9.11)</title>
     
     <script src="security.js"></script>
 
@@ -38,9 +38,23 @@
             position: fixed; border-radius: 50%; z-index: -5;
             top: 50%; left: 50%; border: 1px solid currentColor;
             background: rgba(0,0,0,0.8);
-            transition: 0.3s; cursor: crosshair;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            cursor: crosshair;
         }
-        .nebula-planet:hover { border: 2px solid var(--vhs-vert); box-shadow: 0 0 50px var(--vhs-vert); filter: brightness(1.5); z-index: 1000; }
+
+        .nebula-planet:hover { 
+            border: 2px solid var(--vhs-vert); 
+            box-shadow: 0 0 50px var(--vhs-vert); 
+            filter: brightness(1.5); 
+            z-index: 1000; 
+        }
+
+        /* EFFET DE VERROUILLAGE ACTIF (CLIC) */
+        .nebula-planet:active {
+            transform: scale(1.5);
+            border-color: var(--rouge-alerte);
+            box-shadow: 0 0 80px var(--rouge-alerte);
+        }
 
         /* Trajectoires synchronisées OMNI */
         .p-archives { width: 45px; height: 45px; color: #0077ff; animation: orbitA 50s linear infinite; }
@@ -56,12 +70,11 @@
 
         /* --- RADAR HUD --- */
         .radar-box { flex: 1; min-width: 450px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0, 15, 40, 0.6); backdrop-filter: blur(5px); }
-        .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 4s infinite linear; }
+        .radar-line { position: absolute; width: 50%; height: 2px; background: linear-gradient(90deg, transparent, var(--bleu-tech)); left: 50%; transform-origin: left; animation: radar-sweep 4s infinite linear; pointer-events: none; }
         @keyframes radar-sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .osd-header { padding: 25px; border-bottom: 2px solid var(--bleu-tech); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); position: relative; z-index: 100; }
         
-        /* Tooltip style */
         #radar-info { color: var(--vhs-vert); font-size: 11px; line-height: 1.6; }
         .highlight { color: white; font-weight: bold; }
     </style>
@@ -100,7 +113,7 @@
                 > POS: <span id="target-pos" class="highlight">---</span>
             </div>
             <hr style="border: 0; border-top: 1px dashed var(--bleu-tech); margin: 20px 0;">
-            <p style="color: #00ff41; font-size: 11px;">"SYSTÈME UNIFIÉ. Survoler un objet pour extraire les métadonnées."</p>
+            <p style="color: #00ff41; font-size: 11px;">"SYSTÈME UNIFIÉ. Maintenir le clic pour simuler un verrouillage d'Astre."</p>
         </div>
     </div>
 
@@ -112,13 +125,11 @@
         const targetData = document.getElementById('target-data');
         const targetPos = document.getElementById('target-pos');
 
-        // Moteur de synchronisation et détection de position
         function synchroniserEspace() {
             const time = Date.now();
             localStorage.setItem('hinaru_cosmos_sync', JSON.stringify({ vitesse: "lente", phase: time, mode: "GPS_SYNC" }));
             document.getElementById('gps-display').innerText = `GPS_SYNC_TIME: ${time}`;
             
-            // Mise à jour de la position de la cible verrouillée
             const activePlanet = document.querySelector('.nebula-planet:hover');
             if (activePlanet) {
                 const rect = activePlanet.getBoundingClientRect();
@@ -126,8 +137,10 @@
             }
         }
 
-        // Interaction Radar
         planets.forEach(p => {
+            // Assure le curseur crosshair partout
+            p.style.cursor = "crosshair";
+
             p.addEventListener('mouseenter', () => {
                 targetName.innerText = p.getAttribute('data-name');
                 targetData.innerText = p.getAttribute('data-info');
@@ -137,9 +150,16 @@
                 targetData.innerText = "EN ATTENTE...";
                 targetPos.innerText = "---";
             });
+            // Feedback lors du clic de verrouillage
+            p.addEventListener('mousedown', () => {
+                targetName.style.color = "var(--rouge-alerte)";
+            });
+            p.addEventListener('mouseup', () => {
+                targetName.style.color = "white";
+            });
         });
 
-        setInterval(synchroniserEspace, 100); // Scan plus rapide pour la fluidité radar
+        setInterval(synchroniserEspace, 100);
     </script>
 </body>
 </html>
