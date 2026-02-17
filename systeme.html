@@ -11,6 +11,7 @@
         :root { 
             --noir-fond: #000105; --bleu-tech: #00a8ff; --rouge-alerte: #ff0055; 
             --lumiere-bleue: rgba(0, 168, 255, 0.15); --cosplay-gold: #ffcc00;
+            --vhs-vert: #00ff41;
         }
 
         body {
@@ -21,19 +22,44 @@
             background-size: 100% 4px, 3px 100%;
         }
 
-        /* --- MOTEUR GPS CENTRALISÉ --- */
+        /* --- MOTEUR GPS CENTRALISÉ (V100.9.9 OPTIMISÉ) --- */
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: -5;
             top: 50%; left: 50%; border: 1px solid currentColor;
             background: rgba(0,0,0,0.8);
+            transition: border 0.3s, box-shadow 0.3s, filter 0.3s;
+            cursor: crosshair;
         }
 
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(35vw) rotate(0deg); } to { transform: rotate(360deg) translateX(35vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(28vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(28vh) rotate(360deg); } }
+        /* Interaction de survol (Verrouillage Radar) */
+        .nebula-planet:hover {
+            border: 2px solid var(--vhs-vert);
+            box-shadow: 0 0 50px var(--vhs-vert);
+            filter: brightness(1.5);
+            z-index: 1000;
+        }
 
-        .p-archives { width: 45px; height: 45px; color: #0077ff; animation: orbitA 50s linear infinite; }
-        .p-theories { width: 60px; height: 60px; color: #ff00ff; animation: orbitB 65s linear infinite reverse; }
-        .p-master { width: 20px; height: 20px; color: var(--cosplay-gold); box-shadow: 0 0 15px var(--cosplay-gold); animation: orbitA 35s linear infinite reverse; }
+        /* OPTIMISATION DES TRAJECTOIRES : Chiffres premiers pour éviter les alignements répétitifs */
+        .p-gold   { width: 20px; height: 20px; color: var(--cosplay-gold); box-shadow: 0 0 15px var(--cosplay-gold); animation: orbitA 47s linear infinite; }
+        .p-blue   { width: 45px; height: 45px; color: #0077ff; animation: orbitB 61s linear infinite reverse; }
+        .p-red    { width: 55px; height: 55px; color: #cc0033; animation: orbitA 83s linear infinite reverse; }
+        .p-purple { width: 70px; height: 70px; color: #5500ff; animation: orbitC 107s linear infinite; }
+        .p-ice    { width: 35px; height: 35px; color: #e0f7fa; animation: orbitB 53s linear infinite; }
+        .p-toxic  { width: 40px; height: 40px; color: #11ff00; animation: orbitC 79s linear infinite reverse; }
+
+        /* RÉGLAGE DES RAYONS (Éviter les collisions visuelles) */
+        @keyframes orbitA { 
+            from { transform: rotate(0deg) translateX(36vw) rotate(0deg); } 
+            to { transform: rotate(360deg) translateX(36vw) rotate(-360deg); } 
+        }
+        @keyframes orbitB { 
+            from { transform: rotate(0deg) translateY(28vh) rotate(0deg); } 
+            to { transform: rotate(-360deg) translateY(28vh) rotate(360deg); } 
+        }
+        @keyframes orbitC { 
+            from { transform: rotate(0deg) translateX(22vw) rotate(0deg); } 
+            to { transform: rotate(360deg) translateX(22vw) rotate(-360deg); } 
+        }
 
         /* --- RADAR HUD --- */
         .radar-box { flex: 1; min-width: 450px; border: 2px solid var(--bleu-tech); height: 450px; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0, 15, 40, 0.7); backdrop-filter: blur(5px); }
@@ -44,9 +70,12 @@
     </style>
 </head>
 <body>
-    <div class="nebula-planet p-archives" title="TRACKING: ARCHIVES_SECTION"></div>
-    <div class="nebula-planet p-theories" title="TRACKING: THEORIES_SECTION"></div>
-    <div class="nebula-planet p-master" title="TRACKING: MASTER_CORE"></div>
+    <div class="nebula-planet p-gold" title="TARGET: MASTER_CORE"></div>
+    <div class="nebula-planet p-blue" title="TARGET: BLUE_GIANT"></div>
+    <div class="nebula-planet p-red" title="TARGET: RED_DWARVE"></div>
+    <div class="nebula-planet p-purple" title="TARGET: PURPLE_VOID"></div>
+    <div class="nebula-planet p-ice" title="TARGET: ICE_CLEF"></div>
+    <div class="nebula-planet p-toxic" title="TARGET: TOXIC_ZONE"></div>
 
     <header class="osd-header">
         <div>[ SYSTEM CONTROL CENTRE ]<br><span style="color: #fff; font-size: 10px;">OMNI-DIRECTIONAL GPS SYNC : COMMANDER_MODE</span></div>
@@ -56,23 +85,26 @@
     <div style="display: flex; padding: 40px; gap: 30px; justify-content: center;">
         <div class="radar-box">
             <div class="radar-line"></div>
-            <div style="border: 1px solid rgba(0,168,255,0.4); border-radius: 50%; width: 350px; height: 350px;"></div>
+            <div style="position: absolute; border: 1px solid rgba(0,168,255,0.2); border-radius: 50%; width: 150px; height: 150px;"></div>
+            <div style="position: absolute; border: 1px solid rgba(0,168,255,0.3); border-radius: 50%; width: 280px; height: 280px;"></div>
+            <div style="position: absolute; border: 1px solid rgba(0,168,255,0.4); border-radius: 50%; width: 400px; height: 400px;"></div>
+            
             <div id="gps-display" style="position: absolute; bottom: 20px; font-size: 9px; color: cyan;">GPS_COORD: BROADCASTING_SIGNAL</div>
         </div>
 
         <div style="flex: 1; border: 2px solid var(--bleu-tech); padding: 20px; background: rgba(0,0,0,0.8);">
             <h3>FLUX DE DONNÉES MASTER</h3>
             <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : GALERIE (R1-R14)</p>
-            <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : THÉORIES (COSPLAY)</p>
+            <p style="font-size: 12px; color: #fff;">> ANALYSE SECTEUR : THÉORIES (SYNC_OK)</p>
+            <p style="font-size: 12px; color: #fff;">> TRAJECTOIRES : OPTIMISÉES (DURÉES_PREMIÈRES)</p>
             <hr style="border: 0; border-top: 1px dashed var(--bleu-tech);">
-            <p style="color: #00ff41; font-size: 11px;">"SIGNAL GPS CENTRALISÉ. Toutes les pages satellites reçoivent les coordonnées temporelles."</p>
+            <p style="color: #00ff41; font-size: 11px;">"SIGNAL GPS CENTRALISÉ. Survoler un objet pour verrouillage radar."</p>
         </div>
     </div>
 
     <a href="index.html" style="display: block; margin: auto; width: 250px; padding: 15px; border: 1px solid var(--bleu-tech); color: var(--bleu-tech); text-align: center; text-decoration: none; font-weight: bold;">REPASSER LE PORTAIL</a>
 
     <script>
-        // --- LOGIQUE DE BROADCAST MASTER ---
         function synchroniserEspace() {
             const etatEspace = {
                 vitesse: "lente_stabilisee",
@@ -81,18 +113,13 @@
                 origin: "system_control"
             };
             
-            // On diffuse l'état dans le stockage local pour que Galerie/Théories le lisent
             localStorage.setItem('hinaru_cosmos_sync', JSON.stringify(etatEspace));
             
-            // Feedback visuel sur le radar
             const gpsDisplay = document.getElementById('gps-display');
             if(gpsDisplay) gpsDisplay.innerText = `GPS_SYNC_TIME: ${etatEspace.phase}`;
         }
 
-        // Diffusion du signal toutes les secondes
         setInterval(synchroniserEspace, 1000);
-        
-        // Initialisation immédiate
         window.onload = synchroniserEspace;
     </script>
 </body>
