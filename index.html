@@ -3,172 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - L'Astre Créateur Suprême</title>
+    <title>Archives - Mur des Théories (V72)</title>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://api.countapi.xyz; style-src 'self' 'unsafe-inline';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta name="referrer" content="no-referrer">
+    
     <style>
         :root { 
-            --noir-fond: #010108; 
-            --lumiere-bleue: rgba(0, 100, 255, 0.4); 
-            --bulbe-jaune: rgba(255, 200, 50, 0.25);
-            --jet-faisceau: rgba(200, 230, 255, 0.6);
+            --noir-fond: #010105; 
             --vhs-vert: #00ff41;
-            --extinction-rouge: rgba(150, 0, 0, 0.2);
+            --lumiere-violette: rgba(136, 0, 255, 0.35);
+            --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
+            --fluo-hanny: rgba(0, 255, 120, 0.2);
+            --pois-vert: #39ff14;
         }
 
-        body { 
-            margin: 0; background-color: var(--noir-fond); color: white; 
-            font-family: 'Courier New', monospace; overflow-x: hidden; 
+        body {
+            margin: 0; background-color: var(--noir-fond); color: white;
+            font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
+            background: radial-gradient(circle at 15% 20%, var(--lumiere-violette) 0%, transparent 60%), var(--noir-fond);
+            background-attachment: fixed;
         }
+
+        /* --- 1. SYSTÈME DE FOND --- */
+        .nebula-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -15; background: radial-gradient(circle at 50% 50%, var(--gaz-nebuleuse) 0%, transparent 80%); animation: nebula-pulse 12s infinite alternate ease-in-out; pointer-events: none; }
+        .stars, .stars-2, .stars-slow { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -12; pointer-events: none; }
+        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; opacity: 0.6; animation: drift 150s linear infinite; }
+        .stars-2 { background-image: radial-gradient(1px 1px at 80px 120px, #fff, transparent); background-size: 200px 200px; opacity: 0.4; animation: drift 100s linear infinite reverse; }
+        .stars-slow { background-image: radial-gradient(1.5px 1.5px at 150px 250px, rgba(255,255,255,0.3), transparent); background-size: 500px 500px; opacity: 0.3; animation: drift 400s linear infinite; }
         
-        /* --- 1. DÉCORS GALACTIQUES --- */
-        .bg-layer { position: fixed; inset: 0; pointer-events: none; }
-        .redshift { background: radial-gradient(circle, transparent 40%, var(--extinction-rouge) 100%); z-index: -1; }
-        .spiral { background: conic-gradient(from 0deg, transparent, rgba(100, 200, 255, 0.05) 10%, transparent 50%); width: 250vmax; height: 250vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; }
-        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 300px 300px; opacity: 0.7; animation: spin 240s linear infinite; z-index: -5; }
-        .stars-twinkle { background-image: radial-gradient(1px 1px at 50px 50px, #fff, transparent); background-size: 150px 150px; animation: twinkle 3s infinite alternate; z-index: -6; }
-        .nebula-gas { background: radial-gradient(circle at 30% 70%, rgba(100, 0, 255, 0.1) 0%, transparent 50%); animation: gas-pulse 10s infinite alternate ease-in-out; z-index: -9; }
-        .supernova { position: fixed; top: 70%; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 0, 100, 0.1), transparent 70%); filter: blur(50px); z-index: -7; }
-        .bulge { position: fixed; top: 10%; right: 8%; width: 200px; height: 200px; background: radial-gradient(circle, var(--bulbe-jaune), transparent 70%); transform: translate(12.5%, 12.5%); z-index: -3; }
+        @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+        @keyframes nebula-pulse { from { transform: scale(1); opacity: 0.6; } to { transform: scale(1.2); opacity: 1; } }
 
-        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
-        @keyframes gas-pulse { from { opacity: 0.5; } to { opacity: 1; } }
+        /* --- 2. LES 5 ÉTOILES FILANTES --- */
+        .shooting-star { position: fixed; width: 4px; height: 1px; background: white; box-shadow: 0 0 15px white; z-index: -5; opacity: 0; animation: shoot linear infinite; pointer-events: none; }
+        .m1 { top: 10%; left: -10%; animation-duration: 12s; animation-delay: 2s; }
+        .m2 { top: 30%; left: -10%; animation-duration: 15s; animation-delay: 7s; }
+        .m3 { top: 50%; left: -10%; animation-duration: 10s; animation-delay: 0s; }
+        .m4 { top: 70%; left: -10%; animation-duration: 20s; animation-delay: 12s; }
+        .m5 { top: 20%; left: -10%; animation-duration: 18s; animation-delay: 4s; }
+        @keyframes shoot { 0% { transform: translate(0,0) rotate(35deg) scaleX(0); opacity: 0; } 5% { opacity: 1; scaleX(15); } 15% { transform: translate(110vw, 80vh) rotate(35deg); opacity: 0; } 100% { opacity: 0; } }
 
-        /* --- 2. QUASAR CENTRAL --- */
-        .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; pointer-events: none; }
-        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px white, inset 0 0 50px rgba(0, 100, 255, 0.5); animation: pulse 4s infinite alternate; }
-        .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
-        .jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, var(--jet-faisceau), white, var(--jet-faisceau), transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--lumiere-bleue); animation: jet-flicker 0.1s infinite alternate; }
+        /* --- 3. TROU NOIR ET SES 5 PLANÈTES --- */
+        .black-hole-left { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -2; background: black; border-radius: 50%; box-shadow: 0 0 80px 20px rgba(136, 0, 255, 0.4); animation: pulse 4s infinite alternate; }
+        .orbit { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -3; animation: spin-orbit linear infinite; pointer-events: none; }
+        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.8); }
+        @keyframes spin-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pulse { to { transform: scale(1.1); } }
-        @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
 
-        /* --- 3. ARMADA DES 4 PLANÈTES --- */
-        .orbit { position: fixed; top: 50%; left: 50%; z-index: -3; animation: orbit-spin linear infinite; pointer-events: none; }
-        .planet { position: absolute; border-radius: 50%; box-shadow: inset -10px -10px 20px black; }
-        @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .orb1 { animation-duration: 20s; } .p1 { width: 30px; height: 30px; background: #888; transform: translateX(200px); }
-        .orb2 { animation-duration: 45s; animation-delay: -10s; } .p2 { width: 85px; height: 85px; background: radial-gradient(circle at 30%, #24a, #000); transform: translateX(-320px); }
-        .orb3 { animation-duration: 80s; animation-delay: -30s; } .p3 { width: 140px; height: 140px; background: radial-gradient(circle at 30%, #a22, #000); transform: translateY(380px); }
-        .orb4 { animation-duration: 120s; } .p4 { width: 60px; height: 60px; background: radial-gradient(circle at 30%, #62a, #000); transform: translateY(-450px); }
+        .orb1 { animation-duration: 35s; } .p1 { width: 35px; height: 35px; background: radial-gradient(circle at 30% 30%, #00ff88, #002211); transform: translateX(190px); }
+        .orb2 { animation-duration: 55s; } .p2 { width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #ffcc00, #332200); transform: translateX(-270px); }
+        .orb3 { animation-duration: 85s; } .p3 { width: 30px; height: 30px; background: #e0ffff; transform: translateY(330px); box-shadow: 0 0 15px white; }
+        .orb4 { animation-duration: 120s; } .p4 { width: 95px; height: 95px; background: radial-gradient(circle at 30% 30%, #8b0000, #200000); transform: translateX(430px); }
+        .orb5 { animation-duration: 45s; } .p5 { width: 18px; height: 18px; background: #fff; transform: translateY(-390px); box-shadow: 0 0 10px white; }
 
-        /* --- 4. INTERFACE --- */
-        .container { position: relative; z-index: 100; max-width: 1200px; margin: 100px auto; text-align: center; }
-        h1 { font-size: 4rem; letter-spacing: 15px; text-shadow: 0 0 25px rgba(255,255,255,0.6); margin-bottom: 60px; }
-        .box { background: rgba(0,0,0,0.85); border: 1px solid #444; padding: 30px 15px; display: inline-block; width: 28%; margin: 1%; backdrop-filter: blur(12px); border-radius: 4px; vertical-align: top; }
-        .icon { font-size: 4rem; display: block; margin-bottom: 15px; }
-        .btn { display: inline-block; border: 2px solid white; color: white; padding: 12px 20px; text-decoration: none; letter-spacing: 3px; font-weight: bold; background: rgba(255,255,255,0.05); transition: 0.3s; margin-top: 20px; font-size: 0.8rem; cursor: pointer; }
-        .btn:hover { background: white; color: black; box-shadow: 0 0 30px white; transform: scale(1.05); }
+        /* --- 4. PHÉNOMÈNES RARES --- */
+        .hoag-object { position: fixed; top: 15%; right: 15%; width: 80px; height: 80px; z-index: -8; pointer-events: none; }
+        .hoag-core { width: 20px; height: 20px; background: #ffeeaa; border-radius: 50%; margin: 30px auto; box-shadow: 0 0 15px #ffcc00; }
+        .hoag-ring { position: absolute; top: 0; width: 80px; height: 80px; border: 2px solid rgba(100, 200, 255, 0.4); border-radius: 50%; animation: spin-orbit 20s linear infinite; }
+        .green-pea { position: fixed; width: 5px; height: 5px; background: var(--pois-vert); border-radius: 50%; box-shadow: 0 0 10px var(--pois-vert); z-index: -11; }
+        .gp1 { top: 20%; left: 40%; } .gp2 { bottom: 30%; right: 10%; }
+        .hannys-voorwerp { position: fixed; top: 10%; left: 25%; width: 250px; height: 180px; background: var(--fluo-hanny); filter: blur(45px); z-index: -14; pointer-events: none; }
 
-        /* --- 5. OSD & VISITOR TRACKER --- */
-        .osd { position: fixed; top: 30px; left: 30px; color: var(--vhs-vert); font-size: 0.9rem; z-index: 9999; line-height: 1.5; pointer-events: none; }
-        #visitor-module { margin-top: 15px; border-top: 1px solid rgba(0, 255, 65, 0.3); padding-top: 10px; letter-spacing: 2px; }
-
-        /* --- 6. ZONE QR CODE MAÎTRE --- */
-        #qr-master-zone { margin-top: 50px; display: block; }
-        #qrcode { background: white; padding: 15px; display: none; border-radius: 5px; margin: 20px auto; width: 150px; }
-        .qr-label { color: var(--vhs-vert); font-size: 10px; margin-top: 10px; display: none; letter-spacing: 2px; }
+        /* --- 5. INTERFACE --- */
+        .container { max-width: 850px; margin: 80px auto; padding: 20px; position: relative; z-index: 100; }
+        h1 { text-align: center; font-size: 3.5rem; letter-spacing: 12px; text-shadow: 0 0 20px rgba(255,255,255,0.4); }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; backdrop-filter: blur(10px); }
+        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; cursor: pointer; width: 100%; letter-spacing: 2px; font-weight: bold; }
+        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; }
+        .btn-back { display: block; text-align: center; margin-top: 40px; color: #888; text-decoration: none; border: 1px dashed #333; padding: 10px; }
     </style>
 </head>
 <body>
-    <div class="osd">
-        PLAY ▷<br>00:31:05:26<br>SCAN : UNIVERSE LOADED
-        <div id="visitor-module">
-            SIGNALS_TRACKED: <span id="count-value">SCANNING...</span>
-        </div>
-    </div>
+    <script src="security.js"></script>
 
-    <div class="bg-layer redshift"></div>
-    <div class="bg-layer spiral"></div>
-    <div class="bg-layer stars"></div>
-    <div class="bg-layer stars-twinkle"></div>
-    <div class="bg-layer nebula-gas"></div>
-    <div class="supernova"></div>
-    <div class="bulge"></div>
+    <div class="nebula-overlay"></div>
+    <div class="stars"></div><div class="stars-2"></div><div class="stars-slow"></div>
+    <div class="hannys-voorwerp"></div>
+    <div class="shooting-star m1"></div><div class="shooting-star m2"></div><div class="shooting-star m3"></div><div class="shooting-star m4"></div><div class="shooting-star m5"></div>
 
-    <div class="quasar-container">
-        <div class="jet"></div><div class="accretion-disk"></div><div class="black-hole"></div>
-    </div>
+    <div class="hoag-object"><div class="hoag-ring"></div><div class="hoag-core"></div></div>
+    <div class="green-pea gp1"></div><div class="green-pea gp2"></div>
 
+    <div class="black-hole-left"></div>
     <div class="orbit orb1"><div class="planet p1"></div></div>
     <div class="orbit orb2"><div class="planet p2"></div></div>
     <div class="orbit orb3"><div class="planet p3"></div></div>
     <div class="orbit orb4"><div class="planet p4"></div></div>
+    <div class="orbit orb5"><div class="planet p5"></div></div>
 
     <div class="container">
-        <h1>ARCHIVES</h1>
+        <span style="font-size: 4rem; display: block; text-align: center;">✍️</span>
+        <h1>MUR DES THÉORIES</h1>
         <div class="box">
-            <span class="icon">✍️</span>
-            <h2>THÉORIES</h2>
-            <a href="theories.html" class="btn">PROPOSER</a>
+            <form onsubmit="return checkSignalFrequency()">
+                <input type="text" name="honeypot" style="display:none !important" tabindex="-1" autocomplete="off">
+                
+                <label style="color:var(--vhs-vert); display:block; margin-bottom:15px; letter-spacing: 2px;">ANALYSE DU SPECTRE :</label>
+                <textarea rows="4" placeholder="Tapez votre théorie ici..."></textarea>
+                <input type="url" placeholder="Lien signal vidéo de référence">
+                
+                <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
+            </form>
+            
+            <div style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
+                <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px;">
+                    <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">SIGNAL #842 - V63</span>
+                    "L'Objet de Hoag confirme une structure sans lien physique visible. L'armada planétaire reste stable autour du noyau."
+                </div>
+            </div>
         </div>
-        <div class="box">
-            <span class="icon">📡</span>
-            <h2>SYSTÈME</h2>
-            <a href="systeme.html" class="btn">ANALYSER</a>
-        </div>
-        <div class="box">
-            <span class="icon">👁️</span>
-            <h2>GALERIE</h2>
-            <a href="galerie.html" class="btn">TRAVERSER</a>
-        </div>
-
-        <div id="qr-master-zone">
-            <div id="qrcode"></div>
-            <p id="qr-text" class="qr-label">QR-CODE UNIQUE GÉNÉRÉ</p>
-            <button class="btn" onclick="genererPortailQR()">CRÉER PORTAIL QR</button>
-        </div>
+        <a href="index.html" class="btn-back"> < REPASSER LE PORTAIL VERS LE CENTRE </a>
     </div>
-
-    <script>
-        // --- FONCTION GÉNÉRATEUR QR CODE ---
-        function genererPortailQR() {
-            const container = document.getElementById("qrcode");
-            const label = document.getElementById("qr-text");
-            container.innerHTML = ""; // Efface le précédent
-            
-            // Définit l'URL unique (Accueil des archives)
-            const urlUnique = "https://shadrasy.github.io/Drashamygo/index.html";
-            
-            new QRCode(container, {
-                text: urlUnique,
-                width: 150,
-                height: 150,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
-            
-            container.style.display = "block";
-            label.style.display = "block";
-        }
-
-        // --- COMPTEUR DE VISITES ---
-        async function updateCounter() {
-            const namespace = "archives_roman_2026_shadrasy"; 
-            const key = "visites_uniques";
-            const today = new Date().toISOString().split('T')[0];
-            const lastVisit = localStorage.getItem('last_visit_date');
-
-            let apiUrl = `https://api.countapi.xyz/get/${namespace}/${key}`;
-            
-            if (lastVisit !== today) {
-                apiUrl = `https://api.countapi.xyz/hit/${namespace}/${key}`;
-                localStorage.setItem('last_visit_date', today);
-            }
-
-            try {
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-                document.getElementById('count-value').innerText = data.value.toLocaleString();
-            } catch (error) {
-                document.getElementById('count-value').innerText = "OFFLINE";
-            }
-        }
-
-        updateCounter();
-    </script>
 </body>
 </html>
