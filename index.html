@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TERMINAL OMNI - Nébuleuse Visuelle V2031">
-    <title>TERMINAL - Nébuleuse Visuelle V2031</title>
+    <title>TERMINAL - Astre Créateur V2031</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="security.js"></script>
 
     <style>
         :root {
-            --green: #00ff41;
-            --dark-green: #003b00;
-            --black: #000103;
-            --glitch-red: rgba(255,0,0,0.3);
-            --glitch-blue: rgba(0,0,255,0.3);
-            --vhs-overlay: rgba(0, 255, 65, 0.05);
+            --rouge-vif: #ff0033;
+            --bordeaux: #660011;
+            --noir-profond: #050000;
+            --glitch-bleu: rgba(0, 150, 255, 0.3);
+            --interface-border: rgba(255, 0, 51, 0.5);
         }
 
         body {
-            background-color: var(--black);
-            color: var(--green);
+            background-color: var(--noir-profond);
+            color: var(--rouge-vif);
             font-family: 'Courier New', monospace;
             margin: 0;
             height: 100vh;
@@ -33,199 +31,194 @@
             text-transform: uppercase;
         }
 
-        /* --- EFFET CRT / VHS --- */
+        /* --- FILTRE VHS ROUGE --- */
         body::after {
             content: " ";
             position: fixed;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.08), rgba(100, 0, 0, 0.02), rgba(0, 0, 50, 0.05));
             z-index: 999;
-            background-size: 100% 2px, 3px 100%;
+            background-size: 100% 3px, 3px 100%;
             pointer-events: none;
         }
 
-        /* --- ECOSYSTÈME PLANÉTAIRE (VERT) --- */
+        /* --- ÉCOSYSTÈME PLANÉTAIRE (ROUGE/OR) --- */
         .nebula-planet { 
-            position: fixed; border-radius: 50%; z-index: 1; opacity: 0.4;
-            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.8), 0 0 10px var(--dark-green);
-            top: 50%; left: 50%; border: 1px solid var(--green);
+            position: fixed; border-radius: 50%; z-index: 1; opacity: 0.5;
+            box-shadow: inset -10px -10px 20px #000, 0 0 15px var(--bordeaux);
+            top: 50%; left: 50%; border: 1px solid var(--bordeaux);
         }
 
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(35vw) rotate(0deg); } to { transform: rotate(360deg) translateX(35vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(25vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(25vh) rotate(360deg); } }
+        @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
+        @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
 
-        .p-1 { width: 30px; height: 30px; animation: orbitA 40s linear infinite; }
-        .p-2 { width: 80px; height: 80px; animation: orbitB 60s linear infinite reverse; }
-        .p-3 { width: 120px; height: 120px; animation: orbitA 90s linear infinite reverse; border-style: dashed; }
+        .p-gold { width: 40px; height: 40px; border-color: #ffcc00; box-shadow: 0 0 20px #ffcc00; animation: orbitA 45s linear infinite; }
+        .p-red { width: 100px; height: 100px; background: rgba(150, 0, 0, 0.2); animation: orbitB 70s linear infinite reverse; }
+        .p-dark { width: 150px; height: 150px; border-style: double; border-width: 3px; animation: orbitA 110s linear infinite reverse; }
 
-        /* --- TERMINAL INTERFACE --- */
+        /* --- INTERFACE TERMINAL --- */
         .terminal-container {
             width: 85%;
             max-width: 900px;
-            border: 1px solid var(--green);
-            padding: 30px;
-            background: rgba(0, 10, 0, 0.9);
-            box-shadow: 0 0 20px var(--dark-green);
+            border: 2px solid var(--bordeaux);
+            padding: 40px;
+            background: rgba(10, 0, 0, 0.95);
+            box-shadow: 0 0 40px rgba(100, 0, 0, 0.5);
             position: relative;
             z-index: 10;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .header-sys {
             position: absolute;
-            top: -12px;
-            left: 20px;
-            background: var(--black);
-            padding: 0 10px;
-            font-size: 12px;
-            border: 1px solid var(--green);
+            top: -15px;
+            left: 30px;
+            background: var(--noir-profond);
+            padding: 0 15px;
+            font-size: 13px;
+            border: 1px solid var(--rouge-vif);
+            color: var(--rouge-vif);
         }
 
         .glitch-title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: bold;
-            position: relative;
-            animation: glitch 3s infinite;
-            letter-spacing: 10px;
+            letter-spacing: 12px;
+            text-shadow: 3px 0 var(--bordeaux);
+            animation: red-glitch 4s infinite;
         }
 
-        @keyframes glitch {
-            0% { transform: translate(0); text-shadow: none; }
-            20% { transform: translate(-2px, 2px); text-shadow: 2px 0 var(--glitch-red), -2px 0 var(--glitch-blue); }
-            40% { transform: translate(-2px, -2px); text-shadow: 2px 0 var(--glitch-blue), -2px 0 var(--glitch-red); }
-            100% { transform: translate(0); }
+        @keyframes red-glitch {
+            0% { transform: skew(0deg); }
+            5% { transform: skew(5deg); text-shadow: -3px 0 var(--rouge-vif); }
+            10% { transform: skew(-5deg); text-shadow: 3px 0 var(--glitch-bleu); }
+            15% { transform: skew(0deg); }
         }
 
         /* --- NAVIGATION --- */
         .nav-menu {
-            margin-top: 30px;
+            margin-top: 40px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .nav-link {
             text-decoration: none;
-            color: var(--green);
-            font-size: 0.9rem;
-            border: 1px solid var(--dark-green);
-            padding: 15px;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
+            color: var(--rouge-vif);
+            font-size: 1rem;
+            border: 1px solid var(--bordeaux);
+            padding: 20px;
+            transition: all 0.4s ease;
+            text-align: center;
+            background: rgba(50, 0, 0, 0.2);
         }
 
         .nav-link:hover {
-            background: var(--green);
-            color: var(--black);
-            box-shadow: 0 0 15px var(--green);
+            background: var(--rouge-vif);
+            color: white;
+            box-shadow: 0 0 25px var(--rouge-vif);
+            transform: translateY(-5px);
         }
-
-        .icon { font-size: 1.5rem; margin-bottom: 5px; }
 
         /* --- OSD --- */
         .osd {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 10px;
-            line-height: 1.5;
+            top: 30px;
+            left: 30px;
+            font-size: 11px;
+            color: var(--rouge-vif);
+            letter-spacing: 2px;
             z-index: 1000;
         }
 
         #console-output {
-            font-size: 9px;
-            height: 40px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--dark-green);
-            color: var(--green);
-            opacity: 0.8;
+            font-size: 10px;
+            height: 50px;
+            margin-bottom: 20px;
+            border-left: 2px solid var(--bordeaux);
+            padding-left: 15px;
+            color: rgba(255, 0, 50, 0.7);
         }
 
         #qrcode { 
-            background: var(--green); 
+            background: white; 
             padding: 10px; 
             display: none; 
             margin: 20px auto; 
-            width: 128px;
+            border: 4px solid var(--bordeaux);
         }
         
         .btn-qr {
-            background: transparent;
-            color: var(--green);
-            border: 1px solid var(--green);
-            padding: 10px;
+            background: var(--bordeaux);
+            color: white;
+            border: 1px solid var(--rouge-vif);
+            padding: 12px 25px;
             cursor: pointer;
-            margin-top: 15px;
             font-family: 'Courier New', monospace;
+            margin-top: 20px;
+            transition: 0.3s;
         }
         
-        .btn-qr:hover { background: var(--green); color: var(--black); }
+        .btn-qr:hover { background: var(--rouge-vif); box-shadow: 0 0 20px var(--rouge-vif); }
 
     </style>
 </head>
 <body>
 
     <div class="osd">
-        SYSTEM: OMNI_MASTER_V2031<br>
-        STATUS: BROADCASTING_SIGNAL<br>
-        DATE: 05_MARS_2031<br>
-        LOC: SECTOR_R14
+        ● OMNI_CORE_V100.9.9<br>
+        ● STATUS: RED_LEVEL_SYNC<br>
+        ● DATE: 05_MARS_2031<br>
+        ● LOC: ORIGIN_SECTOR
     </div>
 
     <div id="galaxy-receptor">
-        <div class="nebula-planet p-1"></div>
-        <div class="nebula-planet p-2"></div>
-        <div class="nebula-planet p-3"></div>
+        <div class="nebula-planet p-gold"></div>
+        <div class="nebula-planet p-red"></div>
+        <div class="nebula-planet p-dark"></div>
     </div>
 
     <div class="terminal-container">
-        <div class="header-sys">MAIN_PORTAL_V2.0</div>
+        <div class="header-sys">ARCHIVE_SYSTEM_V3</div>
         
-        <div class="glitch-title">NÉBULEUSE</div>
-        <div style="font-size: 0.7rem; letter-spacing: 5px; margin-bottom: 10px;">ARCHIVES DE L'ASTRE CRÉATEUR</div>
+        <div class="glitch-title">ARCHIVES</div>
+        <div style="font-size: 0.8rem; letter-spacing: 6px; margin-bottom: 20px; color: var(--bordeaux);">L'ASTRE CRÉATEUR SUPRÊME</div>
 
         <div id="console-output"></div>
 
         <div class="nav-menu">
             <a href="theories.html" class="nav-link">
-                <span class="icon">✍️</span>
-                [ THEORIES ]
-                <span style="font-size: 8px;">TRANSMETTRE_SIGNAL</span>
+                <div style="font-size: 20px;">✍️</div>
+                THÉORIES
             </a>
 
             <a href="javascript:void(0)" onclick="if(checkSignalFrequency()) window.location.href='systeme.html'" class="nav-link">
-                <span class="icon">📡</span>
-                [ SYSTEME ]
-                <span style="font-size: 8px;">ANALYSE_GPS</span>
+                <div style="font-size: 20px;">📡</div>
+                SYSTÈME
             </a>
 
             <a href="javascript:void(0)" onclick="validerAccesArchives()" class="nav-link">
-                <span class="icon">👁️</span>
-                [ GALERIE ]
-                <span style="font-size: 8px;">VISUALISER_ROMANS</span>
+                <div style="font-size: 20px;">👁️</div>
+                GALERIE
             </a>
         </div>
 
         <div style="text-align: center;">
             <div id="qrcode"></div>
-            <button class="btn-qr" onclick="genererPortailQR()">[ GÉNÉRER_PORTAIL_QR ]</button>
+            <button class="btn-qr" onclick="genererPortailQR()">[ ACTIVER PORTAIL QR ]</button>
         </div>
     </div>
 
     <script>
-        // LOGS DE DEMARRAGE
         const consoleOut = document.getElementById('console-output');
         const logs = [
-            "> INIT OMNI_CORE...",
-            "> SYNCING PLANETARY ECOSYSTEM...",
-            "> GPS_SIGNAL: ACTIVE (05-03-2031)",
-            "> LOADING 14 ARCHIVES...",
-            "> CONNECTION ESTABLISHED."
+            "> INITIALISATION DE LA MATRICE ROUGE...",
+            "> CHARGEMENT DU SYSTÈME OMNI V100.9.9...",
+            "> VÉRIFICATION DES 14 FRAGMENTS...",
+            "> SIGNAL GPS VERROUILLÉ : 05/03/2031",
+            "> BIENVENUE, CRÉATEUR."
         ];
 
         let line = 0;
@@ -233,14 +226,13 @@
             if (line < logs.length) {
                 consoleOut.innerHTML += logs[line] + "<br>";
                 line++;
-                setTimeout(printLog, 600);
+                setTimeout(printLog, 700);
             }
         }
         window.onload = printLog;
 
-        // LOGIQUE QR & SIGNAL
         function diffuserSignalGPS() {
-            const etat = { phase: Date.now(), mode: "OMNI_SYNC", status: "BROADCASTING" };
+            const etat = { phase: Date.now(), mode: "RED_SYNC", status: "ACTIVE" };
             localStorage.setItem('hinaru_cosmos_sync', JSON.stringify(etat));
         }
         setInterval(diffuserSignalGPS, 1000);
@@ -250,8 +242,8 @@
             container.innerHTML = "";
             new QRCode(container, {
                 text: "https://shadrasy.github.io/Drashamygo/index.html",
-                width: 128, height: 128,
-                colorDark : "#000103", colorLight : "#00ff41",
+                width: 140, height: 140,
+                colorDark : "#050000", colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.H
             });
             container.style.display = "block";
