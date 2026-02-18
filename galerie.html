@@ -13,7 +13,6 @@
         :root { 
             --noir-fond: #000103; --vhs-vert: #00ff41; --rose-hii: rgba(255, 50, 150, 0.25);
             --bleu-tech: #00ffff; --standard-magenta: #ff00ff; --cosplay-gold: #ffcc00;
-            --bordeaux: #6d071a; --bleu-nuit: #001a33;
         }
 
         body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; }
@@ -26,67 +25,72 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
+        /* DÉCORS SPATIAUX RÉINSÉRÉS */
+        .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spinGalaxy 400s linear infinite; pointer-events: none; opacity: 0.3; }
+        @keyframes spinGalaxy { to { transform: rotate(360deg); } }
+        
+        #black-hole-alpha { position: fixed; top: 10%; right: 10%; width: 100px; height: 100px; background: black; border-radius: 50%; box-shadow: 0 0 40px #4b0082; z-index: -2; border: 1px dashed rgba(255,255,255,0.1); }
+
         .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         
-        /* GRILLE DE CARTES */
+        /* GRILLE OPTIMISÉE */
         #galerie-container, #world-container, #fan-cosplay-container {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-bottom: 50px;
         }
 
-        .box { background: rgba(0, 0, 0, 0.98); border: 1px solid #444; padding: 25px; position: relative; backdrop-filter: blur(12px); display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #333; padding: 20px; position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; transition: 0.3s; }
+        .box:hover { border-color: var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+
+        .image-frame { position: relative; width: 100%; height: 350px; background: #000; border: 1px solid #222; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+
+        .hud-technique { position: absolute; bottom: 5px; left: 5px; font-size: 8px; background: rgba(0,0,0,0.8); padding: 5px; color: var(--vhs-vert); text-align: left; border-left: 1px solid var(--vhs-vert); pointer-events: none; z-index: 5; }
+        .creator-badge { position: absolute; top: 5px; right: 5px; background: var(--vhs-vert); color: black; font-size: 8px; padding: 2px 5px; font-weight: bold; z-index: 6; }
         
-        .image-frame { position: relative; width: 100%; height: 380px; background: #050505; border: 1px solid #333; overflow: hidden; }
+        .section-title { font-size: 1rem; color: var(--vhs-vert); border-left: 3px solid var(--vhs-vert); padding-left: 15px; margin: 50px 0 25px 0; text-align: left; letter-spacing: 3px; background: rgba(0,255,65,0.05); padding-top: 5px; padding-bottom: 5px; }
 
-        /* AJOUTS : STYLES DES ÉLÉMENTS DE CARTE */
-        .hud-technique { position: absolute; bottom: 10px; left: 10px; font-size: 9px; background: rgba(0,0,0,0.8); padding: 8px; color: var(--vhs-vert); text-align: left; border-left: 2px solid var(--vhs-vert); pointer-events: none; line-height: 1.2; z-index: 5; }
-        .creator-badge { position: absolute; top: 10px; right: 10px; background: var(--vhs-vert); color: black; font-size: 9px; padding: 3px 7px; font-weight: bold; z-index: 6; letter-spacing: 1px; }
-        
-        .section-title { font-size: 1.2rem; color: var(--vhs-vert); border-bottom: 1px solid #333; padding-bottom: 10px; margin: 40px 0 20px 0; text-align: left; letter-spacing: 5px; }
+        .btn-action { transition: 0.2s; cursor: pointer; font-family: monospace; background: none; border: 1px solid white; color: white; padding: 10px; }
+        .btn-action:hover { background: var(--vhs-vert); color: black; border-color: var(--vhs-vert); }
 
-        .btn-action { transition: 0.3s; cursor: pointer; font-family: 'Courier New', monospace; background: none; }
-        .btn-action:hover { background: rgba(255,255,255,0.1); transform: scale(1.02); }
-
-        /* DÉCORS SPATIAUX */
-        .nebula-planet { position: fixed; top: 45%; left: 50%; border-radius: 50%; z-index: -1; opacity: 0.7; }
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 40px var(--cosplay-gold); z-index: 1001; cursor: crosshair; transform: translate(-50%, -50%); }
+        .p-gold { position: fixed; top: 45%; left: 50%; width: 30px; height: 30px; background: var(--cosplay-gold); border-radius: 50%; box-shadow: 0 0 30px var(--cosplay-gold); z-index: 1001; cursor: crosshair; transform: translate(-50%, -50%); opacity: 0.6; }
     </style>
 </head>
 <body>
-    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
+    <div class="star-field"></div>
+    <div id="black-hole-alpha"></div>
+    <div class="p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
 
     <div class="container">
-        <h1 style="font-size: 3.5rem; letter-spacing: 15px; text-shadow: 0 0 25px var(--vhs-vert);">NÉBULEUSE VISUELLE</h1>
-        
-        <div id="signals-status" style="font-weight: bold; font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; color:red; background: rgba(0,0,0,0.5); padding: 10px; display: inline-block; border: 1px solid;">SIGNALS_TRACKED: OFFLINE</div>
+        <h1 style="font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 10px;">NÉBULEUSE VISUELLE</h1>
+        <div id="signals-status" style="font-size: 10px; letter-spacing: 2px; margin-bottom: 40px; color:red; border: 1px solid; padding: 5px 15px; display: inline-block;">SIGNALS_TRACKED: OFFLINE</div>
 
-        <div id="master-panel" style="background: rgba(0,15,5,0.98); border: 2px solid var(--vhs-vert); padding: 30px; margin-bottom: 50px; display: none; text-align: left;">
-            <p style="color:var(--vhs-vert); font-weight:bold; margin-bottom: 25px;">📡 CONTRÔLE MAÎTRE HINARU</p>
-            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom:30px;"></div>
+        <div id="master-panel" style="background: rgba(0,20,5,0.95); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; display: none; text-align: left;">
+            <p style="color:var(--vhs-vert); font-size: 12px; margin-bottom: 20px;">[ CONTRÔLE SYSTEME HINARU ]</p>
+            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom:20px;"></div>
             
-            <div style="border-top:1px dashed var(--vhs-vert); padding-top:30px;">
-                <input type="text" id="img-url" style="width:100%; background:#080808; color:white; border:1px solid #444; padding:10px; margin-bottom:10px;" placeholder="URL Image">
-                <input type="text" id="glb-url" style="width:100%; background:#080808; color:white; border:1px solid #444; padding:10px; margin-bottom:10px;" placeholder="URL GLB (3D)">
-                <textarea id="img-tech" style="width:100%; background:#080808; color:white; border:1px solid #444; padding:10px; height:60px;" placeholder="Logs techniques..."></textarea>
-                <div style="margin: 15px 0;">
-                    TYPE: <select id="img-type" onchange="toggleTomeField()"><option value="Livre">LIVRE</option><option value="World">WORLD</option><option value="Fan-Cosplay">FAN-COSPLAY</option></select>
-                    <span id="tome-input-area"> TOME: <input type="number" id="img-tome" value="1" style="width:40px;"></span>
-                     DATE: <input type="datetime-local" id="img-date">
+            <div style="border-top: 1px dashed #333; padding-top: 20px;">
+                <input type="text" id="img-url" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; margin-bottom:5px;" placeholder="Image URL">
+                <input type="text" id="glb-url" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; margin-bottom:5px;" placeholder="GLB URL (optionnel)">
+                <textarea id="img-tech" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; height:50px;" placeholder="Tech Data..."></textarea>
+                <div style="font-size: 11px; margin: 10px 0;">
+                    Type: <select id="img-type" onchange="toggleTomeField()"><option value="Livre">LIVRE</option><option value="World">WORLD</option><option value="Fan-Cosplay">FAN-COSPLAY</option></select>
+                    <span id="tome-input-area"> Tome: <input type="number" id="img-tome" value="1" style="width:35px;"></span>
+                    Date: <input type="datetime-local" id="img-date">
                 </div>
-                <button class="btn-action" onclick="genererCodeSignal()" style="width:100%; background:var(--vhs-vert); color:black; padding:10px; font-weight:bold;">GÉNÉRER CODE</button>
-                <textarea id="output-code" style="width:100%; height:80px; display:none; margin-top:10px; background:black; color:cyan;"></textarea>
+                <button class="btn-action" onclick="genererCodeSignal()" style="width:100%; background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER SIGNAL</button>
+                <textarea id="output-code" style="width:100%; height:60px; display:none; margin-top:10px; background:#001; color:cyan; font-size:10px;"></textarea>
             </div>
         </div>
 
-        <div id="world-section-title" class="section-title" style="display:none;">[ ARCHIVES DU MONDE : LORE ]</div>
+        <div id="world-section-title" class="section-title" style="display:none;">[ ARCHIVES DU MONDE ]</div>
         <div id="world-container"></div>
 
-        <div id="galerie-section-title" class="section-title">[ DOSSIERS VISUELS : ROMANS ]</div>
+        <div id="galerie-section-title" class="section-title">[ DOSSIERS VISUELS ]</div>
         <div id="galerie-container"></div>
 
         <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold); border-color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES ]</div>
         <div id="fan-cosplay-container"></div>
         
-        <a href="index.html" style="color:white; text-decoration:none; border:2px solid white; padding:15px 30px; display:inline-block; margin-top:60px;">REPASSER LE PORTAIL</a>
+        <a href="index.html" class="btn-action" style="text-decoration:none; margin-top:60px; display:inline-block; padding: 15px 40px;">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
@@ -104,7 +108,11 @@
         const isHinaru = urlParams.get('Hinaru') === 'true';
         const projetActuel = parseInt(urlParams.get('projet')) || 1;
 
-        if (isHinaru) document.getElementById('master-panel').style.display = 'block';
+        if (isHinaru) {
+            document.getElementById('master-panel').style.display = 'block';
+            document.getElementById('signals-status').innerText = "SIGNALS_TRACKED: HINARU_OVERRIDE";
+            document.getElementById('signals-status').style.color = "var(--vhs-vert)";
+        }
 
         function chargerGalerie() {
             const container = document.getElementById('galerie-container');
@@ -118,15 +126,19 @@
             }
             
             container.innerHTML = ""; fanContainer.innerHTML = ""; worldContainer.innerHTML = ""; nav.innerHTML = "";
+            document.getElementById('world-section-title').style.display = 'none';
+            document.getElementById('cosplay-section-title').style.display = 'none';
 
-            // Navigation
             romansConfig.forEach(r => {
                 if (isHinaru || r.public) {
                     const btn = document.createElement('button');
                     btn.className = "btn-action";
-                    btn.style.cssText = "border:1px solid white; color:white; margin:5px; padding:8px 15px; background:none;";
+                    btn.style.fontSize = "10px";
                     btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
-                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
+                    if(r.id === projetActuel) {
+                        btn.style.borderColor = "var(--vhs-vert)";
+                        btn.style.color = "var(--vhs-vert)";
+                    }
                     btn.onclick = () => { 
                         const newUrl = new URL(window.location.href);
                         newUrl.searchParams.set('projet', r.id);
@@ -141,7 +153,7 @@
             const filteredData = archivesData.filter(item => item.roman === projetActuel);
 
             if (filteredData.length === 0) {
-                container.innerHTML = "<p style='color:orange;'>[ AUCUNE ARCHIVE DÉTECTÉE ]</p>";
+                container.innerHTML = "<p style='color:orange; font-size:12px;'>[ AUCUNE ARCHIVE DÉTECTÉE ]</p>";
             }
 
             filteredData.forEach((item, index) => {
@@ -159,14 +171,14 @@
                     <div class="image-frame">
                         ${badge}${media}${hud}
                     </div>
-                    <div style="font-size:12px; text-align:left; color:var(--bleu-tech); margin:15px 0;">
-                        <b>ID: #${index + 1000}</b> | TYPE: ${item.type.toUpperCase()} | TOME: ${item.tome || '1'}
+                    <div style="font-size:10px; text-align:left; color:var(--bleu-tech); margin:10px 0;">
+                        ID: #${index + 1000} | TYPE: ${item.type.toUpperCase()} | TOME: ${item.tome || '1'}
                     </div>`;
 
                 if (item.glb) {
                     const btnImmersion = document.createElement('button');
                     btnImmersion.className = "btn-action";
-                    btnImmersion.style.cssText = "width:100%; border:1px solid var(--vhs-vert); color:var(--vhs-vert); background:rgba(0,255,65,0.05); padding:12px; font-weight:bold; margin-top:auto;";
+                    btnImmersion.style.cssText = "width:100%; border-color:var(--vhs-vert); color:var(--vhs-vert); font-size:10px; font-weight:bold; margin-top:auto;";
                     btnImmersion.innerText = "🚀 IMMERSION ZQSD";
                     btnImmersion.onclick = () => {
                         const rConf = romansConfig.find(r => r.id === item.roman);
@@ -175,8 +187,14 @@
                     box.appendChild(btnImmersion);
                 }
 
-                if(item.type === 'World') { worldContainer.appendChild(box); document.getElementById('world-section-title').style.display = 'block'; }
-                else if(item.type === 'Fan-Cosplay') { fanContainer.appendChild(box); document.getElementById('cosplay-section-title').style.display = 'block'; }
+                if(item.type === 'World') { 
+                    worldContainer.appendChild(box); 
+                    document.getElementById('world-section-title').style.display = 'block'; 
+                }
+                else if(item.type === 'Fan-Cosplay') { 
+                    fanContainer.appendChild(box); 
+                    document.getElementById('cosplay-section-title').style.display = 'block'; 
+                }
                 else container.appendChild(box);
             });
         }
