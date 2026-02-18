@@ -31,7 +31,6 @@
         }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* EFFET VHS */
         body::before {
             content: " "; display: block; position: fixed; inset: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
@@ -51,7 +50,6 @@
         }
         .btn-exit:hover { background: var(--bordeaux); color: white; }
 
-        /* ZONE CACHÉE : Double clic sur l'heure pour activer le mode Maître */
         #hidden-trigger { cursor: default; user-select: none; }
 
         /* --- NAVIGATION PLANÈTES --- */
@@ -81,12 +79,15 @@
         #romans-selector { 
             display: flex; gap: 10px; overflow-x: auto; padding: 15px; 
             background: rgba(255,255,255,0.02); border: 1px solid #111; margin-bottom: 30px;
+            scrollbar-width: thin; scrollbar-color: var(--vhs-vert) #000;
         }
         .roman-tab { 
-            min-width: 130px; padding: 10px; background: #000; border: 1px solid #222; 
-            font-size: 9px; cursor: pointer; transition: 0.3s; text-align: center; color: #666;
+            min-width: 150px; padding: 10px; background: #000; border: 1px solid #222; 
+            font-size: 9px; cursor: pointer; transition: 0.3s; text-align: left; color: #666;
+            position: relative;
         }
-        .roman-tab.active { border-color: var(--vhs-vert); color: var(--vhs-vert); }
+        .roman-tab.active { border-color: var(--vhs-vert); color: var(--vhs-vert); background: rgba(0,255,65,0.05); }
+        .tome-count { font-size: 7px; display: block; margin-top: 4px; color: var(--bleu-tech); }
 
         /* --- GALLERY & CARDS --- */
         .container { max-width: 1400px; margin: 100px auto 50px 100px; padding-right: 50px; }
@@ -169,7 +170,12 @@
             isMaster: new URLSearchParams(window.location.search).get('Hinaru') === 'true',
             projet: new URLSearchParams(window.location.search).get('projet') || 1,
             activeType: null,
-            romans: ["Shadrasy", "Nébuleuse Alpha", "Projet Onyx", "Saga Echo", "Code Hinaru"]
+            // Liste des 14 romans avec leurs noms
+            romans: [
+                "Shadrasy", "Nébuleuse Alpha", "Projet Onyx", "Saga Echo", "Code Hinaru",
+                "Nova", "Origines", "Secteur 7", "Nexus", "Aube Noire", 
+                "Prélude", "Horizon", "Silences", "Infini"
+            ]
         };
 
         function bootSystem() {
@@ -204,11 +210,18 @@
 
         function renderRomans() {
             const selector = document.getElementById('romans-selector');
-            selector.innerHTML = STATE.romans.map((name, index) => `
-                <div class="roman-tab ${STATE.projet == (index + 1) ? 'active' : ''}" onclick="changeProjet(${index + 1})">
-                    R-${index + 1}: ${name.toUpperCase()}
-                </div>
-            `).join('');
+            selector.innerHTML = STATE.romans.map((name, index) => {
+                const id = index + 1;
+                // Premier roman = 154 tomes, les autres (2 à 14) = 96 tomes
+                const totalTomes = (id === 1) ? 154 : 96;
+                
+                return `
+                    <div class="roman-tab ${STATE.projet == id ? 'active' : ''}" onclick="changeProjet(${id})">
+                        <span style="letter-spacing:1px;">R-${id}: ${name.toUpperCase()}</span>
+                        <span class="tome-count">CAPACITÉ: ${totalTomes} TOMES</span>
+                    </div>
+                `;
+            }).join('');
         }
 
         function changeProjet(id) {
@@ -217,14 +230,10 @@
             window.location.href = url.href;
         }
 
-        // FONCTION CACHÉE : S'active au double-clic sur l'horloge
         function toggleMaster() {
             const url = new URL(window.location);
-            if (STATE.isMaster) {
-                url.searchParams.delete('Hinaru');
-            } else {
-                url.searchParams.set('Hinaru', 'true');
-            }
+            if (STATE.isMaster) { url.searchParams.delete('Hinaru'); } 
+            else { url.searchParams.set('Hinaru', 'true'); }
             window.location.href = url.href;
         }
 
@@ -251,14 +260,32 @@
             filtered.forEach(item => {
                 const box = document.createElement('div');
                 box.className = 'box';
-                const is3D = item.glb && item.glb !== "";
+                
+                // LOGIQUE DES 3 TYPES (3D, Dossier, Normal)
+                let contentHTML = "";
+                
+                if (item.glb && item.glb !== "") {
+                    // 1. TYPE 3D
+                    contentHTML = `<model-viewer src="${item.glb}" camera-controls auto-rotate style="width:100%; height:100%;"></model-viewer>`;
+                } 
+                else if (item.isFolder) {
+                    // 2. TYPE DOSSIER
+                    contentHTML = `
+                        <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,255,65,0.05); border:1px dashed var(--vhs-vert-dim); cursor:pointer;">
+                            <img src="${item.url}" style="width:80%; height:70%; object-fit:cover; opacity:0.6; filter:grayscale(1);">
+                            <div style="position:absolute; bottom:15px; font-size:10px; color:var(--vhs-vert); letter-spacing:2px;">📂 OUVRIR_DOSSIER</div>
+                        </div>`;
+                }
+                else {
+                    // 3. TYPE NORMAL
+                    contentHTML = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
                 
                 box.innerHTML = `
                     <div class="card-hud">F-ID: ${item.id || 'XX'}</div>
                     <div class="scanline"></div>
                     <div class="image-frame">
-                        ${is3D ? `<model-viewer src="${item.glb}" camera-controls auto-rotate style="width:100%; height:100%;"></model-viewer>` 
-                               : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`}
+                        ${contentHTML}
                     </div>
                     <div style="margin-top:10px;">
                         <span style="font-size:7px; color:var(--vhs-vert)">[${item.type.toUpperCase()}]</span>
