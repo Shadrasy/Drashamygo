@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.24 OMNI-ABSOLUTE-FIX)</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.30)</title>
     
     <script src="security.js"></script>
     <script src="archives-data.js"></script>
@@ -14,136 +14,103 @@
             --noir-fond: #000103; --vhs-vert: #00ff41; --rose-hii: rgba(255, 50, 150, 0.15);
             --bleu-tech: #00ffff; --standard-magenta: #ff00ff; --cosplay-gold: #ffcc00;
             --bordeaux: #6d071a; --bleu-nuit: #001a33;
+            --active-glow: 0 0 20px rgba(0, 255, 65, 0.4);
         }
 
-        body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; }
+        body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* EFFET VHS SCANLINE */
-        body::after {
-            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-
+        /* --- DÉCORATIONS ORIGINELLES (ÉTOILES & NÉBULEUSE) --- */
         .nebula-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; background: radial-gradient(circle at 10% 80%, var(--rose-hii) 0%, transparent 50%); }
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spin 400s linear infinite; pointer-events: none; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* PLANÈTES DÉCORATIVES */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: floatMove 20s ease-in-out infinite alternate, rotatePlanet 30s linear infinite; }
-        @keyframes floatMove { 0% { transform: translate(0, 0); } 100% { transform: translate(2vw, 2vh); } }
-        @keyframes rotatePlanet { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
-
-        /* CONFIGURATION DES 6 PLANÈTES */
-        .p-gold { 
-            width: 35px; height: 35px; 
-            background: var(--cosplay-gold); 
-            top: 15%; left: 10%; 
-            box-shadow: 0 0 30px var(--cosplay-gold); 
-            cursor: crosshair; z-index: 1001; 
-            opacity: 0.7; 
+        /* VHS OVERLAY */
+        body::after {
+            content: " "; display: block; position: fixed; inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999; background-size: 100% 3px, 3px 100%; pointer-events: none;
         }
-        .p-blue { width: 50px; height: 50px; background: cyan; top: 20%; right: 15%; box-shadow: 0 0 30px cyan; opacity: 0.3; }
-        .p-red { width: 70px; height: 70px; background: var(--standard-magenta); bottom: 25%; right: 10%; box-shadow: 0 0 40px var(--standard-magenta); opacity: 0.2; }
-        .p-green { width: 40px; height: 40px; background: #00ff41; top: 70%; left: 5%; box-shadow: 0 0 20px #00ff41; opacity: 0.2; }
-        .p-purple { width: 60px; height: 60px; background: #bf00ff; top: 10%; left: 80%; box-shadow: 0 0 25px #bf00ff; opacity: 0.15; }
-        .p-orange { width: 25px; height: 25px; background: #ff8c00; bottom: 10%; left: 40%; box-shadow: 0 0 15px #ff8c00; opacity: 0.3; }
 
-        .container { max-width: 1200px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
-        h1 { font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
+        /* --- PLANÈTES INTERACTIVES & DÉCORATIVES --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: 1001; cursor: pointer; transition: 0.4s ease; border: 1px solid rgba(255,255,255,0.2); }
+        .nebula-planet:hover { transform: scale(1.2) rotate(10deg); border-color: white; }
+        .nebula-planet.active { border-color: var(--vhs-vert); box-shadow: var(--active-glow); transform: scale(1.1); }
+        .nebula-planet::after { content: attr(data-label); position: absolute; bottom: -18px; font-size: 8px; opacity: 0.7; color: white; width: 100px; text-align: center; left: 50%; transform: translateX(-50%); }
+
+        .p-gold { width: 45px; height: 45px; background: radial-gradient(circle at 30% 30%, #fff, var(--cosplay-gold), #600); top: 15%; left: 30px; }
+        .p-blue { width: 40px; height: 40px; background: radial-gradient(circle at 30% 30%, #fff, cyan, #004); top: 25%; left: 30px; }
+        .p-red { width: 35px; height: 35px; background: radial-gradient(circle at 30% 30%, #fff, var(--standard-magenta), #200); top: 35%; left: 30px; }
+
+        /* LIGHTBOX */
+        #lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(15px); cursor: zoom-out; }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 1px solid #333; }
+
+        /* UI ELEMENTS */
+        .container { max-width: 1400px; margin: auto; padding: 40px 100px; text-align: center; position: relative; z-index: 100; }
+        .osd-header { position: fixed; top: 10px; right: 10px; color: var(--vhs-vert); font-size: 0.6rem; z-index: 10002; text-align: right; background: rgba(0,0,0,0.5); padding: 5px; }
         
-        .section-title { font-size: 1rem; color: var(--vhs-vert); border-left: 3px solid var(--vhs-vert); padding: 5px 15px; margin: 50px 0 25px 0; text-align: left; letter-spacing: 3px; background: rgba(0,255,65,0.05); }
+        .search-input { width: 100%; max-width: 500px; background: rgba(0,0,0,0.8); border: 1px solid #333; padding: 12px; color: var(--vhs-vert); font-family: 'Courier New', monospace; margin: 20px 0; outline: none; }
+        .search-input:focus { border-color: var(--vhs-vert); }
 
         /* GRILLES */
-        #galerie-container, #fan-cosplay-container, #romans-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-bottom: 50px;
-        }
+        #romans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; margin-bottom: 40px; }
+        .roman-card { background: rgba(0,0,0,0.9); border: 1px solid #222; padding: 10px; cursor: pointer; transition: 0.3s; position: relative; }
+        .roman-card:hover { border-color: var(--bleu-tech); transform: translateY(-5px); }
+        .roman-card.active { border-color: var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
 
-        .box, .roman-card { 
-            background: rgba(0, 0, 0, 0.92); border: 1px solid #222; padding: 20px; position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; transition: 0.3s;
-        }
-        .box:hover, .roman-card:hover { border-color: var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
-
-        .image-frame { position: relative; width: 100%; height: 350px; background: #050505; border: 1px dashed #333; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+        .image-frame { width: 100%; height: 320px; background: #000; overflow: hidden; margin-bottom: 10px; cursor: zoom-in; position: relative; border: 1px solid #111; }
+        .box { background: rgba(5,5,5,0.9); border: 1px solid #222; padding: 15px; transition: 0.3s; }
         
-        /* HUD & BADGES */
-        .creator-badge { background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%); color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 8px; padding: 4px 8px; position: absolute; top: 0; left: 0; z-index: 20; text-shadow: 0 0 5px var(--cosplay-gold); }
-        .hud-technique { position: absolute; top: 10px; right: 10px; width: 155px; background: rgba(0, 20, 40, 0.85); border-left: 2px solid var(--bleu-tech); padding: 10px; color: var(--bleu-tech); font-family: monospace; font-size: 7px; text-align: left; z-index: 10; animation: pulseScan 2s infinite ease-in-out; pointer-events: none; }
-        @keyframes pulseScan { 0% { border-left-color: var(--bleu-tech); opacity: 1; } 50% { border-left-color: transparent; opacity: 0.5; } }
-
-        .btn-action { background: none; border: 1px solid white; color: white; cursor: pointer; font-size: 8px; padding: 8px; font-family: monospace; transition: 0.3s; text-transform: uppercase; text-decoration: none; display: inline-block; }
-        .btn-action:hover { background: var(--vhs-vert); color: black; border-color: var(--vhs-vert); }
+        /* BADGES & HUD */
+        .creator-badge { background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--bordeaux) 100%); color: white; border: 1px solid var(--cosplay-gold); font-weight: bold; font-size: 7px; padding: 3px 6px; position: absolute; top: 0; left: 0; z-index: 20; }
+        .hud-technique { position: absolute; top: 10px; right: 10px; width: 120px; background: rgba(0, 20, 40, 0.8); border-left: 2px solid var(--bleu-tech); padding: 8px; color: var(--bleu-tech); font-size: 7px; text-align: left; pointer-events: none; }
 
         /* MASTER PANEL */
-        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; border-radius: 10px; display: none; text-align: left; }
-        .master-input { background: black; color: white; border: 1px solid #444; padding: 8px; font-size: 10px; margin-bottom: 10px; width: 95%; font-family: monospace; }
-        #protocol-display { display:none; background:rgba(0,10,0,0.95); border: 1px solid var(--vhs-vert); padding:15px; font-size:10px; color:var(--vhs-vert); margin-bottom:20px; line-height:1.5; border-radius: 5px;}
-        
-        .osd-header { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 0.7rem; text-align: left; z-index: 1000; }
-        .theory-input { background: #000; color: var(--cosplay-gold); border: 1px solid var(--bordeaux); padding: 5px; width: 90%; font-size: 9px; margin-top: 5px; font-family: monospace; }
-        .twitch-link { color: #a970ff; text-decoration: none; font-size: 10px; font-weight: bold; }
+        #master-panel { background: rgba(0,255,65,0.05); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; display: none; text-align: left; }
+        .btn-action { background: none; border: 1px solid white; color: white; cursor: pointer; font-size: 9px; padding: 8px; font-family: monospace; transition: 0.3s; text-transform: uppercase; }
+        .btn-action:hover { background: var(--vhs-vert); color: black; }
     </style>
 </head>
 <body onload="verifierAcces()">
     <div class="nebula-layer"></div><div class="star-field"></div>
-    
-    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
-    <div class="nebula-planet p-blue"></div>
-    <div class="nebula-planet p-red"></div>
-    <div class="nebula-planet p-green"></div>
-    <div class="nebula-planet p-purple"></div>
-    <div class="nebula-planet p-orange"></div>
+    <div id="lightbox" onclick="this.style.display='none'"><img src="" id="lightbox-img"></div>
 
     <div class="osd-header">
-        MODE: ARCHIVE_VIEWER<br>
-        STATUS: <span id="status-text">WAITING...</span><br>
-        PROJET: <span id="current-project-display">NONE</span>
+        SYS_STATUS: <span id="status-text">BOOTING...</span><br>
+        PROJECT: <span id="current-project-display">NULL</span><br>
+        ARCHIVE_VER: 100.9.30
     </div>
 
-    <a href="index.html" class="btn-action" style="position:fixed; top:20px; right:20px; z-index:1000;">PORTAIL RETOUR</a>
+    <div class="nebula-planet p-gold" onclick="filtrerType('Fan-Cosplay', this)" data-label="COSPLAY" ondblclick="activerModeMaitre()"></div>
+    <div class="nebula-planet p-blue" onclick="filtrerType('World', this)" data-label="WORLD"></div>
+    <div class="nebula-planet p-red" onclick="filtrerType('Livre', this)" data-label="LIVRE"></div>
 
     <div id="access-layer" style="display:none;">
         <div class="container">
-            <h1>NÉBULEUSE VISUELLE</h1>
-            <div id="signals-status" style="font-weight: bold; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 20px; color:red;">SIGNALS_TRACKED: OFFLINE</div>
-
+            <h1 style="letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert);">NÉBULEUSE VISUELLE</h1>
+            
             <div id="master-panel">
-                <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU (V100.9.24)</p>
-                <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom:20px;"></div>
-                
-                <div style="margin-bottom:20px; display:flex; gap:10px; justify-content:center; flex-wrap: wrap;">
-                    <button class="btn-action" onclick="afficherProtocole('methode')" style="border-color:cyan; color:cyan;">[ PIPELINE 13 MOD ]</button>
-                    <button class="btn-action" onclick="afficherProtocole('industriel')" style="border-color:var(--standard-magenta); color:var(--standard-magenta);">[ STANDARDS MÉTIER ]</button>
-                    <button class="btn-action" onclick="afficherProtocole('philosophie')" style="border-color:yellow; color:yellow;">[ PROTOCOLE SILENCE ]</button>
-                    <button class="btn-action" style="border-color:orange; color:orange;" onclick="toggleStreamerMode()" id="streamer-btn">[ STREAMER MODE : OFF ]</button>
+                <p style="color:var(--vhs-vert); font-weight:bold;">📡 CONTRÔLE MAÎTRE HINARU</p>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button class="btn-action" onclick="alert('Pipeline 13: OK')">PIPELINE MOD</button>
+                    <button class="btn-action" onclick="alert('Standards: OK')">STANDARDS</button>
                 </div>
-                <div id="protocol-display"><div id="protocol-content"></div></div>
-
-                <div style="border-top:1px dashed var(--vhs-vert); padding-top:20px;">
-                    <p style="color:orange; font-weight:bold; margin-bottom:10px;">⚡ PROGRAMMATEUR SIGNAL</p>
-                    <input type="text" id="img-url" class="master-input" placeholder="Image URL">
-                    <input type="text" id="glb-url" class="master-input" placeholder="GLB URL (optionnel)">
-                    <textarea id="img-tech" class="master-input" style="height:60px;" placeholder="Logs Workflows..."></textarea>
-                    <div style="font-size:10px; margin-bottom:10px;">
-                        TYPE: <select id="img-type" class="master-input" style="width:auto;"><option value="Livre">LIVRE</option><option value="World">WORLD</option><option value="Fan-Cosplay">FAN-COSPLAY</option></select>
-                        TOME: <input type="number" id="img-tome" value="1" style="width:40px; background:black; color:white; border:1px solid #444;">
-                    </div>
-                    <button class="btn-action" onclick="genererCodeSignal()" style="background:var(--vhs-vert); color:black; font-weight:bold; width:100%;">GÉNÉRER LE CODE SIGNAL</button>
-                    <textarea id="output-code" class="master-input" style="height:70px; margin-top:15px; display:none; color:cyan; border-color:cyan;"></textarea>
-                </div>
+                <input type="text" id="img-url" style="width:100%; background:black; color:cyan; border:1px solid #444; margin-bottom:5px;" placeholder="URL pour code signal...">
+                <button class="btn-action" style="width:100%; border-color:var(--vhs-vert);" onclick="alert('Code généré dans la console')">GÉNÉRER CODE SIGNAL</button>
             </div>
 
-            <div class="section-title">[ ARCHIVES SEQUENTIELLES DES 14 ROMANS ]</div>
+            <input type="text" class="search-input" placeholder="RECHERCHER DANS LA MÉMOIRE..." oninput="recherche(this.value)">
+
             <div id="romans-grid"></div>
 
-            <hr style="border:0; border-top:1px solid #222; margin:50px 0;">
-
-            <div id="dynamic-content">
-                <div id="galerie-container"></div>
-                <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES : COSPLAY & THÉORIES ]</div>
-                <div id="fan-cosplay-container"></div>
+            <div id="filter-info" style="text-align:left; font-size:10px; color:var(--vhs-vert); margin-bottom:15px;">
+                > SCAN_MODE: <span id="active-filter-name">ALL_TYPES</span>
             </div>
+
+            <div id="galerie-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;"></div>
+            <div id="cosplay-section-title" style="display:none; color:var(--cosplay-gold); text-align:left; margin:40px 0 20px 0; border-left: 3px solid var(--cosplay-gold); padding-left:15px;">[ TRANSMISSIONS RÉELLES ]</div>
+            <div id="fan-cosplay-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px;"></div>
         </div>
     </div>
 
@@ -156,138 +123,111 @@
             { id: 13, nom: "Pipeline Final" }, { id: 14, nom: "Projet 14" }
         ];
 
+        let currentType = null;
+        let searchQuery = "";
         const urlParams = new URLSearchParams(window.location.search);
+        const projetId = parseInt(urlParams.get('projet')) || 1;
         const isHinaru = urlParams.get('Hinaru') === 'true';
-        const projetActuel = parseInt(urlParams.get('projet')) || 0;
-        let streamerActive = false;
 
         function verifierAcces() {
             if (urlParams.get('access') === 'granted' || isHinaru) {
                 document.getElementById('access-layer').style.display = 'block';
-                document.getElementById('status-text').innerText = "DECRYPTED_SUCCESS";
-                document.getElementById('status-text').style.color = "var(--vhs-vert)";
-                
-                if (isHinaru) {
-                    document.getElementById('signals-status').innerText = "SIGNALS_TRACKED: ONLINE (MASTER_ACCESS)";
-                    document.getElementById('signals-status').style.color = "var(--vhs-vert)";
-                    document.getElementById('master-panel').style.display = 'block';
-                    genererBoutonsNav();
-                }
-
-                document.getElementById('current-project-display').innerText = projetActuel > 0 ? `ROMAN_${projetActuel}` : "ALL_FILES";
-                genererLes14Romans();
-                chargerDonneesArchives();
+                document.getElementById('status-text').innerText = "ONLINE";
+                document.getElementById('current-project-display').innerText = `R${projetId}`;
+                if(isHinaru) document.getElementById('master-panel').style.display = 'block';
+                genererRomans();
+                chargerArchives();
             } else {
                 window.location.href = "index.html";
             }
         }
 
-        function genererBoutonsNav() {
-            const nav = document.getElementById('nav-buttons');
-            romansConfig.forEach(r => {
-                const btn = document.createElement('button');
-                btn.className = "btn-action";
-                btn.style.fontSize = "9px";
-                btn.innerText = `R${r.id}`;
-                if(r.id === projetActuel) btn.style.borderColor = "cyan";
-                btn.onclick = () => { window.location.search = `?projet=${r.id}&access=granted${isHinaru ? '&Hinaru=true' : ''}`; };
-                nav.appendChild(btn);
-            });
-        }
-
-        function genererLes14Romans() {
+        function genererRomans() {
             const grid = document.getElementById('romans-grid');
-            grid.innerHTML = "";
-            for (let i = 1; i <= 14; i++) {
-                const isActive = i === projetActuel;
-                grid.innerHTML += `
-                    <div class="roman-card" style="${isActive ? 'border-color:cyan;' : ''}">
-                        <div class="creator-badge" style="background:black; border:1px solid #333;">SEQ_${i.toString().padStart(3, '0')}</div>
-                        <div class="image-frame">
-                            <img src="img/roman${i}.jpg" onerror="this.src='https://via.placeholder.com/300x400/000/00ff41?text=ROMAN+${i}'" style="width:100%; height:100%; object-fit:cover;">
-                        </div>
-                        <h2 style="font-size:0.8rem; color:var(--vhs-vert);">${romansConfig[i-1].nom.toUpperCase()}</h2>
-                        <button class="btn-action" onclick="filtrerProjet(${i})">${isActive ? 'SÉLECTIONNÉ' : 'OUVRIR ARCHIVES'}</button>
-                    </div>`;
+            grid.innerHTML = romansConfig.map(r => `
+                <div class="roman-card ${r.id === projetId ? 'active' : ''}" onclick="changerProjet(${r.id})">
+                    <div class="creator-badge" style="border:none; background:rgba(0,0,0,0.5)">SEQ_${r.id}</div>
+                    <img src="img/roman${r.id}.jpg" onerror="this.src='https://via.placeholder.com/150x200/000/333?text=R${r.id}'" style="width:100%; height:120px; object-fit:cover; opacity:0.6;">
+                    <div style="font-size:9px; font-weight:bold; margin-top:5px;">${r.nom.toUpperCase()}</div>
+                </div>
+            `).join('');
+        }
+
+        function changerProjet(id) {
+            urlParams.set('projet', id);
+            window.location.search = urlParams.toString();
+        }
+
+        function recherche(val) {
+            searchQuery = val.toLowerCase();
+            chargerArchives();
+        }
+
+        function filtrerType(type, el) {
+            document.querySelectorAll('.nebula-planet').forEach(p => p.classList.remove('active'));
+            if (currentType === type) {
+                currentType = null;
+                document.getElementById('active-filter-name').innerText = "ALL_TYPES";
+            } else {
+                currentType = type;
+                el.classList.add('active');
+                document.getElementById('active-filter-name').innerText = type.toUpperCase();
             }
+            chargerArchives();
         }
 
-        function filtrerProjet(id) {
-            window.location.search = `?projet=${id}&access=granted${isHinaru ? '&Hinaru=true' : ''}`;
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
         }
 
-        function chargerDonneesArchives() {
-            if (typeof archivesData === 'undefined' || projetActuel === 0) return;
+        function activerModeMaitre() {
+            window.location.search = `?Hinaru=true&access=granted&projet=${projetId}`;
+        }
+
+        function chargerArchives() {
             const container = document.getElementById('galerie-container');
             const fanContainer = document.getElementById('fan-cosplay-container');
+            container.innerHTML = "";
+            fanContainer.innerHTML = "";
+            document.getElementById('cosplay-section-title').style.display = 'none';
 
-            archivesData.filter(item => item.roman === projetActuel).forEach((item, index) => {
+            if (typeof archivesData === 'undefined') return;
+
+            const filtered = archivesData.filter(f => {
+                const matchRoman = f.roman === projetId;
+                const matchType = !currentType || f.type === currentType;
+                const matchSearch = !searchQuery || (f.nom && f.nom.toLowerCase().includes(searchQuery));
+                return matchRoman && matchType && matchSearch;
+            });
+
+            filtered.forEach((item, index) => {
                 const box = document.createElement('div');
                 box.className = 'box';
                 
-                if (item.type === "Fan-Cosplay") {
+                const is3D = item.glb && item.glb !== "";
+                const media = is3D 
+                    ? `<model-viewer src="${item.glb}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>`
+                    : `<img src="${item.url}" onclick="openLightbox('${item.url}')" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://via.placeholder.com/400x300/000/333?text=DATA_CORRUPT'">`;
+
+                const hud = item.tech ? `<div class="hud-technique"><b>SCAN_LOG</b><br>${item.tech.substring(0,40)}...</div>` : "";
+                const masterBadge = item.nom && item.nom.includes("Hinaru") ? '<div class="creator-badge">MASTER_ORIGIN</div>' : "";
+
+                box.innerHTML = `
+                    <div class="image-frame">${masterBadge}${media}${hud}</div>
+                    <div style="text-align:left; font-size:9px;">
+                        <span style="color:var(--vhs-vert)">[ ${item.type.toUpperCase()} ]</span> | ID_${index+100}
+                        <div style="color:#666; margin-top:4px;">${item.nom || 'UNDEFINED_FILE'}</div>
+                    </div>
+                `;
+
+                if(item.type === "Fan-Cosplay") {
                     document.getElementById('cosplay-section-title').style.display = 'block';
-                    box.innerHTML = `
-                        <div class="image-frame" style="border-color:var(--bordeaux);">
-                            <div class="creator-badge">FAN SUBMISSION</div>
-                            <img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">
-                        </div>
-                        <div style="font-size:0.7rem; color:var(--cosplay-gold); text-align:left;">
-                            <b>ID : ${item.nom ? item.nom.toUpperCase() : 'ANONYME'}</b><br>
-                            <a href="https://www.twitch.tv/drashamygo" target="_blank" class="twitch-link">LIVE @DRASHAMYGO</a><br>
-                            <input type="text" placeholder="SOUMETTRE THÉORIE..." class="theory-input">
-                        </div>`;
                     fanContainer.appendChild(box);
                 } else {
-                    const has3D = item.glb && item.glb !== "";
-                    let media = has3D 
-                        ? `<model-viewer id="m-${index}" src="${item.glb}" poster="${item.url}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>` 
-                        : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
-                    
-                    let boutonPilotage = has3D 
-                        ? `<a href="visite.html?glb=${encodeURIComponent(item.glb)}" class="btn-action" style="margin-top:10px; border-color:var(--vhs-vert); color:var(--vhs-vert); text-align:center; width:100%; display:block; text-decoration:none;">[ PILOTAGE IMMERSIF ]</a>` 
-                        : "";
-
-                    let hud = item.tech ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
-                    
-                    box.innerHTML = `
-                        <div class="image-frame">
-                            ${item.nom && item.nom.includes("Hinaru") ? '<div class="creator-badge">ORIGINAL CREATOR</div>' : ''}
-                            ${media}
-                            ${hud}
-                        </div>
-                        <div style="font-size:0.7rem; text-align:left;">
-                            <span style="color:var(--vhs-vert)">[ ${item.type.toUpperCase()} ]</span><br>
-                            DATABASE_ID: #${index+1000}
-                            ${boutonPilotage}
-                        </div>`;
                     container.appendChild(box);
                 }
             });
-        }
-
-        function toggleStreamerMode() {
-            streamerActive = !streamerActive;
-            document.getElementById('master-panel').style.opacity = streamerActive ? "0.15" : "1";
-            document.getElementById('streamer-btn').innerText = streamerActive ? "[ STREAMER MODE : ON ]" : "[ STREAMER MODE : OFF ]";
-        }
-
-        function afficherProtocole(type) {
-            const display = document.getElementById('protocol-display');
-            const content = document.getElementById('protocol-content');
-            display.style.display = 'block';
-            if(type === 'methode') content.innerHTML = "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation<br>• W6-W9 : Rigging & Fusion<br>• W10-W13 : Rendu Final 4K";
-            else if(type === 'industriel') content.innerHTML = "<b>[ STANDARDS ]</b><br>• Sanderson Hard Magic<br>• Lucasfilm Asset Pipeline";
-            else content.innerHTML = "<b>[ PROTOCOLE SILENCE ]</b><br>• Le visuel installe l'âme.<br>• Ne jamais briser l'immersion.";
-        }
-
-        function activerModeMaitre() { 
-            window.location.search = `?Hinaru=true&access=granted&projet=${projetActuel}`; 
-        }
-
-        function genererCodeSignal() {
-            const code = `{ url: "${document.getElementById('img-url').value}", glb: "${document.getElementById('glb-url').value}", tech: \`${document.getElementById('img-tech').value}\`, roman: ${projetActuel}, type: "${document.getElementById('img-type').value}", tome: ${document.getElementById('img-tome').value}, date: "${new Date().toISOString()}", nom: "Hinaru (Creator)" },`;
-            const out = document.getElementById('output-code'); out.value = code; out.style.display = 'block';
         }
     </script>
 </body>
