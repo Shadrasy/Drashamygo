@@ -1,4 +1,3 @@
-// SYSTÈME OMNI - MATRICE DE CANONISATION DES TERMES (ROMAN 1)
 const OMNI_MASTER_LEXICON = {
     "concepts": {
         "Shadrasy": {
@@ -11,11 +10,11 @@ const OMNI_MASTER_LEXICON = {
         },
         "Souffle Originel": {
             "fr": "Souffle Originel",
-            "en-US": "Original Breath",
-            "ja": "根源の息吹 (Kōgen no Ibuki)",
+            "en-US": "The Original Breath",
+            "ja": "根源の息吹",
             "ko": "근원의 숨결",
             "zh": "根源之息",
-            "es": "Aliento Original"
+            "es": "El Aliento Original"
         },
         "Drashamygo": {
             "fr": "Drashamygo",
@@ -24,6 +23,30 @@ const OMNI_MASTER_LEXICON = {
             "ko": "드라샤미고",
             "zh": "德拉沙米戈",
             "es": "Drashamygo"
+        },
+        "La Source": { // MANQUANT : Fondamental dans ton PDF
+            "fr": "La Source",
+            "en-US": "The Source",
+            "ja": "源泉 (Gensen)",
+            "ko": "근원",
+            "zh": "源头",
+            "es": "La Fuente"
+        },
+        "Dissonance": {
+            "fr": "Dissonance",
+            "en-US": "Dissonance",
+            "ja": "ディソナンス",
+            "ko": "불협화음",
+            "zh": "不和谐",
+            "es": "Disonancia"
+        },
+        "Harmonie Transcendantale": {
+            "fr": "Harmonie Transcendantale",
+            "en-US": "Transcendental Harmony",
+            "ja": "超越的調和",
+            "ko": "초월적 조화",
+            "zh": "超验和谐",
+            "es": "Armonía Trascendental"
         },
         "Sang d'Amplification": {
             "fr": "Sang d'Amplification",
@@ -41,29 +64,21 @@ const OMNI_MASTER_LEXICON = {
             "zh": "变形回声",
             "es": "Eco Proteico"
         },
-        "Dissonance": {
-            "fr": "Dissonance",
-            "en-US": "Dissonance",
-            "ja": "不協和音",
-            "ko": "불협화음",
-            "zh": "不和谐",
-            "es": "Disonancia"
-        },
-        "Harmonie Transcendantale": {
-            "fr": "Harmonie Transcendantale",
-            "en-US": "Transcendental Harmony",
-            "ja": "超越的調和",
-            "ko": "초월적 조화",
-            "zh": "超验和谐",
-            "es": "Armonía Trascendental"
-        },
         "Le Défaiseur": {
             "fr": "Le Défaiseur",
             "en-US": "The Defiler",
-            "ja": "デファイラー (汚染者)",
+            "ja": "デファイラー",
             "ko": "디파일러",
             "zh": "亵渎者",
             "es": "El Defaiseur"
+        },
+        "Univers dans une bouteille": { // MANQUANT : Métaphore clé de ton PDF
+            "fr": "Univers dans une bouteille",
+            "en-US": "Universe in a Bottle",
+            "ja": "ボトルの中の宇宙",
+            "ko": "병 속의 우주",
+            "zh": "瓶中的宇宙",
+            "es": "Universo en una botella"
         }
     },
     "factions": {
@@ -82,6 +97,14 @@ const OMNI_MASTER_LEXICON = {
             "ko": "호시 노 하코부네",
             "zh": "星之箱舟",
             "es": "Hoshi no Hakobune"
+        },
+        "Grande Alliance": { // MANQUANT : Mentionné dans la Saga 2
+            "fr": "Grande Alliance",
+            "en-US": "Great Alliance",
+            "ja": "大同盟 (Dai Dōmei)",
+            "ko": "대연합",
+            "zh": "大联盟",
+            "es": "Gran Alianza"
         }
     }
 };
