@@ -162,9 +162,34 @@
                 genererLes14Romans();
                 chargerDonneesArchives();
             } else {
-                window.location.href = "index.html";
-            }
-        }
+    // Vérifier si un modèle 3D (GLB) est associé à cette archive
+    const aDuGLB = item.glb && item.glb !== "";
+    
+    // Affichage : Soit le viewer interactif, soit l'image simple
+    let media = aDuGLB 
+        ? `<model-viewer src="${item.glb}" poster="${item.url}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>` 
+        : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
+    
+    // BOUTON DE TRANSITION : Envoie vers visite.html avec le paramètre ?glb=
+    let boutonPilotage = aDuGLB 
+        ? `<a href="visite.html?glb=${encodeURIComponent(item.glb)}" class="btn-action" style="margin-top:10px; border-color:var(--vhs-vert); color:var(--vhs-vert); text-align:center; width:100%; display:block; text-decoration:none;">[ PILOTAGE IMMERSIF ]</a>` 
+        : "";
+
+    let hud = item.tech ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
+    
+    box.innerHTML = `
+        <div class="image-frame">
+            ${item.nom && item.nom.includes("Hinaru") ? '<div class="creator-badge">ORIGINAL CREATOR</div>' : ''}
+            ${media}
+            ${hud}
+        </div>
+        <div style="font-size:0.7rem; text-align:left;">
+            <span style="color:var(--vhs-vert)">[ ${item.type.toUpperCase()} ]</span><br>
+            DATABASE_ID: #${index+1000}
+            ${boutonPilotage}
+        </div>`;
+    container.appendChild(box);
+}
 
         function genererBoutonsNav() {
             const nav = document.getElementById('nav-buttons');
