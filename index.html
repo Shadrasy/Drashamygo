@@ -32,7 +32,7 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
         
-        /* --- 1. DÉCORS GALACTIQUES RESTAURÉS --- */
+        /* --- 1. DÉCORS GALACTIQUES --- */
         .bg-layer { position: fixed; inset: 0; pointer-events: none; }
         .redshift { background: radial-gradient(circle, transparent 40%, var(--extinction-rouge) 100%); z-index: -1; }
         .spiral { background: conic-gradient(from 0deg, transparent, rgba(100, 200, 255, 0.05) 10%, transparent 50%); width: 250vmax; height: 250vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; }
@@ -46,7 +46,7 @@
         @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
         @keyframes gas-pulse { from { opacity: 0.5; } to { opacity: 1; } }
 
-        /* --- 2. QUASAR CENTRAL RESTAURÉ --- */
+        /* --- 2. QUASAR CENTRAL --- */
         .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; pointer-events: none; }
         .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 80px white, inset 0 0 50px rgba(0, 100, 255, 0.5); animation: bh-pulse 4s infinite alternate; }
         .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.2), transparent); animation: spin-fast 2s linear infinite; }
@@ -55,7 +55,7 @@
         @keyframes spin-fast { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes jet-flicker { from { opacity: 0.7; } to { opacity: 1; } }
 
-        /* --- 3. RÉCEPTEUR GPS OMNI (6 PLANÈTES MASSIVES) --- */
+        /* --- 3. RÉCEPTEUR GPS OMNI --- */
         .nebula-planet { 
             position: fixed; border-radius: 50%; z-index: -4; opacity: 1;
             box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8);
@@ -67,7 +67,7 @@
         @keyframes orbitC { from { transform: rotate(0deg) translateX(20vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(20vw) rotate(360deg); } }
         @keyframes rotateAtmosphere { from { filter: hue-rotate(0deg) brightness(1); } to { filter: hue-rotate(360deg) brightness(1.2); } }
 
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); cursor: pointer; z-index: 500; animation: orbitA 45s linear infinite; }
+        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); z-index: 500; animation: orbitA 45s linear infinite; }
         .p-blue { width: 100px; height: 100px; background: #0077ff; animation: orbitB 65s linear infinite reverse, rotateAtmosphere 30s linear infinite; }
         .p-red { width: 140px; height: 140px; background: #cc0033; animation: orbitA 80s linear infinite reverse, rotateAtmosphere 40s linear infinite; }
         .p-purple { width: 180px; height: 180px; background: #5500ff; animation: orbitC 100s linear infinite, rotateAtmosphere 50s linear infinite; }
@@ -113,7 +113,7 @@
     </div>
 
     <div id="galaxy-receptor">
-        <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="Accès Maître"></div>
+        <div class="nebula-planet p-gold"></div>
         <div class="nebula-planet p-blue"></div>
         <div class="nebula-planet p-red"></div>
         <div class="nebula-planet p-purple"></div>
@@ -152,14 +152,12 @@
     </div>
 
     <script>
-        // --- 1. BROADCAST GPS POUR LES SATELLITES ---
         function diffuserSignalGPS() {
             const etat = { phase: Date.now(), mode: "OMNI_SYNC", status: "BROADCASTING" };
             localStorage.setItem('hinaru_cosmos_sync', JSON.stringify(etat));
         }
         setInterval(diffuserSignalGPS, 1000);
 
-        // --- 2. GÉNÉRATEUR QR CODE ---
         function genererPortailQR() {
             const container = document.getElementById("qrcode");
             container.innerHTML = "";
@@ -172,7 +170,6 @@
             container.style.display = "block";
         }
 
-        // --- 3. COMPTEUR DE VISITES ---
         async function updateCounter() {
             const namespace = "archives_roman_2026_shadrasy"; 
             try {
