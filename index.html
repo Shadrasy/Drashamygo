@@ -7,14 +7,19 @@
     <title>TERMINAL - Archives OMNI V2031</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="security.js"></script>
 
     <style>
         :root { 
-            --noir-fond: #000000; /* Noir pur pour l'espace */
-            --rouge-vif: #ff0033; /* Uniquement pour l'UI et les détails */
-            --bordeaux: #880015; /* Bordures */
+            --noir-fond: #000000; /* Noir pur */
+            --rouge-vif: #ff0033; /* UI et Accents */
+            --bordeaux: #660011; /* Bordures */
             --noir-profond: #050000;
+            --lumiere-bleue: rgba(0, 100, 255, 0.3); 
+            --bulbe-jaune: rgba(255, 200, 50, 0.2);
+            --jet-faisceau: rgba(255, 255, 255, 0.7);
             --vhs-vert: #00ff41;
+            --extinction-rouge: rgba(100, 0, 0, 0.15); /* Subtil sur les bords */
             --cosplay-gold: #ffcc00;
         }
 
@@ -25,166 +30,192 @@
             align-items: center; justify-content: center; min-height: 100vh;
         }
 
-        /* --- MOTEUR VHS ÉPURÉ (Plus de voile rouge global) --- */
+        /* --- MOTEUR VHS SCANLINE (Réglé sur le rouge UI) --- */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 0, 0, 0), rgba(0, 0, 255, 0.02));
-            z-index: 999; background-size: 100% 3px, 3px 100%; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 0, 0, 0), rgba(0, 0, 50, 0.02));
+            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
+            mix-blend-mode: overlay;
         }
         
-        /* --- DÉCORS GALACTIQUES (Fond Noir) --- */
-        .bg-layer { position: fixed; inset: 0; pointer-events: none; }
-        
-        /* Suppression du Redshift qui rendait tout le fond rouge */
-        .redshift { 
-            background: none; 
-            z-index: -1; 
-        }
-
-        .spiral { 
-            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.05) 10%, transparent 50%); 
-            width: 250vmax; height: 250vmax; top: 50%; left: 50%; 
-            transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; 
-        }
-        
-        .stars { 
-            background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), 
-                              radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); 
-            background-size: 300px 300px; opacity: 0.6; animation: spin 240s linear infinite; z-index: -5; 
-        }
-        
-        .stars-twinkle { 
-            background-image: radial-gradient(1.5px 1.5px at 50px 50px, #fff, transparent); 
-            background-size: 150px 150px; animation: twinkle 3s infinite alternate; z-index: -6; 
-        }
-
-        /* --- QUASAR (Point focal rouge conservé) --- */
-        .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
-        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 40px white; }
-        .jet { 
-            position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; 
-            background: linear-gradient(0deg, transparent, var(--rouge-vif), white, var(--rouge-vif), transparent); 
-            transform: translate(-50%, -50%) rotate(45deg); opacity: 0.8;
-        }
-
-        /* --- SYSTÈME PLANÉTAIRE --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9); }
-        .p-gold { width: 30px; height: 30px; background: var(--cosplay-gold); animation: orbitA 45s linear infinite; }
-        .p-red { width: 80px; height: 80px; background: #440000; border: 1px solid var(--rouge-vif); animation: orbitA 80s linear infinite reverse; }
+        /* --- DÉCORS GALACTIQUES COMPLETS --- */
+        .bg-layer { position: fixed; inset: 0; pointer-events: none; will-change: transform; }
+        .redshift { background: radial-gradient(circle, transparent 50%, var(--extinction-rouge) 100%); z-index: -1; }
+        .spiral { background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.05) 10%, transparent 50%); width: 250vmax; height: 250vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; }
+        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 300px 300px; opacity: 0.7; animation: spin 240s linear infinite; z-index: -5; }
+        .stars-twinkle { background-image: radial-gradient(1px 1px at 50px 50px, #fff, transparent); background-size: 150px 150px; animation: twinkle 3s infinite alternate; z-index: -6; }
+        .nebula-gas { background: radial-gradient(circle at 30% 70%, rgba(100, 0, 255, 0.08) 0%, transparent 50%); animation: gas-pulse 10s infinite alternate ease-in-out; z-index: -9; }
+        .supernova { position: fixed; top: 70%; left: 10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255, 0, 100, 0.05), transparent 70%); filter: blur(50px); z-index: -7; }
+        .bulge { position: fixed; top: 10%; right: 8%; width: 200px; height: 200px; background: radial-gradient(circle, var(--bulbe-jaune), transparent 70%); transform: translate(12.5%, 12.5%); z-index: -3; }
 
         @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(35vw) rotate(0deg); } to { transform: rotate(360deg) translateX(35vw) rotate(-360deg); } }
+        @keyframes twinkle { from { opacity: 0.2; } to { opacity: 0.6; } }
+        @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
 
-        /* --- INTERFACE TERMINAL (ROUGE STRICT) --- */
+        /* --- QUASAR CENTRAL (Le cœur rouge) --- */
+        .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; pointer-events: none; }
+        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 60px white, inset 0 0 40px var(--rouge-vif); animation: bh-pulse 4s infinite alternate; }
+        .accretion-disk { position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.1); background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.15), transparent); animation: spin 4s linear infinite; }
+        .jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, var(--rouge-vif), white, var(--rouge-vif), transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--rouge-vif); animation: jet-flicker 0.1s infinite alternate; }
+        @keyframes bh-pulse { to { transform: scale(1.05); } }
+
+        /* --- SYSTÈME PLANÉTAIRE COMPLET (6 CORPS) --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
+        @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
+        @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
+        @keyframes orbitC { from { transform: rotate(0deg) translateX(20vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(20vw) rotate(360deg); } }
+
+        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 30px var(--cosplay-gold); animation: orbitA 45s linear infinite; }
+        .p-blue { width: 100px; height: 100px; background: #0044aa; animation: orbitB 65s linear infinite reverse; opacity: 0.7; }
+        .p-red { width: 140px; height: 140px; background: #660011; border: 1px solid var(--rouge-vif); animation: orbitA 80s linear infinite reverse; }
+        .p-purple { width: 180px; height: 180px; background: #330066; animation: orbitC 100s linear infinite; opacity: 0.5;}
+        .p-ice { width: 85px; height: 85px; background: #b0e0e6; box-shadow: 0 0 20px #fff; animation: orbitB 55s linear infinite; }
+        .p-toxic { width: 115px; height: 115px; background: #006600; animation: orbitC 75s linear infinite reverse; opacity: 0.6;}
+
+        /* --- INTERFACE TERMINAL (STYLE ROUGE) --- */
         .terminal-container {
             position: relative; z-index: 100;
-            width: 85%; max-width: 850px;
-            border: 1px solid var(--bordeaux);
+            width: 90%; max-width: 1000px;
+            border: 2px solid var(--bordeaux);
             padding: 40px;
-            background: rgba(0, 0, 0, 0.95); /* Noir opaque pour contraster */
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.92);
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
             text-align: center;
         }
 
         .header-sys {
-            position: absolute; top: -12px; left: 20px;
-            background: black; padding: 0 10px;
-            font-size: 11px; border: 1px solid var(--rouge-vif); color: var(--rouge-vif);
+            position: absolute; top: -15px; left: 30px;
+            background: black; padding: 0 15px;
+            font-size: 13px; border: 1px solid var(--rouge-vif); color: var(--rouge-vif);
         }
 
         .glitch-title {
-            font-size: 3rem; font-weight: bold; letter-spacing: 12px;
-            color: white; text-shadow: 2px 0 var(--rouge-vif); margin-bottom: 5px;
+            font-size: 4rem; font-weight: bold; letter-spacing: 15px;
+            text-shadow: 3px 0 var(--bordeaux); margin-bottom: 10px;
+            animation: red-glitch 4s infinite;
+        }
+
+        @keyframes red-glitch {
+            0% { transform: skew(0deg); }
+            5% { transform: skew(3deg); text-shadow: -2px 0 var(--rouge-vif); }
+            10% { transform: skew(0deg); }
         }
 
         /* --- NAVIGATION --- */
-        .nav-menu { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .nav-menu { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
         .box {
-            text-decoration: none; color: white; border: 1px solid #222;
-            padding: 20px 10px; transition: 0.3s;
-            background: rgba(10, 10, 10, 0.5); cursor: pointer;
+            text-decoration: none; color: white; border: 1px solid #333;
+            padding: 30px 15px; transition: 0.3s;
+            background: rgba(20, 0, 0, 0.3); cursor: pointer;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .box:hover {
             border-color: var(--rouge-vif);
-            background: rgba(255, 0, 51, 0.05);
+            background: rgba(255, 0, 50, 0.1);
+            transform: translateY(-5px);
         }
 
+        .icon { font-size: 3.5rem; display: block; margin-bottom: 15px; }
         .btn { 
-            display: inline-block; border: 1px solid var(--rouge-vif); color: var(--rouge-vif); 
-            padding: 5px 10px; text-decoration: none; font-size: 0.65rem; margin-top: 10px;
+            display: inline-block; border: 1px solid var(--rouge-vif); color: var(--rouge-vif); padding: 10px 20px; 
+            text-decoration: none; letter-spacing: 2px; background: rgba(0,0,0,0.5); transition: 0.3s; margin-top: 15px; font-size: 0.7rem; 
         }
-        
         .box:hover .btn { background: var(--rouge-vif); color: white; }
 
         /* --- OSD --- */
-        .osd { position: fixed; top: 20px; left: 20px; color: var(--rouge-vif); font-size: 0.8rem; z-index: 9999; text-align: left;}
+        .osd { position: fixed; top: 30px; left: 30px; color: var(--rouge-vif); font-size: 0.9rem; z-index: 9999; line-height: 1.5; pointer-events: none; text-align: left;}
+        #visitor-module { margin-top: 15px; border-top: 1px solid rgba(255, 0, 50, 0.3); padding-top: 10px; letter-spacing: 1px; }
+
         #console-output {
-            font-size: 10px; height: 50px; color: var(--rouge-vif); opacity: 0.7;
-            text-align: left; margin: 15px 0; padding-left: 10px; border-left: 1px solid var(--rouge-vif);
+            font-size: 10px; height: 60px; margin: 20px 0;
+            border-left: 2px solid var(--bordeaux); padding-left: 15px;
+            color: var(--rouge-vif); text-align: left; opacity: 0.8;
         }
 
-        #qrcode { background: white; padding: 10px; display: none; margin: 20px auto; width: 140px; border: 2px solid var(--rouge-vif); }
+        #qrcode { background: white; padding: 15px; display: none; margin: 20px auto; width: 140px; border: 4px solid var(--bordeaux); }
     </style>
 </head>
 <body>
 
     <div class="osd">
-        STATUS : RED_INTERFACE_SYNC<br>
-        DATE : 05 MARS 2031<br>
-        <span id="count-value">SCANNING...</span>
+        PLAY ▷ OMNI_MASTER_V100.9.9<br>
+        SYNC : GPS_BROADCAST_ACTIVE<br>
+        STATUS : RED_INTERFACE_ONLINE<br>
+        DATE : 05 MARS 2031
+        <div id="visitor-module">
+            SIGNALS_TRACKED: <span id="count-value">SCANNING...</span>
+        </div>
     </div>
 
     <div class="bg-layer redshift"></div>
+    <div class="bg-layer spiral"></div>
     <div class="bg-layer stars"></div>
     <div class="bg-layer stars-twinkle"></div>
-    <div class="bg-layer spiral"></div>
+    <div class="bg-layer nebula-gas"></div>
+    <div class="supernova"></div>
+    <div class="bulge"></div>
 
     <div class="quasar-container">
-        <div class="jet"></div><div class="black-hole"></div>
+        <div class="jet"></div><div class="accretion-disk"></div><div class="black-hole"></div>
     </div>
 
     <div id="galaxy-receptor">
         <div class="nebula-planet p-gold"></div>
+        <div class="nebula-planet p-blue"></div>
         <div class="nebula-planet p-red"></div>
+        <div class="nebula-planet p-purple"></div>
+        <div class="nebula-planet p-ice"></div>
+        <div class="nebula-planet p-toxic"></div>
     </div>
 
     <div class="terminal-container">
-        <div class="header-sys">OMNI_CORE_V2031</div>
+        <div class="header-sys">ARCHIVE_SYSTEM_OMNI_V2031</div>
+        
         <div class="glitch-title">ARCHIVES</div>
-        <div style="font-size: 0.7rem; color: var(--rouge-vif); letter-spacing: 4px;">L'ASTRE CRÉATEUR SUPRÊME</div>
+        <div style="font-size: 0.8rem; letter-spacing: 6px; margin-bottom: 10px; color: var(--rouge-vif);">L'ASTRE CRÉATEUR SUPRÊME</div>
 
         <div id="console-output"></div>
 
         <div class="nav-menu">
             <a href="theories.html" class="box">
-                <span style="font-weight:bold; display:block;">THÉORIES</span>
+                <span class="icon">✍️</span>
+                <span style="font-weight:bold;">THÉORIES</span>
+                <p style="font-size: 8px; color: #888; margin-top:5px;">TRANSMETTRE SIGNAUX</p>
                 <div class="btn">PROPOSER</div>
             </a>
-            <a href="systeme.html" class="box">
-                <span style="font-weight:bold; display:block;">SYSTÈME</span>
+
+            <a href="javascript:void(0)" onclick="if(checkSignalFrequency()) window.location.href='systeme.html'" class="box">
+                <span class="icon">📡</span>
+                <span style="font-weight:bold;">SYSTÈME</span>
+                <p style="font-size: 8px; color: #888; margin-top:5px;">ANALYSE RADAR & GPS</p>
                 <div class="btn">ANALYSER</div>
             </a>
-            <a href="galerie.html" class="box">
-                <span style="font-weight:bold; display:block;">GALERIE</span>
+
+            <a href="javascript:void(0)" onclick="validerAccesArchives()" class="box">
+                <span class="icon">👁️</span>
+                <span style="font-weight:bold;">GALERIE</span>
+                <p style="font-size: 8px; color: #888; margin-top:5px;">LES 14 ROMANS</p>
                 <div class="btn">TRAVERSER</div>
             </a>
         </div>
 
-        <div id="qr-master-zone">
+        <div id="qr-master-zone" style="margin-top: 30px;">
             <div id="qrcode"></div>
-            <button class="btn" style="cursor: pointer;" onclick="genererPortailQR()">[ ACTIVER PORTAIL ]</button>
+            <button class="btn" style="pointer-events: auto; cursor: pointer; background: var(--bordeaux); color: white;" onclick="genererPortailQR()">[ ACTIVER PORTAIL QR ]</button>
         </div>
     </div>
 
     <script>
         const consoleOut = document.getElementById('console-output');
         const logs = [
-            "> SYNC INTERFACE ROUGE...",
-            "> FOND NOIR PROFOND ÉTABLI...",
-            "> CONNEXION OMNI STABLE.",
+            "> INITIALISATION DE LA MATRICE ROUGE...",
+            "> CHARGEMENT DU SYSTÈME OMNI V100.9.9...",
+            "> VÉRIFICATION DES 14 FRAGMENTS...",
+            "> SIGNAL GPS VERROUILLÉ : 05/03/2031",
             "> BIENVENUE, CRÉATEUR."
         ];
 
@@ -193,7 +224,7 @@
             if (line < logs.length) {
                 consoleOut.innerHTML += logs[line] + "<br>";
                 line++;
-                setTimeout(printLog, 500);
+                setTimeout(printLog, 600);
             }
         }
 
@@ -208,7 +239,17 @@
             container.style.display = "block";
         }
 
-        window.onload = printLog;
+        async function updateCounter() {
+            try {
+                // Simulation ou appel API
+                document.getElementById('count-value').innerText = "1,042_ACTIVE_SIGNALS";
+            } catch (e) { document.getElementById('count-value').innerText = "ERROR_OFFLINE"; }
+        }
+
+        window.onload = () => {
+            printLog();
+            updateCounter();
+        };
     </script>
 </body>
 </html>
