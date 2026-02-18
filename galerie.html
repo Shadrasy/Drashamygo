@@ -37,34 +37,25 @@
             z-index: 9999; background-size: 100% 4px; pointer-events: none; opacity: 0.4;
         }
 
-        /* --- HEADER --- */
+        /* --- OSD HEADER --- */
         .osd-header { 
             position: fixed; top: 0; left: 0; right: 0; height: 60px; 
             background: rgba(0,0,0,0.95); border-bottom: 1px solid var(--vhs-vert-dim);
             z-index: 10000; display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
         }
 
-        .btn-exit { 
-            border: 1px solid var(--bordeaux); color: var(--bordeaux); 
-            padding: 8px 15px; font-size: 10px; text-decoration: none; transition: 0.3s;
-        }
+        .btn-exit { border: 1px solid var(--bordeaux); color: var(--bordeaux); padding: 8px 15px; font-size: 10px; text-decoration: none; transition: 0.3s; }
         .btn-exit:hover { background: var(--bordeaux); color: white; }
 
-        #hidden-trigger { cursor: default; user-select: none; }
-
-        /* --- NAVIGATION PLANÈTES --- */
-        .nav-planets { 
-            position: fixed; left: 20px; top: 120px; z-index: 10005; 
-            display: flex; flex-direction: column; gap: 30px; 
-        }
+        /* --- NAV PLANETS --- */
+        .nav-planets { position: fixed; left: 20px; top: 120px; z-index: 10005; display: flex; flex-direction: column; gap: 30px; }
         .planet-box { position: relative; cursor: pointer; display: flex; align-items: center; }
         .planet { 
             width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); 
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
         .planet:hover { transform: scale(1.2) rotate(15deg); border-color: white; }
         .planet.active { border-color: var(--vhs-vert); box-shadow: 0 0 20px var(--vhs-vert); }
-        
         .p-gold { background: radial-gradient(circle at 30% 30%, #fff, var(--cosplay-gold), #600); }
         .p-blue { background: radial-gradient(circle at 30% 30%, #fff, #00ffff, #001a33); }
         .p-red { background: radial-gradient(circle at 30% 30%, #fff, var(--standard-magenta), #300); }
@@ -75,37 +66,35 @@
         }
         .planet-box:hover .planet-label { opacity: 1; }
 
-        /* --- ROMANS GRID --- */
+        /* --- ROMANS SELECTOR --- */
         #romans-selector { 
             display: flex; gap: 10px; overflow-x: auto; padding: 15px; 
             background: rgba(255,255,255,0.02); border: 1px solid #111; margin-bottom: 30px;
             scrollbar-width: thin; scrollbar-color: var(--vhs-vert) #000;
         }
         .roman-tab { 
-            min-width: 150px; padding: 10px; background: #000; border: 1px solid #222; 
-            font-size: 9px; cursor: pointer; transition: 0.3s; text-align: left; color: #666;
-            position: relative;
+            min-width: 200px; padding: 12px; background: #000; border: 1px solid #222; 
+            font-size: 9px; cursor: pointer; transition: 0.3s; color: #555; position: relative;
         }
         .roman-tab.active { border-color: var(--vhs-vert); color: var(--vhs-vert); background: rgba(0,255,65,0.05); }
-        .tome-count { font-size: 7px; display: block; margin-top: 4px; color: var(--bleu-tech); }
+        .roman-tab.master-only { border-color: #444; color: #444; border-style: dashed; }
+        .tome-info { font-size: 7px; display: block; margin-top: 5px; color: var(--bleu-tech); }
+        .date-tag { font-size: 7px; color: #ff3333; }
 
-        /* --- GALLERY & CARDS --- */
+        /* --- GRID & CARDS --- */
         .container { max-width: 1400px; margin: 100px auto 50px 100px; padding-right: 50px; }
-        .glitch-title { font-size: 2rem; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; }
-        
+        .glitch-title { font-size: 25px; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; }
         .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         .box { 
             background: rgba(5,5,5,0.9); border: 1px solid #1a1a1a; padding: 12px; position: relative; 
             clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); 
         }
-
         .image-frame { width: 100%; height: 380px; background: black; overflow: hidden; position: relative; border: 1px solid #111; }
-        
         .card-hud { position: absolute; top: 5px; right: 8px; font-size: 7px; color: var(--bleu-tech); opacity: 0.6; }
-        .scanline { position: absolute; width: 100%; height: 1px; background: rgba(0, 255, 65, 0.2); top: 0; animation: scan 4s linear infinite; }
+        .scanline { position: absolute; width: 100%; height: 1px; background: rgba(0, 255, 65, 0.1); top: 0; animation: scan 4s linear infinite; z-index: 5; }
         @keyframes scan { from { top: 0; } to { top: 100%; } }
 
-        /* MASTER BUTTONS */
+        /* MASTER CONTROLS */
         .master-controls { margin-top: 10px; padding-top: 10px; border-top: 1px solid #222; display: flex; gap: 10px; }
         .btn-edit { background: var(--vhs-vert); color: black; border: none; padding: 5px 10px; font-size: 9px; font-weight: bold; cursor: pointer; }
         .btn-del { background: var(--bordeaux); color: white; border: none; padding: 5px 10px; font-size: 9px; font-weight: bold; cursor: pointer; }
@@ -118,34 +107,26 @@
 <body onload="bootSystem()">
 
     <div id="loading-overlay">
-        <div id="boot-logs" style="font-size: 9px; width: 300px; height: 80px; margin-bottom: 20px; color: #444;"></div>
-        <div style="font-size: 10px; letter-spacing: 3px;">INITIALIZING_CORE</div>
+        <div id="boot-logs" style="font-size: 9px; width: 300px; color: #444; margin-bottom: 10px; font-family: monospace;"></div>
+        <div style="font-size: 10px; letter-spacing: 3px;">INITIALIZING_V2031</div>
         <div style="width: 200px; height: 2px; background: #111; margin-top: 15px;"><div id="load-bar" class="bar-fill"></div></div>
     </div>
 
     <div class="osd-header">
         <a href="index.html" class="btn-exit">EXIT_ARCHIVE</a>
-        
         <div style="text-align: center;">
             <div style="font-size: 11px; letter-spacing: 4px; color: var(--vhs-vert);">DATABASE_SECURED</div>
-            <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #555;">
+            <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #555; cursor:pointer;">
                 SYS_TIME: <span id="clock-display">00:00:00</span>
             </div>
         </div>
-
-        <div id="status-tag" style="font-size: 10px; color: #333;">V.2031_STABLE</div>
+        <div id="status-tag" style="font-size: 10px; color: #333;">PROTECTED_MODE</div>
     </div>
 
     <div class="nav-planets">
-        <div class="planet-box" onclick="filterData('Fan-Cosplay', this)">
-            <div class="planet p-gold"></div><span class="planet-label">SECTEUR_COSPLAY</span>
-        </div>
-        <div class="planet-box" onclick="filterData('World', this)">
-            <div class="planet p-blue"></div><span class="planet-label">GEOGRAPHIE_ALPHA</span>
-        </div>
-        <div class="planet-box" onclick="filterData('Livre', this)">
-            <div class="planet p-red"></div><span class="planet-label">ARCHIVES_LIVRES</span>
-        </div>
+        <div class="planet-box" onclick="filterData('Fan-Cosplay', this)"><div class="planet p-gold"></div><span class="planet-label">SECTEUR_COSPLAY</span></div>
+        <div class="planet-box" onclick="filterData('World', this)"><div class="planet p-blue"></div><span class="planet-label">GEOGRAPHIE_ALPHA</span></div>
+        <div class="planet-box" onclick="filterData('Livre', this)"><div class="planet p-red"></div><span class="planet-label">ARCHIVES_LIVRES</span></div>
     </div>
 
     <div class="nebula-layer"></div>
@@ -157,8 +138,8 @@
             
             <div id="romans-selector"></div>
 
-            <div style="display: flex; gap: 15px; margin-bottom: 30px; background: rgba(0,0,0,0.3); padding: 12px; border-left: 3px solid var(--vhs-vert);">
-                <input type="text" id="search" oninput="loadData()" placeholder="SEARCH_DATABASE..." style="background: none; border: none; color: var(--bleu-tech); outline: none; width: 100%; font-family: inherit; font-size: 12px;">
+            <div style="display: flex; gap: 15px; margin-bottom: 30px; background: rgba(0,0,0,0.5); padding: 12px; border-left: 3px solid var(--vhs-vert);">
+                <input type="text" id="search" oninput="loadData()" placeholder="SEARCH_DATABASE..." style="background: none; border: none; color: var(--bleu-tech); outline: none; width: 100%; font-family: inherit;">
             </div>
 
             <div id="gallery" class="archive-grid"></div>
@@ -170,17 +151,27 @@
             isMaster: new URLSearchParams(window.location.search).get('Hinaru') === 'true',
             projet: new URLSearchParams(window.location.search).get('projet') || 1,
             activeType: null,
-            // Liste des 14 romans avec leurs noms
             romans: [
-                "Shadrasy", "Nébuleuse Alpha", "Projet Onyx", "Saga Echo", "Code Hinaru",
-                "Nova", "Origines", "Secteur 7", "Nexus", "Aube Noire", 
-                "Prélude", "Horizon", "Silences", "Infini"
+                { id: 1, title: "SHADRASY: Le Souffle Originel", tomes: 154, date: "05/03/2031", public: true },
+                { id: 2, title: "La Guilde de l'Aube", tomes: 96, date: "02/2032", public: false },
+                { id: 3, title: "ROMAN_PREV_03", tomes: 96, date: "03/2034", public: false },
+                { id: 4, title: "ROMAN_PREV_04", tomes: 96, date: "01/2036", public: false },
+                { id: 5, title: "HÉRITAGE_G1_A", tomes: 2, date: "POST-2036", public: false },
+                { id: 6, title: "HÉRITAGE_G1_B", tomes: 2, date: "POST-2036", public: false },
+                { id: 7, title: "HÉRITAGE_G2_A", tomes: 2, date: "POST-2036", public: false },
+                { id: 8, title: "HÉRITAGE_G2_B", tomes: 2, date: "POST-2036", public: false },
+                { id: 9, title: "HÉRITAGE_G3_A", tomes: 2, date: "POST-2036", public: false },
+                { id: 10, title: "HÉRITAGE_G3_B", tomes: 2, date: "POST-2036", public: false },
+                { id: 11, title: "HÉRITAGE_G4_A", tomes: 2, date: "POST-2036", public: false },
+                { id: 12, title: "HÉRITAGE_G4_B", tomes: 2, date: "POST-2036", public: false },
+                { id: 13, title: "HÉRITAGE_G5_A", tomes: 2, date: "POST-2036", public: false },
+                { id: 14, title: "HÉRITAGE_G5_B", tomes: 2, date: "POST-2036", public: false }
             ]
         };
 
         function bootSystem() {
             const logs = document.getElementById('boot-logs');
-            const msgs = ["> BOOTING...", "> LOAD_DB_LOCAL...", "> ENCRYPT_SESSION...", "> READY."];
+            const msgs = ["> ACCESS_LEVEL_CHECK...", STATE.isMaster ? "> MASTER_DETECTED" : "> PUBLIC_VIEW_RESTRICTED", "> LOAD_DB_LOCAL...", "> READY."];
             let i = 0;
             const interval = setInterval(() => {
                 if (i < msgs.length) {
@@ -194,15 +185,14 @@
                     setTimeout(() => { document.getElementById('app-content').style.opacity = '1'; }, 100);
                     initApp();
                 }
-            }, 250);
-
+            }, 300);
             setInterval(() => { document.getElementById('clock-display').innerText = new Date().toLocaleTimeString(); }, 1000);
         }
 
         function initApp() {
             if (STATE.isMaster) {
                 document.getElementById('status-tag').style.color = "var(--vhs-vert)";
-                document.getElementById('status-tag').innerText = "ADMIN_ACCESS_GRANTED";
+                document.getElementById('status-tag').innerText = "FULL_ADMIN_ACCESS";
             }
             renderRomans();
             loadData();
@@ -210,15 +200,12 @@
 
         function renderRomans() {
             const selector = document.getElementById('romans-selector');
-            selector.innerHTML = STATE.romans.map((name, index) => {
-                const id = index + 1;
-                // Premier roman = 154 tomes, les autres (2 à 14) = 96 tomes
-                const totalTomes = (id === 1) ? 154 : 96;
-                
+            selector.innerHTML = STATE.romans.map(r => {
+                if (!r.public && !STATE.isMaster) return '';
                 return `
-                    <div class="roman-tab ${STATE.projet == id ? 'active' : ''}" onclick="changeProjet(${id})">
-                        <span style="letter-spacing:1px;">R-${id}: ${name.toUpperCase()}</span>
-                        <span class="tome-count">CAPACITÉ: ${totalTomes} TOMES</span>
+                    <div class="roman-tab ${STATE.projet == r.id ? 'active' : ''} ${!r.public ? 'master-only' : ''}" onclick="changeProjet(${r.id})">
+                        <span style="letter-spacing:1px;">R-${r.id}: ${r.title.toUpperCase()}</span>
+                        <span class="tome-info">${r.tomes} TOMES | <span class="date-tag">${r.date}</span></span>
                     </div>
                 `;
             }).join('');
@@ -248,7 +235,6 @@
             const container = document.getElementById('gallery');
             const searchVal = document.getElementById('search').value.toLowerCase();
             container.innerHTML = "";
-
             if (typeof archivesData === 'undefined') return;
 
             const filtered = archivesData.filter(i => 
@@ -260,40 +246,31 @@
             filtered.forEach(item => {
                 const box = document.createElement('div');
                 box.className = 'box';
-                
-                // LOGIQUE DES 3 TYPES (3D, Dossier, Normal)
                 let contentHTML = "";
-                
+
                 if (item.glb && item.glb !== "") {
-                    // 1. TYPE 3D
-                    contentHTML = `<model-viewer src="${item.glb}" camera-controls auto-rotate style="width:100%; height:100%;"></model-viewer>`;
-                } 
-                else if (item.isFolder) {
-                    // 2. TYPE DOSSIER
-                    contentHTML = `
-                        <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,255,65,0.05); border:1px dashed var(--vhs-vert-dim); cursor:pointer;">
-                            <img src="${item.url}" style="width:80%; height:70%; object-fit:cover; opacity:0.6; filter:grayscale(1);">
-                            <div style="position:absolute; bottom:15px; font-size:10px; color:var(--vhs-vert); letter-spacing:2px;">📂 OUVRIR_DOSSIER</div>
-                        </div>`;
+                    contentHTML = `<model-viewer src="${item.glb}" camera-controls auto-rotate shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>`;
+                } else if (item.isFolder) {
+                    contentHTML = `<div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,255,65,0.05); cursor:pointer;">
+                                    <img src="${item.url}" style="width:80%; height:70%; object-fit:cover; opacity:0.6; filter:grayscale(1);">
+                                    <div style="position:absolute; bottom:15px; font-size:10px; color:var(--vhs-vert);">📂 OUVRIR_DOSSIER</div>
+                                   </div>`;
+                } else {
+                    contentHTML = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;" loading="lazy">`;
                 }
-                else {
-                    // 3. TYPE NORMAL
-                    contentHTML = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
-                }
-                
+
                 box.innerHTML = `
                     <div class="card-hud">F-ID: ${item.id || 'XX'}</div>
                     <div class="scanline"></div>
-                    <div class="image-frame">
-                        ${contentHTML}
-                    </div>
+                    <div class="image-frame">${contentHTML}</div>
                     <div style="margin-top:10px;">
                         <span style="font-size:7px; color:var(--vhs-vert)">[${item.type.toUpperCase()}]</span>
-                        <div style="font-weight:bold; font-size:12px; color:white;">${item.nom}</div>
+                        <div style="font-weight:bold; font-size:12px; color:white; margin-top:3px;">${item.nom}</div>
                         ${STATE.isMaster ? `
                             <div class="master-controls">
-                                <button class="btn-edit" onclick="alert('EDITING...')">EDIT</button>
-                                <button class="btn-del" onclick="alert('DELETING...')">DELETE</button>
+                                <button class="btn-edit">EDIT</button>
+                                <button class="btn-del">DELETE</button>
+                                <span style="font-size:7px; color:var(--bleu-tech); align-self:center;">3D_READY</span>
                             </div>
                         ` : ''}
                     </div>
