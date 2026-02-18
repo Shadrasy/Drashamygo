@@ -32,12 +32,23 @@
 
         /* PLANÈTES DÉCORATIVES */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; animation: floatMove 20s ease-in-out infinite alternate, rotatePlanet 30s linear infinite; }
-        @keyframes floatMove { 0% { transform: translate(0, 0); } 100% { transform: translate(3vw, 5vh); } }
+        @keyframes floatMove { 0% { transform: translate(0, 0); } 100% { transform: translate(2vw, 2vh); } }
         @keyframes rotatePlanet { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
 
-        .p-gold { width: 30px; height: 30px; background: var(--cosplay-gold); top: 45%; left: 50%; box-shadow: 0 0 30px var(--cosplay-gold); cursor: crosshair; z-index: 1001; transform: translate(-50%, -50%); opacity: 0.6; }
+        /* CONFIGURATION DES 6 PLANÈTES */
+        .p-gold { 
+            width: 35px; height: 35px; 
+            background: var(--cosplay-gold); 
+            top: 15%; left: 10%; 
+            box-shadow: 0 0 30px var(--cosplay-gold); 
+            cursor: crosshair; z-index: 1001; 
+            opacity: 0.7; 
+        }
         .p-blue { width: 50px; height: 50px; background: cyan; top: 20%; right: 15%; box-shadow: 0 0 30px cyan; opacity: 0.3; }
         .p-red { width: 70px; height: 70px; background: var(--standard-magenta); bottom: 25%; right: 10%; box-shadow: 0 0 40px var(--standard-magenta); opacity: 0.2; }
+        .p-green { width: 40px; height: 40px; background: #00ff41; top: 70%; left: 5%; box-shadow: 0 0 20px #00ff41; opacity: 0.2; }
+        .p-purple { width: 60px; height: 60px; background: #bf00ff; top: 10%; left: 80%; box-shadow: 0 0 25px #bf00ff; opacity: 0.15; }
+        .p-orange { width: 25px; height: 25px; background: #ff8c00; bottom: 10%; left: 40%; box-shadow: 0 0 15px #ff8c00; opacity: 0.3; }
 
         .container { max-width: 1200px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         h1 { font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 12px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 30px; }
@@ -76,8 +87,13 @@
 </head>
 <body onload="verifierAcces()">
     <div class="nebula-layer"></div><div class="star-field"></div>
+    
     <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
-    <div class="nebula-planet p-blue"></div><div class="nebula-planet p-red"></div>
+    <div class="nebula-planet p-blue"></div>
+    <div class="nebula-planet p-red"></div>
+    <div class="nebula-planet p-green"></div>
+    <div class="nebula-planet p-purple"></div>
+    <div class="nebula-planet p-orange"></div>
 
     <div class="osd-header">
         MODE: ARCHIVE_VIEWER<br>
