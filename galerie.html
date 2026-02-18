@@ -1,163 +1,202 @@
-<script>
-    const romansConfig = [
-        { id: 1, nom: "Shadrasy", public: true }, { id: 2, nom: "Nébuleuse Alpha", public: false },
-        { id: 3, nom: "Projet Onyx", public: false }, { id: 4, nom: "Saga Echo", public: true },
-        { id: 5, nom: "Protocole Silence", public: false }, { id: 6, nom: "Code Hinaru", public: false },
-        { id: 7, nom: "Saga Origin", public: false }, { id: 8, nom: "Echo Stellaire", public: false },
-        { id: 9, nom: "Signal Perdu", public: false }, { id: 10, nom: "Archives W10", public: false },
-        { id: 11, nom: "Module Externe", public: false }, { id: 12, nom: "L'Eveil", public: false },
-        { id: 13, nom: "Pipeline Final", public: false }, { id: 14, nom: "Projet 14", public: false }
-    ];
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives - Nébuleuse Visuelle (V100.9.24 OMNI-FIX)</title>
+    
+    <script src="security.js"></script>
+    <script src="archives-data.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const isHinaru = urlParams.get('Hinaru') === 'true';
-    const projetActuel = parseInt(urlParams.get('projet')) || 1;
-
-    if (isHinaru) document.getElementById('master-panel').style.display = 'block';
-
-    function ecouterScanner() {
-        const syncData = localStorage.getItem('hinaru_cosmos_sync');
-        if(syncData) {
-            const config = JSON.parse(syncData);
-            const status = document.getElementById('signals-status');
-            status.innerText = `SIGNALS_TRACKED: GPS_LINKED (MODE: ${config.mode})`;
-            status.style.color = "cyan"; status.style.borderColor = "cyan";
+    <style>
+        :root { 
+            --noir-fond: #000103; --vhs-vert: #00ff41; --rose-hii: rgba(255, 50, 150, 0.25);
+            --bleu-tech: #00ffff; --standard-magenta: #ff00ff; --cosplay-gold: #ffcc00;
+            --bordeaux: #6d071a; --bleu-nuit: #001a33;
         }
-    }
 
-    function afficherProtocole(type) {
-        const display = document.getElementById('protocol-display');
-        const content = document.getElementById('protocol-content');
-        display.style.display = 'block';
-        const protocoles = {
-            'methode': "<b>[ PIPELINE 13 MODULES ]</b><br>• W1-W5 : Conceptualisation 3D<br>• W6-W9 : Studio Fusion<br>• W10-W13 : Rendu Master Final 4K",
-            'industriel': "<b>[ STANDARDS MÉTIER ]</b><br>• Hard Lore Consistency<br>• Industrial Pipeline Standards",
-            'philosophie': "<b>[ PROTOCOLE SILENCE ]</b><br>• Le visuel installe l'âme.<br>• Zéro pollution visuelle."
-        };
-        content.innerHTML = protocoles[type] || "SIGNAL INCONNU";
-    }
+        body { margin: 0; background-color: var(--noir-fond); color: white; font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden; }
 
-    function chargerGalerie() {
-        const container = document.getElementById('galerie-container');
-        const fanContainer = document.getElementById('fan-cosplay-container');
-        const worldContainer = document.getElementById('world-container');
-        const nav = document.getElementById('nav-buttons');
-
-        // SÉCURITÉ : Attente du chargement des données
-        if (typeof archivesData === 'undefined') {
-            setTimeout(chargerGalerie, 100);
-            return;
+        /* MOTEUR VHS SCANLINE */
+        body::after {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
+
+        .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         
-        container.innerHTML = ""; fanContainer.innerHTML = ""; worldContainer.innerHTML = ""; nav.innerHTML = "";
-
-        // Génération des boutons de navigation (R1 à R14)
-        romansConfig.forEach(r => {
-            if (isHinaru || r.public) {
-                const btn = document.createElement('button');
-                btn.className = "btn-action";
-                btn.style.cssText = "border-color:white; color:white; margin:5px; padding:8px 15px; background:none; cursor:pointer;";
-                btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
-                if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
-                btn.onclick = () => { 
-                    const newUrl = new URL(window.location.href);
-                    newUrl.searchParams.set('projet', r.id);
-                    if(isHinaru) newUrl.searchParams.set('Hinaru', 'true');
-                    window.location.href = newUrl.toString();
-                };
-                nav.appendChild(btn);
-            }
-        });
-
-        // Filtrage des données par roman
-        const now = new Date();
-        const filteredData = archivesData.filter(item => item.roman === projetActuel);
-
-        if (filteredData.length === 0) {
-            container.innerHTML = "<p style='color:orange; letter-spacing:2px;'>[ AUCUNE ARCHIVE DÉTECTÉE DANS CE SECTEUR ]</p>";
+        /* GRILLE DE CARTES */
+        #galerie-container, #world-container, #fan-cosplay-container {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-bottom: 50px;
         }
 
-        filteredData.forEach((item, index) => {
-            const releaseDate = new Date(item.date);
-            if (!isHinaru && now < releaseDate) return;
+        .box { background: rgba(0, 0, 0, 0.98); border: 1px solid #444; padding: 25px; position: relative; backdrop-filter: blur(12px); display: flex; flex-direction: column; height: 100%; box-sizing: border-box; }
+        
+        .image-frame { position: relative; width: 100%; height: 380px; background: #050505; border: 1px solid #333; overflow: hidden; }
 
-            const box = document.createElement('div');
-            box.className = 'box';
+        /* AJOUTS : STYLES DES ÉLÉMENTS DE CARTE */
+        .hud-technique { position: absolute; bottom: 10px; left: 10px; font-size: 9px; background: rgba(0,0,0,0.8); padding: 8px; color: var(--vhs-vert); text-align: left; border-left: 2px solid var(--vhs-vert); pointer-events: none; line-height: 1.2; z-index: 5; }
+        .creator-badge { position: absolute; top: 10px; right: 10px; background: var(--vhs-vert); color: black; font-size: 9px; padding: 3px 7px; font-weight: bold; z-index: 6; letter-spacing: 1px; }
+        
+        .section-title { font-size: 1.2rem; color: var(--vhs-vert); border-bottom: 1px solid #333; padding-bottom: 10px; margin: 40px 0 20px 0; text-align: left; letter-spacing: 5px; }
+
+        .btn-action { transition: 0.3s; cursor: pointer; font-family: 'Courier New', monospace; background: none; }
+        .btn-action:hover { background: rgba(255,255,255,0.1); transform: scale(1.02); }
+
+        /* DÉCORS SPATIAUX */
+        .nebula-planet { position: fixed; top: 45%; left: 50%; border-radius: 50%; z-index: -1; opacity: 0.7; }
+        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 40px var(--cosplay-gold); z-index: 1001; cursor: crosshair; transform: translate(-50%, -50%); }
+    </style>
+</head>
+<body>
+    <div class="nebula-planet p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
+
+    <div class="container">
+        <h1 style="font-size: 3.5rem; letter-spacing: 15px; text-shadow: 0 0 25px var(--vhs-vert);">NÉBULEUSE VISUELLE</h1>
+        
+        <div id="signals-status" style="font-weight: bold; font-size: 14px; letter-spacing: 4px; margin-bottom: 40px; color:red; background: rgba(0,0,0,0.5); padding: 10px; display: inline-block; border: 1px solid;">SIGNALS_TRACKED: OFFLINE</div>
+
+        <div id="master-panel" style="background: rgba(0,15,5,0.98); border: 2px solid var(--vhs-vert); padding: 30px; margin-bottom: 50px; display: none; text-align: left;">
+            <p style="color:var(--vhs-vert); font-weight:bold; margin-bottom: 25px;">📡 CONTRÔLE MAÎTRE HINARU</p>
+            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom:30px;"></div>
             
-            const hud = item.tech ? `<div class="hud-technique" style="position:absolute; bottom:10px; left:10px; font-size:9px; background:rgba(0,0,0,0.7); padding:5px; color:var(--vhs-vert); text-align:left; pointer-events:none;"><b>CINEMATIC_SCAN</b><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
-            const badge = item.nom && (item.nom.includes("Hinaru") || item.nom.includes("Creator")) ? `<div class="creator-badge" style="position:absolute; top:10px; right:10px; background:var(--vhs-vert); color:black; font-size:9px; padding:2px 5px; font-weight:bold; z-index:5;">ORIGINAL CREATOR</div>` : "";
-
-            let media = item.glb ? `<model-viewer src="${item.glb}" poster="${item.url}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
-
-            box.innerHTML = `
-                <div class="image-frame" style="position:relative; width:100%; height:380px; background:#050505; border:1px solid #333; overflow:hidden;">
-                    ${badge}${media}${hud}
+            <div style="border-top:1px dashed var(--vhs-vert); padding-top:30px;">
+                <input type="text" id="img-url" style="width:100%; background:#080808; color:white; border:1px solid #444; padding:10px; margin-bottom:10px;" placeholder="URL Image">
+                <input type="text" id="glb-url" style="width:100%; background:#080808; color:white; border:1px solid #444; padding:10px; margin-bottom:10px;" placeholder="URL GLB (3D)">
+                <textarea id="img-tech" style="width:100%; background:#080808; color:white; border:1px solid #444; padding:10px; height:60px;" placeholder="Logs techniques..."></textarea>
+                <div style="margin: 15px 0;">
+                    TYPE: <select id="img-type" onchange="toggleTomeField()"><option value="Livre">LIVRE</option><option value="World">WORLD</option><option value="Fan-Cosplay">FAN-COSPLAY</option></select>
+                    <span id="tome-input-area"> TOME: <input type="number" id="img-tome" value="1" style="width:40px;"></span>
+                     DATE: <input type="datetime-local" id="img-date">
                 </div>
-                <div style="font-size:12px; text-align:left; color:var(--bleu-tech); margin:10px 0;">
-                    <b>ID: #${index + 1000}</b> | TYPE: ${item.type.toUpperCase()} | TOME: ${item.tome || '1'}
-                </div>`;
+                <button class="btn-action" onclick="genererCodeSignal()" style="width:100%; background:var(--vhs-vert); color:black; padding:10px; font-weight:bold;">GÉNÉRER CODE</button>
+                <textarea id="output-code" style="width:100%; height:80px; display:none; margin-top:10px; background:black; color:cyan;"></textarea>
+            </div>
+        </div>
 
-            // --- BOUTON IMMERSION ZQSD OPTIMISÉ ---
-            if (item.glb) {
-                const btnImmersion = document.createElement('button');
-                btnImmersion.className = "btn-action";
-                btnImmersion.style.cssText = `
-                    width:100%; 
-                    border:1px solid var(--vhs-vert); 
-                    color:var(--vhs-vert); 
-                    background:rgba(0,255,65,0.05); 
-                    padding:12px; 
-                    font-weight:bold; 
-                    cursor:pointer; 
-                    font-family:monospace; 
-                    margin-top:auto;
-                    transition: 0.3s;
-                `;
-                btnImmersion.innerText = "🚀 IMMERSION ZQSD";
+        <div id="world-section-title" class="section-title" style="display:none;">[ ARCHIVES DU MONDE : LORE ]</div>
+        <div id="world-container"></div>
 
-                // Effets de survol (Hover)
-                btnImmersion.onmouseover = () => btnImmersion.style.background = "rgba(0,255,65,0.2)";
-                btnImmersion.onmouseout = () => btnImmersion.style.background = "rgba(0,255,65,0.05)";
+        <div id="galerie-section-title" class="section-title">[ DOSSIERS VISUELS : ROMANS ]</div>
+        <div id="galerie-container"></div>
 
-                btnImmersion.onclick = () => {
-                    const rConf = romansConfig.find(r => r.id === item.roman);
-                    const nomRoman = rConf ? rConf.nom : "Inconnu";
-                    window.location.href = `visite.html?glb=${encodeURIComponent(item.glb)}&roman=${encodeURIComponent(nomRoman)}&id=${index}`;
-                };
-                box.appendChild(btnImmersion);
+        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold); border-color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES ]</div>
+        <div id="fan-cosplay-container"></div>
+        
+        <a href="index.html" style="color:white; text-decoration:none; border:2px solid white; padding:15px 30px; display:inline-block; margin-top:60px;">REPASSER LE PORTAIL</a>
+    </div>
+
+    <script>
+        const romansConfig = [
+            { id: 1, nom: "Shadrasy", public: true }, { id: 2, nom: "Nébuleuse Alpha", public: false },
+            { id: 3, nom: "Projet Onyx", public: false }, { id: 4, nom: "Saga Echo", public: true },
+            { id: 5, nom: "Protocole Silence", public: false }, { id: 6, nom: "Code Hinaru", public: false },
+            { id: 7, nom: "Saga Origin", public: false }, { id: 8, nom: "Echo Stellaire", public: false },
+            { id: 9, nom: "Signal Perdu", public: false }, { id: 10, nom: "Archives W10", public: false },
+            { id: 11, nom: "Module Externe", public: false }, { id: 12, nom: "L'Eveil", public: false },
+            { id: 13, nom: "Pipeline Final", public: false }, { id: 14, nom: "Projet 14", public: false }
+        ];
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isHinaru = urlParams.get('Hinaru') === 'true';
+        const projetActuel = parseInt(urlParams.get('projet')) || 1;
+
+        if (isHinaru) document.getElementById('master-panel').style.display = 'block';
+
+        function chargerGalerie() {
+            const container = document.getElementById('galerie-container');
+            const fanContainer = document.getElementById('fan-cosplay-container');
+            const worldContainer = document.getElementById('world-container');
+            const nav = document.getElementById('nav-buttons');
+
+            if (typeof archivesData === 'undefined') {
+                setTimeout(chargerGalerie, 100);
+                return;
+            }
+            
+            container.innerHTML = ""; fanContainer.innerHTML = ""; worldContainer.innerHTML = ""; nav.innerHTML = "";
+
+            // Navigation
+            romansConfig.forEach(r => {
+                if (isHinaru || r.public) {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-action";
+                    btn.style.cssText = "border:1px solid white; color:white; margin:5px; padding:8px 15px; background:none;";
+                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
+                    if(r.id === projetActuel) btn.style.borderColor = "var(--vhs-vert)";
+                    btn.onclick = () => { 
+                        const newUrl = new URL(window.location.href);
+                        newUrl.searchParams.set('projet', r.id);
+                        if(isHinaru) newUrl.searchParams.set('Hinaru', 'true');
+                        window.location.href = newUrl.toString();
+                    };
+                    nav.appendChild(btn);
+                }
+            });
+
+            const now = new Date();
+            const filteredData = archivesData.filter(item => item.roman === projetActuel);
+
+            if (filteredData.length === 0) {
+                container.innerHTML = "<p style='color:orange;'>[ AUCUNE ARCHIVE DÉTECTÉE ]</p>";
             }
 
-            // Tri par section
-            if(item.type === 'World') { 
-                document.getElementById('world-section-title').style.display = 'block'; 
-                worldContainer.appendChild(box); 
-            }
-            else if(item.type === 'Fan-Cosplay') { 
-                document.getElementById('cosplay-section-title').style.display = 'block'; 
-                fanContainer.appendChild(box); 
-            }
-            else { 
-                container.appendChild(box); 
-            }
-        });
-    }
+            filteredData.forEach((item, index) => {
+                const releaseDate = new Date(item.date);
+                if (!isHinaru && now < releaseDate) return;
 
-    function activerModeMaitre() { 
-        const url = new URL(window.location.href);
-        url.searchParams.set('Hinaru', 'true');
-        window.location.href = url.toString(); 
-    }
+                const box = document.createElement('div');
+                box.className = 'box';
+                
+                const hud = item.tech ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
+                const badge = item.nom && (item.nom.includes("Hinaru") || item.nom.includes("Creator")) ? `<div class="creator-badge">ORIGINAL CREATOR</div>` : "";
+                let media = item.glb ? `<model-viewer src="${item.glb}" poster="${item.url}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
 
-    function toggleTomeField() { 
-        const t = document.getElementById('img-type').value;
-        document.getElementById('tome-input-area').style.display = (t === 'World' || t === 'Fan-Cosplay') ? 'none' : 'inline'; 
-    }
+                box.innerHTML = `
+                    <div class="image-frame">
+                        ${badge}${media}${hud}
+                    </div>
+                    <div style="font-size:12px; text-align:left; color:var(--bleu-tech); margin:15px 0;">
+                        <b>ID: #${index + 1000}</b> | TYPE: ${item.type.toUpperCase()} | TOME: ${item.tome || '1'}
+                    </div>`;
 
-    function genererCodeSignal() {
-        const code = `{ url: "${document.getElementById('img-url').value}", glb: "${document.getElementById('glb-url').value}", tech: \`${document.getElementById('img-tech').value}\`, roman: ${projetActuel}, type: "${document.getElementById('img-type').value}", tome: ${document.getElementById('img-tome').value}, date: "${document.getElementById('img-date').value}", nom: "Hinaru (Creator)" },`;
-        const out = document.getElementById('output-code'); out.value = code; out.style.display = 'block';
-    }
+                if (item.glb) {
+                    const btnImmersion = document.createElement('button');
+                    btnImmersion.className = "btn-action";
+                    btnImmersion.style.cssText = "width:100%; border:1px solid var(--vhs-vert); color:var(--vhs-vert); background:rgba(0,255,65,0.05); padding:12px; font-weight:bold; margin-top:auto;";
+                    btnImmersion.innerText = "🚀 IMMERSION ZQSD";
+                    btnImmersion.onclick = () => {
+                        const rConf = romansConfig.find(r => r.id === item.roman);
+                        window.location.href = `visite.html?glb=${encodeURIComponent(item.glb)}&roman=${encodeURIComponent(rConf ? rConf.nom : "Inconnu")}&id=${index}`;
+                    };
+                    box.appendChild(btnImmersion);
+                }
 
-    setInterval(ecouterScanner, 1000);
-    window.onload = chargerGalerie;
-</script>
+                if(item.type === 'World') { worldContainer.appendChild(box); document.getElementById('world-section-title').style.display = 'block'; }
+                else if(item.type === 'Fan-Cosplay') { fanContainer.appendChild(box); document.getElementById('cosplay-section-title').style.display = 'block'; }
+                else container.appendChild(box);
+            });
+        }
+
+        function activerModeMaitre() { 
+            const url = new URL(window.location.href);
+            url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.toString(); 
+        }
+
+        function toggleTomeField() { 
+            document.getElementById('tome-input-area').style.display = (document.getElementById('img-type').value === 'Livre') ? 'inline' : 'none'; 
+        }
+
+        function genererCodeSignal() {
+            const code = `{ url: "${document.getElementById('img-url').value}", glb: "${document.getElementById('glb-url').value}", tech: \`${document.getElementById('img-tech').value}\`, roman: ${projetActuel}, type: "${document.getElementById('img-type').value}", tome: ${document.getElementById('img-tome').value}, date: "${document.getElementById('img-date').value}", nom: "Hinaru (Creator)" },`;
+            const out = document.getElementById('output-code'); out.value = code; out.style.display = 'block';
+        }
+
+        window.onload = chargerGalerie;
+    </script>
+</body>
+</html>
