@@ -26,12 +26,13 @@
             background-attachment: fixed;
         }
 
-        /* BANDEAU D'ALERTE ORIGINE (FRANÇAIS) */
+        /* --- BANDEAU D'ALERTE ORIGINE REAJUSTÉ --- */
         #omni-header-notice {
             background: rgba(20, 20, 20, 0.9);
             border-bottom: 1px solid var(--vhs-vert);
-            padding: 15px;
+            padding: 10px;
             text-align: center;
+            font-family: 'Courier New', monospace;
             position: sticky;
             top: 0;
             z-index: 2000;
@@ -65,9 +66,8 @@
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; backdrop-filter: blur(10px); box-shadow: 0 0 50px rgba(0,0,0,1); }
         .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; cursor: pointer; width: 100%; letter-spacing: 2px; font-weight: bold; transition: 0.3s; }
         .btn-send:hover { box-shadow: 0 0 20px var(--vhs-vert); transform: scale(1.01); }
-        textarea, input { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; box-sizing: border-box; outline: none; }
+        textarea { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; box-sizing: border-box; outline: none; }
         
-        /* Style pour les mots du Lexique Canonique détectés */
         .omni-term {
             color: var(--vhs-vert);
             border-bottom: 1px dashed var(--vhs-vert);
@@ -78,10 +78,10 @@
 <body>
 
     <div id="omni-header-notice">
-        <p style="color: var(--vhs-vert); margin: 0; font-size: 0.85rem; letter-spacing: 1px;">
+        <p style="color: var(--vhs-vert); margin: 0; font-size: 0.8rem;">
             [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong> 
             <br>
-            <span style="color: #aaa; font-size: 0.75rem;">English: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
+            <span style="color: #aaa;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
         </p>
     </div>
 
@@ -103,25 +103,24 @@
             </label>
             
             <form onsubmit="return processTheory()">
-                <textarea id="theory-input" rows="6" placeholder="Partagez votre analyse du Souffle Originel..." required></textarea>
-                <button type="submit" class="btn-send">TRANSMETTRE AUX ARCHIVES</button>
+                <textarea id="theory-input" rows="6" placeholder="Tapez votre théorie ici..." required></textarea>
+                <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
             
             <div id="display-area" style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
                 <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px;">
-                    <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">SIGNAL_INITIAL #001</span>
+                    <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">SIGNAL_INITIAL #001 - OMNI_SYNC</span>
                     "Le système <span class="omni-term">Drashamygo</span> est en stase. L'équilibre de la <span class="omni-term">Source</span> est précaire."
                 </div>
             </div>
         </div>
         
-        <a href="index.html" class="btn-back" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.8rem;"> 
+        <a href="index.html" class="btn-back" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; border:1px dashed #333; padding:15px;"> 
             < REPASSER LE PORTAIL VERS LE CENTRE 
         </a>
     </div>
 
     <script>
-        // MOTEUR DE SCAN ET DE TRADUCTION OMNI
         function processTheory() {
             const input = document.getElementById('theory-input');
             let text = input.value;
@@ -131,27 +130,36 @@
                 return false;
             }
 
-            // Parcours du lexique pour "Canoniser" les termes dans l'affichage
-            // On utilise OMNI_MASTER_LEXICON (chargé depuis le fichier JS externe)
-            for (let category in OMNI_MASTER_LEXICON) {
-                for (let term in OMNI_MASTER_LEXICON[category]) {
-                    // Création d'une regex pour trouver le mot (français ou autre)
-                    let regex = new RegExp(term, 'gi');
-                    text = text.replace(regex, `<span class="omni-term">${term}</span>`);
+            // MOTEUR DE SCAN LEXICAL : Compare le texte avec OMNI_MASTER_LEXICON
+            // Le script parcourt toutes les catégories (concepts, puissance, éléments, factions)
+            if (typeof OMNI_MASTER_LEXICON !== 'undefined') {
+                for (let category in OMNI_MASTER_LEXICON) {
+                    for (let key in OMNI_MASTER_LEXICON[category]) {
+                        // On récupère toutes les variantes linguistiques du mot
+                        let variations = OMNI_MASTER_LEXICON[category][key];
+                        for (let lang in variations) {
+                            let word = variations[lang];
+                            // Éviter les boucles infinies ou les remplacements vides
+                            if (word && word.length > 2) {
+                                let regex = new RegExp(word, 'gi');
+                                // Remplace par le mot original (fr) avec style omni-term
+                                text = text.replace(regex, `<span class="omni-term">${variations['fr']}</span>`);
+                            }
+                        }
+                    }
                 }
             }
 
-            // Création du nouvel élément de théorie
             const newTheory = document.createElement('div');
-            newTheory.style.cssText = "background: rgba(0,255,65,0.05); border-left: 3px solid #fff; padding: 20px; margin-bottom: 20px; animation: pulse 2s;";
+            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 3px solid #fff; padding: 20px; margin-bottom: 20px;";
             newTheory.innerHTML = `
-                <span style="color:#fff; font-size:0.7rem; display:block;">NOUVEAU_SIGNAL_REÇU</span>
+                <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">NOUVEAU_SIGNAL_REÇU</span>
                 "${text}"
             `;
 
             document.getElementById('display-area').prepend(newTheory);
             
-            alert("TRANSMISSION RÉUSSIE : Analyse spectrale terminée.");
+            alert("TRANSMISSION RÉUSSIE : Signal indexé dans la base de données OMNI.");
             input.value = "";
             return false;
         }
