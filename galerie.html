@@ -25,196 +25,222 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* DÉCORS SPATIAUX RÉINSÉRÉS */
+        #access-layer { display: none; }
+
+        /* DÉCORS SPATIAUX */
         .star-field { position: fixed; width: 250%; height: 250%; top: -75%; left: -75%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 400px 400px; animation: spinGalaxy 400s linear infinite; pointer-events: none; opacity: 0.3; }
         @keyframes spinGalaxy { to { transform: rotate(360deg); } }
         
         #black-hole-alpha { position: fixed; top: 10%; right: 10%; width: 100px; height: 100px; background: black; border-radius: 50%; box-shadow: 0 0 40px #4b0082; z-index: -2; border: 1px dashed rgba(255,255,255,0.1); }
 
-        .container { max-width: 1100px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
+        .container { max-width: 1200px; margin: auto; padding: 60px 20px; text-align: center; position: relative; z-index: 100; }
         
-        /* GRILLE OPTIMISÉE */
-        #galerie-container, #world-container, #fan-cosplay-container {
+        /* GRILLES */
+        #galerie-container, #world-container, #fan-cosplay-container, #romans-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-bottom: 50px;
         }
 
-        .box { background: rgba(0, 0, 0, 0.9); border: 1px solid #333; padding: 20px; position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; transition: 0.3s; }
-        .box:hover { border-color: var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
+        .box, .roman-card { 
+            background: rgba(0, 0, 0, 0.9); border: 1px solid #333; padding: 20px; 
+            position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; transition: 0.3s; 
+        }
+        .box:hover, .roman-card:hover { border-color: var(--vhs-vert); box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); }
 
         .image-frame { position: relative; width: 100%; height: 350px; background: #000; border: 1px solid #222; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .image-frame img { width: 100%; height: 100%; object-fit: cover; }
 
         .hud-technique { position: absolute; bottom: 5px; left: 5px; font-size: 8px; background: rgba(0,0,0,0.8); padding: 5px; color: var(--vhs-vert); text-align: left; border-left: 1px solid var(--vhs-vert); pointer-events: none; z-index: 5; }
         .creator-badge { position: absolute; top: 5px; right: 5px; background: var(--vhs-vert); color: black; font-size: 8px; padding: 2px 5px; font-weight: bold; z-index: 6; }
         
         .section-title { font-size: 1rem; color: var(--vhs-vert); border-left: 3px solid var(--vhs-vert); padding-left: 15px; margin: 50px 0 25px 0; text-align: left; letter-spacing: 3px; background: rgba(0,255,65,0.05); padding-top: 5px; padding-bottom: 5px; }
 
-        .btn-action { transition: 0.2s; cursor: pointer; font-family: monospace; background: none; border: 1px solid white; color: white; padding: 10px; }
+        .btn-action { transition: 0.2s; cursor: pointer; font-family: monospace; background: none; border: 1px solid white; color: white; padding: 10px; text-decoration: none; display: inline-block; }
         .btn-action:hover { background: var(--vhs-vert); color: black; border-color: var(--vhs-vert); }
 
         .p-gold { position: fixed; top: 45%; left: 50%; width: 30px; height: 30px; background: var(--cosplay-gold); border-radius: 50%; box-shadow: 0 0 30px var(--cosplay-gold); z-index: 1001; cursor: crosshair; transform: translate(-50%, -50%); opacity: 0.6; }
+        .osd-header { position: fixed; top: 20px; left: 20px; color: var(--vhs-vert); font-size: 0.7rem; text-align: left; z-index: 1000; }
     </style>
 </head>
-<body>
+<body onload="verifierAcces()">
     <div class="star-field"></div>
     <div id="black-hole-alpha"></div>
     <div class="p-gold" ondblclick="activerModeMaitre()" title="ACCÈS MAÎTRE"></div>
 
-    <div class="container">
-        <h1 style="font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 10px;">NÉBULEUSE VISUELLE</h1>
-        <div id="signals-status" style="font-size: 10px; letter-spacing: 2px; margin-bottom: 40px; color:red; border: 1px solid; padding: 5px 15px; display: inline-block;">SIGNALS_TRACKED: OFFLINE</div>
+    <div class="osd-header">
+        MODE: ARCHIVE_VIEWER<br>
+        STATUS: <span id="status-text">WAITING...</span><br>
+        PROJET: <span id="current-project-display">NONE</span>
+    </div>
 
-        <div id="master-panel" style="background: rgba(0,20,5,0.95); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; display: none; text-align: left;">
-            <p style="color:var(--vhs-vert); font-size: 12px; margin-bottom: 20px;">[ CONTRÔLE SYSTEME HINARU ]</p>
-            <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom:20px;"></div>
-            
-            <div style="border-top: 1px dashed #333; padding-top: 20px;">
-                <input type="text" id="img-url" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; margin-bottom:5px;" placeholder="Image URL">
-                <input type="text" id="glb-url" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; margin-bottom:5px;" placeholder="GLB URL (optionnel)">
-                <textarea id="img-tech" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; height:50px;" placeholder="Tech Data..."></textarea>
-                <div style="font-size: 11px; margin: 10px 0;">
-                    Type: <select id="img-type" onchange="toggleTomeField()"><option value="Livre">LIVRE</option><option value="World">WORLD</option><option value="Fan-Cosplay">FAN-COSPLAY</option></select>
-                    <span id="tome-input-area"> Tome: <input type="number" id="img-tome" value="1" style="width:35px;"></span>
-                    Date: <input type="datetime-local" id="img-date">
+    <a href="index.html" class="btn-action" style="position:fixed; top:20px; right:20px; z-index:1000;">PORTAIL RETOUR</a>
+
+    <div id="access-layer">
+        <div class="container">
+            <h1 style="font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); margin-bottom: 10px;">NÉBULEUSE VISUELLE</h1>
+            <div id="signals-status" style="font-size: 10px; letter-spacing: 2px; margin-bottom: 40px; color:red; border: 1px solid; padding: 5px 15px; display: inline-block;">SIGNALS_TRACKED: OFFLINE</div>
+
+            <div id="master-panel" style="background: rgba(0,20,5,0.95); border: 1px solid var(--vhs-vert); padding: 20px; margin-bottom: 40px; display: none; text-align: left;">
+                <p style="color:var(--vhs-vert); font-size: 12px; margin-bottom: 20px;">[ SÉLECTEUR DE FRÉQUENCE ROMAN ]</p>
+                <div id="nav-buttons" style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom:20px;"></div>
+                
+                <div style="border-top: 1px dashed #333; padding-top: 20px;">
+                    <p style="font-size: 10px; color:cyan;">> AJOUTER UNE ARCHIVE AU PROJET ACTUEL :</p>
+                    <input type="text" id="img-url" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; margin-bottom:5px;" placeholder="Image URL">
+                    <input type="text" id="glb-url" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; margin-bottom:5px;" placeholder="GLB URL (optionnel)">
+                    <textarea id="img-tech" style="width:100%; background:black; color:white; border:1px solid #444; padding:8px; height:50px;" placeholder="Tech Data..."></textarea>
+                    <div style="font-size: 11px; margin: 10px 0;">
+                        Type: <select id="img-type"><option value="Livre">LIVRE</option><option value="World">WORLD</option><option value="Fan-Cosplay">FAN-COSPLAY</option></select>
+                        Tome: <input type="number" id="img-tome" value="1" style="width:35px; background: #000; color: #fff; border: 1px solid #444;">
+                    </div>
+                    <button class="btn-action" onclick="genererCodeSignal()" style="width:100%; background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER SIGNAL JS</button>
+                    <textarea id="output-code" style="width:100%; height:60px; display:none; margin-top:10px; background:#001; color:cyan; font-size:10px;"></textarea>
                 </div>
-                <button class="btn-action" onclick="genererCodeSignal()" style="width:100%; background:var(--vhs-vert); color:black; font-weight:bold;">GÉNÉRER SIGNAL</button>
-                <textarea id="output-code" style="width:100%; height:60px; display:none; margin-top:10px; background:#001; color:cyan; font-size:10px;"></textarea>
+            </div>
+
+            <div class="section-title">[ ARCHIVES SEQUENTIELLES DES 14 ROMANS ]</div>
+            <div id="romans-grid"></div>
+
+            <hr style="border: 0; border-top: 1px solid #222; margin: 50px 0;">
+
+            <div id="dynamic-content">
+                <div id="world-section-title" class="section-title" style="display:none;">[ ARCHIVES DU MONDE ]</div>
+                <div id="world-container"></div>
+
+                <div id="galerie-section-title" class="section-title" style="display:none;">[ DOSSIERS VISUELS ]</div>
+                <div id="galerie-container"></div>
+
+                <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold); border-color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES ]</div>
+                <div id="fan-cosplay-container"></div>
             </div>
         </div>
-
-        <div id="world-section-title" class="section-title" style="display:none;">[ ARCHIVES DU MONDE ]</div>
-        <div id="world-container"></div>
-
-        <div id="galerie-section-title" class="section-title">[ DOSSIERS VISUELS ]</div>
-        <div id="galerie-container"></div>
-
-        <div id="cosplay-section-title" class="section-title" style="display:none; color:var(--cosplay-gold); border-color:var(--cosplay-gold);">[ TRANSMISSIONS RÉELLES ]</div>
-        <div id="fan-cosplay-container"></div>
-        
-        <a href="index.html" class="btn-action" style="text-decoration:none; margin-top:60px; display:inline-block; padding: 15px 40px;">REPASSER LE PORTAIL</a>
     </div>
 
     <script>
         const romansConfig = [
-            { id: 1, nom: "Shadrasy", public: true }, { id: 2, nom: "Nébuleuse Alpha", public: false },
-            { id: 3, nom: "Projet Onyx", public: false }, { id: 4, nom: "Saga Echo", public: true },
-            { id: 5, nom: "Protocole Silence", public: false }, { id: 6, nom: "Code Hinaru", public: false },
-            { id: 7, nom: "Saga Origin", public: false }, { id: 8, nom: "Echo Stellaire", public: false },
-            { id: 9, nom: "Signal Perdu", public: false }, { id: 10, nom: "Archives W10", public: false },
-            { id: 11, nom: "Module Externe", public: false }, { id: 12, nom: "L'Eveil", public: false },
-            { id: 13, nom: "Pipeline Final", public: false }, { id: 14, nom: "Projet 14", public: false }
+            { id: 1, nom: "Shadrasy" }, { id: 2, nom: "Nébuleuse Alpha" }, { id: 3, nom: "Projet Onyx" }, 
+            { id: 4, nom: "Saga Echo" }, { id: 5, nom: "Protocole Silence" }, { id: 6, nom: "Code Hinaru" }, 
+            { id: 7, nom: "Saga Origin" }, { id: 8, nom: "Echo Stellaire" }, { id: 9, nom: "Signal Perdu" }, 
+            { id: 10, nom: "Archives W10" }, { id: 11, nom: "Module Externe" }, { id: 12, nom: "L'Eveil" }, 
+            { id: 13, nom: "Pipeline Final" }, { id: 14, nom: "Projet 14" }
         ];
 
         const urlParams = new URLSearchParams(window.location.search);
         const isHinaru = urlParams.get('Hinaru') === 'true';
-        const projetActuel = parseInt(urlParams.get('projet')) || 1;
+        const accessGranted = urlParams.get('access') === 'granted';
+        const projetActuel = parseInt(urlParams.get('projet')) || 0;
 
-        if (isHinaru) {
-            document.getElementById('master-panel').style.display = 'block';
-            document.getElementById('signals-status').innerText = "SIGNALS_TRACKED: HINARU_OVERRIDE";
-            document.getElementById('signals-status').style.color = "var(--vhs-vert)";
+        function verifierAcces() {
+            if (accessGranted || isHinaru) {
+                document.getElementById('access-layer').style.display = 'block';
+                document.getElementById('status-text').innerText = "DECRYPTED_SUCCESS";
+                document.getElementById('status-text').style.color = "var(--vhs-vert)";
+                
+                if (isHinaru) {
+                    document.getElementById('master-panel').style.display = 'block';
+                    document.getElementById('signals-status').innerText = "SIGNALS_TRACKED: HINARU_OVERRIDE";
+                    document.getElementById('signals-status').style.color = "var(--vhs-vert)";
+                    genererBoutonsNav();
+                }
+
+                document.getElementById('current-project-display').innerText = projetActuel > 0 ? `ROMAN_${projetActuel}` : "ALL_FILES";
+                
+                genererLes14Romans();
+                chargerDonneesFiltrees();
+            } else {
+                window.location.href = "index.html";
+            }
         }
 
-        function chargerGalerie() {
-            const container = document.getElementById('galerie-container');
-            const fanContainer = document.getElementById('fan-cosplay-container');
-            const worldContainer = document.getElementById('world-container');
+        function genererBoutonsNav() {
             const nav = document.getElementById('nav-buttons');
-
-            if (typeof archivesData === 'undefined') {
-                setTimeout(chargerGalerie, 100);
-                return;
-            }
-            
-            container.innerHTML = ""; fanContainer.innerHTML = ""; worldContainer.innerHTML = ""; nav.innerHTML = "";
-            document.getElementById('world-section-title').style.display = 'none';
-            document.getElementById('cosplay-section-title').style.display = 'none';
-
             romansConfig.forEach(r => {
-                if (isHinaru || r.public) {
-                    const btn = document.createElement('button');
-                    btn.className = "btn-action";
-                    btn.style.fontSize = "10px";
-                    btn.innerText = `R${r.id}: ${r.nom.toUpperCase()}`;
-                    if(r.id === projetActuel) {
-                        btn.style.borderColor = "var(--vhs-vert)";
-                        btn.style.color = "var(--vhs-vert)";
-                    }
-                    btn.onclick = () => { 
-                        const newUrl = new URL(window.location.href);
-                        newUrl.searchParams.set('projet', r.id);
-                        if(isHinaru) newUrl.searchParams.set('Hinaru', 'true');
-                        window.location.href = newUrl.toString();
-                    };
-                    nav.appendChild(btn);
-                }
+                const btn = document.createElement('button');
+                btn.className = "btn-action";
+                btn.style.fontSize = "9px";
+                btn.innerText = `R${r.id}`;
+                if(r.id === projetActuel) btn.style.borderColor = "cyan";
+                btn.onclick = () => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('projet', r.id);
+                    window.location.href = url.toString();
+                };
+                nav.appendChild(btn);
             });
+        }
 
-            const now = new Date();
-            const filteredData = archivesData.filter(item => item.roman === projetActuel);
-
-            if (filteredData.length === 0) {
-                container.innerHTML = "<p style='color:orange; font-size:12px;'>[ AUCUNE ARCHIVE DÉTECTÉE ]</p>";
+        function genererLes14Romans() {
+            const grid = document.getElementById('romans-grid');
+            grid.innerHTML = "";
+            for (let i = 1; i <= 14; i++) {
+                const isActive = i === projetActuel;
+                grid.innerHTML += `
+                    <div class="roman-card" style="${isActive ? 'border-color:cyan;' : ''}">
+                        <div class="roman-number">SEQ_${i.toString().padStart(3, '0')}</div>
+                        <div class="image-frame">
+                            <img src="img/roman${i}.jpg" onerror="this.src='https://via.placeholder.com/300x400/000/00ff41?text=ROMAN+${i}'">
+                        </div>
+                        <h2 style="font-size:0.9rem;">${romansConfig[i-1].nom.toUpperCase()}</h2>
+                        <button class="btn-action" onclick="filtrerProjet(${i})" style="font-size:10px;">${isActive ? 'SÉLECTIONNÉ' : 'VOIR ARCHIVES'}</button>
+                    </div>
+                `;
             }
+        }
 
-            filteredData.forEach((item, index) => {
-                const releaseDate = new Date(item.date);
-                if (!isHinaru && now < releaseDate) return;
+        function filtrerProjet(id) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('projet', id);
+            window.location.href = url.toString();
+        }
 
+        function chargerDonneesFiltrees() {
+            if (typeof archivesData === 'undefined' || projetActuel === 0) return;
+
+            const worldContainer = document.getElementById('world-container');
+            const galerieContainer = document.getElementById('galerie-container');
+            const fanContainer = document.getElementById('fan-cosplay-container');
+
+            const filtered = archivesData.filter(item => item.roman === projetActuel);
+
+            filtered.forEach(item => {
                 const box = document.createElement('div');
                 box.className = 'box';
+                const media = item.glb ? 
+                    `<model-viewer src="${item.glb}" poster="${item.url}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>` : 
+                    `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
                 
-                const hud = item.tech ? `<div class="hud-technique"><b>CINEMATIC_SCAN</b><br>${item.tech.split('\n').map(l=>`> ${l}`).join('<br>')}</div>` : "";
-                const badge = item.nom && (item.nom.includes("Hinaru") || item.nom.includes("Creator")) ? `<div class="creator-badge">ORIGINAL CREATOR</div>` : "";
-                let media = item.glb ? `<model-viewer src="${item.glb}" poster="${item.url}" auto-rotate camera-controls style="width:100%; height:100%;"></model-viewer>` : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`;
-
                 box.innerHTML = `
                     <div class="image-frame">
-                        ${badge}${media}${hud}
+                        ${item.nom && item.nom.includes("Hinaru") ? '<div class="creator-badge">ORIGINAL</div>' : ''}
+                        ${media}
+                        <div class="hud-technique">${item.tech || 'DATA_SCAN_PENDING'}</div>
                     </div>
-                    <div style="font-size:10px; text-align:left; color:var(--bleu-tech); margin:10px 0;">
-                        ID: #${index + 1000} | TYPE: ${item.type.toUpperCase()} | TOME: ${item.tome || '1'}
-                    </div>`;
+                    <div style="font-size:9px; margin-top:10px; color:var(--bleu-tech);">TYPE: ${item.type} | TOME: ${item.tome || 1}</div>
+                `;
 
-                if (item.glb) {
-                    const btnImmersion = document.createElement('button');
-                    btnImmersion.className = "btn-action";
-                    btnImmersion.style.cssText = "width:100%; border-color:var(--vhs-vert); color:var(--vhs-vert); font-size:10px; font-weight:bold; margin-top:auto;";
-                    btnImmersion.innerText = "🚀 IMMERSION ZQSD";
-                    btnImmersion.onclick = () => {
-                        const rConf = romansConfig.find(r => r.id === item.roman);
-                        window.location.href = `visite.html?glb=${encodeURIComponent(item.glb)}&roman=${encodeURIComponent(rConf ? rConf.nom : "Inconnu")}&id=${index}`;
-                    };
-                    box.appendChild(btnImmersion);
+                if (item.type === 'World') {
+                    worldContainer.appendChild(box);
+                    document.getElementById('world-section-title').style.display = 'block';
+                } else if (item.type === 'Fan-Cosplay') {
+                    fanContainer.appendChild(box);
+                    document.getElementById('cosplay-section-title').style.display = 'block';
+                } else {
+                    galerieContainer.appendChild(box);
+                    document.getElementById('galerie-section-title').style.display = 'block';
                 }
-
-                if(item.type === 'World') { 
-                    worldContainer.appendChild(box); 
-                    document.getElementById('world-section-title').style.display = 'block'; 
-                }
-                else if(item.type === 'Fan-Cosplay') { 
-                    fanContainer.appendChild(box); 
-                    document.getElementById('cosplay-section-title').style.display = 'block'; 
-                }
-                else container.appendChild(box);
             });
         }
 
         function activerModeMaitre() { 
             const url = new URL(window.location.href);
             url.searchParams.set('Hinaru', 'true');
+            url.searchParams.set('access', 'granted');
             window.location.href = url.toString(); 
         }
 
-        function toggleTomeField() { 
-            document.getElementById('tome-input-area').style.display = (document.getElementById('img-type').value === 'Livre') ? 'inline' : 'none'; 
-        }
-
         function genererCodeSignal() {
-            const code = `{ url: "${document.getElementById('img-url').value}", glb: "${document.getElementById('glb-url').value}", tech: \`${document.getElementById('img-tech').value}\`, roman: ${projetActuel}, type: "${document.getElementById('img-type').value}", tome: ${document.getElementById('img-tome').value}, date: "${document.getElementById('img-date').value}", nom: "Hinaru (Creator)" },`;
+            const code = `{ url: "${document.getElementById('img-url').value}", glb: "${document.getElementById('glb-url').value}", tech: \`${document.getElementById('img-tech').value}\`, roman: ${projetActuel}, type: "${document.getElementById('img-type').value}", tome: ${document.getElementById('img-tome').value}, date: "${new Date().toISOString()}", nom: "Hinaru (Creator)" },`;
             const out = document.getElementById('output-code'); out.value = code; out.style.display = 'block';
         }
-
-        window.onload = chargerGalerie;
     </script>
 </body>
 </html>
