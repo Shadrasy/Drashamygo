@@ -31,117 +31,108 @@
         }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* EFFET SCANLINE & GRAIN VHS */
+        /* EFFET VHS */
         body::before {
             content: " "; display: block; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
-                        linear-gradient(90deg, rgba(255,0,0,0.03), rgba(0,255,0,0.01), rgba(0,0,255,0.03));
-            z-index: 9999; background-size: 100% 3px, 3px 100%; pointer-events: none; opacity: 0.5;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            z-index: 9999; background-size: 100% 4px; pointer-events: none; opacity: 0.4;
         }
 
-        /* --- HEADER OSD --- */
+        /* --- HEADER --- */
         .osd-header { 
             position: fixed; top: 0; left: 0; right: 0; height: 60px; 
-            background: rgba(0,0,0,0.9); border-bottom: 1px solid var(--vhs-vert-dim);
+            background: rgba(0,0,0,0.95); border-bottom: 1px solid var(--vhs-vert-dim);
             z-index: 10000; display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
         }
 
-        .btn-action {
-            background: none; border: 1px solid #444; color: #888;
-            padding: 8px 15px; font-size: 10px; cursor: pointer; text-decoration: none;
-            transition: 0.3s; text-transform: uppercase; font-family: inherit;
+        .btn-exit { 
+            border: 1px solid var(--bordeaux); color: var(--bordeaux); 
+            padding: 8px 15px; font-size: 10px; text-decoration: none; transition: 0.3s;
         }
-        .btn-action:hover { border-color: white; color: white; box-shadow: 0 0 10px rgba(255,255,255,0.2); }
-        .btn-master-on { border-color: var(--vhs-vert); color: var(--vhs-vert); box-shadow: 0 0 15px var(--vhs-vert-dim); }
-        .btn-exit { border-color: var(--bordeaux); color: var(--bordeaux); }
+        .btn-exit:hover { background: var(--bordeaux); color: white; }
 
-        /* --- NAVIGATION PLANÈTES (RÉAJUSTÉE) --- */
+        /* ZONE CACHÉE : Double clic sur l'heure pour activer le mode Maître */
+        #hidden-trigger { cursor: default; user-select: none; }
+
+        /* --- NAVIGATION PLANÈTES --- */
         .nav-planets { 
-            position: fixed; left: 20px; top: 100px; z-index: 10005; 
-            display: flex; flex-direction: column; gap: 25px; 
-            padding: 15px; background: rgba(0,0,0,0.4); border-radius: 30px; border-left: 1px solid var(--vhs-vert-dim);
+            position: fixed; left: 20px; top: 120px; z-index: 10005; 
+            display: flex; flex-direction: column; gap: 30px; 
         }
         .planet-box { position: relative; cursor: pointer; display: flex; align-items: center; }
         .planet { 
             width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); 
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; z-index: 2;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .planet:hover { transform: scale(1.2) rotate(20deg); border-color: white; box-shadow: 0 0 15px white; }
-        .planet.active { border-color: var(--vhs-vert); box-shadow: 0 0 25px var(--vhs-vert); }
+        .planet:hover { transform: scale(1.2) rotate(15deg); border-color: white; }
+        .planet.active { border-color: var(--vhs-vert); box-shadow: 0 0 20px var(--vhs-vert); }
         
         .p-gold { background: radial-gradient(circle at 30% 30%, #fff, var(--cosplay-gold), #600); }
         .p-blue { background: radial-gradient(circle at 30% 30%, #fff, #00ffff, #001a33); }
         .p-red { background: radial-gradient(circle at 30% 30%, #fff, var(--standard-magenta), #300); }
 
         .planet-label { 
-            position: absolute; left: 55px; font-size: 9px; opacity: 0; transition: 0.3s; 
-            white-space: nowrap; color: var(--vhs-vert); border-left: 2px solid var(--vhs-vert); 
-            padding-left: 10px; pointer-events: none;
+            position: absolute; left: 60px; font-size: 9px; opacity: 0; transition: 0.3s; 
+            white-space: nowrap; color: var(--vhs-vert); border-left: 2px solid var(--vhs-vert); padding-left: 10px;
         }
-        .planet-box:hover .planet-label { opacity: 1; left: 65px; }
+        .planet-box:hover .planet-label { opacity: 1; }
 
-        /* --- ROMANS GRID (Quick Switch) --- */
+        /* --- ROMANS GRID --- */
         #romans-selector { 
-            display: flex; gap: 15px; overflow-x: auto; padding: 10px; 
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 30px;
+            display: flex; gap: 10px; overflow-x: auto; padding: 15px; 
+            background: rgba(255,255,255,0.02); border: 1px solid #111; margin-bottom: 30px;
         }
         .roman-tab { 
-            min-width: 120px; height: 60px; background: #000; border: 1px solid #222; 
-            display: flex; align-items: center; justify-content: center; font-size: 9px; 
-            cursor: pointer; transition: 0.3s; color: #555; text-align: center;
+            min-width: 130px; padding: 10px; background: #000; border: 1px solid #222; 
+            font-size: 9px; cursor: pointer; transition: 0.3s; text-align: center; color: #666;
         }
-        .roman-tab.active { border-color: var(--vhs-vert); color: var(--vhs-vert); background: rgba(0,255,65,0.05); }
+        .roman-tab.active { border-color: var(--vhs-vert); color: var(--vhs-vert); }
 
-        /* --- GRID & CARDS --- */
-        .container { max-width: 1600px; margin: 100px auto 0 100px; padding-right: 40px; }
-        .glitch-title { font-size: 2.5rem; letter-spacing: 15px; margin-bottom: 50px; text-transform: uppercase; text-shadow: 2px 0 var(--standard-magenta), -2px 0 var(--bleu-tech); }
+        /* --- GALLERY & CARDS --- */
+        .container { max-width: 1400px; margin: 100px auto 50px 100px; padding-right: 50px; }
+        .glitch-title { font-size: 2rem; letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; }
         
-        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
-        
+        .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
         .box { 
-            background: rgba(5,5,5,0.9); border: 1px solid #1a1a1a; padding: 15px; position: relative; 
-            transition: 0.3s; clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); 
+            background: rgba(5,5,5,0.9); border: 1px solid #1a1a1a; padding: 12px; position: relative; 
+            clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%); 
         }
-        .box:hover { border-color: #444; transform: translateY(-5px); }
 
-        .image-frame { width: 100%; height: 400px; background: black; overflow: hidden; border: 1px solid #111; position: relative; }
+        .image-frame { width: 100%; height: 380px; background: black; overflow: hidden; position: relative; border: 1px solid #111; }
         
-        /* HUD ELEMENTS SUR CARTES */
-        .card-hud { position: absolute; top: 10px; right: 10px; font-size: 7px; color: var(--bleu-tech); text-align: right; pointer-events: none; }
-        .scanline-card { position: absolute; width: 100%; height: 2px; background: rgba(0, 255, 65, 0.1); top: 0; animation: moveScan 3s linear infinite; }
-        @keyframes moveScan { from { top: 0; } to { top: 100%; } }
+        .card-hud { position: absolute; top: 5px; right: 8px; font-size: 7px; color: var(--bleu-tech); opacity: 0.6; }
+        .scanline { position: absolute; width: 100%; height: 1px; background: rgba(0, 255, 65, 0.2); top: 0; animation: scan 4s linear infinite; }
+        @keyframes scan { from { top: 0; } to { top: 100%; } }
 
-        /* SYSTEM LOG BOTTOM LEFT */
-        #sys-logs { position: fixed; bottom: 20px; left: 20px; font-size: 8px; color: var(--vhs-vert); opacity: 0.7; z-index: 10000; }
+        /* MASTER BUTTONS */
+        .master-controls { margin-top: 10px; padding-top: 10px; border-top: 1px solid #222; display: flex; gap: 10px; }
+        .btn-edit { background: var(--vhs-vert); color: black; border: none; padding: 5px 10px; font-size: 9px; font-weight: bold; cursor: pointer; }
+        .btn-del { background: var(--bordeaux); color: white; border: none; padding: 5px 10px; font-size: 9px; font-weight: bold; cursor: pointer; }
 
-        /* LOADING OVERLAY */
+        /* LOADING */
         #loading-overlay { position: fixed; inset: 0; background: black; z-index: 20000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--vhs-vert); }
-        .bar-container { width: 300px; height: 2px; background: #111; margin-top: 20px; }
-        .bar-fill { height: 100%; background: var(--vhs-vert); width: 0%; transition: 0.1s; }
+        .bar-fill { height: 2px; background: var(--vhs-vert); width: 0%; transition: 0.1s; }
     </style>
 </head>
 <body onload="bootSystem()">
 
     <div id="loading-overlay">
-        <div id="boot-logs" style="font-size: 10px; width: 400px; height: 100px; overflow: hidden; margin-bottom: 20px; color: #555;"></div>
-        <div style="font-size: 12px; letter-spacing: 5px;">INITIALIZING_NEBULA_CORE</div>
-        <div class="bar-container"><div id="load-bar" class="bar-fill"></div></div>
+        <div id="boot-logs" style="font-size: 9px; width: 300px; height: 80px; margin-bottom: 20px; color: #444;"></div>
+        <div style="font-size: 10px; letter-spacing: 3px;">INITIALIZING_CORE</div>
+        <div style="width: 200px; height: 2px; background: #111; margin-top: 15px;"><div id="load-bar" class="bar-fill"></div></div>
     </div>
-
-    <div id="sys-logs">
-        STATUS: SECURED<br>NODE: 04-HINARU<br>SIGNAL: 99%
-    </div>
-
-    <div class="nebula-layer"></div>
-    <div class="star-field"></div>
 
     <div class="osd-header">
-        <a href="index.html" class="btn-action btn-exit">← EXIT_TO_MAIN</a>
+        <a href="index.html" class="btn-exit">EXIT_ARCHIVE</a>
+        
         <div style="text-align: center;">
-            <div style="font-size: 12px; letter-spacing: 5px; color: var(--vhs-vert);">PROTOCOL_HINARU</div>
-            <div style="font-size: 8px; color: #555;">SYS_TIME: <span id="clock-display"></span></div>
+            <div style="font-size: 11px; letter-spacing: 4px; color: var(--vhs-vert);">DATABASE_SECURED</div>
+            <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #555;">
+                SYS_TIME: <span id="clock-display">00:00:00</span>
+            </div>
         </div>
-        <button id="master-btn" class="btn-action" onclick="toggleMaster()">MODE: VISITEUR</button>
+
+        <div id="status-tag" style="font-size: 10px; color: #333;">V.2031_STABLE</div>
     </div>
 
     <div class="nav-planets">
@@ -156,15 +147,17 @@
         </div>
     </div>
 
+    <div class="nebula-layer"></div>
+    <div class="star-field"></div>
+
     <div id="app-content" style="display:none; opacity:0; transition: 1s;">
         <div class="container">
-            <h1 class="glitch-title">Nébuleuse_Visuelle</h1>
+            <h1 class="glitch-title">Nébuleuse_Archives</h1>
             
             <div id="romans-selector"></div>
 
-            <div style="display: flex; gap: 20px; margin-bottom: 40px; background: rgba(255,255,255,0.02); padding: 15px; border: 1px solid rgba(255,255,255,0.05);">
-                <span style="font-size: 10px; color: var(--vhs-vert);">> SEARCH_DB:</span>
-                <input type="text" id="search" oninput="loadData()" placeholder="..." style="background: none; border: none; border-bottom: 1px solid #333; color: var(--bleu-tech); outline: none; width: 300px; font-family: inherit;">
+            <div style="display: flex; gap: 15px; margin-bottom: 30px; background: rgba(0,0,0,0.3); padding: 12px; border-left: 3px solid var(--vhs-vert);">
+                <input type="text" id="search" oninput="loadData()" placeholder="SEARCH_DATABASE..." style="background: none; border: none; color: var(--bleu-tech); outline: none; width: 100%; font-family: inherit; font-size: 12px;">
             </div>
 
             <div id="gallery" class="archive-grid"></div>
@@ -181,11 +174,11 @@
 
         function bootSystem() {
             const logs = document.getElementById('boot-logs');
-            const messages = ["> MAPPING_STARS...", "> LOADING_DATABASE...", "> CHECKING_AUTH...", "> ACCESS_GRANTED"];
+            const msgs = ["> BOOTING...", "> LOAD_DB_LOCAL...", "> ENCRYPT_SESSION...", "> READY."];
             let i = 0;
             const interval = setInterval(() => {
-                if (i < messages.length) {
-                    logs.innerHTML += messages[i] + "<br>";
+                if (i < msgs.length) {
+                    logs.innerHTML += msgs[i] + "<br>";
                     document.getElementById('load-bar').style.width = ((i+1) * 25) + "%";
                     i++;
                 } else {
@@ -195,18 +188,15 @@
                     setTimeout(() => { document.getElementById('app-content').style.opacity = '1'; }, 100);
                     initApp();
                 }
-            }, 300);
+            }, 250);
 
-            setInterval(() => {
-                document.getElementById('clock-display').innerText = new Date().toLocaleTimeString();
-            }, 1000);
+            setInterval(() => { document.getElementById('clock-display').innerText = new Date().toLocaleTimeString(); }, 1000);
         }
 
         function initApp() {
-            const btn = document.getElementById('master-btn');
             if (STATE.isMaster) {
-                btn.innerText = "MODE: MAÎTRE (ON)";
-                btn.classList.add('btn-master-on');
+                document.getElementById('status-tag').style.color = "var(--vhs-vert)";
+                document.getElementById('status-tag').innerText = "ADMIN_ACCESS_GRANTED";
             }
             renderRomans();
             loadData();
@@ -216,7 +206,7 @@
             const selector = document.getElementById('romans-selector');
             selector.innerHTML = STATE.romans.map((name, index) => `
                 <div class="roman-tab ${STATE.projet == (index + 1) ? 'active' : ''}" onclick="changeProjet(${index + 1})">
-                    PROJET_${index + 1}<br>${name.toUpperCase()}
+                    R-${index + 1}: ${name.toUpperCase()}
                 </div>
             `).join('');
         }
@@ -227,21 +217,21 @@
             window.location.href = url.href;
         }
 
+        // FONCTION CACHÉE : S'active au double-clic sur l'horloge
         function toggleMaster() {
             const url = new URL(window.location);
-            if (STATE.isMaster) { url.searchParams.delete('Hinaru'); } 
-            else { url.searchParams.set('Hinaru', 'true'); url.searchParams.set('access', 'granted'); }
+            if (STATE.isMaster) {
+                url.searchParams.delete('Hinaru');
+            } else {
+                url.searchParams.set('Hinaru', 'true');
+            }
             window.location.href = url.href;
         }
 
         function filterData(type, el) {
             document.querySelectorAll('.planet').forEach(p => p.classList.remove('active'));
-            if (STATE.activeType === type) {
-                STATE.activeType = null;
-            } else {
-                STATE.activeType = type;
-                el.querySelector('.planet').classList.add('active');
-            }
+            if (STATE.activeType === type) { STATE.activeType = null; } 
+            else { STATE.activeType = type; el.querySelector('.planet').classList.add('active'); }
             loadData();
         }
 
@@ -264,19 +254,19 @@
                 const is3D = item.glb && item.glb !== "";
                 
                 box.innerHTML = `
-                    <div class="card-hud">ID: ${item.id || '00'} | TYPE: ${item.type.toUpperCase()}</div>
-                    <div class="scanline-card"></div>
+                    <div class="card-hud">F-ID: ${item.id || 'XX'}</div>
+                    <div class="scanline"></div>
                     <div class="image-frame">
                         ${is3D ? `<model-viewer src="${item.glb}" camera-controls auto-rotate style="width:100%; height:100%;"></model-viewer>` 
                                : `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;">`}
                     </div>
-                    <div style="margin-top:15px;">
-                        <span style="font-size:8px; color:var(--vhs-vert)">[ ARCHIVE_FILE ]</span>
-                        <div style="font-weight:bold; font-size:14px; color:white;">${item.nom}</div>
+                    <div style="margin-top:10px;">
+                        <span style="font-size:7px; color:var(--vhs-vert)">[${item.type.toUpperCase()}]</span>
+                        <div style="font-weight:bold; font-size:12px; color:white;">${item.nom}</div>
                         ${STATE.isMaster ? `
-                            <div style="margin-top:10px; border-top:1px solid #222; padding-top:10px; display:flex; gap:10px;">
-                                <button onclick="alert('EDIT: ${item.nom}')" style="background:var(--vhs-vert); color:black; border:none; padding:5px 10px; font-size:9px; font-weight:bold; cursor:pointer;">EDIT</button>
-                                <button onclick="alert('DEL: ${item.nom}')" style="background:var(--bordeaux); color:white; border:none; padding:5px 10px; font-size:9px; font-weight:bold; cursor:pointer;">DELETE</button>
+                            <div class="master-controls">
+                                <button class="btn-edit" onclick="alert('EDITING...')">EDIT</button>
+                                <button class="btn-del" onclick="alert('DELETING...')">DELETE</button>
                             </div>
                         ` : ''}
                     </div>
