@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archives - Nébuleuse Visuelle (V100.9.30) - SECURED SYSTEM V2031</title>
     
-    <script src="security.js"></script>
     <script src="archives-data.js"></script>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
@@ -26,14 +25,9 @@
 
         /* RESET & BASE */
         body { 
-            margin: 0; 
-            background-color: var(--noir-fond); 
-            color: white; 
-            font-family: var(--font-main); 
-            min-height: 100vh; 
-            overflow-x: hidden;
-            background-attachment: fixed;
-            scroll-behavior: smooth;
+            margin: 0; background-color: var(--noir-fond); color: white; 
+            font-family: var(--font-main); min-height: 100vh; overflow-x: hidden;
+            background-attachment: fixed; scroll-behavior: smooth;
         }
 
         /* --- BACKGROUND ENGINE --- */
@@ -152,11 +146,11 @@
         <a href="index.html" class="btn-exit">EXIT_ARCHIVE</a>
         <div style="text-align: center;">
             <div style="font-size: 11px; letter-spacing: 4px; color: var(--vhs-vert);">NÉBULEUSE VISUELLE V2031</div>
-            <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #555; cursor:pointer;">
+            <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #333; cursor:default; user-select:none;">
                 SYS_TIME: <span id="clock-display">00:00:00</span> | VRAM: <span id="vram-usage">0MB</span>
             </div>
         </div>
-        <div id="status-tag" style="font-size: 10px; color: #333;">PROTECTED_MODE</div>
+        <div id="status-tag" style="font-size: 10px; color: #1a1a1a;">PROTECTED_MODE</div>
     </div>
 
     <div class="sys-log" id="sys-log">
@@ -191,6 +185,12 @@
     </div>
 
     <script>
+        const SYSTEM_CONFIG = {
+            version: "100.9.30",
+            githubUser: "TON_NOM_GITHUB", 
+            githubRepo: "TON_DEPOT"
+        };
+
         const STATE = {
             isMaster: new URLSearchParams(window.location.search).get('Hinaru') === 'true',
             projet: new URLSearchParams(window.location.search).get('projet') || 1,
@@ -213,7 +213,16 @@
             ]
         };
 
+        // --- 1. SÉCURITÉ INTÉGRITÉ ---
+        function checkSystemIntegrity() {
+            if (SYSTEM_CONFIG.version !== "100.9.30") {
+                console.error("CRITICAL: SYSTEM MODIFIED. RELOADING...");
+                window.location.reload(); 
+            }
+        }
+
         function bootSystem() {
+            checkSystemIntegrity();
             const logs = document.getElementById('boot-logs');
             const messages = [
                 "> INITIALIZING KERNEL...", 
@@ -310,40 +319,51 @@
                 const matchProjet = item.roman == STATE.projet;
                 const matchType = !STATE.filter || item.type === STATE.filter;
                 const matchSearch = !searchVal || item.nom.toLowerCase().includes(searchVal);
+                
+                // --- LOGIQUE PRIVÉE ---
+                if (item.prive && !STATE.isMaster) return false;
+                
                 return matchProjet && matchType && matchSearch;
             });
 
             filtered.forEach(item => {
-                const box = createComplexCard(item);
-                mainGrid.appendChild(box);
+                mainGrid.appendChild(createComplexCard(item));
             });
 
             document.getElementById('vram-usage').innerText = (filtered.length * 12.4).toFixed(1) + "MB";
         }
 
+        // --- 2. FONCTION CARTE AVEC RÉCUPÉRATION AUTO ---
         function createComplexCard(item) {
             const box = document.createElement('div');
             box.className = 'box';
+            if (item.prive) box.style.border = "1px dashed var(--bordeaux)";
             
+            const backupUrl = `https://raw.githubusercontent.com/${SYSTEM_CONFIG.githubUser}/${SYSTEM_CONFIG.githubRepo}/main/${item.url}`;
+
             const is3D = item.glb && item.glb !== "";
             let mediaHTML = "";
 
             if (is3D) {
-                mediaHTML = `<model-viewer src="${item.glb}" camera-controls auto-rotate shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>`;
+                mediaHTML = `<model-viewer src="${item.glb}" 
+                                onerror="this.src='${item.glb_backup || 'models/fallback.glb'}'"
+                                camera-controls auto-rotate shadow-intensity="1" style="width:100%; height:100%;"></model-viewer>`;
             } else if (item.isFolder) {
                 mediaHTML = `<div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(0,255,65,0.05); cursor:pointer;">
                                 <img src="${item.url}" style="width:100%; height:100%; object-fit:cover; opacity:0.3; filter:grayscale(1);">
                                 <div style="position:absolute; bottom:20px; font-size:9px; color:var(--vhs-vert); font-weight:bold;">📂 OPEN_DIR</div>
                              </div>`;
             } else {
-                mediaHTML = `<img src="${item.url}" style="width:100%; height:100%; object-fit:cover;" loading="lazy">`;
+                mediaHTML = `<img src="${item.url}" 
+                                onerror="if(this.src != '${backupUrl}') { this.src='${backupUrl}'; console.warn('RECOVERY_MODE active'); }"
+                                style="width:100%; height:100%; object-fit:cover;" loading="lazy">`;
             }
 
             box.innerHTML = `
-                <div class="card-hud">FILE_ID: ${item.id || 'N/A'}<br>ENC: AES-256</div>
+                <div class="card-hud">FILE_ID: ${item.id || 'N/A'}<br>${item.prive ? 'SECURED_DATA' : 'PUBLIC_DATA'}</div>
                 <div class="scanline"></div>
                 ${item.inedit ? '<div class="badge-inedit">INÉDIT</div>' : ''}
-                ${(item.nom && item.nom.includes('Hinaru')) ? '<div class="badge-master">MASTER_AUTH</div>' : ''}
+                ${item.prive ? '<div class="badge-master" style="background:var(--bordeaux); color:white;">PRIVE</div>' : ''}
                 
                 <div class="image-frame">${mediaHTML}</div>
                 
@@ -355,7 +375,7 @@
                         <div class="master-controls">
                             <button class="btn-edit">EDIT</button>
                             <button class="btn-del">DEL</button>
-                            <span style="font-size:7px; color:var(--bleu-tech); align-self:center;">V2031_SYNC</span>
+                            <span style="font-size:7px; color:var(--bleu-tech); align-self:center;">V2031_RECOVERY_ON</span>
                         </div>
                     ` : ''}
                 </div>
