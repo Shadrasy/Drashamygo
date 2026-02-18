@@ -11,162 +11,186 @@
 
     <style>
         :root { 
-            --noir-fond: #000000; 
-            --rouge-vif: #ff0033; 
+            /* --- PALETTE INTERFACE (Bordeaux Strict) --- */
             --bordeaux: #660011; 
-            --noir-profond: #050000;
-            --rouge-aura: rgba(255, 0, 50, 0.2);
-            --jet-faisceau: rgba(255, 255, 255, 0.8);
-            --cosplay-gold: #ffcc00;
+            --bordeaux-lumineux: #880015;
+            --ui-text: #660011;
+            
+            /* --- PALETTE ESPACE (Rendu Naturel) --- */
+            --space-black: #020205;
+            --nebula-blue: rgba(0, 50, 150, 0.2); /* Hydrogène bleu profond */
+            --nebula-rose: rgba(255, 100, 200, 0.15); /* Magenta pâle */
+            --star-white: #fdfbff; /* Blanc crème */
+            --pulsar-cyan: rgba(200, 230, 255, 0.8); /* Blanc bleuté thermique */
         }
 
         body { 
-            margin: 0; background-color: var(--noir-fond); color: white; 
+            margin: 0; background-color: var(--space-black); color: white; 
             font-family: 'Courier New', monospace; overflow-x: hidden;
             user-select: none; display: flex; flex-direction: column;
             align-items: center; justify-content: center; min-height: 100vh;
         }
 
-        /* --- MOTEUR VHS (Suppression des teintes bleues/vertes) --- */
+        /* --- MOTEUR VHS (Naturel, sans dérive chromatique) --- */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 0, 0, 0), rgba(100, 0, 0, 0.02));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
-            mix-blend-mode: overlay;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0), rgba(255,255,255,0.01));
+            z-index: 999; background-size: 100% 3px, 4px 100%; pointer-events: none;
+            opacity: 0.4;
         }
         
-        /* --- DÉCORS GALACTIQUES (Nettoyage des couleurs) --- */
+        /* --- DÉCORS GALACTIQUES NATURELS --- */
         .bg-layer { position: fixed; inset: 0; pointer-events: none; }
-        .redshift { background: radial-gradient(circle, transparent 40%, rgba(150, 0, 0, 0.15) 100%); z-index: -1; }
-        .spiral { background: conic-gradient(from 0deg, transparent, rgba(255, 0, 50, 0.05) 10%, transparent 50%); width: 250vmax; height: 250vmax; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spin 300s linear infinite; z-index: -8; }
-        .stars { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent); background-size: 300px 300px; opacity: 0.6; animation: spin 240s linear infinite; z-index: -5; }
-        .nebula-gas { background: radial-gradient(circle at 30% 70%, rgba(255, 0, 50, 0.05) 0%, transparent 50%); animation: gas-pulse 10s infinite alternate ease-in-out; z-index: -9; }
+        
+        /* Nébuleuses : Mélange Bleu Hydrogène et Rose pâle */
+        .nebula-gas { 
+            background: 
+                radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
+            filter: blur(40px);
+            animation: gas-pulse 15s infinite alternate ease-in-out; 
+            z-index: -9; 
+        }
 
-        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes gas-pulse { from { opacity: 0.3; } to { opacity: 0.7; } }
+        .stars { 
+            background-image: 
+                radial-gradient(1px 1px at 25px 35px, var(--star-white), transparent), 
+                radial-gradient(1.5px 1.5px at 150px 250px, #fff, transparent),
+                radial-gradient(1px 1px at 400px 100px, #ddf, transparent); 
+            background-size: 400px 400px; opacity: 0.5; z-index: -5; 
+        }
 
-        /* --- QUASAR (100% Rouge & Blanc) --- */
-        .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
-        .black-hole { width: 100%; height: 100%; background: black; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 30px var(--rouge-vif); }
-        .jet { position: absolute; top: 50%; left: 50%; width: 4px; height: 1000px; background: linear-gradient(0deg, transparent, var(--rouge-vif), white, var(--rouge-vif), transparent); transform: translate(-50%, -50%) rotate(45deg); box-shadow: 0 0 30px var(--rouge-vif); }
+        @keyframes gas-pulse { from { opacity: 0.4; transform: scale(1); } to { opacity: 0.8; transform: scale(1.1); } }
 
-        /* --- PLANÈTES (Ajustement des teintes sombres) --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); top: 50%; left: 50%; }
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
+        /* --- PULSAR (Blanc bleuté / Naturel) --- */
+        .quasar-container { position: fixed; top: 15%; right: 10%; width: 120px; height: 120px; z-index: -2; filter: drop-shadow(0 0 20px var(--pulsar-cyan)); }
+        .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: inset 0 0 20px var(--pulsar-cyan); }
+        .jet { 
+            position: absolute; top: 50%; left: 50%; width: 2px; height: 800px; 
+            background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); 
+            transform: translate(-50%, -50%) rotate(35deg); opacity: 0.6;
+        }
 
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 20px var(--cosplay-gold); animation: orbitA 45s linear infinite; }
-        .p-red { width: 140px; height: 140px; background: #440000; border: 1px solid var(--rouge-vif); animation: orbitA 80s linear infinite reverse; }
-        .p-dark { width: 160px; height: 160px; background: #110000; border: 1px solid #330000; animation: orbitB 90s linear infinite; }
-
-        /* --- INTERFACE TERMINAL (ROUGE PUR) --- */
+        /* --- INTERFACE TERMINAL (ROUGE BORDEAUX STRICT) --- */
         .terminal-container {
-            position: relative; z-index: 100; width: 85%; max-width: 950px;
-            border: 2px solid var(--bordeaux); padding: 40px;
-            background: rgba(0, 0, 0, 0.96); box-shadow: 0 0 40px rgba(255, 0, 0, 0.25);
+            position: relative; z-index: 100; width: 85%; max-width: 900px;
+            border: 1px solid var(--bordeaux); padding: 40px;
+            background: rgba(0, 0, 0, 0.92); 
+            box-shadow: 0 0 30px rgba(102, 0, 17, 0.3); /* Lueur bordeaux discrète */
             text-align: center;
         }
 
         .header-sys {
-            position: absolute; top: -15px; left: 30px;
+            position: absolute; top: -12px; left: 30px;
             background: black; padding: 0 15px;
-            font-size: 13px; border: 1px solid var(--rouge-vif); color: var(--rouge-vif);
+            font-size: 11px; border: 1px solid var(--bordeaux); color: var(--bordeaux);
+            text-transform: uppercase; letter-spacing: 2px;
         }
 
         .glitch-title {
-            font-size: 4rem; font-weight: bold; letter-spacing: 15px;
-            color: white; text-shadow: 3px 0 var(--rouge-vif);
+            font-size: 3.5rem; font-weight: bold; letter-spacing: 12px;
+            color: #fff; text-shadow: 2px 0 var(--bordeaux);
         }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVIGATION UI --- */
         .nav-menu { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .box {
-            text-decoration: none; color: white; border: 1px solid #222;
-            padding: 30px 15px; transition: 0.3s; background: rgba(10, 0, 0, 0.4);
-        }
-        .box:hover { border-color: var(--rouge-vif); background: rgba(255, 0, 0, 0.08); }
         
+        .box {
+            text-decoration: none; color: #ccc; border: 1px solid #1a1a1a;
+            padding: 30px 15px; transition: 0.3s; background: rgba(5, 0, 0, 0.6);
+        }
+        
+        /* Bordures et boutons passent en bordeaux au survol */
+        .box:hover { border-color: var(--bordeaux); background: rgba(102, 0, 17, 0.05); }
+        .box:hover span { color: white; }
+
         .btn { 
-            display: inline-block; border: 1px solid var(--rouge-vif); color: var(--rouge-vif); 
-            padding: 10px 20px; text-decoration: none; margin-top: 15px; font-size: 0.7rem; 
+            display: inline-block; border: 1px solid var(--bordeaux); color: var(--bordeaux); 
+            padding: 8px 18px; text-decoration: none; margin-top: 15px; font-size: 0.7rem; 
+            transition: 0.3s;
         }
-        .box:hover .btn { background: var(--rouge-vif); color: white; }
+        .box:hover .btn { background: var(--bordeaux); color: white; }
 
-        /* --- OSD ROUGE --- */
-        .osd { position: fixed; top: 30px; left: 30px; color: var(--rouge-vif); font-size: 0.85rem; z-index: 9999; text-align: left;}
+        /* --- OSD & TEXTE INTERFACE --- */
+        .osd { 
+            position: fixed; top: 30px; left: 30px; 
+            color: var(--ui-text); font-size: 0.8rem; 
+            z-index: 9999; text-align: left; line-height: 1.6;
+        }
+        
         #console-output {
-            font-size: 10px; height: 60px; margin: 20px 0;
-            border-left: 2px solid var(--rouge-vif); padding-left: 15px;
-            color: var(--rouge-vif); text-align: left; opacity: 0.9;
+            font-size: 11px; height: 60px; margin: 25px 0;
+            border-left: 1px solid var(--bordeaux); padding-left: 15px;
+            color: var(--ui-text); text-align: left;
         }
 
-        #qrcode { background: white; padding: 15px; display: none; margin: 20px auto; width: 140px; border: 3px solid var(--rouge-vif); }
+        #qrcode { 
+            background: white; padding: 10px; display: none; 
+            margin: 20px auto; width: 140px; border: 4px solid var(--bordeaux); 
+        }
+
+        .active-red { color: var(--bordeaux); text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div class="osd">
-        PLAY ▷ OMNI_MASTER_V100.9.9<br>
-        SYNC : GPS_BROADCAST_ACTIVE<br>
-        STATUS : <span style="text-decoration: underline;">RED_LEVEL_SYNC</span><br>
-        DATE : 05 MARS 2031
-        <div style="margin-top:10px; opacity:0.7;">SIGNALS: <span id="count-value">SCANNING...</span></div>
+        STATUS : <span class="active-red">SYSTEM_READY</span><br>
+        SYNC : NEURAL_LINK_05.03.2031<br>
+        V-MODE : NATURAL_SPECTRUM_ACTIVE<br>
+        UI-LNK : <span style="font-weight: bold;">BORDEAUX_PROTOCOL</span>
     </div>
 
-    <div class="bg-layer redshift"></div>
     <div class="bg-layer stars"></div>
-    <div class="bg-layer spiral"></div>
     <div class="bg-layer nebula-gas"></div>
 
     <div class="quasar-container">
         <div class="jet"></div><div class="black-hole"></div>
     </div>
 
-    <div id="galaxy-receptor">
-        <div class="nebula-planet p-gold"></div>
-        <div class="nebula-planet p-red"></div>
-        <div class="nebula-planet p-dark"></div>
-    </div>
-
     <div class="terminal-container">
-        <div class="header-sys">OMNI_CORE_SYSTEM_2031</div>
+        <div class="header-sys">OMNI_CORE_v2031</div>
         <div class="glitch-title">ARCHIVES</div>
-        <div style="font-size: 0.8rem; letter-spacing: 5px; color: var(--rouge-vif); margin-top: 10px;">L'ASTRE CRÉATEUR SUPRÊME</div>
+        <div style="font-size: 0.75rem; letter-spacing: 4px; color: var(--bordeaux); margin-top: 10px; font-weight: bold;">
+            L'ASTRE CRÉATEUR SUPRÊME
+        </div>
 
         <div id="console-output"></div>
 
         <div class="nav-menu">
             <a href="theories.html" class="box">
-                <span style="font-size: 3rem;">✍️</span>
-                <span style="font-weight:bold; margin-top:10px;">THÉORIES</span>
+                <span style="font-size: 2.5rem; filter: grayscale(1);">✍️</span>
+                <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">THÉORIES</div>
                 <div class="btn">PROPOSER</div>
             </a>
-            <a href="javascript:void(0)" onclick="if(window.checkSignalFrequency) checkSignalFrequency()" class="box">
-                <span style="font-size: 3rem;">📡</span>
-                <span style="font-weight:bold; margin-top:10px;">SYSTÈME</span>
+            <a href="#" class="box">
+                <span style="font-size: 2.5rem; filter: grayscale(1);">📡</span>
+                <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">SYSTÈME</div>
                 <div class="btn">ANALYSER</div>
             </a>
-            <a href="javascript:void(0)" onclick="if(window.validerAccesArchives) validerAccesArchives()" class="box">
-                <span style="font-size: 3rem;">👁️</span>
-                <span style="font-weight:bold; margin-top:10px;">GALERIE</span>
+            <a href="#" class="box">
+                <span style="font-size: 2.5rem; filter: grayscale(1);">👁️</span>
+                <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">GALERIE</div>
                 <div class="btn">TRAVERSER</div>
             </a>
         </div>
 
         <div style="margin-top: 30px;">
             <div id="qrcode"></div>
-            <button class="btn" style="cursor: pointer; background: #200;" onclick="genererPortailQR()">[ ACTIVER PORTAIL QR ]</button>
+            <button class="btn" style="cursor: pointer; background: transparent;" onclick="genererPortailQR()">
+                [ ACTIVER PORTAIL QR ]
+            </button>
         </div>
     </div>
 
     <script>
         const consoleOut = document.getElementById('console-output');
         const logs = [
-            "> INIT OMNI_RED_PROTOCOL...",
-            "> CHARGEMENT DES 14 FRAGMENTS...",
-            "> TOUTES COULEURS NON-ROUGES FILTRÉES...",
-            "> BIENVENUE, CRÉATEUR."
+            "> INITIALISATION DES ARCHIVES...",
+            "> SPECTRE NATUREL CHARGÉ (H2/O3)...",
+            "> INTERFACE BORDEAUX VERROUILLÉE.",
+            "> ACCÈS AUTORISÉ : CRÉATEUR."
         ];
 
         let line = 0;
@@ -174,7 +198,7 @@
             if (line < logs.length) {
                 consoleOut.innerHTML += logs[line] + "<br>";
                 line++;
-                setTimeout(printLog, 600);
+                setTimeout(printLog, 800);
             }
         }
 
@@ -184,7 +208,7 @@
             new QRCode(container, {
                 text: "https://shadrasy.github.io/Drashamygo/index.html",
                 width: 140, height: 140,
-                colorDark : "#000000", colorLight : "#ffffff"
+                colorDark : "#660011", colorLight : "#ffffff"
             });
             container.style.display = "block";
         }
