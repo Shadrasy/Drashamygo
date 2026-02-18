@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archives - Nébuleuse Visuelle (V100.9.30) - SECURED SYSTEM V2031</title>
     
-    <script src="archives-data.js"></script>
+    <script src="system-bridge.js"></script> 
+    <script src="archives-data.js" onerror="logMessage('LOCAL_DATA_FAILURE', 'CRITICAL')"></script> 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
     <style>
@@ -213,7 +214,13 @@
             ]
         };
 
-        // --- 1. SÉCURITÉ INTÉGRITÉ ---
+        function logMessage(msg, type) {
+            const logPanel = document.getElementById('sys-log');
+            if(!logPanel) return;
+            const timestamp = new Date().toLocaleTimeString().split(' ')[0];
+            logPanel.innerHTML = `[${timestamp}] [${type}] ${msg}<br>` + logPanel.innerHTML;
+        }
+
         function checkSystemIntegrity() {
             if (SYSTEM_CONFIG.version !== "100.9.30") {
                 console.error("CRITICAL: SYSTEM MODIFIED. RELOADING...");
@@ -228,6 +235,7 @@
                 "> INITIALIZING KERNEL...", 
                 STATE.isMaster ? "> MASTER_ACCESS_GRANTED" : "> PUBLIC_RESTRICTIONS_APPLIED",
                 "> LOADING NEBULA_DATA.SYS", 
+                "> VERIFYING BRIDGE_SECURITY...",
                 "> CONNECTING TO SECTOR R-" + STATE.projet,
                 "> SYSTEM READY."
             ];
@@ -236,7 +244,7 @@
             const interval = setInterval(() => {
                 if (i < messages.length) {
                     logs.innerHTML += messages[i] + "<br>";
-                    document.getElementById('load-bar').style.width = ((i+1) * 20) + "%";
+                    document.getElementById('load-bar').style.width = ((i+1) * (100/messages.length)) + "%";
                     i++;
                 } else {
                     clearInterval(interval);
@@ -261,12 +269,6 @@
             renderRomans();
             loadData();
             logMessage("DATABASE_ONLINE", "SUCCESS");
-        }
-
-        function logMessage(msg, type) {
-            const logPanel = document.getElementById('sys-log');
-            const timestamp = new Date().toLocaleTimeString().split(' ')[0];
-            logPanel.innerHTML = `[${timestamp}] [${type}] ${msg}<br>` + logPanel.innerHTML;
         }
 
         function renderRomans() {
@@ -313,14 +315,16 @@
             const searchVal = document.getElementById('search').value.toLowerCase();
             mainGrid.innerHTML = "";
 
-            if (typeof archivesData === 'undefined') return;
+            if (typeof archivesData === 'undefined') {
+                logMessage("DATA_NOT_FOUND", "ERROR");
+                return;
+            }
 
             const filtered = archivesData.filter(item => {
                 const matchProjet = item.roman == STATE.projet;
                 const matchType = !STATE.filter || item.type === STATE.filter;
                 const matchSearch = !searchVal || item.nom.toLowerCase().includes(searchVal);
                 
-                // --- LOGIQUE PRIVÉE ---
                 if (item.prive && !STATE.isMaster) return false;
                 
                 return matchProjet && matchType && matchSearch;
@@ -333,7 +337,6 @@
             document.getElementById('vram-usage').innerText = (filtered.length * 12.4).toFixed(1) + "MB";
         }
 
-        // --- 2. FONCTION CARTE AVEC RÉCUPÉRATION AUTO ---
         function createComplexCard(item) {
             const box = document.createElement('div');
             box.className = 'box';
