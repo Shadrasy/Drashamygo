@@ -40,16 +40,14 @@
             opacity: 0.4;
         }
         
-        /* --- DÉCORS GALACTIQUES NATURELS --- */
+        /* --- DÉCORS GALACTIQUES --- */
         .bg-layer { position: fixed; inset: 0; pointer-events: none; }
-        
         .nebula-gas { 
             background: 
                 radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
                 radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
             filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out; z-index: -9; 
         }
-
         .stars { 
             background-image: 
                 radial-gradient(1px 1px at 25px 35px, var(--star-white), transparent), 
@@ -59,7 +57,7 @@
 
         @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
 
-        /* --- QUASAR (Naturel) --- */
+        /* --- QUASAR --- */
         .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
         .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
         .jet { 
@@ -68,50 +66,33 @@
             transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6;
         }
 
-        /* --- SYSTÈME PLANÉTAIRE RÉINTÉGRÉ --- */
-        .nebula-planet { 
-            position: fixed; border-radius: 50%; z-index: -4;
-            box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8);
-            top: 50%; left: 50%;
-        }
-
+        /* --- SYSTÈME PLANÉTAIRE --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
         @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
-        @keyframes orbitC { from { transform: rotate(0deg) translateX(20vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(20vw) rotate(360deg); } }
-
         .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 25px var(--cosplay-gold); animation: orbitA 45s linear infinite; }
-        .p-blue { width: 100px; height: 100px; background: #0044aa; animation: orbitB 65s linear infinite reverse; }
-        .p-red { width: 140px; height: 140px; background: #440000; border: 1px solid #660000; animation: orbitA 80s linear infinite reverse; }
-        .p-purple { width: 180px; height: 180px; background: #220044; animation: orbitC 100s linear infinite; }
-        .p-ice { width: 85px; height: 85px; background: #b0e0e6; box-shadow: 0 0 20px #fff; animation: orbitB 55s linear infinite; }
-        .p-toxic { width: 115px; height: 115px; background: #003300; animation: orbitC 75s linear infinite reverse; }
 
-        /* --- INTERFACE (ROUGE BORDEAUX) --- */
+        /* --- INTERFACE --- */
         .terminal-container {
             position: relative; z-index: 100; width: 85%; max-width: 900px;
             border: 1px solid var(--bordeaux); padding: 40px;
             background: rgba(0, 0, 0, 0.94); box-shadow: 0 0 30px rgba(102, 0, 17, 0.3);
             text-align: center;
         }
-
         .header-sys {
             position: absolute; top: -12px; left: 30px;
             background: black; padding: 0 15px;
             font-size: 11px; border: 1px solid var(--bordeaux); color: var(--bordeaux);
         }
-
         .glitch-title {
             font-size: 3.5rem; font-weight: bold; letter-spacing: 12px;
             color: #fff; text-shadow: 2px 0 var(--bordeaux);
         }
-
         .nav-menu { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .box {
             text-decoration: none; border: 1px solid #1a1a1a;
             padding: 30px 15px; transition: 0.3s; background: rgba(10, 0, 0, 0.6);
         }
         .box:hover { border-color: var(--bordeaux); background: rgba(102, 0, 17, 0.1); }
-
         .btn { 
             display: inline-block; border: 1px solid var(--bordeaux); color: var(--bordeaux); 
             padding: 8px 18px; text-decoration: none; margin-top: 15px; font-size: 0.7rem; 
@@ -129,7 +110,11 @@
             color: var(--ui-text); text-align: left;
         }
 
-        #qrcode { background: white; padding: 10px; display: none; margin: 20px auto; width: 140px; border: 4px solid var(--bordeaux); }
+        #omni-logs {
+            font-size: 0.6rem; color: #444; margin-top: 25px; 
+            text-align: left; padding: 10px; border: 1px solid #111;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -150,11 +135,6 @@
 
     <div id="galaxy-receptor">
         <div class="nebula-planet p-gold"></div>
-        <div class="nebula-planet p-blue"></div>
-        <div class="nebula-planet p-red"></div>
-        <div class="nebula-planet p-purple"></div>
-        <div class="nebula-planet p-ice"></div>
-        <div class="nebula-planet p-toxic"></div>
     </div>
 
     <div class="terminal-container">
@@ -167,7 +147,7 @@
         <div id="console-output"></div>
 
         <div class="nav-menu">
-            <a href="theories.html" class="box">
+            <a href="omni-archives-theories.html" class="box">
                 <span style="font-size: 2.5rem; filter: grayscale(1);">✍️</span>
                 <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">THÉORIES</div>
                 <div class="btn">PROPOSER</div>
@@ -182,6 +162,15 @@
                 <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">GALERIE</div>
                 <div class="btn">TRAVERSER</div>
             </a>
+        </div>
+
+        <div id="omni-logs">
+            >> OMNI_SCANNER_ACTIVE... <br>
+            >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
+            >> DEPRECATED: theories.html -> REDIRECTING... <br>
+            >> SUCCESS: URL_PERMUTATION_COMPLETE -> omni-archives-theories.html <br>
+            >> STATUS: ARCHIVE_SECURED... <br>
+            >> WAITING_FOR_INCOMING_SIGNAL...
         </div>
 
         <div style="margin-top: 30px;">
