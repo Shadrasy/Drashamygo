@@ -44,86 +44,54 @@
         @keyframes gold-glow { from { box-shadow: 0 0 5px rgba(255, 204, 0, 0.2); } to { box-shadow: 0 0 20px rgba(255, 204, 0, 0.4); } }
         .master-tag { color: var(--cosplay-gold); font-size: 0.65rem; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* --- GALAXIE PROFONDE ET ITINÉRAIRES INDIVIDUELS --- */
+        /* --- GALAXIE & ÉTOILES --- */
         .stars {
             position: fixed; inset: 0; z-index: -10;
-            background-image: 
-                radial-gradient(1px 1px at 10% 15%, #fff, transparent),
-                radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
-                radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
+            background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent), radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent), radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
             background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
         }
         @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.7; } }
 
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -7; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
+        .space-dust { position: fixed; inset: 0; z-index: -9; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; pointer-events: none; }
 
-        /* Planète d'Or (Maître) - Flotte en haut à droite */
+        .shooting-star {
+            position: fixed; top: -10px; width: 100px; height: 1px; z-index: -8;
+            background: linear-gradient(90deg, white, transparent);
+            animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg);
+        }
+        @keyframes shoot {
+            0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; }
+            5% { opacity: 1; }
+            15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        /* --- PLANÈTES : ITINÉRAIRES INDIVIDUELS --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: 500; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
+
         .p-gold { 
-            width: 40px; height: 40px; background: var(--cosplay-gold); 
-            box-shadow: 0 0 30px var(--cosplay-gold); 
-            top: 15%; right: 15%;
+            width: 45px; height: 45px; background: var(--cosplay-gold); 
+            box-shadow: 0 0 30px var(--cosplay-gold); top: 15%; right: 15%;
             animation: floatGold 12s infinite ease-in-out;
-            cursor: none !important;
+            cursor: none !important; /* LA SOURIS DISPARAÎT ICI */
+            z-index: 1000; /* Toujours au dessus pour le clic */
         }
-        @keyframes floatGold { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(-20px, 30px); } 
-        }
+        @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
 
-        /* Planète Bleue - Milieu Gauche */
-        .p-blue { 
-            width: 60px; height: 60px; background: #0044aa; 
-            top: 40%; left: 10%;
-            animation: floatBlue 18s infinite ease-in-out;
-        }
-        @keyframes floatBlue { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(40px, -20px); } 
-        }
+        .p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 18s infinite ease-in-out; }
+        @keyframes floatBlue { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -20px); } }
 
-        /* Planète Rouge - Bas Droite */
-        .p-red { 
-            width: 35px; height: 35px; background: var(--omni-rouge); 
-            bottom: 20%; right: 10%;
-            animation: floatRed 15s infinite ease-in-out;
-        }
-        @keyframes floatRed { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(-30px, -40px); } 
-        }
+        .p-red { width: 35px; height: 35px; background: var(--omni-rouge); bottom: 20%; right: 10%; animation: floatRed 15s infinite ease-in-out; }
+        @keyframes floatRed { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-30px, -40px); } }
 
-        /* Planète Violette - Haut Milieu */
-        .p-purple { 
-            width: 70px; height: 70px; background: #220044; 
-            top: 10%; left: 40%;
-            animation: floatPurple 22s infinite ease-in-out;
-        }
-        @keyframes floatPurple { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(30px, 50px); } 
-        }
+        .p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 22s infinite ease-in-out; }
+        @keyframes floatPurple { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 50px); } }
 
-        /* Planète Glace - Bas Gauche */
-        .p-ice { 
-            width: 25px; height: 25px; background: #b0e0e6; 
-            bottom: 15%; left: 20%;
-            animation: floatIce 14s infinite ease-in-out;
-        }
-        @keyframes floatIce { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(50px, 20px); } 
-        }
+        .p-ice { width: 25px; height: 25px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 14s infinite ease-in-out; }
+        @keyframes floatIce { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(50px, 20px); } }
 
-        /* Planète Toxique - Milieu Droite */
-        .p-toxic { 
-            width: 45px; height: 45px; background: #003300; 
-            top: 60%; right: 5%;
-            animation: floatToxic 20s infinite ease-in-out;
-        }
-        @keyframes floatToxic { 
-            0%, 100% { transform: translate(0, 0); } 
-            50% { transform: translate(-40px, 20px); } 
-        }
+        .p-toxic { width: 45px; height: 45px; background: #003300; top: 60%; right: 5%; animation: floatToxic 20s infinite ease-in-out; }
+        @keyframes floatToxic { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-40px, 20px); } }
 
         /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
@@ -139,14 +107,24 @@
 
     <div class="quasar-container-left"><div class="jet"></div><div class="black-hole"></div></div>
     <div class="stars"></div>
+    <div class="space-dust"></div>
+    <div class="shooting-star"></div>
+
+    <div id="omni-header-notice" style="position: relative; z-index: 2001;">
+        <p style="color: var(--omni-rouge-eclat); margin: 0; font-size: 0.8rem; letter-spacing: 1px; text-align: center;">
+            [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong> 
+            <br>
+            <span style="color: #600;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
+        </p>
+    </div>
 
     <div id="galaxy-receptor">
-        <div class="nebula-planet p-gold" onclick="checkMasterClicks()" title="Astre Maître"></div>
         <div class="nebula-planet p-blue"></div>
         <div class="nebula-planet p-red"></div>
         <div class="nebula-planet p-purple"></div>
         <div class="nebula-planet p-ice"></div>
         <div class="nebula-planet p-toxic"></div>
+        <div class="nebula-planet p-gold" onclick="checkMasterClicks()" title="Astre Maître"></div>
     </div>
 
     <div class="container">
@@ -156,7 +134,7 @@
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
             <form onsubmit="return processTheory()">
-                <textarea id="theory-input" rows="6" placeholder="Analyse du signal en cours..." required></textarea>
+                <textarea id="theory-input" rows="6" placeholder="Analyse du signal..." required></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
             <div id="display-area" style="margin-top: 50px; border-top: 1px solid #300; padding-top: 30px;"></div>
@@ -186,9 +164,11 @@
                 isMasterMode = !isMasterMode;
                 toggleMasterMode();
                 masterClicks = 0;
-                const originalColor = document.body.style.backgroundColor;
-                document.body.style.backgroundColor = isMasterMode ? "var(--cosplay-gold)" : "var(--omni-rouge)";
-                setTimeout(() => { document.body.style.backgroundColor = "transparent"; }, 200);
+                
+                // Feedback Flash
+                const flashColor = isMasterMode ? "var(--cosplay-gold)" : "var(--omni-rouge)";
+                document.body.style.backgroundColor = flashColor;
+                setTimeout(() => { document.body.style.backgroundColor = "var(--noir-fond)"; }, 200);
             }
         }
 
