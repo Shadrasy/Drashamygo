@@ -36,7 +36,7 @@
             80% { transform: translate(3px, 1px) rotate(-1deg); }
             100% { transform: translate(1px, -2px) rotate(1deg); }
         }
-        .system-shake { animation: shake 0.4s; }
+        .system-shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
 
         /* --- QUASAR MAÎTRE --- */
         .quasar-container-left { position: fixed; top: 10%; left: 8%; width: 150px; height: 150px; z-index: -2; animation: pulsar-rotate 20s linear infinite; }
@@ -54,8 +54,9 @@
         @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.6; } }
         .space-dust { position: fixed; inset: 0; z-index: -9; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%); mix-blend-mode: screen; pointer-events: none; opacity: 0.5; }
 
-        /* --- PLANÈTES --- */
+        /* --- PLANÈTES : ITINÉRAIRES INDIVIDUELS (SCREEN-SAFE) --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: 500; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); transition: transform 0.2s; }
+        
         .p-gold { width: 50px; height: 50px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 10%; animation: floatGold 25s infinite ease-in-out; cursor: none !important; z-index: 2000; }
         @keyframes floatGold { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-3vw, 5vh); } }
         
@@ -100,7 +101,7 @@
             <label id="status-label" style="color:var(--omni-rouge); display:block; margin-bottom:20px; font-size: 0.9rem; letter-spacing: 2px; font-weight: bold;">
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
-            <form onsubmit="return processTheory()">
+            <form onsubmit="return processTheory(); return false;">
                 <textarea id="theory-input" rows="6" placeholder="Analyse du signal en cours..." required></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE OMNI</button>
             </form>
@@ -123,6 +124,7 @@
 
         function checkMasterClicks() {
             const now = Date.now();
+            // Temps de battement pour le triple clic (600ms)
             if (now - lastMasterClick < 600) {
                 masterClicks++;
             } else {
@@ -136,16 +138,18 @@
                 
                 // EFFET VISUEL : Vibration du terminal
                 const box = document.getElementById('terminal-box');
+                box.classList.remove('system-shake');
+                void box.offsetWidth; // Force le redémarrage de l'animation
                 box.classList.add('system-shake');
-                setTimeout(() => box.classList.remove('system-shake'), 400);
 
-                // FLASH DE COULEUR
+                // FLASH DE COULEUR (Passe par dessus le gradient)
                 const flash = document.createElement('div');
                 flash.style.position = 'fixed';
                 flash.style.inset = '0';
                 flash.style.zIndex = '9999';
                 flash.style.backgroundColor = isMasterMode ? 'var(--cosplay-gold)' : 'var(--omni-rouge)';
-                flash.style.opacity = '0.5';
+                flash.style.opacity = '0.4';
+                flash.style.pointerEvents = 'none';
                 document.body.appendChild(flash);
                 setTimeout(() => flash.remove(), 150);
 
