@@ -26,20 +26,38 @@
             background-attachment: fixed;
         }
 
-        /* --- BANDEAU D'ALERTE ORIGINE REAJUSTÉ --- */
+        /* --- BANDEAU D'ALERTE ORIGINE --- */
         #omni-header-notice {
             background: rgba(20, 20, 20, 0.9);
             border-bottom: 1px solid var(--vhs-vert);
-            padding: 10px;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-            position: sticky;
-            top: 0;
-            z-index: 2000;
+            padding: 10px; text-align: center;
+            position: sticky; top: 0; z-index: 2000;
             backdrop-filter: blur(10px);
         }
 
-        /* --- MOTEUR VHS SCANLINE MASTER --- */
+        /* --- POINTS DE FRÉQUENCE --- */
+        .point-frequence {
+            width: 10px; height: 10px; border-radius: 50%;
+            display: inline-block; margin-right: 12px;
+            box-shadow: 0 0 12px currentColor; flex-shrink: 0;
+        }
+        .alerte-femme { color: #ff0000; background-color: #ff0000; } 
+        .alerte-homme { color: #1a2a6c; background-color: #1a2a6c; border: 1px solid #4a90e2; }
+
+        /* --- INTERFACE BOUTONS --- */
+        .nav-auth { position: absolute; top: 20px; right: 20px; z-index: 3000; }
+        .btn-auth { 
+            background: transparent; border: 1px solid var(--vhs-vert); color: var(--vhs-vert);
+            padding: 5px 15px; cursor: pointer; font-size: 0.7rem; margin-left: 10px;
+            transition: 0.3s;
+        }
+        .btn-auth:hover { background: var(--vhs-vert); color: black; }
+
+        /* --- STYLE MAÎTRE --- */
+        .master-post { border: 1px solid var(--cosplay-gold) !important; background: rgba(255, 204, 0, 0.05) !important; }
+        .master-tag { color: var(--cosplay-gold); font-size: 0.6rem; font-weight: bold; letter-spacing: 2px; }
+
+        /* --- MOTEUR VHS --- */
         body::after {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
@@ -47,32 +65,17 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* --- SYSTÈME DE FOND ET PLANÈTES --- */
-        .nebula-overlay { position: fixed; inset: 0; z-index: -20; background: radial-gradient(circle at 50% 50%, var(--gaz-nebuleuse) 0%, transparent 80%); animation: nebula-pulse 12s infinite alternate ease-in-out; pointer-events: none; }
-        .stars { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -12; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; opacity: 0.6; animation: drift 150s linear infinite; pointer-events: none; }
-        .black-hole-left { position: fixed; top: 12%; left: 8%; width: 150px; height: 150px; z-index: -2; background: black; border-radius: 50%; box-shadow: 0 0 80px 20px rgba(136, 0, 255, 0.4); animation: pulse 4s infinite alternate; }
-        
-        @keyframes drift { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
-        @keyframes pulse { to { transform: scale(1.1); } }
-
-        /* PLANÈTES OMNI */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); z-index: 500; animation: orbitA 45s linear infinite; }
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
-
-        /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
-        h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px rgba(0, 255, 65, 0.5); margin-bottom: 40px; }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; backdrop-filter: blur(10px); box-shadow: 0 0 50px rgba(0,0,0,1); }
-        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px 40px; cursor: pointer; width: 100%; letter-spacing: 2px; font-weight: bold; transition: 0.3s; }
-        .btn-send:hover { box-shadow: 0 0 20px var(--vhs-vert); transform: scale(1.01); }
-        textarea { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: 'Courier New', monospace; box-sizing: border-box; outline: none; }
+        h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); }
+        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; }
+        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
+        textarea { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
         
-        .omni-term {
-            color: var(--vhs-vert);
-            border-bottom: 1px dashed var(--vhs-vert);
-            font-weight: bold;
-        }
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
+        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); top: 50%; left: 50%; animation: orbit 45s linear infinite; cursor: crosshair; }
+        @keyframes orbit { from { transform: rotate(0deg) translateX(38vw); } to { transform: rotate(360deg) translateX(38vw); } }
+        
+        .omni-term { color: var(--vhs-vert); border-bottom: 1px dashed var(--vhs-vert); font-weight: bold; }
     </style>
 </head>
 <body>
@@ -85,81 +88,104 @@
         </p>
     </div>
 
-    <div class="nebula-overlay"></div>
-    <div class="stars"></div>
-    <div class="black-hole-left"></div>
-
-    <div id="galaxy-receptor">
-        <div class="nebula-planet p-gold" title="Accès Maître"></div>
+    <div class="nav-auth">
+        <button class="btn-auth" onclick="alert('Connexion au Terminal...')">CONNEXION</button>
+        <button class="btn-auth" onclick="alert('Déconnexion...')">DÉCONNEXION</button>
     </div>
 
+    <div class="nebula-planet p-gold" ondblclick="toggleMasterMode()"></div>
+
     <div class="container">
-        <span style="font-size: 4rem; display: block; text-align: center;">✍️</span>
         <h1>OMNI ARCHIVES</h1>
         
         <div class="box">
-            <label style="color:var(--vhs-vert); display:block; margin-bottom:15px; letter-spacing: 2px; font-size: 0.9rem;">
-                TRANSMISSION DE THÉORIE (SCANNER LEXICAL ACTIF) :
+            <label id="status-label" style="color:var(--vhs-vert); display:block; margin-bottom:15px; font-size: 0.8rem;">
+                TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
             
             <form onsubmit="return processTheory()">
-                <textarea id="theory-input" rows="6" placeholder="Tapez votre théorie ici..." required></textarea>
+                <textarea id="theory-input" rows="6" placeholder="Écrivez votre analyse..." required></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
             
             <div id="display-area" style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
-                <div style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px;">
-                    <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">SIGNAL_INITIAL #001 - OMNI_SYNC</span>
-                    "Le système <span class="omni-term">Drashamygo</span> est en stase. L'équilibre de la <span class="omni-term">Source</span> est précaire."
                 </div>
-            </div>
         </div>
         
-        <a href="index.html" class="btn-back" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; border:1px dashed #333; padding:15px;"> 
-            < REPASSER LE PORTAIL VERS LE CENTRE 
+        <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.7rem;"> 
+            < REPASSER LE PORTAIL 
         </a>
     </div>
 
     <script>
+        let isMasterMode = false;
+
+        function toggleMasterMode() {
+            isMasterMode = !isMasterMode;
+            const label = document.getElementById('status-label');
+            if(isMasterMode) {
+                label.innerHTML = "ACCÈS ARCHITECTE ACTIVÉ — CANON DOMINANT";
+                label.style.color = "var(--cosplay-gold)";
+                alert("SYSTÈME : Bienvenue Maître. Vos réponses seront marquées du sceau originel.");
+            } else {
+                label.innerHTML = "TRANSMISSION DE THÉORIE (MODE CIVIL) :";
+                label.style.color = "var(--vhs-vert)";
+            }
+        }
+
         function processTheory() {
             const input = document.getElementById('theory-input');
             let text = input.value;
+            const displayArea = document.getElementById('display-area');
 
             if(text.length < 10) {
-                alert("SIGNAL TROP FAIBLE : Développez votre théorie.");
+                alert("SIGNAL TROP FAIBLE.");
                 return false;
             }
 
-            // MOTEUR DE SCAN LEXICAL : Compare le texte avec OMNI_MASTER_LEXICON
-            // Le script parcourt toutes les catégories (concepts, puissance, éléments, factions)
+            // --- POINTS DE FRÉQUENCE ---
+            const nomsFemmes = ["Jenna", "Emma", "Manon", "Camille", "Christina", "Azelis", "Léa", "Elena"];
+            const nomsHommes = ["Jordan", "Kaiden", "Merick", "Théo", "Gus", "ZelTrhyld", "Kenzo", "Yan", "Joseph"];
+
+            let pointHTML = "";
+            if (nomsFemmes.some(nom => text.includes(nom))) {
+                pointHTML = '<span class="point-frequence alerte-femme"></span>';
+            } else if (nomsHommes.some(nom => text.includes(nom))) {
+                pointHTML = '<span class="point-frequence alerte-homme"></span>';
+            }
+
+            // --- SCAN LEXICAL (OMNI MASTER) ---
             if (typeof OMNI_MASTER_LEXICON !== 'undefined') {
-                for (let category in OMNI_MASTER_LEXICON) {
-                    for (let key in OMNI_MASTER_LEXICON[category]) {
-                        // On récupère toutes les variantes linguistiques du mot
-                        let variations = OMNI_MASTER_LEXICON[category][key];
-                        for (let lang in variations) {
-                            let word = variations[lang];
-                            // Éviter les boucles infinies ou les remplacements vides
-                            if (word && word.length > 2) {
-                                let regex = new RegExp(word, 'gi');
-                                // Remplace par le mot original (fr) avec style omni-term
-                                text = text.replace(regex, `<span class="omni-term">${variations['fr']}</span>`);
+                for (let cat in OMNI_MASTER_LEXICON) {
+                    for (let key in OMNI_MASTER_LEXICON[cat]) {
+                        let vars = OMNI_MASTER_LEXICON[cat][key];
+                        for (let l in vars) {
+                            if (vars[l].length > 2) {
+                                let regex = new RegExp(vars[l], 'gi');
+                                text = text.replace(regex, `<span class="omni-term">${vars['fr']}</span>`);
                             }
                         }
                     }
                 }
             }
 
+            // --- AFFICHAGE ---
             const newTheory = document.createElement('div');
-            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 3px solid #fff; padding: 20px; margin-bottom: 20px;";
+            let masterClass = isMasterMode ? "master-post" : "";
+            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--vhs-vert); font-size:0.6rem;">SIGNAL_REÇU</span>';
+
+            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; display: flex; align-items: center;";
+            if(isMasterMode) newTheory.classList.add('master-post');
+
             newTheory.innerHTML = `
-                <span style="color:var(--vhs-vert); font-size:0.7rem; display:block;">NOUVEAU_SIGNAL_REÇU</span>
-                "${text}"
+                ${pointHTML}
+                <div style="flex: 1;">
+                    ${masterSign}
+                    <span style="color:#eee; display:block; margin-top:5px;">"${text}"</span>
+                </div>
             `;
 
-            document.getElementById('display-area').prepend(newTheory);
-            
-            alert("TRANSMISSION RÉUSSIE : Signal indexé dans la base de données OMNI.");
+            displayArea.prepend(newTheory);
             input.value = "";
             return false;
         }
