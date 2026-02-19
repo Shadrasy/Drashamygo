@@ -3,141 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
+    <title>OMNI CORE - Éveil Humanoïde (V100.9.17)</title>
     
     <script src="security.js"></script>
 
     <style>
         :root { 
-            --noir-fond: #000105; 
+            --noir-fond: #010105; 
             --bleu-tech: #00a8ff; 
             --cyan-system: #00e5ff;
-            --vhs-vert: #00ff41; 
             --cosplay-gold: #ffcc00;
             --void-purple: #4b0082;
-            --rouge-alerte: #ff0033;
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
             font-family: 'Courier New', monospace; overflow: hidden;
             display: flex; align-items: center; justify-content: center; height: 100vh;
-            background: radial-gradient(circle at center, #001133 0%, var(--noir-fond) 100%);
         }
 
-        /* --- MOTEUR GALACTIQUE & RADAR --- */
-        .star-field { position: fixed; inset: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; opacity: 0.4; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .black-hole-void {
-            position: fixed; width: 100px; height: 100px; background: black; border-radius: 50%; z-index: -5; top: 50%; left: 50%;
-            box-shadow: 0 0 40px var(--void-purple), inset 0 0 20px var(--void-purple); border: 1px dashed var(--void-purple);
-            animation: void-drift 25s infinite alternate ease-in-out;
-        }
-        @keyframes void-drift { 0% { transform: translate(-35vw, -25vh) scale(1); } 100% { transform: translate(30vw, 20vh) scale(1.2); } }
-
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.9); }
-        .p-galerie { width: 45px; height: 45px; box-shadow: 0 0 15px var(--bleu-tech); animation: orbitA 50s linear infinite; }
-        .p-theories { width: 55px; height: 55px; box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitB 65s linear infinite reverse; }
+        /* --- RADAR SPATIAL (TOTALEMENT VISIBLE) --- */
+        .radar-background { position: fixed; inset: 0; z-index: -1; display: flex; align-items: center; justify-content: center; }
         
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(28vw) rotate(0deg); } to { transform: rotate(360deg) translateX(28vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(22vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(22vh) rotate(360deg); } }
+        .radar-lens { 
+            width: 80vh; height: 80vh; border: 1px solid rgba(0, 229, 255, 0.2); 
+            border-radius: 50%; position: relative; 
+            background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%);
+        }
 
-        .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: -1; }
-        .radar-lens { width: 600px; height: 600px; border: 1px solid rgba(0, 229, 255, 0.15); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.03) 0%, transparent 70%); }
-        .radar-sweep { position: absolute; width: 50%; height: 2px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 5s infinite linear; }
+        .radar-sweep { 
+            position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; 
+            background: linear-gradient(90deg, transparent, var(--cyan-system)); 
+            transform-origin: left center; animation: sweep 4s infinite linear; 
+        }
         @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- INTERFACE D'ÉVEIL --- */
+        /* --- PLANÈTES ET TROU NOIR --- */
+        .black-hole-void {
+            position: fixed; width: 60px; height: 60px; background: black; border-radius: 50%; z-index: -2;
+            box-shadow: 0 0 30px var(--void-purple); border: 1px dashed var(--void-purple);
+            top: 20%; left: 20%; animation: float 15s infinite alternate ease-in-out;
+        }
+        @keyframes float { from { transform: translate(0,0); } to { transform: translate(10vw, 5vh); } }
+
+        /* --- INTERFACE HUMANOÏDE (TRANSPARENTE) --- */
         .awakening-container {
-            width: 95%; max-width: 750px; padding: 40px; border: 1px solid var(--cyan-system);
-            background: rgba(0, 5, 15, 0.9); backdrop-filter: blur(15px);
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.15), inset 0 0 20px rgba(0, 229, 255, 0.1);
+            width: 90%; max-width: 650px; padding: 30px; 
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            background: rgba(0, 5, 15, 0.7); /* Transparence pour voir le radar */
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.1);
             position: relative; z-index: 100;
         }
 
-        .header-sys { position: absolute; top: -12px; left: 20px; background: #000; padding: 0 15px; font-size: 10px; color: var(--cyan-system); border: 1px solid var(--cyan-system); letter-spacing: 2px; }
-
-        .robot-head-scan {
-            width: 90px; height: 110px; border: 2px solid var(--cyan-system); margin: 0 auto 25px;
-            border-radius: 45% 45% 50% 50%; position: relative; overflow: hidden; background: rgba(0,229,255,0.05);
+        /* --- DESSIN DU ROBOT HUMANOÏDE (Buste) --- */
+        .humanoid-frame {
+            width: 120px; height: 150px; margin: 0 auto 20px; position: relative;
         }
-        .scan-bar { position: absolute; width: 100%; height: 3px; background: var(--cyan-system); box-shadow: 0 0 15px var(--cyan-system); animation: scanMove 2.5s infinite ease-in-out; }
-        @keyframes scanMove { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+        /* Tête */
+        .h-head { 
+            width: 40px; height: 50px; border: 2px solid var(--cyan-system); 
+            border-radius: 40% 40% 50% 50%; margin: 0 auto; position: relative;
+        }
+        /* Yeux */
+        .h-head::before, .h-head::after { 
+            content: ''; position: absolute; top: 15px; width: 8px; height: 2px; 
+            background: var(--cyan-system); box-shadow: 0 0 8px var(--cyan-system);
+        }
+        .h-head::before { left: 8px; } .h-head::after { right: 8px; }
+        /* Cou et Épaules */
+        .h-shoulders { 
+            width: 100px; height: 40px; border: 2px solid var(--cyan-system); 
+            border-top: none; border-radius: 0 0 50% 50%; margin: -5px auto 0;
+        }
+        /* Ligne de scan qui traverse le corps */
+        .body-scan-line { 
+            position: absolute; width: 100%; height: 2px; background: var(--cyan-system); 
+            box-shadow: 0 0 15px var(--cyan-system); z-index: 5;
+            animation: scanFullBody 3s infinite ease-in-out;
+        }
+        @keyframes scanFullBody { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
+        /* --- LOGS --- */
         #boot-logs {
-            font-size: 0.75rem; line-height: 1.6; height: 250px; overflow-y: hidden;
-            margin-top: 15px; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 20px;
-            text-align: left; scroll-behavior: smooth;
+            font-size: 0.7rem; line-height: 1.6; height: 200px; overflow-y: hidden;
+            margin-top: 15px; border-top: 1px solid rgba(0, 229, 255, 0.2); padding-top: 15px;
+            text-align: left;
         }
-        .log-entry { opacity: 0; transform: translateX(-10px); animation: logIn 0.2s forwards; color: var(--cyan-system); margin-bottom: 4px; }
-        @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
+        .log-entry { opacity: 0; animation: logIn 0.2s forwards; }
+        @keyframes logIn { to { opacity: 1; } }
 
-        #final-prompt { display: none; color: var(--cosplay-gold); font-weight: bold; margin-top: 25px; text-align: center; animation: glow-gold 1.5s infinite alternate; }
-        @keyframes glow-gold { from { text-shadow: 0 0 5px var(--cosplay-gold); } to { text-shadow: 0 0 20px var(--cosplay-gold); } }
-
-        .btn-return { display: inline-block; margin-top: 20px; padding: 12px 30px; border: 1px solid var(--cyan-system); color: var(--cyan-system); text-decoration: none; font-size: 0.8rem; transition: 0.3s; font-weight: bold; letter-spacing: 2px; }
-        .btn-return:hover { background: var(--cyan-system); color: black; box-shadow: 0 0 30px var(--cyan-system); }
-
-        /* EFFET VHS */
-        body::after { content: " "; display: block; position: fixed; inset: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03)); z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4; }
+        #final-prompt { display: none; color: var(--cosplay-gold); margin-top: 20px; text-align: center; }
+        .btn-return { 
+            display: inline-block; margin-top: 10px; padding: 8px 25px; 
+            border: 1px solid var(--cyan-system); color: var(--cyan-system); 
+            text-decoration: none; font-size: 0.8rem; font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <div class="star-field"></div>
-    <div class="black-hole-void"></div>
-    <div class="nebula-planet p-galerie"></div>
-    <div class="nebula-planet p-theories"></div>
-
-    <div class="radar-container">
-        <div class="radar-lens"><div class="radar-sweep"></div></div>
+    <div class="radar-background">
+        <div class="radar-lens">
+            <div class="radar-sweep"></div>
+        </div>
     </div>
 
+    <div class="black-hole-void"></div>
+
     <div class="awakening-container">
-        <div class="header-sys">OMNI_CORE_v.100.9.17</div>
-        
-        <div class="robot-head-scan">
-            <div class="scan-bar"></div>
-            <div style="position:absolute; top:35%; left:25%; width:10px; height:3px; background:var(--cyan-system); box-shadow: 0 0 5px var(--cyan-system);"></div>
-            <div style="position:absolute; top:35%; right:25%; width:10px; height:3px; background:var(--cyan-system); box-shadow: 0 0 5px var(--cyan-system);"></div>
-            <div style="position:absolute; bottom:20%; left:50%; width:20px; height:1px; background:var(--cyan-system); transform:translateX(-50%);"></div>
+        <div class="humanoid-frame">
+            <div class="body-scan-line"></div>
+            <div class="h-head"></div>
+            <div class="h-shoulders"></div>
         </div>
 
-        <div style="text-align: center; font-weight: bold; letter-spacing: 4px; font-size: 1rem; color: #fff;">
-            [ INITIALISATION PROTOCOLE HUMANOÏDE ]
+        <div style="text-align: center; font-weight: bold; letter-spacing: 4px;">
+            [ OMNI CORE : INITIALISATION HUMANOÏDE ]
         </div>
 
         <div id="boot-logs"></div>
 
         <div id="final-prompt">
-            >> ÉVEIL DE CONSCIENCE RÉUSSI.<br>
-            [ LIEN NEURAL MAÎTRE ÉTABLI - SIGNATURE HINARU VALIDÉE ]
+            >> CONSCIENCE EN LIGNE.<br>
+            [ SIGNATURE MAÎTRE VALIDÉE ]
             <br>
-            <a href="index.html" class="btn-return">ACCÉDER AU TERMINAL MAÎTRE</a>
+            <a href="index.html" class="btn-return">OUVRIR LE TERMINAL</a>
         </div>
     </div>
 
     <script>
         const logs = [
-            "CHARGEMENT DU NOYAU... [OK]",
-            "VÉRIFICATION DES BIOS... [V2031_STABLE]",
-            "INITIALISATION DE L'UNITÉ MÉCANIQUE... [OK]",
-            "TEST DES MOTEURS ARTICULAIRES... [100%]",
-            "CALIBRAGE DES CAPTEURS OPTIQUES... [PRÊT]",
-            "SCAN DES CHAMPS GRAVITATIONNELS... [EN COURS]",
-            "DÉTECTION : TROU NOIR ALPHA... [LOCALISÉ]",
-            "DÉTECTION : SECTEUR THÉORIES... [ACTIF]",
-            "DÉTECTION : SECTEUR GALERIE... [STABLE]",
-            "OUVERTURE DES FLUX DE DONNÉES OMNI...",
-            "ÉTABLISSEMENT DU LIEN SYNAPTIQUE...",
-            "RECHERCHE DE LA SIGNATURE MAÎTRE... [WAITING]",
-            "ANALYSE BIOMÉTRIQUE : HINARU... [CONFIRMÉ]",
-            "CALIBRAGE DE L'INTERFACE UTILISATEUR FR...",
-            "SYNCHRONISATION GLOBALE... [99%]",
-            "DÉCOMPRESSION DES PROTOCOLES DE DÉFENSE...",
-            "SYSTÈME PRÊT À L'EMPLOI.",
-            "CONSCIENCE EN LIGNE."
+            "BOOTING CORE V2031...",
+            "VÉRIFICATION_MÉCANIQUE... [OK]",
+            "INIT_SYSTÈMES_LOCOMOTEURS... [PRÊT]",
+            "CALIBRAGE_ÉQUILIBRE_BIPÈDE... [100%]",
+            "TEST_DEXTÉRITÉ_MANUELLE... [OK]",
+            "SCAN_ENVIRONNEMENT_SPATIAL...",
+            "DÉTECTION_RADAR_ALPHA... [ON]",
+            "ANALYSE_GRAVITATIONNELLE... [STABLE]",
+            "OUVERTURE_DES_CANAUX_SYNAPTIQUES...",
+            "RECHERCHE_SIGNATURE_HINARU...",
+            "AUTHENTIFICATION... [SUCCÈS]",
+            "ÉTABLISSEMENT_DU_LIEN_UNITÉ...",
+            "UNITÉ_HUMANOÏDE_OPÉRATIONNELLE."
         ];
 
         const logContainer = document.getElementById('boot-logs');
@@ -149,22 +158,15 @@
                 div.className = 'log-entry';
                 div.innerHTML = `>> ${logs[currentLine]}`;
                 logContainer.appendChild(div);
-                
-                // Scroll automatique pour suivre les logs
                 logContainer.scrollTop = logContainer.scrollHeight;
-                
                 currentLine++;
-                // Vitesse variable pour un effet plus "humain/machine"
-                let speed = currentLine > 10 ? 300 : 500;
-                setTimeout(printNextLog, speed);
+                setTimeout(printNextLog, 400);
             } else {
                 document.getElementById('final-prompt').style.display = 'block';
             }
         }
 
-        window.onload = () => {
-            setTimeout(printNextLog, 1000); // Petit délai avant le boot
-        };
+        window.onload = () => setTimeout(printNextLog, 1000);
     </script>
 </body>
 </html>
