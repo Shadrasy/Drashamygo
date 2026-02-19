@@ -1,12 +1,12 @@
 /**
  * SYSTEM_BRIDGE_V2026 - SECURED LINK (Optimized for TOME 2)
- * Gère la connexion, l'intégrité des données et la synchronisation temporelle.
+ * Gère la connexion, l'intégrité et la publication TEMPS RÉEL.
  */
 
 const BRIDGE_CONFIG = {
     backup_server: "https://raw.githubusercontent.com/TON_NOM/TON_DEPOT/main/",
     emergency_mode: false,
-    last_sync: "2026-02-19" // Date système actuelle
+    last_sync: "2026-02-19"
 };
 
 // --- SYNCHRONISATION INITIALE ---
@@ -23,7 +23,7 @@ function syncWithSystemBridge(state) {
         console.log("[SYSTEM] Chronologie synchronisée : " + today);
     }
 
-    // 2. Vérification de l'intégrité des données chargées
+    // 2. Vérification de l'intégrité des données
     if (typeof archivesData !== 'undefined') {
         verifyDataIntegrity(archivesData);
     } else {
@@ -32,12 +32,26 @@ function syncWithSystemBridge(state) {
 
     // 3. Log de bienvenue Master
     if (state.isMaster) {
-        // La fonction logMessage doit être disponible dans ton fichier HTML
         if (typeof logMessage === 'function') {
             logMessage("BIENVENUE OMNI_COMMANDER HINARU", "SUCCESS");
-            logMessage("SYNC_V2026: OK", "INFO");
+            logMessage("REAL_TIME_RELEASE: ACTIVE", "INFO");
         }
     }
+}
+
+/**
+ * VERIFICATION DE PUBLICATION (TEMPS RÉEL)
+ * @param {string} itemDate - Format "YYYY-MM-DDTHH:mm:ss"
+ * @returns {boolean} - True si l'heure actuelle est passée
+ */
+function isReleased(itemDate) {
+    if (!itemDate) return true; // Si pas de date, on affiche par défaut
+    
+    const now = new Date();
+    const releaseDate = new Date(itemDate);
+    
+    // Si nous sommes le 20/02/2027 à 15h01 et que releaseDate est 15h00, ça retourne true.
+    return now >= releaseDate;
 }
 
 // --- MODULE DE SÉCURITÉ & INTÉGRITÉ ---
