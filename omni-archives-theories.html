@@ -11,10 +11,10 @@
     <style>
         :root { 
             --noir-fond: #010105; 
-            --vhs-vert: #00ff41;
+            --omni-rouge: #660011; /* Rouge Bordeaux Sombre */
+            --omni-rouge-eclat: #ff3333; /* Rouge vif pour le texte scan */
             --lumiere-violette: rgba(136, 0, 255, 0.35);
             --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
-            --pois-vert: #39ff14;
             --cosplay-gold: #ffcc00;
             --pulsar-cyan: rgba(200, 230, 255, 0.8);
         }
@@ -29,8 +29,8 @@
 
         /* --- BANDEAU D'ALERTE ORIGINE --- */
         #omni-header-notice {
-            background: rgba(20, 20, 20, 0.9);
-            border-bottom: 1px solid var(--vhs-vert);
+            background: rgba(20, 0, 0, 0.95);
+            border-bottom: 1px solid var(--omni-rouge);
             padding: 10px; text-align: center;
             position: sticky; top: 0; z-index: 2000;
             backdrop-filter: blur(10px);
@@ -94,7 +94,7 @@
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -7; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
         .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 25px var(--cosplay-gold); animation: orbit 45s linear infinite; }
         .p-blue { width: 45px; height: 45px; background: #0044aa; animation: orbit 60s linear infinite reverse; }
-        .p-red { width: 30px; height: 30px; background: #660011; animation: orbit 35s linear infinite; }
+        .p-red { width: 30px; height: 30px; background: var(--omni-rouge); animation: orbit 35s linear infinite; }
         .p-purple { width: 55px; height: 55px; background: #220044; animation: orbit 80s linear infinite; }
         .p-ice { width: 25px; height: 25px; background: #b0e0e6; animation: orbit 50s linear infinite reverse; }
         .p-toxic { width: 40px; height: 40px; background: #003300; animation: orbit 70s linear infinite; }
@@ -103,12 +103,16 @@
 
         /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
-        h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); }
-        .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; }
-        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
-        textarea { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
-        .omni-term { color: var(--vhs-vert); border-bottom: 1px dashed var(--vhs-vert); font-weight: bold; }
-        #omni-logs { font-size: 0.6rem; color: #444; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #111; line-height: 1.4; }
+        h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--omni-rouge); }
+        .box { background: rgba(0, 0, 0, 0.94); border: 1px solid #300; padding: 40px; box-shadow: 0 0 30px rgba(102, 0, 17, 0.2); }
+        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; letter-spacing: 2px; }
+        .btn-send:hover { background: #800; box-shadow: 0 0 15px var(--omni-rouge); }
+        textarea { width: 100%; background: #080000; border: 1px solid #400; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
+        
+        /* Couleur des termes détectés */
+        .omni-term { color: var(--omni-rouge-eclat); border-bottom: 1px dashed var(--omni-rouge); font-weight: bold; }
+        
+        #omni-logs { font-size: 0.6rem; color: #600; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #300; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -116,10 +120,10 @@
     <div id="master-sensor" onclick="checkTripleClick()" style="position: fixed; top: 0; right: 0; width: 100px; height: 100px; z-index: 9999; cursor: none;"></div>
 
     <div id="omni-header-notice">
-        <p style="color: var(--vhs-vert); margin: 0; font-size: 0.8rem;">
+        <p style="color: var(--omni-rouge-eclat); margin: 0; font-size: 0.8rem; letter-spacing: 1px;">
             [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong> 
             <br>
-            <span style="color: #aaa;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
+            <span style="color: #600;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
         </p>
     </div>
 
@@ -140,21 +144,22 @@
     <div class="container">
         <h1>OMNI ARCHIVES</h1>
         <div class="box">
-            <label id="status-label" style="color:var(--vhs-vert); display:block; margin-bottom:15px; font-size: 0.8rem; letter-spacing: 1px;">
+            <label id="status-label" style="color:var(--omni-rouge); display:block; margin-bottom:15px; font-size: 0.8rem; letter-spacing: 1px; font-weight: bold;">
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
             <form onsubmit="return processTheory()">
-                <textarea id="theory-input" rows="6" placeholder="Écrivez votre analyse ici..." required></textarea>
+                <textarea id="theory-input" rows="6" placeholder="Analyse du signal en cours..." required></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
-            <div id="display-area" style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;"></div>
+            <div id="display-area" style="margin-top: 50px; border-top: 1px solid #300; padding-top: 30px;"></div>
             <div id="omni-logs">
                 >> OMNI_SCANNER_ACTIVE... <br>
                 >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
+                >> PROTOCOL: RED_SPECTRUM_STRICT <br>
                 >> WAITING_FOR_INCOMING_SIGNAL...
             </div>
         </div>
-        <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.7rem; border: 1px solid #222; padding: 10px;"> 
+        <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#400; text-decoration:none; font-size:0.7rem; border: 1px solid #200; padding: 10px;"> 
             < REPASSER LE PORTAIL VERS LE CENTRE 
         </a>
     </div>
@@ -182,10 +187,10 @@
             if(isMasterMode) {
                 label.innerHTML = "ACCÈS ARCHITECTE ACTIVÉ — CANON DOMINANT";
                 label.style.color = "var(--cosplay-gold)";
-                document.body.style.boxShadow = "inset 0 0 100px rgba(255, 204, 0, 0.1)";
+                document.body.style.boxShadow = "inset 0 0 100px rgba(255, 204, 0, 0.15)";
             } else {
                 label.innerHTML = "TRANSMISSION DE THÉORIE (MODE CIVIL) :";
-                label.style.color = "var(--vhs-vert)";
+                label.style.color = "var(--omni-rouge)";
                 document.body.style.boxShadow = "none";
             }
         }
@@ -219,8 +224,8 @@
 
             const newTheory = document.createElement('div');
             if(isMasterMode) newTheory.className = "master-post";
-            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--vhs-vert); font-size:0.6rem; letter-spacing:1px;">SIGNAL_REÇU</span>';
-            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; display: flex; align-items: center;";
+            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--omni-rouge-eclat); font-size:0.6rem; letter-spacing:1px; font-weight:bold;">SIGNAL_REÇU</span>';
+            newTheory.style.cssText = "background: rgba(255,255,255,0.02); border-left: 3px solid var(--omni-rouge); padding: 20px; margin-bottom: 20px; display: flex; align-items: center;";
             newTheory.innerHTML = `${pointHTML}<div style="flex: 1;">${masterSign}<span style="color:#eee; display:block; margin-top:5px; line-height:1.5;">"${text}"</span></div>`;
             displayArea.prepend(newTheory);
             input.value = "";
