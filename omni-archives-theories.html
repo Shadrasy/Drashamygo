@@ -27,7 +27,7 @@
             transition: box-shadow 0.5s ease, filter 0.15s ease, background-color 0.2s ease;
         }
 
-        /* --- TROU NOIR (Positionné à gauche) --- */
+        /* --- TROU NOIR --- */
         .quasar-container-left { position: fixed; top: 10%; left: 8%; width: 150px; height: 150px; z-index: -2; }
         .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
         .jet { 
@@ -97,7 +97,7 @@
         .p-gold { 
             width: 35px; height: 35px; background: var(--cosplay-gold); 
             box-shadow: 0 0 25px var(--cosplay-gold); animation: orbit 45s linear infinite; 
-            cursor: none !important; /* Souris invisible sur la planète */
+            cursor: none !important;
         }
         .p-blue { width: 45px; height: 45px; background: #0044aa; animation: orbit 60s linear infinite reverse; }
         .p-red { width: 30px; height: 30px; background: var(--omni-rouge); animation: orbit 35s linear infinite; }
@@ -111,8 +111,7 @@
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
         h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--omni-rouge); }
         .box { background: rgba(0, 0, 0, 0.94); border: 1px solid #300; padding: 40px; }
-        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
-        .btn-send:hover { background: #800; }
+        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
         textarea { width: 100%; background: #080000; border: 1px solid #400; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
         .omni-term { color: var(--omni-rouge-eclat); border-bottom: 1px dashed var(--omni-rouge); font-weight: bold; }
         #omni-logs { font-size: 0.6rem; color: #600; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #300; line-height: 1.4; }
@@ -181,27 +180,38 @@
             lastMasterClick = now;
 
             if (masterClicks === 3) {
+                // INVERSION DU MODE (Activation ou Désactivation)
                 isMasterMode = !isMasterMode;
                 toggleMasterMode();
                 masterClicks = 0;
                 
-                // Effet flash pour validation
-                const originalColor = document.body.style.backgroundColor;
-                document.body.style.backgroundColor = "var(--omni-rouge)";
-                setTimeout(() => { document.body.style.backgroundColor = originalColor; }, 200);
+                // Feedback Flash
+                const flashColor = isMasterMode ? "var(--cosplay-gold)" : "var(--omni-rouge)";
+                document.body.style.backgroundColor = flashColor;
+                setTimeout(() => { document.body.style.backgroundColor = "var(--noir-fond)"; }, 200);
+
+                if(!isMasterMode) {
+                    alert("SESSION ARCHITECTE TERMINÉE. PROTOCOLE CIVIL RÉACTIVÉ.");
+                } else {
+                    alert("SYSTÈME OMNI : IDENTITÉ MAÎTRE CONFIRMÉE.");
+                }
             }
         }
 
         function toggleMasterMode() {
             const label = document.getElementById('status-label');
+            const logs = document.getElementById('omni-logs');
+
             if(isMasterMode) {
                 label.innerHTML = "ACCÈS ARCHITECTE ACTIVÉ — CANON DOMINANT";
                 label.style.color = "var(--cosplay-gold)";
                 document.body.style.boxShadow = "inset 0 0 100px rgba(255, 204, 0, 0.15)";
+                logs.innerHTML += "<br>>> ARCHITECT_ID_CONFIRMED: ACCESS_GRANTED_V2031";
             } else {
                 label.innerHTML = "TRANSMISSION DE THÉORIE (MODE CIVIL) :";
                 label.style.color = "var(--omni-rouge)";
                 document.body.style.boxShadow = "none";
+                logs.innerHTML += "<br>>> SESSION_LOGOUT: SYSTEM_REVERTED_TO_CIVIL";
             }
         }
 
