@@ -3,145 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Scan OMNI-STABILIZED (V100.9.17)</title>
+    <title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
     
     <script src="security.js"></script>
 
     <style>
         :root { 
-            --noir-fond: #000105; --bleu-tech: #00a8ff; 
-            --vhs-vert: #00ff41; --cosplay-gold: #ffcc00;
-            --pink-neon: #ff00ff; --void-purple: #4b0082;
+            --noir-fond: #000105; 
+            --bleu-tech: #00a8ff; 
+            --cyan-system: #00e5ff;
+            --vhs-vert: #00ff41; 
+            --cosplay-gold: #ffcc00;
+            --void-purple: #4b0082;
         }
 
         body {
-            margin: 0; background-color: var(--noir-fond); color: var(--bleu-tech);
+            margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
             font-family: 'Courier New', monospace; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; height: 100vh;
         }
 
-        /* --- EFFET VHS --- */
-        body::after {
-            content: " "; display: block; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
-        }
-
-        .star-field { position: fixed; width: 200%; height: 200%; top: -50%; left: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; }
+        /* --- MOTEUR GALACTIQUE & RADAR (Arrière-plan) --- */
+        .star-field { position: fixed; inset: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; opacity: 0.5; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- LE TROU NOIR (STABILISÉ DANS LE CHAMP VISUEL) --- */
         .black-hole-void {
-            position: fixed; width: 80px; height: 80px; background: black;
-            border-radius: 50%; z-index: 5; top: 50%; left: 50%;
-            box-shadow: 0 0 30px var(--void-purple), inset 0 0 15px var(--void-purple);
-            border: 1px dashed var(--void-purple);
-            /* Trajectoire erratique mais limitée pour ne pas disparaître */
+            position: fixed; width: 80px; height: 80px; background: black; border-radius: 50%; z-index: -5; top: 50%; left: 50%;
+            box-shadow: 0 0 30px var(--void-purple), inset 0 0 15px var(--void-purple); border: 1px dashed var(--void-purple);
             animation: void-drift 20s infinite alternate ease-in-out;
-            cursor: crosshair;
         }
-        @keyframes void-drift {
-            0% { transform: translate(-30vw, -20vh) scale(1); }
-            50% { transform: translate(25vw, 15vh) scale(1.1); }
-            100% { transform: translate(-10vw, 25vh) scale(0.9); }
-        }
+        @keyframes void-drift { 0% { transform: translate(-30vw, -20vh); } 100% { transform: translate(25vw, 15vh); } }
 
-        /* --- LES 3 PLANÈTES (RAYONS AJUSTÉS) --- */
-        .nebula-planet { 
-            position: fixed; border-radius: 50%; z-index: 10;
-            top: 50%; left: 50%; border: 1px solid white;
-            background: rgba(0,0,0,0.8); transition: 0.3s; cursor: crosshair;
-        }
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.8); }
+        .p-galerie { width: 40px; height: 40px; box-shadow: 0 0 15px var(--bleu-tech); animation: orbit 45s linear infinite; }
+        @keyframes orbit { from { transform: rotate(0deg) translateX(25vw) rotate(0deg); } to { transform: rotate(360deg) translateX(25vw) rotate(-360deg); } }
 
-        /* Rayons réduits (25vw / 20vh) pour rester proche du radar */
-        .p-galerie { width: 60px; height: 60px; color: var(--bleu-tech); box-shadow: 0 0 20px var(--bleu-tech); animation: orbitA 45s linear infinite; }
-        .p-theories { width: 75px; height: 75px; color: var(--pink-neon); box-shadow: 0 0 25px var(--pink-neon); animation: orbitB 55s linear infinite reverse; }
-        .p-archives { width: 35px; height: 35px; color: var(--vhs-vert); box-shadow: 0 0 15px var(--vhs-vert); animation: orbitA 30s linear infinite reverse; }
-
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(25vw) rotate(0deg); } to { transform: rotate(360deg) translateX(25vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(20vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(20vh) rotate(360deg); } }
-
-        /* --- LENTILLE RADAR --- */
-        .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: 100; }
-        .radar-lens { 
-            width: 400px; height: 400px; border: 1px solid rgba(0, 168, 255, 0.4); border-radius: 50%; 
-            position: relative; box-shadow: inset 0 0 50px rgba(0, 168, 255, 0.1);
-            background: radial-gradient(circle, rgba(0, 168, 255, 0.05) 0%, transparent 75%);
-        }
-        .radar-sweep { 
-            position: absolute; width: 50%; height: 2px; top: 50%; left: 50%;
-            background: linear-gradient(90deg, transparent, var(--bleu-tech));
-            transform-origin: left center; animation: sweep 4s infinite linear;
-        }
+        .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; z-index: -1; }
+        .radar-lens { width: 500px; height: 500px; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; }
+        .radar-sweep { position: absolute; width: 50%; height: 2px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
         @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- PANEL INFO --- */
-        .info-box { 
-            position: fixed; bottom: 30px; left: 30px; width: 300px; 
-            background: rgba(0,0,0,0.9); border-left: 4px solid var(--bleu-tech); 
-            padding: 20px; z-index: 200;
+        /* --- INTERFACE D'ÉVEIL (Premier plan) --- */
+        .awakening-container {
+            width: 90%; max-width: 600px; padding: 30px; border: 1px solid rgba(0, 229, 255, 0.4);
+            background: rgba(0, 10, 20, 0.85); backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.2); position: relative; z-index: 100;
         }
+
+        .robot-head-scan {
+            width: 70px; height: 90px; border: 2px solid var(--cyan-system); margin: 0 auto 20px;
+            border-radius: 40% 40% 50% 50%; position: relative; overflow: hidden;
+        }
+        .scan-bar { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scanMove 2s infinite ease-in-out; }
+        @keyframes scanMove { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+
+        #boot-logs {
+            font-size: 0.75rem; line-height: 1.4; height: 180px; overflow: hidden;
+            margin-top: 10px; border-top: 1px solid rgba(0, 229, 255, 0.2); padding-top: 15px;
+        }
+        .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.3s forwards; color: var(--cyan-system); }
+        @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
+
+        #final-prompt { display: none; color: var(--cosplay-gold); font-weight: bold; margin-top: 20px; text-align: center; }
+        .btn-return { display: inline-block; margin-top: 15px; padding: 8px 20px; border: 1px solid var(--cyan-system); color: var(--cyan-system); text-decoration: none; font-size: 0.7rem; transition: 0.3s; }
+        .btn-return:hover { background: var(--cyan-system); color: black; box-shadow: 0 0 15px var(--cyan-system); }
+
+        /* EFFET VHS */
+        body::after { content: " "; display: block; position: fixed; inset: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.3; }
     </style>
 </head>
 <body>
+
     <div class="star-field"></div>
-
-    <div class="black-hole-void" data-name="TROU NOIR ALPHA" data-status="DÉTRIVE_GRAVITATIONNELLE"></div>
-
-    <div class="nebula-planet p-galerie" data-name="SECTEUR GALERIE" data-status="STABLE"></div>
-    <div class="nebula-planet p-theories" data-name="SECTEUR THÉORIES" data-status="SIGNAL_REÇU"></div>
-    <div class="nebula-planet p-archives" data-name="SECTEUR ARCHIVES" data-status="LOGS_OK"></div>
+    <div class="black-hole-void"></div>
+    <div class="nebula-planet p-galerie"></div>
 
     <div class="radar-container">
-        <div class="radar-lens">
-            <div class="radar-sweep"></div>
-            <div style="position: absolute; top: 50%; left: 50%; width: 100%; height: 1px; background: rgba(0,168,255,0.1); transform: translate(-50%,-50%);"></div>
-            <div style="position: absolute; top: 50%; left: 50%; height: 100%; width: 1px; background: rgba(0,168,255,0.1); transform: translate(-50%,-50%);"></div>
-        </div>
+        <div class="radar-lens"><div class="radar-sweep"></div></div>
     </div>
 
-    <div class="info-box">
-        <span style="color:var(--bleu-tech); font-size: 10px; font-weight: bold;">STATION OMNI-SCAN V17</span><br>
-        <div id="display" style="font-size: 12px; margin-top: 10px;">
-            > CIBLE : <span id="t-name" style="color:white;">SCANNING...</span><br>
-            > ÉTAT  : <span id="t-status" style="color:var(--vhs-vert);">---</span><br>
-            > GPS   : <span id="t-coord" style="color:cyan;">00.00 / 00.00</span>
+    <div class="awakening-container">
+        <div class="robot-head-scan">
+            <div class="scan-bar"></div>
+            <div style="position:absolute; top:30%; left:25%; width:8px; height:2px; background:var(--cyan-system);"></div>
+            <div style="position:absolute; top:30%; right:25%; width:8px; height:2px; background:var(--cyan-system);"></div>
+        </div>
+
+        <div style="text-align: center; font-weight: bold; letter-spacing: 3px; font-size: 0.9rem;">
+            [ OMNI CORE : SYSTÈME HUMANOÏDE ]
+        </div>
+
+        <div id="boot-logs"></div>
+
+        <div id="final-prompt">
+            >> CONSCIENCE ÉVEILLÉE.<br>
+            STATUT : LIEN_MAÎTRE_OPÉRATIONNEL.
+            <br>
+            <a href="index.html" class="btn-return">ACCÉDER AU TERMINAL</a>
         </div>
     </div>
-
-    <header style="position:fixed; top:20px; right:20px; text-align:right; font-size:10px; z-index:200;">
-        <span id="clock" style="color:var(--vhs-vert);">00:00:00</span><br>
-        <a href="index.html" style="color:var(--bleu-tech); text-decoration:none; border: 1px solid; padding: 5px; display:inline-block; margin-top:10px;">HUB CENTRAL</a>
-    </header>
 
     <script>
-        const tName = document.getElementById('t-name');
-        const tStatus = document.getElementById('t-status');
-        const tCoord = document.getElementById('t-coord');
+        const logs = [
+            "VÉRIFICATION_INTEGRITÉ_PHYSIQUE... [OK]",
+            "INITIALISATION_MOTEURS_NEURAUX... [OK]",
+            "SCAN_ENVIRONNEMENT_SPATIAL... [ACTIF]",
+            "DÉTECTION_TROU_NOIR_ALPHA... [LOCALISÉ]",
+            "OUVERTURE_DES_FLUX_DE_DONNÉES...",
+            "RECHERCHE_SIGNATURE_HINARU... [DÉTECTÉE]",
+            "CALIBRAGE_INTERFACE_V100.9.17...",
+            "SYSTÈME_PRÊT."
+        ];
 
-        function update() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-            localStorage.setItem('hinaru_cosmos_sync', JSON.stringify({ phase: Date.now(), mode: "STABILIZED_SCAN" }));
+        const logContainer = document.getElementById('boot-logs');
+        let currentLine = 0;
 
-            const active = document.querySelector('.nebula-planet:hover, .black-hole-void:hover');
-            if (active) {
-                const rect = active.getBoundingClientRect();
-                tName.innerText = active.getAttribute('data-name');
-                tStatus.innerText = active.getAttribute('data-status');
-                tCoord.innerText = `${Math.round(rect.left)} / ${Math.round(rect.top)}`;
-                
-                if(active.classList.contains('black-hole-void')) {
-                    tStatus.style.color = "var(--rouge-alerte)";
-                } else {
-                    tStatus.style.color = "var(--vhs-vert)";
-                }
+        function printNextLog() {
+            if (currentLine < logs.length) {
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                div.innerHTML = `> ${logs[currentLine]}`;
+                logContainer.appendChild(div);
+                currentLine++;
+                setTimeout(printNextLog, 600);
             } else {
-                tName.innerText = "SCANNING...";
-                tStatus.innerText = "---";
-                tCoord.innerText = "00.00 / 00.00";
+                document.getElementById('final-prompt').style.display = 'block';
             }
         }
-        setInterval(update, 50);
+
+        window.onload = printNextLog;
     </script>
 </body>
 </html>
