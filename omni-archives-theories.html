@@ -23,6 +23,7 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
             background: radial-gradient(circle at 15% 20%, var(--lumiere-violette) 0%, transparent 60%), var(--noir-fond);
             background-attachment: fixed;
+            transition: box-shadow 0.5s ease;
         }
 
         /* --- BANDEAU D'ALERTE ORIGINE --- */
@@ -82,6 +83,8 @@
         @keyframes orbit { from { transform: rotate(0deg) translateX(38vw); } to { transform: rotate(360deg) translateX(38vw); } }
         
         .omni-term { color: var(--vhs-vert); border-bottom: 1px dashed var(--vhs-vert); font-weight: bold; }
+
+        #omni-logs { font-size: 0.6rem; color: #444; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #111; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -96,7 +99,7 @@
 
     <div class="nav-auth">
         <button class="btn-auth" onclick="alert('Terminal OMNI : Identité requise.')">CONNEXION</button>
-        <button class="btn-auth" onclick="alert('Session archivée.')">DÉCONNEXION</button>
+        <button class="btn-auth" onclick="isMasterMode = false; toggleMasterMode(); alert('Session Maître terminée. Retour au mode civil.');">DÉCONNEXION</button>
     </div>
 
     <div class="nebula-planet p-gold" ondblclick="toggleMasterMode()" title="Double-clic pour accès Architecte"></div>
@@ -116,6 +119,12 @@
             
             <div id="display-area" style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
                 </div>
+
+            <div id="omni-logs">
+                >> OMNI_SCANNER_ACTIVE... <br>
+                >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
+                >> WAITING_FOR_INCOMING_SIGNAL...
+            </div>
         </div>
         
         <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.7rem; border: 1px solid #222; padding: 10px;"> 
@@ -127,19 +136,27 @@
         let isMasterMode = false;
 
         function toggleMasterMode() {
-            isMasterMode = !isMasterMode;
             const label = document.getElementById('status-label');
             if(isMasterMode) {
                 label.innerHTML = "ACCÈS ARCHITECTE ACTIVÉ — CANON DOMINANT";
                 label.style.color = "var(--cosplay-gold)";
                 document.body.style.boxShadow = "inset 0 0 100px rgba(255, 204, 0, 0.1)";
-                alert("SYSTÈME : Bienvenue Maître. Vos réponses seront marquées du sceau originel.");
             } else {
                 label.innerHTML = "TRANSMISSION DE THÉORIE (MODE CIVIL) :";
                 label.style.color = "var(--vhs-vert)";
                 document.body.style.boxShadow = "none";
             }
         }
+
+        // Fonction séparée pour le double clic
+        function triggerMaster() {
+            isMasterMode = !isMasterMode;
+            if(isMasterMode) alert("SYSTÈME : Bienvenue Maître. Vos réponses seront marquées du sceau originel.");
+            toggleMasterMode();
+        }
+
+        // On ré-attache la fonction au double clic
+        document.querySelector('.p-gold').ondblclick = triggerMaster;
 
         function processTheory() {
             const input = document.getElementById('theory-input');
@@ -169,7 +186,6 @@
                         let vars = OMNI_MASTER_LEXICON[cat][key];
                         for (let l in vars) {
                             if (vars[l] && vars[l].length > 2) {
-                                // Échapper les caractères spéciaux (comme $) pour la Regex
                                 let escapedWord = vars[l].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                                 let regex = new RegExp(escapedWord, 'gi');
                                 text = text.replace(regex, `<span class="omni-term">${vars['fr']}</span>`);
@@ -181,7 +197,6 @@
 
             // --- AFFICHAGE ---
             const newTheory = document.createElement('div');
-            // Application du style Maître si activé
             if(isMasterMode) {
                 newTheory.className = "master-post";
             }
