@@ -16,6 +16,7 @@
             --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
             --pois-vert: #39ff14;
             --cosplay-gold: #ffcc00;
+            --pulsar-cyan: rgba(200, 230, 255, 0.8);
         }
 
         body {
@@ -23,7 +24,7 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
             background: radial-gradient(circle at 15% 20%, var(--lumiere-violette) 0%, transparent 60%), var(--noir-fond);
             background-attachment: fixed;
-            transition: box-shadow 0.5s ease;
+            transition: box-shadow 0.5s ease, filter 0.15s ease;
         }
 
         /* --- BANDEAU D'ALERTE ORIGINE --- */
@@ -44,16 +45,7 @@
         .alerte-femme { color: #ff0000; background-color: #ff0000; } 
         .alerte-homme { color: #1a2a6c; background-color: #1a2a6c; border: 1px solid #4a90e2; }
 
-        /* --- INTERFACE BOUTONS --- */
-        .nav-auth { position: absolute; top: 20px; right: 20px; z-index: 3000; }
-        .btn-auth { 
-            background: transparent; border: 1px solid var(--vhs-vert); color: var(--vhs-vert);
-            padding: 5px 15px; cursor: pointer; font-size: 0.7rem; margin-left: 10px;
-            transition: 0.3s;
-        }
-        .btn-auth:hover { background: var(--vhs-vert); color: black; }
-
-        /* --- STYLE MAÎTRE (Bordure dorée pulsante) --- */
+        /* --- STYLE MAÎTRE --- */
         .master-post { 
             border: 1px solid var(--cosplay-gold) !important; 
             background: rgba(255, 204, 0, 0.08) !important;
@@ -71,23 +63,57 @@
             z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
+        /* --- GALAXIE PROFONDE --- */
+        .stars {
+            position: fixed; inset: 0; z-index: -10;
+            background-image: 
+                radial-gradient(1px 1px at 10% 15%, #fff, transparent),
+                radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
+                radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent),
+                radial-gradient(1px 1px at 85% 75%, #fff, transparent);
+            background-size: 300px 300px;
+            animation: twinkle 5s infinite alternate ease-in-out;
+        }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
+
+        .space-dust { position: fixed; inset: 0; z-index: -9; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; pointer-events: none; }
+
+        .shooting-star {
+            position: fixed; top: -10px; width: 100px; height: 1px; z-index: -8;
+            background: linear-gradient(90deg, white, transparent);
+            animation: shoot 8s linear infinite; opacity: 0;
+            transform: rotate(-45deg);
+        }
+        @keyframes shoot {
+            0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; }
+            5% { opacity: 1; }
+            15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -7; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
+        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 25px var(--cosplay-gold); animation: orbit 45s linear infinite; }
+        .p-blue { width: 45px; height: 45px; background: #0044aa; animation: orbit 60s linear infinite reverse; }
+        .p-red { width: 30px; height: 30px; background: #660011; animation: orbit 35s linear infinite; }
+        .p-purple { width: 55px; height: 55px; background: #220044; animation: orbit 80s linear infinite; }
+        .p-ice { width: 25px; height: 25px; background: #b0e0e6; animation: orbit 50s linear infinite reverse; }
+        .p-toxic { width: 40px; height: 40px; background: #003300; animation: orbit 70s linear infinite; }
+        
+        @keyframes orbit { from { transform: rotate(0deg) translateX(38vw); } to { transform: rotate(360deg) translateX(38vw); } }
+
+        /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
         h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); }
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; }
         .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
-        .btn-send:hover { background: #fff; box-shadow: 0 0 20px var(--vhs-vert); }
         textarea { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
-        
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); top: 50%; left: 50%; animation: orbit 45s linear infinite; cursor: crosshair; }
-        @keyframes orbit { from { transform: rotate(0deg) translateX(38vw); } to { transform: rotate(360deg) translateX(38vw); } }
-        
         .omni-term { color: var(--vhs-vert); border-bottom: 1px dashed var(--vhs-vert); font-weight: bold; }
-
         #omni-logs { font-size: 0.6rem; color: #444; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #111; line-height: 1.4; }
     </style>
 </head>
 <body>
+
+    <div id="master-sensor" onclick="checkTripleClick()" style="position: fixed; top: 0; right: 0; width: 100px; height: 100px; z-index: 9999; cursor: none;"></div>
 
     <div id="omni-header-notice">
         <p style="color: var(--vhs-vert); margin: 0; font-size: 0.8rem;">
@@ -97,36 +123,37 @@
         </p>
     </div>
 
-    <div class="nav-auth">
-        <button class="btn-auth" onclick="alert('Terminal OMNI : Identité requise.')">CONNEXION</button>
-        <button class="btn-auth" onclick="isMasterMode = false; toggleMasterMode(); alert('Session Maître terminée. Retour au mode civil.');">DÉCONNEXION</button>
-    </div>
+    <div class="stars"></div>
+    <div class="space-dust"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
 
-    <div class="nebula-planet p-gold" ondblclick="toggleMasterMode()" title="Double-clic pour accès Architecte"></div>
+    <div id="galaxy-receptor">
+        <div class="nebula-planet p-gold" title="Astre Maître"></div>
+        <div class="nebula-planet p-blue" style="animation-delay: -5s; opacity: 0.8;"></div>
+        <div class="nebula-planet p-red" style="animation-delay: -12s; opacity: 0.7;"></div>
+        <div class="nebula-planet p-purple" style="animation-delay: -20s; opacity: 0.9;"></div>
+        <div class="nebula-planet p-ice" style="animation-delay: -30s; opacity: 0.6;"></div>
+        <div class="nebula-planet p-toxic" style="animation-delay: -15s; opacity: 0.7;"></div>
+    </div>
 
     <div class="container">
         <h1>OMNI ARCHIVES</h1>
-        
         <div class="box">
             <label id="status-label" style="color:var(--vhs-vert); display:block; margin-bottom:15px; font-size: 0.8rem; letter-spacing: 1px;">
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
-            
             <form onsubmit="return processTheory()">
                 <textarea id="theory-input" rows="6" placeholder="Écrivez votre analyse ici..." required></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
-            
-            <div id="display-area" style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;">
-                </div>
-
+            <div id="display-area" style="margin-top: 50px; border-top: 1px dashed #444; padding-top: 30px;"></div>
             <div id="omni-logs">
                 >> OMNI_SCANNER_ACTIVE... <br>
                 >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
                 >> WAITING_FOR_INCOMING_SIGNAL...
             </div>
         </div>
-        
         <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.7rem; border: 1px solid #222; padding: 10px;"> 
             < REPASSER LE PORTAIL VERS LE CENTRE 
         </a>
@@ -134,6 +161,21 @@
 
     <script>
         let isMasterMode = false;
+        let clickCount = 0;
+        let lastClick = 0;
+
+        function checkTripleClick() {
+            const now = Date.now();
+            if (now - lastClick < 600) { clickCount++; } else { clickCount = 1; }
+            lastClick = now;
+            if (clickCount === 3) {
+                isMasterMode = !isMasterMode;
+                toggleMasterMode();
+                clickCount = 0;
+                document.body.style.filter = "brightness(1.5)";
+                setTimeout(() => { document.body.style.filter = "none"; }, 150);
+            }
+        }
 
         function toggleMasterMode() {
             const label = document.getElementById('status-label');
@@ -148,46 +190,26 @@
             }
         }
 
-        // Fonction séparée pour le double clic
-        function triggerMaster() {
-            isMasterMode = !isMasterMode;
-            if(isMasterMode) alert("SYSTÈME : Bienvenue Maître. Vos réponses seront marquées du sceau originel.");
-            toggleMasterMode();
-        }
-
-        // On ré-attache la fonction au double clic
-        document.querySelector('.p-gold').ondblclick = triggerMaster;
-
         function processTheory() {
             const input = document.getElementById('theory-input');
             let text = input.value;
             const displayArea = document.getElementById('display-area');
+            if(text.length < 10) { alert("SIGNAL TROP FAIBLE."); return false; }
 
-            if(text.length < 10) {
-                alert("SIGNAL TROP FAIBLE.");
-                return false;
-            }
-
-            // --- POINTS DE FRÉQUENCE ---
             const nomsFemmes = ["Jenna", "Emma", "Manon", "Camille", "Christina", "Azelis", "Léa", "Elena"];
             const nomsHommes = ["Jordan", "Kaiden", "Merick", "Théo", "Gus", "ZelTrhyld", "Kenzo", "Yan", "Joseph"];
-
             let pointHTML = "";
-            if (nomsFemmes.some(nom => text.includes(nom))) {
-                pointHTML = '<span class="point-frequence alerte-femme"></span>';
-            } else if (nomsHommes.some(nom => text.includes(nom))) {
-                pointHTML = '<span class="point-frequence alerte-homme"></span>';
-            }
+            if (nomsFemmes.some(n => text.includes(n))) pointHTML = '<span class="point-frequence alerte-femme"></span>';
+            else if (nomsHommes.some(n => text.includes(n))) pointHTML = '<span class="point-frequence alerte-homme"></span>';
 
-            // --- SCAN LEXICAL (OMNI MASTER) ---
             if (typeof OMNI_MASTER_LEXICON !== 'undefined') {
                 for (let cat in OMNI_MASTER_LEXICON) {
                     for (let key in OMNI_MASTER_LEXICON[cat]) {
                         let vars = OMNI_MASTER_LEXICON[cat][key];
                         for (let l in vars) {
                             if (vars[l] && vars[l].length > 2) {
-                                let escapedWord = vars[l].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                                let regex = new RegExp(escapedWord, 'gi');
+                                let esc = vars[l].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                let regex = new RegExp(esc, 'gi');
                                 text = text.replace(regex, `<span class="omni-term">${vars['fr']}</span>`);
                             }
                         }
@@ -195,24 +217,11 @@
                 }
             }
 
-            // --- AFFICHAGE ---
             const newTheory = document.createElement('div');
-            if(isMasterMode) {
-                newTheory.className = "master-post";
-            }
-            
+            if(isMasterMode) newTheory.className = "master-post";
             let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--vhs-vert); font-size:0.6rem; letter-spacing:1px;">SIGNAL_REÇU</span>';
-
-            newTheory.style.cssText += "background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; transition: 0.5s;";
-
-            newTheory.innerHTML = `
-                ${pointHTML}
-                <div style="flex: 1;">
-                    ${masterSign}
-                    <span style="color:#eee; display:block; margin-top:5px; line-height:1.5;">"${text}"</span>
-                </div>
-            `;
-
+            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; display: flex; align-items: center;";
+            newTheory.innerHTML = `${pointHTML}<div style="flex: 1;">${masterSign}<span style="color:#eee; display:block; margin-top:5px; line-height:1.5;">"${text}"</span></div>`;
             displayArea.prepend(newTheory);
             input.value = "";
             return false;
