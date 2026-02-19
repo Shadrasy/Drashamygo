@@ -3,188 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNI CORE - Éveil Humanoïde (V100.9.17)</title>
+    <title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
     
     <script src="security.js"></script>
 
     <style>
         :root { 
-            --noir-fond: #010105; 
-            --bleu-tech: #00a8ff; 
+            --noir-fond: #000105; 
             --cyan-system: #00e5ff;
             --cosplay-gold: #ffcc00;
             --void-purple: #4b0082;
-            --rouge-alerte: #ff0033;
             --vert-stable: #00ff41;
+            --rouge-alerte: #ff0033;
         }
 
         body {
             margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
-            font-family: 'Courier New', monospace; overflow: hidden;
-            display: flex; align-items: center; justify-content: center; height: 100vh;
-            background: radial-gradient(circle at center, #001133 0%, var(--noir-fond) 100%);
+            font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
         }
 
-        /* --- RADAR & SERVEURS --- */
-        .radar-background { position: fixed; inset: 0; z-index: -1; display: flex; align-items: center; justify-content: center; }
+        /* --- EFFET VHS (INDISPENSABLE) --- */
+        body::after {
+            content: " "; display: block; position: fixed; inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
+        }
+
+        /* --- DÉCOR SPATIAL COMPLET --- */
+        .star-field { position: fixed; inset: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; opacity: 0.4; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .black-hole-void {
+            position: fixed; width: 100px; height: 100px; background: black; border-radius: 50%; z-index: -5; top: 30%; left: 20%;
+            box-shadow: 0 0 40px var(--void-purple), inset 0 0 20px var(--void-purple); border: 1px dashed var(--void-purple);
+            animation: void-drift 20s infinite alternate ease-in-out;
+        }
+        @keyframes void-drift { from { transform: translate(0,0) scale(1); } to { transform: translate(5vw, 5vh) scale(1.1); } }
+
+        /* --- RADAR CENTRAL XL --- */
+        .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
         .radar-lens { 
-            width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.15); 
-            border-radius: 50%; position: relative; 
-            background: radial-gradient(circle, rgba(0,210,255,0.03) 0%, transparent 80%);
+            width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative;
+            background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%);
         }
-
-        .radar-sweep { 
-            position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; 
-            background: linear-gradient(90deg, transparent, var(--cyan-system)); 
-            transform-origin: left center; animation: sweep 4s infinite linear; 
-        }
+        .radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
         @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- PLANÈTES INTERACTIVES --- */
+        /* --- PLANÈTES / SERVEURS --- */
         .server-planet {
             position: absolute; border-radius: 50%; top: 50%; left: 50%;
-            border: 1px solid rgba(255,255,255,0.4);
+            border: 1px solid rgba(255,255,255,0.4); z-index: 10;
             display: flex; align-items: center; justify-content: center;
-            font-size: 8px; font-weight: bold; cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
-            z-index: 1000;
+            font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s;
+        }
+        .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
+
+        .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
+        .p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitThe 40s linear infinite reverse; }
+        .p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system); animation: orbitGal 55s linear infinite; }
+
+        @keyframes orbitIdx { from { transform: rotate(0deg) translateX(28vh) rotate(0deg); } to { transform: rotate(360deg) translateX(28vh) rotate(-360deg); } }
+        @keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
+        @keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
+
+        /* --- TERMINAL DE CONTRÔLE (BAS DROITE - STYLE CADRE OMNI) --- */
+        .awakening-corner {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 320px; padding: 20px;
+            background: rgba(0, 5, 15, 0.9);
+            border: 1px solid var(--cyan-system);
+            backdrop-filter: blur(10px);
+            z-index: 1000; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
         }
 
-        .server-planet:hover {
-            animation-play-state: paused !important;
-            border-color: white;
-            transform: scale(1.5);
-            z-index: 2000;
-        }
+        .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
 
-        .p-index { width: 30px; height: 30px; background: rgba(0, 255, 65, 0.2); box-shadow: 0 0 15px var(--vert-stable); animation: orbitIndex 25s linear infinite; }
-        .p-theories { width: 35px; height: 35px; background: rgba(255, 0, 51, 0.2); box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitTheories 40s linear infinite reverse; }
-        .p-galerie { width: 25px; height: 25px; background: rgba(0, 168, 255, 0.2); box-shadow: 0 0 15px var(--bleu-tech); animation: orbitGalerie 55s linear infinite; }
+        .humanoid-frame { width: 80px; height: 100px; margin: 0 auto 15px; position: relative; }
+        .h-head { width: 30px; height: 40px; border: 1.5px solid var(--cyan-system); border-radius: 45% 45% 50% 50%; margin: 0 auto; position: relative; }
+        .h-head::after { content:''; position: absolute; top:15px; left:6px; width:18px; height:2px; background: var(--cyan-system); box-shadow: 0 0 5px var(--cyan-system); }
+        .h-shoulders { width: 70px; height: 30px; border: 1.5px solid var(--cyan-system); border-top: none; border-radius: 0 0 35px 35px; margin: -2px auto 0; }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; }
+        @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
-        @keyframes orbitIndex { from { transform: rotate(0deg) translateX(25vh) rotate(0deg); } to { transform: rotate(360deg) translateX(25vh) rotate(-360deg); } }
-        @keyframes orbitTheories { from { transform: rotate(0deg) translateX(35vh) rotate(0deg); } to { transform: rotate(360deg) translateX(35vh) rotate(-360deg); } }
-        @keyframes orbitGalerie { from { transform: rotate(0deg) translateX(15vh) rotate(0deg); } to { transform: rotate(360deg) translateX(15vh) rotate(-360deg); } }
-
-        /* --- TOOLTIP DATA (INFO BULLE) --- */
-        #data-tooltip {
-            position: fixed; pointer-events: none; background: rgba(0, 10, 30, 0.9);
-            border: 1px solid var(--cyan-system); padding: 10px; font-size: 10px;
-            color: white; display: none; z-index: 3000; line-height: 1.4;
-            box-shadow: 0 0 15px var(--cyan-system);
-        }
-
-        /* --- INTERFACE HUMANOÏDE --- */
-        .awakening-container {
-            width: 95%; max-width: 700px; padding: 40px; border: 1px solid var(--cyan-system);
-            background: rgba(0, 5, 15, 0.7); backdrop-filter: blur(12px);
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.2); position: relative; z-index: 100;
-        }
-
-        .humanoid-frame { width: 140px; height: 160px; margin: 0 auto 25px; position: relative; }
-        .h-head { width: 50px; height: 65px; border: 2px solid var(--cyan-system); border-radius: 45% 45% 50% 50%; margin: 0 auto; position: relative; background: rgba(0,210,255,0.05); }
-        .h-head::before, .h-head::after { content: ''; position: absolute; top: 22px; width: 10px; height: 3px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); }
-        .h-head::before { left: 10px; } .h-head::after { right: 10px; }
-        .h-shoulders { width: 130px; height: 50px; border: 2px solid var(--cyan-system); border-top: none; border-radius: 0 0 60px 60px; margin: -5px auto 0; background: rgba(0,210,255,0.02); }
-        .body-scan-line { position: absolute; width: 100%; height: 3px; background: var(--cyan-system); box-shadow: 0 0 20px var(--cyan-system); z-index: 5; animation: scanFullBody 2.5s infinite ease-in-out; }
-        @keyframes scanFullBody { 0%, 100% { top: 0%; } 50% { top: 100%; } }
-
-        #boot-logs { font-size: 0.75rem; line-height: 1.6; height: 220px; overflow-y: hidden; margin-top: 15px; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 20px; text-align: left; }
-        .log-entry { opacity: 0; transform: translateX(-10px); animation: logIn 0.2s forwards; }
+        #boot-logs { font-size: 0.7rem; line-height: 1.5; height: 160px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
+        .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
         @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
 
-        #final-prompt { display: none; color: var(--cosplay-gold); font-weight: bold; margin-top: 25px; text-align: center; animation: glow 1.5s infinite alternate; }
-        @keyframes glow { from { text-shadow: 0 0 5px var(--cosplay-gold); } to { text-shadow: 0 0 15px var(--cosplay-gold); } }
+        #final-prompt { display: none; color: var(--cosplay-gold); text-align: center; margin-top: 15px; font-weight: bold; }
+        .btn-acc { display: inline-block; margin-top: 10px; padding: 8px 20px; border: 1px solid var(--cyan-system); color: var(--cyan-system); text-decoration: none; font-size: 0.75rem; transition: 0.3s; }
+        .btn-acc:hover { background: var(--cyan-system); color: #000; box-shadow: 0 0 15px var(--cyan-system); }
 
-        .btn-return { display: inline-block; margin-top: 15px; padding: 12px 35px; border: 1px solid var(--cyan-system); color: var(--cyan-system); text-decoration: none; font-size: 0.85rem; font-weight: bold; transition: 0.3s; letter-spacing: 2px; }
-        .btn-return:hover { background: var(--cyan-system); color: #000; box-shadow: 0 0 20px var(--cyan-system); }
-
-        body::after { content: " "; display: block; position: fixed; inset: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02)); z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4; }
+        /* TOOLTIP PARAMÈTRES */
+        #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 2000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <div id="data-tooltip"></div>
+    <div id="tooltip"></div>
+    <div class="star-field"></div>
+    <div class="black-hole-void"></div>
 
-    <div class="radar-background">
+    <div class="radar-container">
         <div class="radar-lens">
             <div class="radar-sweep"></div>
-            <div class="server-planet p-index" onmouseover="showData('INDEX', 'STABLE', '99%')" onmouseout="hideData()">IDX</div>
-            <div class="server-planet p-theories" onmouseover="showData('THÉORIES', 'SYNCING', 'SYNC_ACTIVE')" onmouseout="hideData()">THE</div>
-            <div class="server-planet p-galerie" onmouseover="showData('GALERIE', 'ACTIVE', 'LOAD_OK')" onmouseout="hideData()">GAL</div>
+            <div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
+            <div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
+            <div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
         </div>
     </div>
 
-    <div class="awakening-container">
+    <div class="awakening-corner">
+        <div class="header-mini">UNITÉ_HUMANOÏDE_OMNI</div>
         <div class="humanoid-frame">
-            <div class="body-scan-line"></div>
+            <div class="scan-line"></div>
             <div class="h-head"></div>
             <div class="h-shoulders"></div>
         </div>
-
-        <div style="text-align: center; font-weight: bold; letter-spacing: 4px; color: #fff;">
-            [ INITIALISATION UNITÉ HUMANOÏDE ]
-        </div>
-
         <div id="boot-logs"></div>
-
         <div id="final-prompt">
-            >> ÉVEIL DE CONSCIENCE RÉUSSI.<br>
-            [ LIEN NEURAL MAÎTRE ÉTABLI - SIGNATURE HINARU VALIDÉE ]
-            <br>
-            <a href="index.html" class="btn-return">ACCÉDER AU TERMINAL</a>
+            >> ÉVEIL RÉUSSI.<br>
+            [ LIEN NEURAL VALIDÉ ]<br>
+            <a href="index.html" class="btn-acc">OUVRIR TERMINAL</a>
         </div>
     </div>
 
     <script>
-        const tooltip = document.getElementById('data-tooltip');
-
-        function showData(name, status, load) {
-            tooltip.style.display = 'block';
-            tooltip.innerHTML = `<strong>UNITÉ : ${name}</strong><br>ÉTAT : ${status}<br>FLUX : ${load}<br>VÉLOCITÉ : 0.4rad/s`;
+        const tt = document.getElementById('tooltip');
+        function sd(n, s, l) { 
+            tt.style.display = 'block'; 
+            tt.innerHTML = `<strong>UNITÉ : ${n}</strong><br>ÉTAT : ${s}<br>VERSION : ${l}<br>COORD : SCANNING...`; 
         }
-
-        function hideData() {
-            tooltip.style.display = 'none';
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            tooltip.style.left = (e.clientX + 15) + 'px';
-            tooltip.style.top = (e.clientY + 15) + 'px';
+        function hd() { tt.style.display = 'none'; }
+        document.addEventListener('mousemove', (e) => { 
+            tt.style.left = (e.clientX + 15) + 'px'; 
+            tt.style.top = (e.clientY + 15) + 'px'; 
         });
 
         const logs = [
-            "VÉRIFICATION_BIOS... [V2031_STABLE]",
-            "TEST_INTÉGRITÉ_MÉCANIQUE... [OK]",
-            "SYNCHRONISATION_ARTICULAIRE... [100%]",
-            "INIT_SYSTÈMES_LOCOMOTEURS... [PRÊT]",
-            "ACTIVATION_CAPTEURS_OPTIQUES... [ON]",
-            "SCAN_ENVIRONNEMENT_SPATIAL... [ACTIF]",
-            "DÉTECTION : SERVEUR INDEX... [STABLE]",
-            "DÉTECTION : SERVEUR THÉORIES... [SYNC_OK]",
-            "DÉTECTION : SERVEUR GALERIE... [ACTIF]",
-            "OUVERTURE_DES_FLUX_DE_DONNÉES...",
-            "AUTHENTIFICATION_MAÎTRE... [SUCCÈS]",
-            "SYSTÈME_PRÊT."
+            "BOOTING_CORE_V2031...",
+            "VÉRIFICATION_MÉCANIQUE... [OK]",
+            "INIT_SYSTÈMES_LOCOMOTEURS... [OK]",
+            "SCAN_ENVIRONNEMENT... [ACTIF]",
+            "DÉTECTION_INDEX_STABLE... [YES]",
+            "DÉTECTION_THEORIES_SYNC... [YES]",
+            "DÉTECTION_GALERIE_ACTIVE... [YES]",
+            "SIGNATURE_HINARU... [VALIDÉE]",
+            "CONSCIENCE_EN_LIGNE."
         ];
 
-        const logContainer = document.getElementById('boot-logs');
-        let currentLine = 0;
-
-        function printNextLog() {
-            if (currentLine < logs.length) {
-                const div = document.createElement('div');
-                div.className = 'log-entry';
-                div.innerHTML = `>> ${logs[currentLine]}`;
-                logContainer.appendChild(div);
-                logContainer.scrollTop = logContainer.scrollHeight;
-                currentLine++;
-                setTimeout(printNextLog, 500);
-            } else {
-                document.getElementById('final-prompt').style.display = 'block';
-            }
+        let i = 0;
+        function print() {
+            if (i < logs.length) {
+                const d = document.createElement('div');
+                d.className = 'log-entry'; d.innerHTML = `>> ${logs[i]}`;
+                document.getElementById('boot-logs').appendChild(d);
+                i++; setTimeout(print, 500);
+            } else { document.getElementById('final-prompt').style.display = 'block'; }
         }
-
-        window.onload = () => setTimeout(printNextLog, 1000);
+        window.onload = print;
     </script>
 </body>
 </html>
