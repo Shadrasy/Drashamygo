@@ -251,7 +251,6 @@
         }
 
         function initApp() {
-            // Appelle la fonction du fichier system-bridge.js si elle existe
             if(typeof syncWithSystemBridge === 'function') {
                 syncWithSystemBridge(STATE);
             }
@@ -275,9 +274,6 @@
             loadData();
         }
 
-        // Le reste de tes fonctions (init3D, loadData, etc.) reste identique à ton code d'origine...
-        // [Garder ici le code Three.js et loadData que tu avais déjà]
-        
         function init3D() {
             const container = document.getElementById('canvas-3d');
             if(!container) return;
@@ -352,7 +348,18 @@
             if (typeof archivesData === 'undefined') return;
 
             const filtered = archivesData.filter(item => {
+                // 1. Protection Master/Privé
                 if (item.prive && !STATE.isMaster) return false;
+                
+                // 2. VÉRIFICATION TEMPORELLE (TEMPS RÉEL)
+                // On utilise la date de publication ou par défaut le début de 2026
+                const itemDate = new Date(item.date_publication || "2026-01-01");
+                const isAvailable = new Date() >= itemDate;
+                
+                // Si on n'est pas Master, on cache ce qui est dans le futur
+                if (!isAvailable && !STATE.isMaster) return false; 
+
+                // 3. Filtres de recherche et catégories
                 const matchSearch = !searchVal || item.nom.toLowerCase().includes(searchVal);
                 return (item.roman == STATE.projet) && (!STATE.filter || item.type === STATE.filter) && matchSearch;
             });
@@ -380,7 +387,6 @@
             const targetDate = document.getElementById('pub-date').value;
             logMessage(`INJECTING SIGNAL TO TOME ${targetTome} [DATE: ${targetDate}]`, 'INFO');
             
-            // Simulation d'envoi
             setTimeout(() => {
                 logMessage("SIGNAL_STABILIZED", "SUCCESS");
                 alert(`Signal envoyé : Tome ${targetTome} mis à jour au ${targetDate}`);
