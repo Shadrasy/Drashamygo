@@ -50,7 +50,6 @@
             filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out; z-index: -9; 
         }
 
-        /* ÉTOILES MULTI-COUCHES */
         .stars {
             background-image: 
                 radial-gradient(1px 1px at 10% 15%, #fff, transparent),
@@ -62,10 +61,7 @@
             z-index: -10;
         }
 
-        @keyframes twinkle { 
-            0% { opacity: 0.3; transform: scale(1); } 
-            100% { opacity: 0.8; transform: scale(1.05); } 
-        }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
 
         .space-dust {
             position: fixed; inset: 0;
@@ -98,23 +94,34 @@
             transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6;
         }
 
-        /* --- SYSTÈME PLANÉTAIRE --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: -4; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
-        
-        @keyframes orbitA { from { transform: rotate(0deg) translateX(38vw) rotate(0deg); } to { transform: rotate(360deg) translateX(38vw) rotate(-360deg); } }
-        @keyframes orbitB { from { transform: rotate(0deg) translateY(30vh) rotate(0deg); } to { transform: rotate(-360deg) translateY(30vh) rotate(360deg); } }
-        @keyframes orbitC { from { transform: rotate(0deg) translateX(20vw) rotate(0deg); } to { transform: rotate(-360deg) translateX(20vw) rotate(360deg); } }
+        /* --- PLANÈTES : ITINÉRAIRES UNIQUES --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: 500; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); }
 
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 25px var(--cosplay-gold); animation: orbitA 45s linear infinite; }
-        .p-blue { width: 100px; height: 100px; background: #0044aa; animation: orbitB 65s linear infinite reverse; }
-        .p-red { width: 140px; height: 140px; background: #440000; border: 1px solid #660000; animation: orbitA 80s linear infinite reverse; }
-        .p-purple { width: 180px; height: 180px; background: #220044; animation: orbitC 100s linear infinite; }
-        .p-ice { width: 85px; height: 85px; background: #b0e0e6; box-shadow: 0 0 20px #fff; animation: orbitB 55s linear infinite; }
-        .p-toxic { width: 115px; height: 115px; background: #003300; animation: orbitC 75s linear infinite reverse; }
+        .p-gold { 
+            width: 45px; height: 45px; background: var(--cosplay-gold); 
+            box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%;
+            animation: floatGold 25s infinite ease-in-out;
+        }
+        @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
+
+        .p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 40s infinite ease-in-out; }
+        @keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
+
+        .p-red { width: 45px; height: 45px; background: var(--bordeaux); bottom: 20%; right: 10%; animation: floatRed 30s infinite ease-in-out; }
+        @keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
+
+        .p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
+        @keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+
+        .p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
+        @keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+
+        .p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
+        @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
         /* --- INTERFACE (BORDEAUX) --- */
         .terminal-container {
-            position: relative; z-index: 100; width: 85%; max-width: 900px;
+            position: relative; z-index: 1000; width: 85%; max-width: 900px;
             border: 1px solid var(--bordeaux); padding: 40px;
             background: rgba(0, 0, 0, 0.94); box-shadow: 0 0 30px rgba(102, 0, 17, 0.3);
             text-align: center;
@@ -181,11 +188,11 @@
 
     <div id="galaxy-receptor">
         <div class="nebula-planet p-gold" title="Astre Maître"></div>
-        <div class="nebula-planet p-blue" style="animation-delay: -5s; opacity: 0.8;"></div>
-        <div class="nebula-planet p-red" style="animation-delay: -12s; opacity: 0.7;"></div>
-        <div class="nebula-planet p-purple" style="animation-delay: -20s; opacity: 0.9;"></div>
-        <div class="nebula-planet p-ice" style="animation-delay: -30s; opacity: 0.6;"></div>
-        <div class="nebula-planet p-toxic" style="animation-delay: -15s; opacity: 0.7;"></div>
+        <div class="nebula-planet p-blue"></div>
+        <div class="nebula-planet p-red"></div>
+        <div class="nebula-planet p-purple"></div>
+        <div class="nebula-planet p-ice"></div>
+        <div class="nebula-planet p-toxic"></div>
     </div>
 
     <div class="terminal-container">
@@ -203,12 +210,12 @@
                 <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">THÉORIES</div>
                 <div class="btn">PROPOSER</div>
             </a>
-            <a href="#" class="box">
+            <a href="systeme.html" class="box">
                 <span style="font-size: 2.5rem; filter: grayscale(1);">📡</span>
                 <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">SYSTÈME</div>
                 <div class="btn">ANALYSER</div>
             </a>
-            <a href="#" class="box">
+            <a href="galerie.html" class="box">
                 <span style="font-size: 2.5rem; filter: grayscale(1);">👁️</span>
                 <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">GALERIE</div>
                 <div class="btn">TRAVERSER</div>
@@ -218,8 +225,7 @@
         <div id="omni-logs">
             >> OMNI_SCANNER_ACTIVE... <br>
             >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
-            >> DEPRECATED: theories.html -> REDIRECTING... <br>
-            >> SUCCESS: URL_PERMUTATION_COMPLETE -> omni-archives-theories.html <br>
+            >> SUCCESS: SYSTEM_RESTORATION_COMPLETE <br>
             >> STATUS: ARCHIVE_SECURED... <br>
             >> WAITING_FOR_INCOMING_SIGNAL...
         </div>
