@@ -25,13 +25,12 @@
             background: radial-gradient(circle at center, #001133 0%, var(--noir-fond) 100%);
         }
 
-        /* --- RADAR SPATIAL (GÉANT ET VISIBLE) --- */
+        /* --- RADAR & SERVEURS --- */
         .radar-background { position: fixed; inset: 0; z-index: -1; display: flex; align-items: center; justify-content: center; }
-        
         .radar-lens { 
             width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.15); 
             border-radius: 50%; position: relative; 
-            background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%);
+            background: radial-gradient(circle, rgba(0,210,255,0.03) 0%, transparent 80%);
         }
 
         .radar-sweep { 
@@ -41,56 +40,45 @@
         }
         @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- LES 3 PLANÈTES (SERVEURS) --- */
+        /* --- PLANÈTES INTERACTIVES --- */
         .server-planet {
             position: absolute; border-radius: 50%; top: 50%; left: 50%;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.4);
             display: flex; align-items: center; justify-content: center;
-            font-size: 8px; font-weight: bold;
+            font-size: 8px; font-weight: bold; cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+            z-index: 1000;
         }
 
-        /* Serveur INDEX (Stable - Vert) */
-        .p-index { 
-            width: 30px; height: 30px; background: rgba(0, 255, 65, 0.2); 
-            box-shadow: 0 0 15px var(--vert-stable);
-            animation: orbitIndex 25s linear infinite;
+        .server-planet:hover {
+            animation-play-state: paused !important;
+            border-color: white;
+            transform: scale(1.5);
+            z-index: 2000;
         }
-        /* Serveur THÉORIES (Sync - Rouge) */
-        .p-theories { 
-            width: 35px; height: 35px; background: rgba(255, 0, 51, 0.2); 
-            box-shadow: 0 0 15px var(--rouge-alerte);
-            animation: orbitTheories 40s linear infinite reverse;
-        }
-        /* Serveur GALERIE (Actif - Bleu) */
-        .p-galerie { 
-            width: 25px; height: 25px; background: rgba(0, 168, 255, 0.2); 
-            box-shadow: 0 0 15px var(--bleu-tech);
-            animation: orbitGalerie 55s linear infinite;
-        }
+
+        .p-index { width: 30px; height: 30px; background: rgba(0, 255, 65, 0.2); box-shadow: 0 0 15px var(--vert-stable); animation: orbitIndex 25s linear infinite; }
+        .p-theories { width: 35px; height: 35px; background: rgba(255, 0, 51, 0.2); box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitTheories 40s linear infinite reverse; }
+        .p-galerie { width: 25px; height: 25px; background: rgba(0, 168, 255, 0.2); box-shadow: 0 0 15px var(--bleu-tech); animation: orbitGalerie 55s linear infinite; }
 
         @keyframes orbitIndex { from { transform: rotate(0deg) translateX(25vh) rotate(0deg); } to { transform: rotate(360deg) translateX(25vh) rotate(-360deg); } }
         @keyframes orbitTheories { from { transform: rotate(0deg) translateX(35vh) rotate(0deg); } to { transform: rotate(360deg) translateX(35vh) rotate(-360deg); } }
         @keyframes orbitGalerie { from { transform: rotate(0deg) translateX(15vh) rotate(0deg); } to { transform: rotate(360deg) translateX(15vh) rotate(-360deg); } }
 
-        /* --- TROU NOIR --- */
-        .black-hole-void {
-            position: fixed; width: 60px; height: 60px; background: black; border-radius: 50%; z-index: -2;
-            box-shadow: 0 0 40px var(--void-purple), inset 0 0 20px var(--void-purple); border: 1px dashed var(--void-purple);
-            top: 15%; left: 15%; animation: floatVoid 20s infinite alternate ease-in-out;
+        /* --- TOOLTIP DATA (INFO BULLE) --- */
+        #data-tooltip {
+            position: fixed; pointer-events: none; background: rgba(0, 10, 30, 0.9);
+            border: 1px solid var(--cyan-system); padding: 10px; font-size: 10px;
+            color: white; display: none; z-index: 3000; line-height: 1.4;
+            box-shadow: 0 0 15px var(--cyan-system);
         }
-        @keyframes floatVoid { from { transform: translate(0,0) scale(1); } to { transform: translate(10vw, 5vh) scale(1.1); } }
 
-        /* --- INTERFACE HUMANOÏDE (TRANSPARENTE HDR) --- */
+        /* --- INTERFACE HUMANOÏDE --- */
         .awakening-container {
-            width: 95%; max-width: 700px; padding: 40px; 
-            border: 1px solid var(--cyan-system);
-            background: rgba(0, 5, 15, 0.7); 
-            backdrop-filter: blur(12px);
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.2);
-            position: relative; z-index: 100;
+            width: 95%; max-width: 700px; padding: 40px; border: 1px solid var(--cyan-system);
+            background: rgba(0, 5, 15, 0.7); backdrop-filter: blur(12px);
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.2); position: relative; z-index: 100;
         }
-
-        .header-sys { position: absolute; top: -12px; left: 20px; background: #000; padding: 0 15px; font-size: 10px; color: var(--cyan-system); border: 1px solid var(--cyan-system); letter-spacing: 2px; }
 
         .humanoid-frame { width: 140px; height: 160px; margin: 0 auto 25px; position: relative; }
         .h-head { width: 50px; height: 65px; border: 2px solid var(--cyan-system); border-radius: 45% 45% 50% 50%; margin: 0 auto; position: relative; background: rgba(0,210,255,0.05); }
@@ -115,20 +103,18 @@
 </head>
 <body>
 
+    <div id="data-tooltip"></div>
+
     <div class="radar-background">
         <div class="radar-lens">
             <div class="radar-sweep"></div>
-            <div class="server-planet p-index">IDX</div>
-            <div class="server-planet p-theories">THE</div>
-            <div class="server-planet p-galerie">GAL</div>
+            <div class="server-planet p-index" onmouseover="showData('INDEX', 'STABLE', '99%')" onmouseout="hideData()">IDX</div>
+            <div class="server-planet p-theories" onmouseover="showData('THÉORIES', 'SYNCING', 'SYNC_ACTIVE')" onmouseout="hideData()">THE</div>
+            <div class="server-planet p-galerie" onmouseover="showData('GALERIE', 'ACTIVE', 'LOAD_OK')" onmouseout="hideData()">GAL</div>
         </div>
     </div>
 
-    <div class="black-hole-void"></div>
-
     <div class="awakening-container">
-        <div class="header-sys">OMNI_CORE_v.100.9.17</div>
-
         <div class="humanoid-frame">
             <div class="body-scan-line"></div>
             <div class="h-head"></div>
@@ -150,6 +136,22 @@
     </div>
 
     <script>
+        const tooltip = document.getElementById('data-tooltip');
+
+        function showData(name, status, load) {
+            tooltip.style.display = 'block';
+            tooltip.innerHTML = `<strong>UNITÉ : ${name}</strong><br>ÉTAT : ${status}<br>FLUX : ${load}<br>VÉLOCITÉ : 0.4rad/s`;
+        }
+
+        function hideData() {
+            tooltip.style.display = 'none';
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY + 15) + 'px';
+        });
+
         const logs = [
             "VÉRIFICATION_BIOS... [V2031_STABLE]",
             "TEST_INTÉGRITÉ_MÉCANIQUE... [OK]",
@@ -157,15 +159,11 @@
             "INIT_SYSTÈMES_LOCOMOTEURS... [PRÊT]",
             "ACTIVATION_CAPTEURS_OPTIQUES... [ON]",
             "SCAN_ENVIRONNEMENT_SPATIAL... [ACTIF]",
-            "DÉTECTION : TROU NOIR ALPHA... [LOCALISÉ]",
-            "SCAN_SERVEUR : INDEX... [STABLE]",
-            "SCAN_SERVEUR : THÉORIES... [SYNC_OK]",
-            "SCAN_SERVEUR : GALERIE... [ACTIF]",
+            "DÉTECTION : SERVEUR INDEX... [STABLE]",
+            "DÉTECTION : SERVEUR THÉORIES... [SYNC_OK]",
+            "DÉTECTION : SERVEUR GALERIE... [ACTIF]",
             "OUVERTURE_DES_FLUX_DE_DONNÉES...",
-            "ÉTABLISSEMENT_DU_LIEN_SYNAPTIQUE...",
-            "ANALYSE_BIOMÉTRIQUE... [HINARU_DETECTED]",
             "AUTHENTIFICATION_MAÎTRE... [SUCCÈS]",
-            "CONSCIENCE_ARTIFICIELLE_EN_LIGNE.",
             "SYSTÈME_PRÊT."
         ];
 
@@ -180,8 +178,7 @@
                 logContainer.appendChild(div);
                 logContainer.scrollTop = logContainer.scrollHeight;
                 currentLine++;
-                let speed = currentLine > 10 ? 300 : 500;
-                setTimeout(printNextLog, speed);
+                setTimeout(printNextLog, 500);
             } else {
                 document.getElementById('final-prompt').style.display = 'block';
             }
