@@ -200,17 +200,18 @@
             isMaster: new URLSearchParams(window.location.search).get('Hinaru') === 'true',
             projet: parseInt(new URLSearchParams(window.location.search).get('projet')) || 1,
             filter: null,
+            // CONFIGURATION EXACTE DES ROMANS
             romans: [
-                { id: 1, title: "SHADRASY: Le Souffle Originel", tomes: 154, date: "19/02/2026", public: true },
-                { id: 2, title: "TOME 2: Nébuleuse", tomes: 1, date: "2026", public: true },
-                { id: 14, title: "Projet Final XIV", tomes: 14, date: "2040", public: false }
+                { id: 1, title: "SHADRASY: Le Souffle Originel", tomes: 154, date: "01/2027", releaseDate: "2027-01-01" },
+                { id: 2, title: "LA GUILDE DE L'AUBE", tomes: 96, date: "02/2032", releaseDate: "2032-02-01" },
+                { id: 3, title: "SECTEUR INCONNU R-3", tomes: 96, date: "03/2034", releaseDate: "2034-03-01" },
+                { id: 4, title: "SECTEUR INCONNU R-4", tomes: 96, date: "01/2036", releaseDate: "2036-01-01" }
             ]
         };
 
-        for(let i=3; i<=13; i++) {
-            if(!STATE.romans.find(r => r.id === i)) {
-                STATE.romans.push({ id: i, title: `Secteur Inconnu ${i}`, tomes: 0, date: "???", public: false });
-            }
+        // Génération automatique des R-5 à R-14 avec 96 tomes
+        for(let i=5; i<=14; i++) {
+            STATE.romans.push({ id: i, title: `SECTEUR INCONNU R-${i}`, tomes: 96, date: "???", releaseDate: null });
         }
         STATE.romans.sort((a,b) => a.id - b.id);
 
@@ -251,10 +252,6 @@
         }
 
         function initApp() {
-            if(typeof syncWithSystemBridge === 'function') {
-                syncWithSystemBridge(STATE);
-            }
-
             if (STATE.isMaster) {
                 document.getElementById('master-tools').style.display = 'block';
                 document.getElementById('status-tag').innerText = "FULL_ADMIN_ACCESS";
@@ -265,7 +262,7 @@
                 STATE.romans.forEach(r => {
                     const opt = document.createElement('option');
                     opt.value = r.id;
-                    opt.innerText = `TOME ${r.id} : ${r.title}`;
+                    opt.innerText = `R-${r.id} : ${r.title}`;
                     ts.appendChild(opt);
                 });
                 init3D();
@@ -274,71 +271,25 @@
             loadData();
         }
 
-        function init3D() {
-            const container = document.getElementById('canvas-3d');
-            if(!container) return;
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
-            scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.5));
-            camera.position.z = 5;
-            loader = new THREE.GLTFLoader();
-            animate3D();
-        }
-
-        function animate3D() {
-            requestAnimationFrame(animate3D);
-            if(currentModel) currentModel.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        }
-
-        function loadBlenderModel(event) {
-            const file = event.target.files[0];
-            const url = URL.createObjectURL(file);
-            document.getElementById('obj-info').innerText = "LOADING...";
-            loader.load(url, (gltf) => {
-                if(currentModel) scene.remove(currentModel);
-                currentModel = gltf.scene;
-                currentModel.scale.set(1.5, 1.5, 1.5);
-                scene.add(currentModel);
-                document.getElementById('obj-info').innerText = file.name.toUpperCase();
-                logMessage(`MODEL_LOADED: ${file.name}`, 'SUCCESS');
-            });
-        }
-
         function renderRomans() {
             const selector = document.getElementById('romans-selector');
-            selector.innerHTML = STATE.romans.filter(r => r.public || STATE.isMaster).map(r => `
-                <div class="roman-tab ${STATE.projet == r.id ? 'active' : ''}" onclick="changeProjet(${r.id})">
-                    <div style="font-weight:bold; font-size:10px;">${STATE.isMaster && !r.public ? '[HIDDEN] ' : ''}R-${r.id}: ${r.title.toUpperCase()}</div>
-                    <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:8px;">
-                        <span style="color:var(--cosplay-gold);">${r.tomes} UNITÉS</span>
-                        <span style="color:#555;">${r.date}</span>
+            const now = new Date();
+
+            selector.innerHTML = STATE.romans.map(r => {
+                const isReleased = r.releaseDate && now >= new Date(r.releaseDate);
+                // CONDITION DE VISIBILITÉ : Master voit tout, sinon invisible si pas sorti
+                if (!STATE.isMaster && !isReleased) return '';
+
+                return `
+                    <div class="roman-tab ${STATE.projet == r.id ? 'active' : ''}" onclick="changeProjet(${r.id})">
+                        <div style="font-weight:bold; font-size:10px;">R-${r.id}: ${r.title.toUpperCase()}</div>
+                        <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:8px;">
+                            <span style="color:var(--cosplay-gold);">${r.tomes} UNITÉS</span>
+                            <span style="color:#555;">SORTIE: ${r.date}</span>
+                        </div>
                     </div>
-                </div>
-            `).join('');
-        }
-
-        function changeProjet(id) {
-            const url = new URL(window.location);
-            url.searchParams.set('projet', id);
-            window.location.href = url.href;
-        }
-
-        function toggleMaster() {
-            const url = new URL(window.location);
-            if (STATE.isMaster) url.searchParams.delete('Hinaru');
-            else url.searchParams.set('Hinaru', 'true');
-            window.location.href = url.href;
-        }
-
-        function setFilter(type, el) {
-            document.querySelectorAll('.planet').forEach(p => p.classList.remove('active'));
-            STATE.filter = (STATE.filter === type) ? null : type;
-            if (STATE.filter) el.querySelector('.planet').classList.add('active');
-            loadData();
+                `;
+            }).join('');
         }
 
         function loadData() {
@@ -347,19 +298,16 @@
             mainGrid.innerHTML = "";
             if (typeof archivesData === 'undefined') return;
 
-            const filtered = archivesData.filter(item => {
-                // 1. Protection Master/Privé
-                if (item.prive && !STATE.isMaster) return false;
-                
-                // 2. VÉRIFICATION TEMPORELLE (TEMPS RÉEL)
-                // On utilise la date de publication ou par défaut le début de 2026
-                const itemDate = new Date(item.date_publication || "2026-01-01");
-                const isAvailable = new Date() >= itemDate;
-                
-                // Si on n'est pas Master, on cache ce qui est dans le futur
-                if (!isAvailable && !STATE.isMaster) return false; 
+            const now = new Date();
 
-                // 3. Filtres de recherche et catégories
+            const filtered = archivesData.filter(item => {
+                // Règle de visibilité temporelle stricte
+                const itemDate = new Date(item.date_publication || "2027-01-01");
+                const isAvailable = now >= itemDate;
+                
+                if (!isAvailable && !STATE.isMaster) return false;
+                if (item.prive && !STATE.isMaster) return false;
+
                 const matchSearch = !searchVal || item.nom.toLowerCase().includes(searchVal);
                 return (item.roman == STATE.projet) && (!STATE.filter || item.type === STATE.filter) && matchSearch;
             });
@@ -382,11 +330,59 @@
             document.getElementById('vram-usage').innerText = (filtered.length * 12.4).toFixed(1) + "MB";
         }
 
+        // --- Fonctions 3D et Navigation inchangées ---
+        function init3D() {
+            const container = document.getElementById('canvas-3d');
+            if(!container) return;
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+            scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 1.5));
+            camera.position.z = 5;
+            loader = new THREE.GLTFLoader();
+            animate3D();
+        }
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            if(currentModel) currentModel.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        function loadBlenderModel(event) {
+            const file = event.target.files[0];
+            const url = URL.createObjectURL(file);
+            document.getElementById('obj-info').innerText = "LOADING...";
+            loader.load(url, (gltf) => {
+                if(currentModel) scene.remove(currentModel);
+                currentModel = gltf.scene;
+                currentModel.scale.set(1.5, 1.5, 1.5);
+                scene.add(currentModel);
+                document.getElementById('obj-info').innerText = file.name.toUpperCase();
+                logMessage(`MODEL_LOADED: ${file.name}`, 'SUCCESS');
+            });
+        }
+        function changeProjet(id) {
+            const url = new URL(window.location);
+            url.searchParams.set('projet', id);
+            window.location.href = url.href;
+        }
+        function toggleMaster() {
+            const url = new URL(window.location);
+            if (STATE.isMaster) url.searchParams.delete('Hinaru');
+            else url.searchParams.set('Hinaru', 'true');
+            window.location.href = url.href;
+        }
+        function setFilter(type, el) {
+            document.querySelectorAll('.planet').forEach(p => p.classList.remove('active'));
+            STATE.filter = (STATE.filter === type) ? null : type;
+            if (STATE.filter) el.querySelector('.planet').classList.add('active');
+            loadData();
+        }
         function injectSignal() {
             const targetTome = document.getElementById('tome-selector').value;
             const targetDate = document.getElementById('pub-date').value;
             logMessage(`INJECTING SIGNAL TO TOME ${targetTome} [DATE: ${targetDate}]`, 'INFO');
-            
             setTimeout(() => {
                 logMessage("SIGNAL_STABILIZED", "SUCCESS");
                 alert(`Signal envoyé : Tome ${targetTome} mis à jour au ${targetDate}`);
