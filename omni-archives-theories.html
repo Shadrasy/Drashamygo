@@ -14,7 +14,6 @@
             --vhs-vert: #00ff41;
             --lumiere-violette: rgba(136, 0, 255, 0.35);
             --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
-            --fluo-hanny: rgba(0, 255, 120, 0.2);
             --pois-vert: #39ff14;
             --cosplay-gold: #ffcc00;
         }
@@ -53,9 +52,15 @@
         }
         .btn-auth:hover { background: var(--vhs-vert); color: black; }
 
-        /* --- STYLE MAÎTRE --- */
-        .master-post { border: 1px solid var(--cosplay-gold) !important; background: rgba(255, 204, 0, 0.05) !important; }
-        .master-tag { color: var(--cosplay-gold); font-size: 0.6rem; font-weight: bold; letter-spacing: 2px; }
+        /* --- STYLE MAÎTRE (Bordure dorée pulsante) --- */
+        .master-post { 
+            border: 1px solid var(--cosplay-gold) !important; 
+            background: rgba(255, 204, 0, 0.08) !important;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+            animation: gold-glow 2s infinite alternate;
+        }
+        @keyframes gold-glow { from { box-shadow: 0 0 5px rgba(255, 204, 0, 0.2); } to { box-shadow: 0 0 20px rgba(255, 204, 0, 0.4); } }
+        .master-tag { color: var(--cosplay-gold); font-size: 0.65rem; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
 
         /* --- MOTEUR VHS --- */
         body::after {
@@ -68,7 +73,8 @@
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
         h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--vhs-vert); }
         .box { background: rgba(0, 0, 0, 0.92); border: 1px solid #333; padding: 40px; }
-        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
+        .btn-send { background: var(--vhs-vert); color: black; border: none; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
+        .btn-send:hover { background: #fff; box-shadow: 0 0 20px var(--vhs-vert); }
         textarea { width: 100%; background: #050505; border: 1px solid #444; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
         
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
@@ -89,22 +95,22 @@
     </div>
 
     <div class="nav-auth">
-        <button class="btn-auth" onclick="alert('Connexion au Terminal...')">CONNEXION</button>
-        <button class="btn-auth" onclick="alert('Déconnexion...')">DÉCONNEXION</button>
+        <button class="btn-auth" onclick="alert('Terminal OMNI : Identité requise.')">CONNEXION</button>
+        <button class="btn-auth" onclick="alert('Session archivée.')">DÉCONNEXION</button>
     </div>
 
-    <div class="nebula-planet p-gold" ondblclick="toggleMasterMode()"></div>
+    <div class="nebula-planet p-gold" ondblclick="toggleMasterMode()" title="Double-clic pour accès Architecte"></div>
 
     <div class="container">
         <h1>OMNI ARCHIVES</h1>
         
         <div class="box">
-            <label id="status-label" style="color:var(--vhs-vert); display:block; margin-bottom:15px; font-size: 0.8rem;">
+            <label id="status-label" style="color:var(--vhs-vert); display:block; margin-bottom:15px; font-size: 0.8rem; letter-spacing: 1px;">
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
             
             <form onsubmit="return processTheory()">
-                <textarea id="theory-input" rows="6" placeholder="Écrivez votre analyse..." required></textarea>
+                <textarea id="theory-input" rows="6" placeholder="Écrivez votre analyse ici..." required></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
             </form>
             
@@ -112,8 +118,8 @@
                 </div>
         </div>
         
-        <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.7rem;"> 
-            < REPASSER LE PORTAIL 
+        <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#666; text-decoration:none; font-size:0.7rem; border: 1px solid #222; padding: 10px;"> 
+            < REPASSER LE PORTAIL VERS LE CENTRE 
         </a>
     </div>
 
@@ -126,10 +132,12 @@
             if(isMasterMode) {
                 label.innerHTML = "ACCÈS ARCHITECTE ACTIVÉ — CANON DOMINANT";
                 label.style.color = "var(--cosplay-gold)";
+                document.body.style.boxShadow = "inset 0 0 100px rgba(255, 204, 0, 0.1)";
                 alert("SYSTÈME : Bienvenue Maître. Vos réponses seront marquées du sceau originel.");
             } else {
                 label.innerHTML = "TRANSMISSION DE THÉORIE (MODE CIVIL) :";
                 label.style.color = "var(--vhs-vert)";
+                document.body.style.boxShadow = "none";
             }
         }
 
@@ -160,8 +168,10 @@
                     for (let key in OMNI_MASTER_LEXICON[cat]) {
                         let vars = OMNI_MASTER_LEXICON[cat][key];
                         for (let l in vars) {
-                            if (vars[l].length > 2) {
-                                let regex = new RegExp(vars[l], 'gi');
+                            if (vars[l] && vars[l].length > 2) {
+                                // Échapper les caractères spéciaux (comme $) pour la Regex
+                                let escapedWord = vars[l].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                                let regex = new RegExp(escapedWord, 'gi');
                                 text = text.replace(regex, `<span class="omni-term">${vars['fr']}</span>`);
                             }
                         }
@@ -171,17 +181,20 @@
 
             // --- AFFICHAGE ---
             const newTheory = document.createElement('div');
-            let masterClass = isMasterMode ? "master-post" : "";
-            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--vhs-vert); font-size:0.6rem;">SIGNAL_REÇU</span>';
+            // Application du style Maître si activé
+            if(isMasterMode) {
+                newTheory.className = "master-post";
+            }
+            
+            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--vhs-vert); font-size:0.6rem; letter-spacing:1px;">SIGNAL_REÇU</span>';
 
-            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; display: flex; align-items: center;";
-            if(isMasterMode) newTheory.classList.add('master-post');
+            newTheory.style.cssText += "background: rgba(255,255,255,0.03); border-left: 3px solid var(--vhs-vert); padding: 20px; margin-bottom: 20px; display: flex; align-items: center; transition: 0.5s;";
 
             newTheory.innerHTML = `
                 ${pointHTML}
                 <div style="flex: 1;">
                     ${masterSign}
-                    <span style="color:#eee; display:block; margin-top:5px;">"${text}"</span>
+                    <span style="color:#eee; display:block; margin-top:5px; line-height:1.5;">"${text}"</span>
                 </div>
             `;
 
