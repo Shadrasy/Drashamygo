@@ -11,8 +11,8 @@
     <style>
         :root { 
             --noir-fond: #010105; 
-            --omni-rouge: #660011; /* Rouge Bordeaux Sombre */
-            --omni-rouge-eclat: #ff3333; /* Rouge vif pour le texte scan */
+            --omni-rouge: #660011; 
+            --omni-rouge-eclat: #ff3333; 
             --lumiere-violette: rgba(136, 0, 255, 0.35);
             --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
             --cosplay-gold: #ffcc00;
@@ -24,10 +24,19 @@
             font-family: 'Courier New', monospace; min-height: 100vh; overflow-x: hidden;
             background: radial-gradient(circle at 15% 20%, var(--lumiere-violette) 0%, transparent 60%), var(--noir-fond);
             background-attachment: fixed;
-            transition: box-shadow 0.5s ease, filter 0.15s ease;
+            transition: box-shadow 0.5s ease, filter 0.15s ease, background-color 0.2s ease;
         }
 
-        /* --- BANDEAU D'ALERTE ORIGINE --- */
+        /* --- TROU NOIR (Réajusté à gauche comme sur l'index) --- */
+        .quasar-container-left { position: fixed; top: 10%; left: 8%; width: 150px; height: 150px; z-index: -2; }
+        .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
+        .jet { 
+            position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; 
+            background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); 
+            transform: translate(-50%, -50%) rotate(-45deg); opacity: 0.6;
+        }
+
+        /* --- BANDEAU D'ALERTE --- */
         #omni-header-notice {
             background: rgba(20, 0, 0, 0.95);
             border-bottom: 1px solid var(--omni-rouge);
@@ -91,8 +100,14 @@
             100% { opacity: 0; }
         }
 
+        /* --- PLANÈTES --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: -7; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); top: 50%; left: 50%; }
-        .p-gold { width: 35px; height: 35px; background: var(--cosplay-gold); box-shadow: 0 0 25px var(--cosplay-gold); animation: orbit 45s linear infinite; }
+        .p-gold { 
+            width: 35px; height: 35px; background: var(--cosplay-gold); 
+            box-shadow: 0 0 25px var(--cosplay-gold); 
+            animation: orbit 45s linear infinite; 
+            cursor: none !important; /* La souris disparaît ici */
+        }
         .p-blue { width: 45px; height: 45px; background: #0044aa; animation: orbit 60s linear infinite reverse; }
         .p-red { width: 30px; height: 30px; background: var(--omni-rouge); animation: orbit 35s linear infinite; }
         .p-purple { width: 55px; height: 55px; background: #220044; animation: orbit 80s linear infinite; }
@@ -104,20 +119,14 @@
         /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
         h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--omni-rouge); }
-        .box { background: rgba(0, 0, 0, 0.94); border: 1px solid #300; padding: 40px; box-shadow: 0 0 30px rgba(102, 0, 17, 0.2); }
-        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; letter-spacing: 2px; }
-        .btn-send:hover { background: #800; box-shadow: 0 0 15px var(--omni-rouge); }
+        .box { background: rgba(0, 0, 0, 0.94); border: 1px solid #300; padding: 40px; }
+        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
         textarea { width: 100%; background: #080000; border: 1px solid #400; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
-        
-        /* Couleur des termes détectés */
         .omni-term { color: var(--omni-rouge-eclat); border-bottom: 1px dashed var(--omni-rouge); font-weight: bold; }
-        
         #omni-logs { font-size: 0.6rem; color: #600; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #300; line-height: 1.4; }
     </style>
 </head>
 <body>
-
-    <div id="master-sensor" onclick="checkTripleClick()" style="position: fixed; top: 0; right: 0; width: 100px; height: 100px; z-index: 9999; cursor: none;"></div>
 
     <div id="omni-header-notice">
         <p style="color: var(--omni-rouge-eclat); margin: 0; font-size: 0.8rem; letter-spacing: 1px;">
@@ -127,13 +136,17 @@
         </p>
     </div>
 
+    <div class="quasar-container-left">
+        <div class="jet"></div><div class="black-hole"></div>
+    </div>
+
     <div class="stars"></div>
     <div class="space-dust"></div>
     <div class="shooting-star"></div>
     <div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
 
     <div id="galaxy-receptor">
-        <div class="nebula-planet p-gold" title="Astre Maître"></div>
+        <div class="nebula-planet p-gold" onclick="checkMasterClicks()" title="Astre Maître"></div>
         <div class="nebula-planet p-blue" style="animation-delay: -5s; opacity: 0.8;"></div>
         <div class="nebula-planet p-red" style="animation-delay: -12s; opacity: 0.7;"></div>
         <div class="nebula-planet p-purple" style="animation-delay: -20s; opacity: 0.9;"></div>
@@ -166,19 +179,28 @@
 
     <script>
         let isMasterMode = false;
-        let clickCount = 0;
-        let lastClick = 0;
+        let masterClicks = 0;
+        let lastMasterClick = 0;
 
-        function checkTripleClick() {
+        // --- DÉTECTION TRIPLE CLIC SUR PLANÈTE D'OR ---
+        function checkMasterClicks() {
             const now = Date.now();
-            if (now - lastClick < 600) { clickCount++; } else { clickCount = 1; }
-            lastClick = now;
-            if (clickCount === 3) {
+            if (now - lastMasterClick < 500) {
+                masterClicks++;
+            } else {
+                masterClicks = 1;
+            }
+            lastMasterClick = now;
+
+            if (masterClicks === 3) {
                 isMasterMode = !isMasterMode;
                 toggleMasterMode();
-                clickCount = 0;
-                document.body.style.filter = "brightness(1.5)";
-                setTimeout(() => { document.body.style.filter = "none"; }, 150);
+                masterClicks = 0;
+
+                // Feedback (Flash rouge bordeaux)
+                const originalColor = document.body.style.backgroundColor;
+                document.body.style.backgroundColor = "var(--omni-rouge)";
+                setTimeout(() => { document.body.style.backgroundColor = originalColor; }, 200);
             }
         }
 
