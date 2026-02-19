@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archives - Nébuleuse Visuelle (V100.9.30) - SECURED SYSTEM V2031</title>
+    <title>Archives - Nébuleuse Visuelle (V100.9.30) - SECURED SYSTEM V2026</title>
     
     <script src="system-bridge.js"></script> 
     <script src="archives-data.js" onerror="logMessage('LOCAL_DATA_FAILURE', 'CRITICAL')"></script> 
@@ -131,14 +131,14 @@
 
     <div id="loading-overlay">
         <div id="boot-logs" style="font-size: 10px; width: 400px; height: 100px; color: #600; overflow: hidden; margin-bottom: 20px;"></div>
-        <div style="font-size: 12px; letter-spacing: 5px;">INITIALIZING_DATABASE_V2031</div>
+        <div style="font-size: 12px; letter-spacing: 5px;">INITIALIZING_DATABASE_V2026</div>
         <div class="bar-container"><div id="load-bar" class="bar-fill"></div></div>
     </div>
 
     <div class="osd-header">
         <a href="index.html" class="btn-exit">EXIT_ARCHIVE</a>
         <div style="text-align: center;">
-            <div style="font-size: 11px; letter-spacing: 4px; color: var(--rouge-vif);">NÉBULEUSE VISUELLE V2031</div>
+            <div style="font-size: 11px; letter-spacing: 4px; color: var(--rouge-vif);">NÉBULEUSE VISUELLE V2026</div>
             <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #400; cursor:default; user-select:none;">
                 SYS_TIME: <span id="clock-display">00:00:00</span> | VRAM: <span id="vram-usage">0MB</span>
             </div>
@@ -168,8 +168,9 @@
                         <select id="tome-selector" style="width:100%; background: #000; color: white; border: 1px solid var(--rouge-vif); margin: 10px 0; padding:5px; font-family: inherit;">
                         </select>
                         <label style="font-size:10px; color:var(--rouge-vif);">DATE DE PUBLICATION</label>
-                        <input type="date" id="pub-date" value="2031-03-05" style="width:100%; background: #000; color: white; border: 1px solid var(--rouge-vif); margin: 10px 0; padding:5px; font-family: inherit;">
-                        <button class="btn-master" style="width:100%;" onclick="logMessage('SIGNAL_INJECTED', 'INFO')">[ INJECTER SIGNAL ]</button>
+                        <input type="date" id="pub-date" value="2026-02-19" style="width:100%; background: #000; color: white; border: 1px solid var(--rouge-vif); margin: 10px 0; padding:5px; font-family: inherit;">
+                        
+                        <button class="btn-master" style="width:100%;" onclick="injectSignal()">[ INJECTER SIGNAL ]</button>
                     </div>
                     <div class="3d-viewer-container" style="border: 1px solid #300; background: #000; position: relative;">
                         <div id="canvas-3d" class="canvas-3d"></div>
@@ -200,13 +201,12 @@
             projet: parseInt(new URLSearchParams(window.location.search).get('projet')) || 1,
             filter: null,
             romans: [
-                { id: 1, title: "SHADRASY: Le Souffle Originel", tomes: 154, date: "05/03/2031", public: true },
-                { id: 2, title: "La Guilde de l'Aube", tomes: 96, date: "02/2032", public: false },
+                { id: 1, title: "SHADRASY: Le Souffle Originel", tomes: 154, date: "19/02/2026", public: true },
+                { id: 2, title: "TOME 2: Nébuleuse", tomes: 1, date: "2026", public: true },
                 { id: 14, title: "Projet Final XIV", tomes: 14, date: "2040", public: false }
             ]
         };
 
-        // Remplissage auto des secteurs
         for(let i=3; i<=13; i++) {
             if(!STATE.romans.find(r => r.id === i)) {
                 STATE.romans.push({ id: i, title: `Secteur Inconnu ${i}`, tomes: 0, date: "???", public: false });
@@ -251,6 +251,11 @@
         }
 
         function initApp() {
+            // Appelle la fonction du fichier system-bridge.js si elle existe
+            if(typeof syncWithSystemBridge === 'function') {
+                syncWithSystemBridge(STATE);
+            }
+
             if (STATE.isMaster) {
                 document.getElementById('master-tools').style.display = 'block';
                 document.getElementById('status-tag').innerText = "FULL_ADMIN_ACCESS";
@@ -270,6 +275,9 @@
             loadData();
         }
 
+        // Le reste de tes fonctions (init3D, loadData, etc.) reste identique à ton code d'origine...
+        // [Garder ici le code Three.js et loadData que tu avais déjà]
+        
         function init3D() {
             const container = document.getElementById('canvas-3d');
             if(!container) return;
@@ -365,6 +373,18 @@
                 mainGrid.appendChild(box);
             });
             document.getElementById('vram-usage').innerText = (filtered.length * 12.4).toFixed(1) + "MB";
+        }
+
+        function injectSignal() {
+            const targetTome = document.getElementById('tome-selector').value;
+            const targetDate = document.getElementById('pub-date').value;
+            logMessage(`INJECTING SIGNAL TO TOME ${targetTome} [DATE: ${targetDate}]`, 'INFO');
+            
+            // Simulation d'envoi
+            setTimeout(() => {
+                logMessage("SIGNAL_STABILIZED", "SUCCESS");
+                alert(`Signal envoyé : Tome ${targetTome} mis à jour au ${targetDate}`);
+            }, 1000);
         }
     </script>
 </body>
