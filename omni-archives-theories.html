@@ -27,14 +27,15 @@
             transition: box-shadow 0.5s ease, filter 0.15s ease, background-color 0.2s ease;
         }
 
-        /* --- TROU NOIR --- */
-        .quasar-container-left { position: fixed; top: 10%; left: 8%; width: 150px; height: 150px; z-index: -2; }
-        .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
+        /* --- QUASAR MAÎTRE (TROU NOIR) --- */
+        .quasar-container-left { position: fixed; top: 10%; left: 8%; width: 150px; height: 150px; z-index: -2; animation: pulsar-rotate 20s linear infinite; }
+        .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 60px white, inset 0 0 30px var(--pulsar-cyan); }
         .jet { 
-            position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; 
+            position: absolute; top: 50%; left: 50%; width: 4px; height: 1200px; 
             background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); 
-            transform: translate(-50%, -50%) rotate(-45deg); opacity: 0.6;
+            transform: translate(-50%, -50%) rotate(-45deg); opacity: 0.7; filter: blur(1px);
         }
+        @keyframes pulsar-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         /* --- STYLE MAÎTRE --- */
         .master-post { 
@@ -44,79 +45,81 @@
         @keyframes gold-glow { from { box-shadow: 0 0 5px rgba(255, 204, 0, 0.2); } to { box-shadow: 0 0 20px rgba(255, 204, 0, 0.4); } }
         .master-tag { color: var(--cosplay-gold); font-size: 0.65rem; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; }
 
-        /* --- GALAXIE & ÉTOILES --- */
+        /* --- GALAXIE PROFONDE & PHÉNOMÈNES --- */
         .stars {
             position: fixed; inset: 0; z-index: -10;
-            background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent), radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent), radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
-            background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
+            background-image: 
+                radial-gradient(1px 1px at 10% 15%, #fff, transparent),
+                radial-gradient(2px 2px at 35% 65%, var(--pulsar-cyan), transparent),
+                radial-gradient(1px 1px at 75% 35%, var(--cosplay-gold), transparent),
+                radial-gradient(2px 2px at 85% 85%, #fff, transparent);
+            background-size: 400px 400px; animation: twinkle 8s infinite alternate ease-in-out;
         }
-        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 0.7; } }
+        @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.6; } }
 
-        .space-dust { position: fixed; inset: 0; z-index: -9; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; pointer-events: none; }
+        .space-dust { position: fixed; inset: 0; z-index: -9; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%); mix-blend-mode: screen; pointer-events: none; opacity: 0.5; }
 
         .shooting-star {
-            position: fixed; top: -10px; width: 100px; height: 1px; z-index: -8;
+            position: fixed; top: -10px; width: 150px; height: 1px; z-index: -8;
             background: linear-gradient(90deg, white, transparent);
-            animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg);
+            animation: shoot 12s linear infinite; opacity: 0; transform: rotate(-45deg);
         }
         @keyframes shoot {
-            0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; }
-            5% { opacity: 1; }
-            15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; }
+            0% { transform: translateX(120vw) translateY(-20vh) rotate(-45deg); opacity: 0; }
+            2% { opacity: 1; }
+            10% { transform: translateX(-20vw) translateY(100vh) rotate(-45deg); opacity: 0; }
             100% { opacity: 0; }
         }
 
-        /* --- PLANÈTES : ITINÉRAIRES INDIVIDUELS --- */
-        .nebula-planet { position: fixed; border-radius: 50%; z-index: 500; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.8); }
+        /* --- PLANÈTES : ITINÉRAIRES UNIQUES (SANS COLLISION) --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: 500; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); }
 
+        /* Astre d'Or - Accès Maître */
         .p-gold { 
-            width: 45px; height: 45px; background: var(--cosplay-gold); 
-            box-shadow: 0 0 30px var(--cosplay-gold); top: 15%; right: 15%;
-            animation: floatGold 12s infinite ease-in-out;
-            cursor: none !important; /* LA SOURIS DISPARAÎT ICI */
-            z-index: 1000; /* Toujours au dessus pour le clic */
+            width: 48px; height: 48px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); 
+            top: 15%; right: 10%; animation: floatGold 25s infinite ease-in-out; cursor: none !important; z-index: 1000;
         }
-        @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
+        @keyframes floatGold { 0%, 100% { transform: translate(0,0); } 33% { transform: translate(-5vw, 5vh); } 66% { transform: translate(-2vw, 10vh); } }
 
-        .p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 18s infinite ease-in-out; }
-        @keyframes floatBlue { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -20px); } }
+        .p-blue { width: 75px; height: 75px; background: #0044aa; top: 35%; left: 5%; animation: floatBlue 40s infinite ease-in-out; }
+        @keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
 
-        .p-red { width: 35px; height: 35px; background: var(--omni-rouge); bottom: 20%; right: 10%; animation: floatRed 15s infinite ease-in-out; }
-        @keyframes floatRed { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-30px, -40px); } }
+        .p-red { width: 45px; height: 45px; background: var(--omni-rouge); bottom: 15%; right: 5%; animation: floatRed 30s infinite ease-in-out; }
+        @keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
 
-        .p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 22s infinite ease-in-out; }
-        @keyframes floatPurple { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 50px); } }
+        .p-purple { width: 90px; height: 90px; background: #220044; top: 5%; left: 30%; animation: floatPurple 50s infinite ease-in-out; }
+        @keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
 
-        .p-ice { width: 25px; height: 25px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 14s infinite ease-in-out; }
-        @keyframes floatIce { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(50px, 20px); } }
+        .p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 10%; left: 15%; animation: floatIce 35s infinite ease-in-out; }
+        @keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
 
-        .p-toxic { width: 45px; height: 45px; background: #003300; top: 60%; right: 5%; animation: floatToxic 20s infinite ease-in-out; }
-        @keyframes floatToxic { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-40px, 20px); } }
+        .p-toxic { width: 55px; height: 55px; background: #003300; top: 65%; right: 15%; animation: floatToxic 45s infinite ease-in-out; }
+        @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
         /* --- INTERFACE --- */
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
-        h1 { text-align: center; font-size: 3rem; letter-spacing: 10px; text-shadow: 0 0 20px var(--omni-rouge); }
-        .box { background: rgba(0, 0, 0, 0.94); border: 1px solid #300; padding: 40px; }
-        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 15px; cursor: pointer; width: 100%; font-weight: bold; }
-        textarea { width: 100%; background: #080000; border: 1px solid #400; color: white; padding: 15px; margin-bottom: 20px; font-family: inherit; outline: none; }
+        h1 { text-align: center; font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 25px var(--omni-rouge); }
+        .box { background: rgba(0, 0, 0, 0.95); border: 1px solid #400; padding: 45px; backdrop-filter: blur(5px); }
+        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 18px; cursor: pointer; width: 100%; font-weight: bold; letter-spacing: 3px; }
+        textarea { width: 100%; background: #080000; border: 1px solid #500; color: white; padding: 20px; margin-bottom: 25px; font-family: inherit; outline: none; font-size: 1rem; }
         .omni-term { color: var(--omni-rouge-eclat); border-bottom: 1px dashed var(--omni-rouge); font-weight: bold; }
-        #omni-logs { font-size: 0.6rem; color: #600; margin-top: 20px; text-align: left; padding: 10px; border: 1px solid #300; line-height: 1.4; }
+        #omni-logs { font-size: 0.65rem; color: #700; margin-top: 30px; text-align: left; padding: 12px; border: 1px solid #300; line-height: 1.6; font-family: monospace; }
     </style>
 </head>
 <body>
+
+    <div id="omni-header-notice" style="position: relative; z-index: 2001; background: rgba(15,0,0,0.9); border-bottom: 1px solid var(--omni-rouge); padding: 12px;">
+        <p style="color: var(--omni-rouge-eclat); margin: 0; font-size: 0.85rem; letter-spacing: 2px; text-align: center;">
+            [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong> 
+            <br>
+            <span style="color: #600; font-size: 0.7rem;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
+        </p>
+    </div>
 
     <div class="quasar-container-left"><div class="jet"></div><div class="black-hole"></div></div>
     <div class="stars"></div>
     <div class="space-dust"></div>
     <div class="shooting-star"></div>
-
-    <div id="omni-header-notice" style="position: relative; z-index: 2001;">
-        <p style="color: var(--omni-rouge-eclat); margin: 0; font-size: 0.8rem; letter-spacing: 1px; text-align: center;">
-            [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong> 
-            <br>
-            <span style="color: #600;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
-        </p>
-    </div>
 
     <div id="galaxy-receptor">
         <div class="nebula-planet p-blue"></div>
@@ -130,21 +133,22 @@
     <div class="container">
         <h1>OMNI ARCHIVES</h1>
         <div class="box">
-            <label id="status-label" style="color:var(--omni-rouge); display:block; margin-bottom:15px; font-size: 0.8rem; letter-spacing: 1px; font-weight: bold;">
+            <label id="status-label" style="color:var(--omni-rouge); display:block; margin-bottom:20px; font-size: 0.9rem; letter-spacing: 2px; font-weight: bold;">
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
             <form onsubmit="return processTheory()">
-                <textarea id="theory-input" rows="6" placeholder="Analyse du signal..." required></textarea>
-                <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE</button>
+                <textarea id="theory-input" rows="6" placeholder="Analyse du signal en cours..." required></textarea>
+                <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE OMNI</button>
             </form>
-            <div id="display-area" style="margin-top: 50px; border-top: 1px solid #300; padding-top: 30px;"></div>
+            <div id="display-area" style="margin-top: 50px; border-top: 1px solid #400; padding-top: 30px;"></div>
             <div id="omni-logs">
                 >> OMNI_SCANNER_ACTIVE... <br>
+                >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
                 >> PROTOCOL: RED_SPECTRUM_STRICT <br>
-                >> WAITING_FOR_INCOMING_SIGNAL...
+                >> STATUS: ARCHIVE_SECURED...
             </div>
         </div>
-        <a href="index.html" style="display:block; text-align:center; margin-top:40px; color:#400; text-decoration:none; font-size:0.7rem; border: 1px solid #200; padding: 10px;"> 
+        <a href="index.html" style="display:block; text-align:center; margin-top:50px; color:#500; text-decoration:none; font-size:0.75rem; border: 1px solid #300; padding: 15px; letter-spacing: 2px;"> 
             < REPASSER LE PORTAIL VERS LE CENTRE 
         </a>
     </div>
@@ -156,19 +160,16 @@
 
         function checkMasterClicks() {
             const now = Date.now();
-            if (now - lastMasterClick < 500) { masterClicks++; } 
-            else { masterClicks = 1; }
+            if (now - lastMasterClick < 500) { masterClicks++; } else { masterClicks = 1; }
             lastMasterClick = now;
 
             if (masterClicks === 3) {
                 isMasterMode = !isMasterMode;
                 toggleMasterMode();
                 masterClicks = 0;
-                
-                // Feedback Flash
                 const flashColor = isMasterMode ? "var(--cosplay-gold)" : "var(--omni-rouge)";
                 document.body.style.backgroundColor = flashColor;
-                setTimeout(() => { document.body.style.backgroundColor = "var(--noir-fond)"; }, 200);
+                setTimeout(() => { document.body.style.backgroundColor = "transparent"; }, 250);
             }
         }
 
@@ -178,7 +179,7 @@
             if(isMasterMode) {
                 label.innerHTML = "ACCÈS ARCHITECTE ACTIVÉ — CANON DOMINANT";
                 label.style.color = "var(--cosplay-gold)";
-                document.body.style.boxShadow = "inset 0 0 100px rgba(255, 204, 0, 0.15)";
+                document.body.style.boxShadow = "inset 0 0 150px rgba(255, 204, 0, 0.2)";
                 logs.innerHTML += "<br>>> ARCHITECT_ID_CONFIRMED: ACCESS_GRANTED_V2031";
             } else {
                 label.innerHTML = "TRANSMISSION DE THÉORIE (MODE CIVIL) :";
@@ -218,9 +219,9 @@
 
             const newTheory = document.createElement('div');
             if(isMasterMode) newTheory.className = "master-post";
-            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--omni-rouge-eclat); font-size:0.6rem; letter-spacing:1px; font-weight:bold;">SIGNAL_REÇU</span>';
-            newTheory.style.cssText = "background: rgba(255,255,255,0.02); border-left: 3px solid var(--omni-rouge); padding: 20px; margin-bottom: 20px; display: flex; align-items: center;";
-            newTheory.innerHTML = `${pointHTML}<div style="flex: 1;">${masterSign}<span style="color:#eee; display:block; margin-top:5px; line-height:1.5;">"${text}"</span></div>`;
+            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--omni-rouge-eclat); font-size:0.65rem; letter-spacing:2px; font-weight:bold;">SIGNAL_REÇU</span>';
+            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 4px solid var(--omni-rouge); padding: 25px; margin-bottom: 25px; display: flex; align-items: center; transition: 0.3s;";
+            newTheory.innerHTML = `${pointHTML}<div style="flex: 1;">${masterSign}<span style="color:#eee; display:block; margin-top:8px; line-height:1.6; font-size:0.95rem;">"${text}"</span></div>`;
             displayArea.prepend(newTheory);
             input.value = "";
             return false;
