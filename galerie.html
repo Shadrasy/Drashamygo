@@ -46,6 +46,15 @@
             z-index: 9999; background-size: 100% 4px; pointer-events: none; opacity: 0.3;
         }
 
+        /* --- NOUVEL UNIVERS : PLANÈTES TOXIQUES & GLACIAIRES --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); pointer-events: none; }
+        .p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
+        @keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+        .p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
+        @keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+        .p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
+        @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
+
         /* --- ANOMALIE GALACTIQUE (CHAT SECRET) --- */
         #galaxy-anomaly {
             position: fixed; top: 15%; left: 5%; width: 6px; height: 6px;
@@ -75,7 +84,7 @@
             pointer-events: none; border-left: 1px solid var(--rouge-vif); padding-left: 10px;
         }
 
-        /* --- PLANETS --- */
+        /* --- PLANETS FILTERS --- */
         .nav-planets {
             position: fixed; left: 20px; top: 120px; z-index: 10005;
             display: flex; flex-direction: column; gap: 30px;
@@ -83,21 +92,27 @@
         .planet-box { position: relative; cursor: pointer; display: flex; align-items: center; }
         .planet { width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); transition: 0.5s; }
         .planet:hover, .planet.active { transform: scale(1.2); border-color: var(--rouge-vif); box-shadow: var(--active-glow); }
-        .p-gold { background: radial-gradient(circle at 30% 30%, #fff, var(--cosplay-gold), #000); }
-        .p-blue { background: radial-gradient(circle at 30% 30%, #fff, #0077ff, #000); }
-        .p-red { background: radial-gradient(circle at 30% 30%, #fff, var(--rouge-vif), #000); }
+        .p-gold-filter { background: radial-gradient(circle at 30% 30%, #fff, var(--cosplay-gold), #000); }
+        .p-blue-filter { background: radial-gradient(circle at 30% 30%, #fff, #0077ff, #000); }
+        .p-red-filter { background: radial-gradient(circle at 30% 30%, #fff, var(--rouge-vif), #000); }
         .planet-label { position: absolute; left: 60px; font-size: 9px; opacity: 0; transition: 0.3s; color: var(--rouge-vif); white-space: nowrap; border-left: 2px solid var(--rouge-vif); padding-left: 10px; }
         .planet-box:hover .planet-label { opacity: 1; }
 
         /* --- MASTER TOOLS --- */
         #master-tools {
             display: none; border: 2px solid var(--rouge-vif); background: rgba(0,0,0,0.98);
-            padding: 25px; margin-bottom: 40px; box-shadow: 0 0 30px rgba(255,0,0,0.2);
+            padding: 25px; margin-bottom: 20px; box-shadow: 0 0 30px rgba(255,0,0,0.2);
         }
         .master-grid { display: grid; grid-template-columns: 350px 1fr; gap: 20px; }
         .canvas-3d { width: 100%; height: 350px; background: #000; border: 1px solid var(--rouge-vif); position: relative; }
         .btn-master { background: transparent; color: var(--rouge-vif); border: 1px solid var(--rouge-vif); padding: 10px; cursor: pointer; font-family: inherit; font-size: 10px; transition: 0.3s; text-transform: uppercase; }
         .btn-master:hover { background: var(--rouge-vif); color: black; }
+
+        /* --- LOGS & QR CODE --- */
+        #omni-logs { font-size: 0.6rem; color: #444; text-align: left; padding: 10px; border: 1px solid #111; line-height: 1.4; margin-bottom: 20px; background: rgba(0,0,0,0.8); }
+        #qrcode { background: white; padding: 10px; display: none; margin: 10px auto; width: 140px; border: 4px solid var(--bordeaux); }
+        .btn-qr { border: 1px solid var(--bordeaux); color: var(--bordeaux); padding: 8px 18px; text-decoration: none; font-size: 0.7rem; background: transparent; cursor: pointer; transition: 0.3s; }
+        .btn-qr:hover { background: var(--bordeaux); color: white; }
 
         /* --- ROMANS SELECTOR --- */
         #romans-selector {
@@ -160,15 +175,20 @@
 
     <div class="sys-log" id="sys-log">[SYSTEM] STANDBY...<br>[SIGNAL] STABLE</div>
 
-    <!-- FILTRES DE PLANÈTES -->
+    <!-- FILTRES DE RECHERCHE RAPIDE -->
     <div class="nav-planets">
-        <div class="planet-box" onclick="setFilter('Cosplay', this)"><div class="planet p-gold"></div><span class="planet-label">SECTEUR_COSPLAY</span></div>
-        <div class="planet-box" onclick="setFilter('3D', this)"><div class="planet p-blue"></div><span class="planet-label">GEOGRAPHIE_ALPHA</span></div>
-        <div class="planet-box" onclick="setFilter('Livre', this)"><div class="planet p-red"></div><span class="planet-label">ARCHIVES_LITTERAIRES</span></div>
+        <div class="planet-box" onclick="setFilter('Cosplay', this)"><div class="planet p-gold-filter"></div><span class="planet-label">SECTEUR_COSPLAY</span></div>
+        <div class="planet-box" onclick="setFilter('3D', this)"><div class="planet p-blue-filter"></div><span class="planet-label">GEOGRAPHIE_ALPHA</span></div>
+        <div class="planet-box" onclick="setFilter('Livre', this)"><div class="planet p-red-filter"></div><span class="planet-label">ARCHIVES_LITTERAIRES</span></div>
     </div>
 
-    <!-- LE FOND ÉTOILÉ ET L'ANOMALIE GALACTIQUE (CHAT) -->
+    <!-- FOND ET ANOMALIE DU CHAT SECRET -->
     <div class="star-field"></div>
+    <div id="galaxy-receptor">
+        <div class="nebula-planet p-purple"></div>
+        <div class="nebula-planet p-ice"></div>
+        <div class="nebula-planet p-toxic"></div>
+    </div>
     <div id="galaxy-anomaly" title="???"></div>
 
     <!-- CONTENU PRINCIPAL -->
@@ -201,6 +221,21 @@
                 </div>
             </div>
 
+            <!-- NOUVEAU MODULE : LOGS & PORTAIL QR -->
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 30px;">
+                <div id="omni-logs" style="flex-grow: 1; margin-right: 20px;">
+                    >> OMNI_SCANNER_ACTIVE... <br>
+                    >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
+                    >> SUCCESS: SYSTEM_RESTORATION_COMPLETE <br>
+                    >> STATUS: ARCHIVE_SECURED... <br>
+                    >> WAITING_FOR_INCOMING_SIGNAL...
+                </div>
+                <div style="text-align: center; min-width: 180px;">
+                    <button class="btn-qr" onclick="genererPortailQR()">[ ACTIVER PORTAIL QR ]</button>
+                    <div id="qrcode"></div>
+                </div>
+            </div>
+
             <!-- MENU DES SECTEURS -->
             <div id="romans-selector"></div>
 
@@ -217,20 +252,22 @@
     </div>
 
     <script>
-        // Le pont System-Bridge s'occupe déjà de définir la variable STATE !
+        // La variable STATE est automatiquement récupérée et gérée par notre fichier system-bridge.js
         let scene, camera, renderer, loader, currentModel;
 
         function logMessage(msg, type) {
             const logPanel = document.getElementById('sys-log');
             const timestamp = new Date().toLocaleTimeString().split(' ');
-            logPanel.innerHTML = `[${timestamp}] [${type}] ${msg}<br>` + logPanel.innerHTML;
+            if (logPanel) {
+                logPanel.innerHTML = `[${timestamp}] [${type}] ${msg}<br>` + logPanel.innerHTML;
+            }
         }
 
         function bootSystem() {
             const logs = document.getElementById('boot-logs');
             const messages = [
                 "> ACCESSING KERNEL...",
-                STATE.isMaster ? "> MASTER_KEY_DETECTED" : "> PUBLIC_VIEW_ONLY",
+                STATE && STATE.isMaster ? "> MASTER_KEY_DETECTED" : "> PUBLIC_VIEW_ONLY",
                 "> LOADING NEBULA_DATA.SYS",
                 "> SYNCING VRAM...",
                 "> SYSTEM READY."
@@ -252,23 +289,28 @@
                 }
             }, 300);
 
-            setInterval(() => { document.getElementById('clock-display').innerText = new Date().toLocaleTimeString(); }, 1000);
+            setInterval(() => { 
+                const clock = document.getElementById('clock-display');
+                if(clock) clock.innerText = new Date().toLocaleTimeString(); 
+            }, 1000);
         }
 
         function initApp() {
-            if (STATE.isMaster) {
+            if (STATE && STATE.isMaster) {
                 document.getElementById('master-tools').style.display = 'block';
                 document.getElementById('status-tag').innerText = "FULL_ADMIN_ACCESS";
                 document.getElementById('status-tag').style.color = "var(--rouge-vif)";
                 document.getElementById('mode-indicator').innerHTML = "MODE: <span style='color:var(--cosplay-gold)'>OMNI_COMMANDER</span>";
                 
                 const ts = document.getElementById('tome-selector');
-                STATE.romans.forEach(r => {
-                    const opt = document.createElement('option');
-                    opt.value = r.id;
-                    opt.innerText = `R-${r.id} : ${r.title}`;
-                    ts.appendChild(opt);
-                });
+                if (ts && STATE.romans) {
+                    STATE.romans.forEach(r => {
+                        const opt = document.createElement('option');
+                        opt.value = r.id;
+                        opt.innerText = `R-${r.id} : ${r.title}`;
+                        ts.appendChild(opt);
+                    });
+                }
                 init3D();
             }
             renderRomans();
@@ -278,33 +320,35 @@
         function renderRomans() {
             const selector = document.getElementById('romans-selector');
             const now = new Date();
-            selector.innerHTML = STATE.romans.map(r => {
-                const isReleased = r.releaseDate && now >= new Date(r.releaseDate);
-                // CONDITION DE VISIBILITÉ : Master voit tout, sinon invisible si pas sorti
-                if (!STATE.isMaster && !isReleased) return '';
-                
-                return `
-                <div class="roman-tab ${STATE.projet == r.id ? 'active' : ''}" onclick="changeProjet(${r.id})">
-                    <div style="font-weight:bold; font-size:10px;">R-${r.id}: ${r.title.toUpperCase()}</div>
-                    <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:8px;">
-                        <span style="color:var(--cosplay-gold);">${r.tomes} UNITÉS</span>
-                        <span style="color:#555;">SORTIE: ${r.date}</span>
+            if (STATE && STATE.romans) {
+                selector.innerHTML = STATE.romans.map(r => {
+                    const released = r.releaseDate && now >= new Date(r.releaseDate);
+                    // CONDITION DE VISIBILITÉ : Master voit tout, sinon invisible si pas sorti
+                    if (!STATE.isMaster && !released) return '';
+                    
+                    return `
+                    <div class="roman-tab ${STATE.projet == r.id ? 'active' : ''}" onclick="changeProjet(${r.id})">
+                        <div style="font-weight:bold; font-size:10px;">R-${r.id}: ${r.title.toUpperCase()}</div>
+                        <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:8px;">
+                            <span style="color:var(--cosplay-gold);">${r.tomes} UNITÉS</span>
+                            <span style="color:#555;">SORTIE: ${r.date}</span>
+                        </div>
                     </div>
-                </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            }
         }
 
         function loadData() {
             const mainGrid = document.getElementById('main-grid');
-            const searchVal = document.getElementById('search').value.toLowerCase();
+            const searchInput = document.getElementById('search');
+            const searchVal = searchInput ? searchInput.value.toLowerCase() : "";
             mainGrid.innerHTML = "";
             
             if (typeof archivesData === 'undefined') return;
             
             const now = new Date();
             const filtered = archivesData.filter(item => {
-                // Règle de visibilité temporelle stricte
                 const itemDate = new Date(item.date_publication || "2027-01-01");
                 const isAvailable = now >= itemDate;
                 
@@ -331,10 +375,11 @@
                 </div>`;
                 mainGrid.appendChild(box);
             });
-            document.getElementById('vram-usage').innerText = (filtered.length * 12.4).toFixed(1) + "MB";
+            const vramElement = document.getElementById('vram-usage');
+            if(vramElement) vramElement.innerText = (filtered.length * 12.4).toFixed(1) + "MB";
         }
 
-        // --- Fonctions 3D et Navigation ---
+        // --- Fonctions 3D ---
         function init3D() {
             const container = document.getElementById('canvas-3d');
             if(!container) return;
@@ -358,6 +403,7 @@
 
         function loadBlenderModel(event) {
             const file = event.target.files;
+            if(!file) return;
             const url = URL.createObjectURL(file);
             document.getElementById('obj-info').innerText = "LOADING...";
             loader.load(url, (gltf) => {
@@ -370,6 +416,7 @@
             });
         }
 
+        // --- Utilitaires de Navigation ---
         function changeProjet(id) {
             const url = new URL(window.location);
             url.searchParams.set('projet', id);
@@ -399,6 +446,19 @@
                 logMessage("SIGNAL_STABILIZED", "SUCCESS");
                 alert(`Signal envoyé : Tome ${targetTome} mis à jour au ${targetDate}`);
             }, 1000);
+        }
+
+        // --- NOUVELLE FONCTIONNALITÉ : GÉNÉRATEUR QR CODE ---
+        function genererPortailQR() {
+            const container = document.getElementById("qrcode");
+            container.innerHTML = "";
+            new QRCode(container, {
+                text: "https://shadrasy.github.io/Drashamygo/index.html",
+                width: 140, height: 140,
+                colorDark : "#660011", colorLight : "#ffffff"
+            });
+            container.style.display = "block";
+            logMessage("QR_PORTAL_GENERATED", "SUCCESS");
         }
     </script>
 </body>
