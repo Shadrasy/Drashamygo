@@ -1,6 +1,6 @@
 /**
 * SYSTEM_BRIDGE_V2026 - SECURED LINK (Optimized for TOME 2)
-* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans et le Chat Secret.
+* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans, le QR Fantôme et le Chat Secret.
 */
 // --- CONFIGURATION DU PONT ---
 const BRIDGE_CONFIG = {
@@ -43,7 +43,7 @@ for(let i=5; i<=14; i++) {
 window.addEventListener('DOMContentLoaded', () => {
     syncWithSystemBridge(STATE);
     setupSecretTrigger();  // Active les 4 clics sur l'horloge (Master & QR Code Fantôme)
-    setupGalaxyTrigger();  // Active les 4 clics sur l'anomalie (Chat)
+    setupGalaxyTrigger();  // Active les 4 clics sur l'anomalie galactique
 });
 
 // --- SYNCHRONISATION INITIALE & GÉNÉRATION ---
@@ -132,11 +132,9 @@ function setupSecretTrigger() {
         trigger.addEventListener('click', () => {
             secretClickCount++;
             
-            // Le compteur se remet à zéro si on ne clique pas assez vite (800ms)
             clearTimeout(clickTimer);
             clickTimer = setTimeout(() => { secretClickCount = 0; }, 800);
             
-            // SI 4 CLICS DÉTECTÉS...
             if (secretClickCount === 4) {
                 // 1. Apparition du QR code fantôme
                 genererAccesPriveHinaru(); 
@@ -145,9 +143,10 @@ function setupSecretTrigger() {
                 STATE.isMaster = !STATE.isMaster;
                 if (typeof logMessage === 'function') {
                     logMessage(STATE.isMaster ? "ACCÈS OMNI_COMMANDER ACTIVÉ" : "MODE PROTÉGÉ RÉACTIVÉ", "WARNING");
+                } else {
+                    alert(STATE.isMaster ? "ACCÈS OMNI_COMMANDER ACTIVÉ" : "MODE PROTÉGÉ RÉACTIVÉ");
                 }
                 
-                // On réinitialise les clics
                 secretClickCount = 0; 
             }
         });
@@ -156,7 +155,6 @@ function setupSecretTrigger() {
 
 // --- GÉNÉRATION DU QR CODE PRIVÉ (TOTALEMENT CACHÉ) ---
 function genererAccesPriveHinaru() {
-    // S'il est déjà affiché à l'écran, on ne le recrée pas
     if(document.getElementById("omni-private-portal")) return; 
 
     let alertBox = document.createElement('div');
@@ -205,16 +203,28 @@ function setupGalaxyTrigger() {
     }
 }
 
-// --- MODULE DE CHAT PRIVÉ (AMÉLIORÉ POUR MOBILE & THÈME GALAXIE) ---
+// --- MODULE DE CHAT PRIVÉ (AMÉLIORÉ POUR MOBILE & CHOIX DU PSEUDO) ---
 function unlockSecretChat() {
-    // Si la fenêtre existe déjà, on la réaffiche simplement
     if (document.getElementById('secret-terminal')) {
         document.getElementById('secret-terminal').style.display = 'flex';
         return;
     }
     
-    let userID = localStorage.getItem('NEBULA_USER_ID') || 'USER-' + Math.floor(Date.now() / 1000);
-    localStorage.setItem('NEBULA_USER_ID', userID);
+    // --- NOUVEAU SYSTÈME DE PSEUDO ---
+    let userID = localStorage.getItem('NEBULA_USER_ID');
+    
+    if (!userID) {
+        // Fait apparaître une boîte de dialogue sur le téléphone
+        let pseudoChoisi = prompt("SYSTÈME OMNI :\\nEntrez votre Pseudo pour rejoindre le canal privé de Maître Hinaru :");
+        
+        // Sécurité : si la personne clique sur "Annuler" ou ne met rien
+        if (!pseudoChoisi || pseudoChoisi.trim() === "") {
+            userID = 'ANONYME-' + Math.floor(Date.now() / 100000);
+        } else {
+            userID = pseudoChoisi.trim().toUpperCase(); 
+        }
+        localStorage.setItem('NEBULA_USER_ID', userID);
+    }
     
     const chatUI = document.createElement('div');
     chatUI.id = "secret-terminal";
@@ -226,7 +236,6 @@ function unlockSecretChat() {
         padding:15px; box-shadow: 0 0 25px rgba(102, 0, 17, 0.8); border-radius: 8px;
         font-family: 'Courier New', monospace; animation: bootUp 0.4s ease-out; box-sizing: border-box;">
         
-        <!-- En-tête du Chat -->
         <div style="color:var(--rouge-vif, #ff0033); font-size:14px; border-bottom:1px solid var(--bordeaux);
         padding-bottom:10px; margin-bottom:10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
             <span>[ CANAL PRIVÉ : ${userID} ]</span>
@@ -234,12 +243,10 @@ function unlockSecretChat() {
             onclick="document.getElementById('secret-terminal').style.display='none'">[X]</span>
         </div>
         
-        <!-- Zone des messages -->
         <div id="chat-messages" style="flex-grow:1; overflow-y:auto; font-size:13px; color:#d4d4dc; margin-bottom:15px; line-height: 1.5; padding-right: 5px;">
             <p style="color: #ff3366; font-style: italic;">> Connexion à l'Astre établie... En attente de transmission.</p>
         </div>
         
-        <!-- Zone de saisie -->
         <input type="text" id="chat-input" placeholder="Écrivez votre message ici..."
         style="background:rgba(0, 5, 20, 0.8); border:1px solid var(--bordeaux); color:#4da6ff;
         padding:15px; font-size:14px; outline:none; font-family: 'Courier New', monospace;
