@@ -6,13 +6,13 @@
     <title>Archives - Mur des Théories (V100.9.9 OMNI-MASTER)</title>
     
     <script src="OMNI_MASTER_LEXICON.js"></script>
-    <script src="security.js"></script>
-
+    <script src="system-bridge.js"></script>
+    
     <style>
-        :root { 
-            --noir-fond: #010105; 
-            --omni-rouge: #660011; 
-            --omni-rouge-eclat: #ff3333; 
+        :root {
+            --noir-fond: #010105;
+            --omni-rouge: #660011;
+            --omni-rouge-eclat: #ff3333;
             --lumiere-violette: rgba(136, 0, 255, 0.35);
             --gaz-nebuleuse: rgba(100, 0, 255, 0.15);
             --cosplay-gold: #ffcc00;
@@ -54,12 +54,10 @@
         @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.6; } }
         .space-dust { position: fixed; inset: 0; z-index: -9; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%); mix-blend-mode: screen; pointer-events: none; opacity: 0.5; }
 
-        /* --- PLANÈTES : ITINÉRAIRES INDIVIDUELS (SCREEN-SAFE) --- */
+        /* --- PLANÈTES --- */
         .nebula-planet { position: fixed; border-radius: 50%; z-index: 500; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); transition: transform 0.2s; }
-        
         .p-gold { width: 50px; height: 50px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 10%; animation: floatGold 25s infinite ease-in-out; cursor: none !important; z-index: 2000; }
         @keyframes floatGold { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-3vw, 5vh); } }
-        
         .p-blue { width: 75px; height: 75px; background: #0044aa; top: 35%; left: 5%; animation: floatBlue 40s infinite ease-in-out; }
         .p-red { width: 45px; height: 45px; background: var(--omni-rouge); bottom: 15%; right: 5%; animation: floatRed 30s infinite ease-in-out; }
         @keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
@@ -69,19 +67,23 @@
         .container { max-width: 850px; margin: 40px auto; padding: 20px; position: relative; z-index: 100; }
         h1 { text-align: center; font-size: 3rem; letter-spacing: 12px; text-shadow: 0 0 25px var(--omni-rouge); }
         .box { background: rgba(0, 0, 0, 0.95); border: 1px solid #400; padding: 45px; backdrop-filter: blur(5px); }
-        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 18px; cursor: pointer; width: 100%; font-weight: bold; letter-spacing: 3px; }
-        textarea { width: 100%; background: #080000; border: 1px solid #500; color: white; padding: 20px; margin-bottom: 25px; font-family: inherit; outline: none; font-size: 1rem; }
+        .btn-send { background: var(--omni-rouge); color: white; border: 1px solid #800; padding: 18px; cursor: pointer; width: 100%; font-weight: bold; letter-spacing: 3px; transition: 0.3s; }
+        .btn-send:hover { background: #800018; box-shadow: 0 0 15px rgba(255,0,0,0.5); }
+        textarea, input[type="text"] { width: 100%; background: #080000; border: 1px solid #500; color: white; padding: 20px; font-family: inherit; outline: none; font-size: 1rem; box-sizing: border-box; }
         .omni-term { color: var(--omni-rouge-eclat); border-bottom: 1px dashed var(--omni-rouge); font-weight: bold; }
         #omni-logs { font-size: 0.65rem; color: #700; margin-top: 30px; text-align: left; padding: 12px; border: 1px solid #300; line-height: 1.6; font-family: monospace; }
+        
+        .pinned-badge { background: var(--omni-rouge); color: white; font-size: 10px; padding: 3px 8px; font-weight: bold; margin-bottom: 10px; display: inline-block; letter-spacing: 1px;}
+        .btn-pin { background: transparent; color: var(--cosplay-gold); border: 1px solid var(--cosplay-gold); cursor: pointer; font-size: 10px; padding: 5px; margin-top: 10px; }
     </style>
 </head>
-<body id="main-body">
+<body id="main-body" onload="loadArchives()">
 
     <div id="omni-header-notice" style="position: relative; z-index: 2001; background: rgba(15,0,0,0.9); border-bottom: 1px solid var(--omni-rouge); padding: 12px;">
         <p style="color: var(--omni-rouge-eclat); margin: 0; font-size: 0.85rem; letter-spacing: 2px; text-align: center;">
-            [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong> 
+            [SOURCE_DETECTED: FR] — ORIGINAL_WORK: <strong style="color: #fff;">SHADRASY: Le Souffle Originel</strong>
             <br>
-            <span style="color: #600; font-size: 0.7rem;">English Translation: SHADRASY: The Original Breath | Status: Canonical Lexicon Active</span>
+            <span style="color: #600; font-size: 0.7rem;">Status: Canonical Lexicon Active | Archive System: ONLINE</span>
         </p>
     </div>
 
@@ -92,64 +94,71 @@
     <div id="galaxy-receptor">
         <div class="nebula-planet p-blue"></div>
         <div class="nebula-planet p-red"></div>
+        <!-- LE DÉCLENCHEUR DU MAÎTRE (TRIPLE CLIC SUR LA PLANÈTE OR) -->
         <div class="nebula-planet p-gold" id="master-trigger" onclick="checkMasterClicks()" title="Astre Maître"></div>
     </div>
 
     <div class="container">
         <h1>OMNI ARCHIVES</h1>
         <div class="box" id="terminal-box">
+            
             <label id="status-label" style="color:var(--omni-rouge); display:block; margin-bottom:20px; font-size: 0.9rem; letter-spacing: 2px; font-weight: bold;">
                 TRANSMISSION DE THÉORIE (MODE CIVIL) :
             </label>
+            
+            <!-- FORMULAIRE D'ENVOI -->
             <form onsubmit="return processTheory(); return false;">
-                <textarea id="theory-input" rows="6" placeholder="Analyse du signal en cours..." required></textarea>
+                <textarea id="theory-input" rows="5" placeholder="Analyse du signal en cours..." required style="margin-bottom: 15px;"></textarea>
                 <button type="submit" class="btn-send">TRANSMETTRE AU CENTRE OMNI</button>
             </form>
-            <div id="display-area" style="margin-top: 50px; border-top: 1px solid #400; padding-top: 30px;"></div>
+
+            <!-- BARRE DE RECHERCHE -->
+            <div style="margin-top: 40px; border-top: 1px solid #400; padding-top: 30px;">
+                <label style="font-size: 10px; color: var(--omni-rouge); font-weight: bold;">> RECHERCHE DANS LES ARCHIVES :</label>
+                <input type="text" id="search-theory" oninput="renderTheories()" placeholder="Chercher un nom, un mot..." style="padding: 10px; margin-top: 10px; border: 1px solid #400;">
+            </div>
+
+            <!-- ZONE D'AFFICHAGE DES THÉORIES -->
+            <div id="display-area" style="margin-top: 30px;"></div>
+
             <div id="omni-logs">
                 >> OMNI_SCANNER_ACTIVE... <br>
                 >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
-                >> PROTOCOL: RED_SPECTRUM_STRICT
+                >> PROTOCOL: ARCHIVE_STRICT_MODE
             </div>
         </div>
-        <a href="index.html" style="display:block; text-align:center; margin-top:50px; color:#500; text-decoration:none; font-size:0.75rem; border: 1px solid #300; padding: 15px; letter-spacing: 2px;"> 
-            < REPASSER LE PORTAIL VERS LE CENTRE 
+
+        <a href="index.html" style="display:block; text-align:center; margin-top:50px; color:#500; text-decoration:none; font-size:0.75rem; border: 1px solid #300; padding: 15px; letter-spacing: 2px;">
+            < REPASSER LE PORTAIL VERS LE CENTRE
         </a>
     </div>
 
     <script>
+        // --- GESTION DU MODE MAÎTRE (Architecte) ---
         let isMasterMode = false;
         let masterClicks = 0;
         let lastMasterClick = 0;
 
         function checkMasterClicks() {
             const now = Date.now();
-            // Temps de battement pour le triple clic (600ms)
-            if (now - lastMasterClick < 600) {
-                masterClicks++;
-            } else {
-                masterClicks = 1;
-            }
+            if (now - lastMasterClick < 600) { masterClicks++; } 
+            else { masterClicks = 1; }
             lastMasterClick = now;
 
             if (masterClicks === 3) {
                 isMasterMode = !isMasterMode;
                 masterClicks = 0;
                 
-                // EFFET VISUEL : Vibration du terminal
+                // EFFETS VISUELS
                 const box = document.getElementById('terminal-box');
                 box.classList.remove('system-shake');
-                void box.offsetWidth; // Force le redémarrage de l'animation
+                void box.offsetWidth;
                 box.classList.add('system-shake');
 
-                // FLASH DE COULEUR (Passe par dessus le gradient)
                 const flash = document.createElement('div');
-                flash.style.position = 'fixed';
-                flash.style.inset = '0';
-                flash.style.zIndex = '9999';
+                flash.style.position = 'fixed'; flash.style.inset = '0'; flash.style.zIndex = '9999';
                 flash.style.backgroundColor = isMasterMode ? 'var(--cosplay-gold)' : 'var(--omni-rouge)';
-                flash.style.opacity = '0.4';
-                flash.style.pointerEvents = 'none';
+                flash.style.opacity = '0.4'; flash.style.pointerEvents = 'none';
                 document.body.appendChild(flash);
                 setTimeout(() => flash.remove(), 150);
 
@@ -173,21 +182,32 @@
                 body.style.boxShadow = "none";
                 logs.innerHTML += "<br>>> SESSION_LOGOUT: SYSTEM_REVERTED_TO_CIVIL";
             }
+            renderTheories(); // On rafraîchit pour afficher/cacher les boutons "Épingler"
+        }
+
+        // --- GESTION DES ARCHIVES (SAUVEGARDE PERMANENTE) ---
+        let theoriesArchive = [];
+
+        function loadArchives() {
+            // Charge les données depuis le système de sauvegarde local [7]
+            const saved = localStorage.getItem('NEBULA_THEORIES');
+            if (saved) theoriesArchive = JSON.parse(saved);
+            renderTheories();
         }
 
         function processTheory() {
             const input = document.getElementById('theory-input');
             let text = input.value;
-            const displayArea = document.getElementById('display-area');
             if(text.length < 10) { alert("SIGNAL TROP FAIBLE."); return false; }
 
+            // 1. Détection des Noms (Points de fréquence)
             const nomsFemmes = ["Jenna", "Emma", "Manon", "Camille", "Christina", "Azelis", "Léa", "Elena"];
             const nomsHommes = ["Jordan", "Kaiden", "Merick", "Théo", "Gus", "ZelTrhyld", "Kenzo", "Yan", "Joseph"];
-            
             let pointHTML = "";
-            if (nomsFemmes.some(n => text.includes(n))) pointHTML = '<span class="point-frequence alerte-femme"></span>';
-            else if (nomsHommes.some(n => text.includes(n))) pointHTML = '<span class="point-frequence alerte-homme"></span>';
+            if (nomsFemmes.some(n => text.includes(n))) pointHTML = '<span class="point-frequence alerte-femme" style="color:#f0f; font-weight:bold; font-size:12px;">[F] </span>';
+            else if (nomsHommes.some(n => text.includes(n))) pointHTML = '<span class="point-frequence alerte-homme" style="color:#0ff; font-weight:bold; font-size:12px;">[M] </span>';
 
+            // 2. Correction Canonique (Le fameux Lexique Traducteur) [1]
             if (typeof OMNI_MASTER_LEXICON !== 'undefined') {
                 for (let cat in OMNI_MASTER_LEXICON) {
                     for (let key in OMNI_MASTER_LEXICON[cat]) {
@@ -203,14 +223,76 @@
                 }
             }
 
-            const newTheory = document.createElement('div');
-            if(isMasterMode) newTheory.className = "master-post";
-            let masterSign = isMasterMode ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--omni-rouge-eclat); font-size:0.65rem; letter-spacing:2px; font-weight:bold;">SIGNAL_REÇU</span>';
-            newTheory.style.cssText = "background: rgba(255,255,255,0.03); border-left: 4px solid var(--omni-rouge); padding: 25px; margin-bottom: 25px; display: flex; align-items: center; transition: 0.3s;";
-            newTheory.innerHTML = `${pointHTML}<div style="flex: 1;">${masterSign}<span style="color:#eee; display:block; margin-top:8px; line-height:1.6; font-size:0.95rem;">"${text}"</span></div>`;
-            displayArea.prepend(newTheory);
+            // 3. Création de l'Objet Théorie avec Date et Archivage
+            const newEntry = {
+                id: Date.now(), // ID unique basé sur l'heure
+                text: text,
+                isMaster: isMasterMode,
+                date: new Date().toLocaleDateString('fr-FR') + " - " + new Date().toLocaleTimeString('fr-FR'), // Ex: 19/02/2026 - 14:30
+                points: pointHTML,
+                pinned: false // Par défaut, non épinglé
+            };
+
+            // 4. Sauvegarde
+            theoriesArchive.unshift(newEntry); // Ajoute au début de la liste
+            localStorage.setItem('NEBULA_THEORIES', JSON.stringify(theoriesArchive));
+            
             input.value = "";
+            renderTheories();
             return false;
+        }
+
+        // --- MOTEUR DE RENDU ET DE RECHERCHE ---
+        function renderTheories() {
+            const displayArea = document.getElementById('display-area');
+            const searchVal = document.getElementById('search-theory').value.toLowerCase(); // Recherche [5]
+            displayArea.innerHTML = "";
+
+            // Tri : Les épinglés en premier, puis les plus récents
+            let sortedTheories = [...theoriesArchive].sort((a, b) => {
+                if (a.pinned === b.pinned) return b.id - a.id; 
+                return a.pinned ? -1 : 1; 
+            });
+
+            // Filtrage par recherche
+            let filteredTheories = sortedTheories.filter(t => t.text.toLowerCase().includes(searchVal));
+
+            // Affichage
+            filteredTheories.forEach(t => {
+                const box = document.createElement('div');
+                box.className = t.isMaster ? "master-post" : "";
+                box.style.cssText = "background: rgba(255,255,255,0.03); border-left: 4px solid var(--omni-rouge); padding: 25px; margin-bottom: 25px; transition: 0.3s; position:relative;";
+                
+                let masterSign = t.isMaster ? '<span class="master-tag">[ARCHITECTE]</span>' : '<span style="color:var(--omni-rouge-eclat); font-size:0.65rem; letter-spacing:2px; font-weight:bold;">SIGNAL_REÇU</span>';
+                let pinnedBadge = t.pinned ? `<div class="pinned-badge">📌 ÉPINGLÉ</div><br>` : '';
+                
+                // Bouton épingler visible uniquement si Hinaru a activé le mode Maître (Triple clic)
+                let pinBtn = isMasterMode ? `<button class="btn-pin" onclick="togglePin(${t.id})">[ ${t.pinned ? 'DÉTACHER' : 'ÉPINGLER'} ]</button>` : '';
+
+                box.innerHTML = `
+                    ${pinnedBadge}
+                    <div style="font-size: 10px; color: #555; position:absolute; top: 10px; right: 15px;">Date: ${t.date}</div>
+                    <div style="display:flex; align-items:flex-start; margin-top:5px;">
+                        ${t.points}
+                        <div style="flex: 1; padding-left: 10px;">
+                            ${masterSign}
+                            <span style="color:#eee; display:block; margin-top:8px; line-height:1.6; font-size:0.95rem;">"${t.text}"</span>
+                            ${pinBtn}
+                        </div>
+                    </div>
+                `;
+                displayArea.appendChild(box);
+            });
+        }
+
+        // --- FONCTION ÉPINGLER (MASTER) ---
+        function togglePin(id) {
+            const index = theoriesArchive.findIndex(t => t.id === id);
+            if(index > -1) {
+                theoriesArchive[index].pinned = !theoriesArchive[index].pinned;
+                localStorage.setItem('NEBULA_THEORIES', JSON.stringify(theoriesArchive));
+                renderTheories();
+            }
         }
     </script>
 </body>
