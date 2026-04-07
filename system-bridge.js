@@ -1,6 +1,6 @@
 /**
 * SYSTEM_BRIDGE_V2026 - SECURED LINK (Optimized for TOME 2)
-* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans, le QR Fantôme et le Chat Secret (Temps Réel Firebase).
+* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans, le Chat Secret (Firebase) et le PASS VIP.
 */
 // --- CONFIGURATION DU PONT ---
 const BRIDGE_CONFIG = {
@@ -12,10 +12,21 @@ const BRIDGE_CONFIG = {
 
 // --- CONFIGURATION ET ÉTAT DU SYSTÈME ---
 const urlParams = new URLSearchParams(window.location.search);
+
+// --- NOUVEAU : GESTION DES PASS VIP (DONNER ET RETIRER) ---
+if (urlParams.get('access') === 'VIP_PASS') {
+    localStorage.setItem('NEBULA_VIP', 'true');
+    alert("SYSTÈME OMNI : ACCÈS VIP AUTORISÉ.\nCe terminal a désormais accès aux archives privées en lecture seule.");
+} else if (urlParams.get('access') === 'REVOKE_VIP') {
+    localStorage.removeItem('NEBULA_VIP');
+    alert("SYSTÈME OMNI : ACCÈS VIP RÉVOQUÉ.\nCe terminal n'a plus accès aux archives privées.");
+}
+
 const STATE = {
     isMaster: urlParams.get('Hinaru') === 'true',
     isGuest: urlParams.get('access') === 'GUEST_IMMERSION' || urlParams.get('access') === 'SECRET_CHANNEL',
     hasChat: urlParams.get('access') === 'SECRET_CHANNEL',
+    isVIP: localStorage.getItem('NEBULA_VIP') === 'true', // Le système lit le badge de l'invité
     projet: parseInt(urlParams.get('projet')) || 1,
     filter: null,
     // On initialise les 4 premiers avec vos données exactes
@@ -276,7 +287,7 @@ function unlockSecretChat() {
     }
 
     function initFirebaseChat() {
-        // 🛑 REMPLACEZ CECI PAR LA CLÉ DE VOTRE PROJET FIREBASE PLUS TARD
+        // 🛑 REMPLACEZ CECI PAR LA CLÉ DE VOTRE PROJET FIREBASE !
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_PROJET.firebaseapp.com",
