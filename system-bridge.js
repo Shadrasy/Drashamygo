@@ -1,6 +1,6 @@
 /**
 * SYSTEM_BRIDGE_V2026 - SECURED LINK (Optimized for TOME 2)
-* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans, le QR Fantôme et le Chat Secret.
+* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans, le QR Fantôme et le Chat Secret (Temps Réel Firebase).
 */
 // --- CONFIGURATION DU PONT ---
 const BRIDGE_CONFIG = {
@@ -109,6 +109,15 @@ async function fetchBackupData() {
     }
 }
 
+// --- MODULE DE PERSISTANCE LOCALE ---
+function saveToLocalSystem(key, value) {
+    localStorage.setItem('NEBULA_' + key, JSON.stringify(value));
+    console.log("[SYSTEM] Donnée sauvegardée dans le noyau local.");
+    if (typeof logMessage === 'function') {
+        logMessage(`LOCAL_SAVE: ${key}`, "INFO");
+    }
+}
+
 // --- SYSTÈME DES 4 CLICS (DÉCLENCHEUR CACHÉ & QR CODE FANTÔME) ---
 let secretClickCount = 0;
 let clickTimer;
@@ -188,7 +197,7 @@ function setupGalaxyTrigger() {
     }
 }
 
-// --- MODULE DE CHAT PRIVÉ (AMÉLIORÉ AVEC PSEUDO FORCÉ ET INDICATEUR DE FRAPPE) ---
+// --- MODULE DE CHAT PRIVÉ (TEMPS RÉEL AVEC SATELLITE FIREBASE) ---
 function unlockSecretChat() {
     if (document.getElementById('secret-terminal')) {
         document.getElementById('secret-terminal').style.display = 'flex';
@@ -197,10 +206,8 @@ function unlockSecretChat() {
     
     let userID = localStorage.getItem('NEBULA_USER_ID');
     
-    // Si pas de pseudo, ou si le système lui avait donné un ancien nom "USER-"
     if (!userID || userID.startsWith('USER-')) {
         let pseudoChoisi = prompt("SYSTÈME OMNI :\\nEntrez votre Pseudo pour rejoindre le canal privé de Maître Hinaru :");
-        
         if (!pseudoChoisi || pseudoChoisi.trim() === "") {
             userID = 'ANONYME-' + Math.floor(Math.random() * 1000);
         } else {
@@ -227,7 +234,7 @@ function unlockSecretChat() {
         </div>
         
         <div id="chat-messages" style="flex-grow:1; overflow-y:auto; font-size:13px; color:#d4d4dc; margin-bottom:5px; line-height: 1.5; padding-right: 5px;">
-            <p style="color: #ff3366; font-style: italic;">> Connexion à l'Astre établie... En attente de transmission.</p>
+            <p style="color: #ff3366; font-style: italic;">> Connexion au satellite relais en cours...</p>
         </div>
         
         <div id="typing-indicator" style="font-size:10px; color:#ffcc00; font-style:italic; min-height:15px; margin-bottom:5px; opacity:0; transition:0.3s;">
@@ -249,37 +256,101 @@ function unlockSecretChat() {
     </style>
     `;
     document.body.appendChild(chatUI);
-    
-    const inputField = document.getElementById('chat-input');
-    const typingIndicator = document.getElementById('typing-indicator');
-    let typingTimer;
 
-    // Affiche l'indicateur quand on tape
-    inputField.addEventListener('input', () => {
-        typingIndicator.style.opacity = '1';
-        typingIndicator.innerText = "> " + userID + " écrit un signal...";
-        
-        clearTimeout(typingTimer);
-        typingTimer = setTimeout(() => {
-            typingIndicator.style.opacity = '0';
-        }, 1500);
-    });
+    // =====================================================================
+    // CONNEXION AU SERVEUR MONDIAL (FIREBASE)
+    // =====================================================================
 
-    // Envoi du message
-    inputField.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' && this.value.trim() !== '') {
-            const container = document.getElementById('chat-messages');
-            const message = this.value.trim();
-            
-            container.innerHTML += `<p style="color:#4da6ff; margin: 8px 0;"><strong>[${userID}]:</strong> ${message}</p>`;
-            
-            if(typeof playTerminalBeep === 'function') playTerminalBeep();
-            
-            this.value = '';
-            typingIndicator.style.opacity = '0'; 
-            container.scrollTop = container.scrollHeight;
+    if (typeof firebase === 'undefined') {
+        const script1 = document.createElement('script');
+        script1.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
+        document.head.appendChild(script1);
+
+        const script2 = document.createElement('script');
+        script2.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js";
+        document.head.appendChild(script2);
+
+        script2.onload = initFirebaseChat; 
+    } else {
+        initFirebaseChat();
+    }
+
+    function initFirebaseChat() {
+        // 🛑 REMPLACEZ CECI PAR LA CLÉ DE VOTRE PROJET FIREBASE PLUS TARD
+        const firebaseConfig = {
+            apiKey: "VOTRE_API_KEY",
+            authDomain: "VOTRE_PROJET.firebaseapp.com",
+            databaseURL: "https://VOTRE_PROJET-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "VOTRE_PROJET",
+            storageBucket: "VOTRE_PROJET.appspot.com",
+            messagingSenderId: "VOTRE_SENDER_ID",
+            appId: "VOTRE_APP_ID"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
-    });
+
+        const db = firebase.database();
+        const chatRoom = db.ref("omni_secret_chat");
+        const typingRoom = db.ref("omni_typing");
+
+        const container = document.getElementById('chat-messages');
+        const inputField = document.getElementById('chat-input');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        container.innerHTML += `<p style="color: #00ffcc; font-style: italic;">> Connexion sécurisée établie. Réception des signaux activée.</p>`;
+
+        // 1. RECEVOIR LES MESSAGES
+        chatRoom.on('child_added', (snapshot) => {
+            const data = snapshot.val();
+            let couleurTexte = (data.user === "HINARU" || data.user === "OMNI_COMMANDER") ? "#ffcc00" : "#4da6ff";
+
+            container.innerHTML += `<p style="color:${couleurTexte}; margin: 8px 0;"><strong>[${data.user}]:</strong> ${data.text}</p>`;
+            container.scrollTop = container.scrollHeight;
+
+            if(typeof playTerminalBeep === 'function') playTerminalBeep();
+        });
+
+        // 2. ENVOYER UN MESSAGE
+        inputField.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && this.value.trim() !== '') {
+                const message = this.value.trim();
+
+                chatRoom.push({
+                    user: userID,
+                    text: message,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+
+                this.value = '';
+                typingRoom.child(userID).remove();
+            }
+        });
+
+        // 3. INDICATEUR DE FRAPPE EN DIRECT
+        let typingTimer;
+        inputField.addEventListener('input', () => {
+            typingRoom.child(userID).set(true); 
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => { typingRoom.child(userID).remove(); }, 1500);
+        });
+
+        typingRoom.on('value', (snapshot) => {
+            const typers = snapshot.val();
+            if (typers) {
+                const writers = Object.keys(typers).filter(name => name !== userID);
+                if (writers.length > 0) {
+                    typingIndicator.style.opacity = '1';
+                    typingIndicator.innerText = "> " + writers.join(', ') + " écrit un signal...";
+                } else {
+                    typingIndicator.style.opacity = '0';
+                }
+            } else {
+                typingIndicator.style.opacity = '0';
+            }
+        });
+    }
 }
 
 // --- UTILITAIRES ---
