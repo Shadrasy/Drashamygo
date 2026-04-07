@@ -74,7 +74,7 @@
         }
         .btn-exit {
             border: 1px solid var(--rouge-vif); color: var(--rouge-vif); padding: 8px 15px;
-            font-size: 10px; text-decoration: none; transition: 0.3s; background: transparent;
+            font-size: 10px; text-decoration: none; transition: 0.3s; background: transparent; cursor: pointer;
         }
         .btn-exit:hover { background: var(--rouge-vif); color: black; box-shadow: var(--active-glow); }
 
@@ -164,7 +164,8 @@
     <!-- EN-TÊTE OSD -->
     <div class="osd-header">
         <a href="index.html" class="btn-exit">EXIT_ARCHIVE</a>
-        <div style="text-align: center;">
+        <button class="btn-exit" onclick="lancerImmersion()" style="margin-left: 10px;">[ ENTRER EN IMMERSION 3D ]</button>
+        <div style="text-align: center; flex-grow: 1;">
             <div style="font-size: 11px; letter-spacing: 4px; color: var(--rouge-vif);">NÉBULEUSE VISUELLE V2026</div>
             <div id="hidden-trigger" ondblclick="toggleMaster()" style="font-size: 8px; color: #400; cursor:default; user-select:none;">
                 SYS_TIME: <span id="clock-display">00:00:00</span> | VRAM: <span id="vram-usage">0MB</span>
@@ -208,6 +209,13 @@
                         <input type="date" id="pub-date" value="2026-02-19" style="width:100%; background: #000; color: white; border: 1px solid var(--rouge-vif); margin: 10px 0; padding:5px; font-family: inherit;">
                         
                         <button class="btn-master" style="width:100%;" onclick="injectSignal()">[ INJECTER SIGNAL ]</button>
+                    </div>
+
+                    <!-- NOUVEAU BLOC : CRÉATION DE SOUS-GALERIES -->
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px; border: 1px solid #300;">
+                        <label style="font-size:10px; color:var(--rouge-vif);">CRÉER SOUS-GALERIE (HORS SÉRIE / BONUS)</label>
+                        <input type="text" id="new-gallery-name" placeholder="Nom de la série ou du projet..." style="width:100%; background: #000; color: white; border: 1px solid var(--rouge-vif); margin: 10px 0; padding:5px; font-family: inherit;">
+                        <button class="btn-master" style="width:100%;" onclick="createSubGallery()">[ AJOUTER SOUS-GALERIE ]</button>
                     </div>
                     
                     <div class="3d-viewer-container" style="border: 1px solid #300; background: #000; position: relative;">
@@ -317,26 +325,59 @@
             loadData();
         }
 
+        // --- GESTION DES SOUS-GALERIES DYNAMIQUES (MASTER) ---
+        function createSubGallery() {
+            const name = document.getElementById('new-gallery-name').value.trim();
+            if(!name) return;
+            
+            let customGalleries = JSON.parse(localStorage.getItem('NEBULA_CUSTOM_GALLERIES')) || [];
+            const newId = 1000 + customGalleries.length; 
+            customGalleries.push({ id: newId, title: name });
+            
+            localStorage.setItem('NEBULA_CUSTOM_GALLERIES', JSON.stringify(customGalleries));
+            
+            logMessage(`SOUS-GALERIE CRÉÉE : ${name} (ID: ${newId})`, "SUCCESS");
+            document.getElementById('new-gallery-name').value = '';
+            renderRomans();
+        }
+
+        // --- GÉNÉRATION DES ONGLETS (Tomes + Hors Série + Films + Custom) ---
         function renderRomans() {
             const selector = document.getElementById('romans-selector');
             const now = new Date();
-            if (STATE && STATE.romans) {
-                selector.innerHTML = STATE.romans.map(r => {
-                    const released = r.releaseDate && now >= new Date(r.releaseDate);
-                    // CONDITION DE VISIBILITÉ : Master voit tout, sinon invisible si pas sorti
-                    if (!STATE.isMaster && !released) return '';
-                    
-                    return `
-                    <div class="roman-tab ${STATE.projet == r.id ? 'active' : ''}" onclick="changeProjet(${r.id})">
-                        <div style="font-weight:bold; font-size:10px;">R-${r.id}: ${r.title.toUpperCase()}</div>
-                        <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:8px;">
-                            <span style="color:var(--cosplay-gold);">${r.tomes} UNITÉS</span>
-                            <span style="color:#555;">SORTIE: ${r.date}</span>
-                        </div>
+            let htmlHTML = "";
+
+            const createTab = (id, title, subtitle1, subtitle2, isSpecial) => {
+                const active = STATE.projet == id ? 'active' : '';
+                const color = isSpecial ? 'var(--rouge-vif)' : 'var(--cosplay-gold)';
+                return `
+                <div class="roman-tab ${active}" onclick="changeProjet(${id})">
+                    <div style="font-weight:bold; font-size:10px; color:${isSpecial ? 'var(--rouge-vif)' : 'white'};">[ ${title} ]</div>
+                    <div style="display:flex; justify-content:space-between; margin-top:5px; font-size:8px;">
+                        <span style="color:${color};">${subtitle1}</span>
+                        <span style="color:#555;">${subtitle2}</span>
                     </div>
-                    `;
-                }).join('');
+                </div>
+                `;
+            };
+
+            htmlHTML += createTab(0, "HORS SÉRIE", "BONUS & ILLUSTRATIONS", "GÉNÉRAL", true);
+            htmlHTML += createTab(-1, "FILMS CINÉMA", "PROJETS LONGS", "GÉNÉRAL", true);
+
+            let customGalleries = JSON.parse(localStorage.getItem('NEBULA_CUSTOM_GALLERIES')) || [];
+            customGalleries.forEach(cg => {
+                htmlHTML += createTab(cg.id, cg.title.toUpperCase(), "SÉRIE CUSTOM", "ARCHIVE", true);
+            });
+
+            if (STATE && STATE.romans) {
+                STATE.romans.forEach(r => {
+                    const released = r.releaseDate && now >= new Date(r.releaseDate);
+                    if (STATE.isMaster || released) {
+                        htmlHTML += createTab(r.id, `R-${r.id}: ${r.title.toUpperCase()}`, `${r.tomes} UNITÉS`, `SORTIE: ${r.date}`, false);
+                    }
+                });
             }
+            selector.innerHTML = htmlHTML;
         }
 
         function loadData() {
@@ -379,7 +420,7 @@
             if(vramElement) vramElement.innerText = (filtered.length * 12.4).toFixed(1) + "MB";
         }
 
-        // --- Fonctions 3D ---
+        // --- Fonctions 3D avec Auto-Rotation ---
         function init3D() {
             const container = document.getElementById('canvas-3d');
             if(!container) return;
@@ -448,7 +489,6 @@
             }, 1000);
         }
 
-        // --- NOUVELLE FONCTIONNALITÉ : GÉNÉRATEUR QR CODE ---
         function genererPortailQR() {
             const container = document.getElementById("qrcode");
             container.innerHTML = "";
@@ -459,6 +499,12 @@
             });
             container.style.display = "block";
             logMessage("QR_PORTAL_GENERATED", "SUCCESS");
+        }
+
+        // --- Pont vers l'Exploration 3D Totale ---
+        function lancerImmersion() {
+            // Envoie le visiteur vers la page immersion.html avec l'accès autorisé !
+            window.location.href = "immersion.html?access=SECRET_CHANNEL";
         }
     </script>
 </body>
