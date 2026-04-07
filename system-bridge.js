@@ -49,7 +49,6 @@ window.addEventListener('DOMContentLoaded', () => {
 // --- SYNCHRONISATION INITIALE & GÉNÉRATION ---
 function syncWithSystemBridge(state) {
     console.log("--- SYSTEM BRIDGE ACTIVE ---");
-    // 1. Force la date du jour réelle (Système V2026)
     const dateInput = document.getElementById('pub-date');
     const now = new Date();
     const today = now.toISOString().split('T');
@@ -61,14 +60,12 @@ function syncWithSystemBridge(state) {
         console.log("[SYSTEM] Timeline 5 ans générée avec succès.");
     }
     
-    // 2. Vérification de l'intégrité des données
     if (typeof archivesData !== 'undefined') {
         verifyDataIntegrity(archivesData);
     } else {
         console.error("[SECURITY] archivesData non détecté !");
     }
     
-    // 3. Log de bienvenue Master
     if (state.isMaster) {
         if (typeof logMessage === 'function') {
             logMessage("BIENVENUE OMNI_COMMANDER HINARU", "SUCCESS");
@@ -77,7 +74,6 @@ function syncWithSystemBridge(state) {
         }
     }
     
-    // 4. Gestion des invités et du Chat Secret
     if (state.isGuest) {
         if (typeof logMessage === 'function') logMessage("ACCÈS_INVITÉ: MODE_IMMERSION_ACTIF", "INFO");
         const statusTag = document.getElementById('status-tag');
@@ -113,15 +109,6 @@ async function fetchBackupData() {
     }
 }
 
-// --- MODULE DE PERSISTANCE LOCALE ---
-function saveToLocalSystem(key, value) {
-    localStorage.setItem('NEBULA_' + key, JSON.stringify(value));
-    console.log("[SYSTEM] Donnée sauvegardée dans le noyau local.");
-    if (typeof logMessage === 'function') {
-        logMessage(`LOCAL_SAVE: ${key}`, "INFO");
-    }
-}
-
 // --- SYSTÈME DES 4 CLICS (DÉCLENCHEUR CACHÉ & QR CODE FANTÔME) ---
 let secretClickCount = 0;
 let clickTimer;
@@ -136,10 +123,8 @@ function setupSecretTrigger() {
             clickTimer = setTimeout(() => { secretClickCount = 0; }, 800);
             
             if (secretClickCount === 4) {
-                // 1. Apparition du QR code fantôme
                 genererAccesPriveHinaru(); 
                 
-                // 2. Active aussi ton Mode Master en fond
                 STATE.isMaster = !STATE.isMaster;
                 if (typeof logMessage === 'function') {
                     logMessage(STATE.isMaster ? "ACCÈS OMNI_COMMANDER ACTIVÉ" : "MODE PROTÉGÉ RÉACTIVÉ", "WARNING");
@@ -203,23 +188,21 @@ function setupGalaxyTrigger() {
     }
 }
 
-// --- MODULE DE CHAT PRIVÉ (AMÉLIORÉ POUR MOBILE & CHOIX DU PSEUDO) ---
+// --- MODULE DE CHAT PRIVÉ (AMÉLIORÉ AVEC PSEUDO FORCÉ ET INDICATEUR DE FRAPPE) ---
 function unlockSecretChat() {
     if (document.getElementById('secret-terminal')) {
         document.getElementById('secret-terminal').style.display = 'flex';
         return;
     }
     
-    // --- NOUVEAU SYSTÈME DE PSEUDO ---
     let userID = localStorage.getItem('NEBULA_USER_ID');
     
-    if (!userID) {
-        // Fait apparaître une boîte de dialogue sur le téléphone
+    // Si pas de pseudo, ou si le système lui avait donné un ancien nom "USER-"
+    if (!userID || userID.startsWith('USER-')) {
         let pseudoChoisi = prompt("SYSTÈME OMNI :\\nEntrez votre Pseudo pour rejoindre le canal privé de Maître Hinaru :");
         
-        // Sécurité : si la personne clique sur "Annuler" ou ne met rien
         if (!pseudoChoisi || pseudoChoisi.trim() === "") {
-            userID = 'ANONYME-' + Math.floor(Date.now() / 100000);
+            userID = 'ANONYME-' + Math.floor(Math.random() * 1000);
         } else {
             userID = pseudoChoisi.trim().toUpperCase(); 
         }
@@ -243,8 +226,12 @@ function unlockSecretChat() {
             onclick="document.getElementById('secret-terminal').style.display='none'">[X]</span>
         </div>
         
-        <div id="chat-messages" style="flex-grow:1; overflow-y:auto; font-size:13px; color:#d4d4dc; margin-bottom:15px; line-height: 1.5; padding-right: 5px;">
+        <div id="chat-messages" style="flex-grow:1; overflow-y:auto; font-size:13px; color:#d4d4dc; margin-bottom:5px; line-height: 1.5; padding-right: 5px;">
             <p style="color: #ff3366; font-style: italic;">> Connexion à l'Astre établie... En attente de transmission.</p>
+        </div>
+        
+        <div id="typing-indicator" style="font-size:10px; color:#ffcc00; font-style:italic; min-height:15px; margin-bottom:5px; opacity:0; transition:0.3s;">
+            Système en attente...
         </div>
         
         <input type="text" id="chat-input" placeholder="Écrivez votre message ici..."
@@ -263,13 +250,33 @@ function unlockSecretChat() {
     `;
     document.body.appendChild(chatUI);
     
-    document.getElementById('chat-input').addEventListener('keypress', function (e) {
+    const inputField = document.getElementById('chat-input');
+    const typingIndicator = document.getElementById('typing-indicator');
+    let typingTimer;
+
+    // Affiche l'indicateur quand on tape
+    inputField.addEventListener('input', () => {
+        typingIndicator.style.opacity = '1';
+        typingIndicator.innerText = "> " + userID + " écrit un signal...";
+        
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+            typingIndicator.style.opacity = '0';
+        }, 1500);
+    });
+
+    // Envoi du message
+    inputField.addEventListener('keypress', function (e) {
         if (e.key === 'Enter' && this.value.trim() !== '') {
             const container = document.getElementById('chat-messages');
             const message = this.value.trim();
+            
             container.innerHTML += `<p style="color:#4da6ff; margin: 8px 0;"><strong>[${userID}]:</strong> ${message}</p>`;
+            
             if(typeof playTerminalBeep === 'function') playTerminalBeep();
+            
             this.value = '';
+            typingIndicator.style.opacity = '0'; 
             container.scrollTop = container.scrollHeight;
         }
     });
