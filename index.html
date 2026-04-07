@@ -1,352 +1,352 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Archives de l'Astre Créateur Suprême - Système OMNI V100.9.9">
-<title>TERMINAL - Archives OMNI V2026</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Archives de l'Astre Créateur Suprême - Système OMNI V100.9.9">
+    <title>TERMINAL - Archives OMNI V2031</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="system-bridge.js"></script> <!-- Connexion au pont contenant le Chat et les Sécurités -->
 
-<!-- Scripts d'origine et nouveaux ajouts -->
-<script src="security.js"></script>
-<script src="system-bridge.js"></script>
-<script src="archives-data.js"></script>
+    <style>
+        :root {
+            /* --- PALETTE INTERFACE (Bordeaux Strict) --- */
+            --bordeaux: #660011;
+            --ui-text: #660011;
+            /* --- PALETTE ESPACE (Rendu Naturel) --- */
+            --space-black: #010105;
+            --nebula-blue: rgba(0, 50, 150, 0.2);
+            --nebula-rose: rgba(255, 100, 200, 0.15);
+            --star-white: #fdfbff;
+            --pulsar-cyan: rgba(200, 230, 255, 0.8);
+            --cosplay-gold: #ffcc00;
+        }
 
-<style>
-:root {
-/* --- PALETTE INTERFACE (Bordeaux Strict) --- */
---bordeaux: #660011;
---ui-text: #660011;
---rouge-vif: #ff0033; /* Ajouté pour l'anomalie galactique */
-/* --- PALETTE ESPACE (Rendu Naturel) --- */
---space-black: #010105;
---nebula-blue: rgba(0, 50, 150, 0.2);
---nebula-rose: rgba(255, 100, 200, 0.15);
---star-white: #fdfbff;
---pulsar-cyan: rgba(200, 230, 255, 0.8);
---cosplay-gold: #ffcc00;
-}
+        body {
+            margin: 0; background-color: var(--space-black); color: white;
+            font-family: 'Courier New', monospace; overflow-x: hidden;
+            user-select: none; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; min-height: 100vh;
+        }
 
-body {
-margin: 0; background-color: var(--space-black); color: white;
-font-family: 'Courier New', monospace; overflow-x: hidden;
-user-select: none; display: flex; flex-direction: column;
-align-items: center; justify-content: center; min-height: 100vh;
-}
+        /* --- MOTEUR VHS (Naturel) --- */
+        body::after {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+                        linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0), rgba(255,255,255,0.01));
+            z-index: 999; background-size: 100% 3px, 4px 100%; pointer-events: none;
+            opacity: 0.4;
+        }
 
-/* --- MOTEUR VHS (Naturel) --- */
-body::after {
-content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0), rgba(255,255,255,0.01));
-z-index: 999; background-size: 100% 3px, 4px 100%; pointer-events: none;
-opacity: 0.4;
-}
+        /* --- DÉCORS GALACTIQUES & PHÉNOMÈNES --- */
+        .bg-layer { position: fixed; inset: 0; pointer-events: none; }
+        
+        .nebula-gas {
+            background:
+                radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
+            filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out; z-index: -9;
+        }
+        @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
 
-/* --- DÉCORS GALACTIQUES & PHÉNOMÈNES --- */
-.bg-layer { position: fixed; inset: 0; pointer-events: none; }
-.nebula-gas {
-background:
-radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
-radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
-filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out; z-index: -9;
-}
+        .stars {
+            background-image:
+                radial-gradient(1px 1px at 10% 15%, #fff, transparent),
+                radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
+                radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent),
+                radial-gradient(1px 1px at 85% 75%, #fff, transparent);
+            background-size: 300px 300px;
+            animation: twinkle 5s infinite alternate ease-in-out;
+            z-index: -10;
+        }
+        @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
 
-/* Profondeur de champ (Parallaxe 3D) */
-.stars-far {
-background-image: radial-gradient(1px 1px at center, #fff, transparent);
-background-size: 100px 100px;
-opacity: 0.2; animation: drift 150s linear infinite; z-index: -12;
-}
-.stars-medium {
-background-image: radial-gradient(1px 1px at center, var(--pulsar-cyan), transparent);
-background-size: 200px 200px;
-opacity: 0.4; animation: drift 100s linear infinite; z-index: -11;
-}
-@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+        .space-dust {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%);
+            mix-blend-mode: overlay; pointer-events: none; z-index: -8;
+        }
 
-.stars {
-background-image:
-radial-gradient(1px 1px at 10% 15%, #fff, transparent),
-radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
-radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent),
-radial-gradient(1px 1px at 85% 75%, #fff, transparent);
-background-size: 300px 300px;
-animation: twinkle 5s infinite alternate ease-in-out;
-z-index: -10;
-}
-@keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
+        .shooting-star {
+            position: fixed; top: -10px; width: 100px; height: 1px;
+            background: linear-gradient(90deg, white, transparent);
+            animation: shoot 8s linear infinite; opacity: 0;
+            transform: rotate(-45deg); z-index: -7;
+        }
+        @keyframes shoot {
+            0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; }
+            5% { opacity: 1; }
+            15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; }
+            100% { opacity: 0; }
+        }
 
-.space-dust {
-position: fixed; inset: 0;
-background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%);
-mix-blend-mode: overlay; pointer-events: none; z-index: -8;
-}
+        /* --- QUASAR --- */
+        .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
+        .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
+        .jet {
+            position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px;
+            background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent);
+            transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6;
+        }
 
-.shooting-star {
-position: fixed; top: -10px; width: 100px; height: 1px;
-background: linear-gradient(90deg, white, transparent);
-animation: shoot 8s linear infinite; opacity: 0;
-transform: rotate(-45deg); z-index: -7;
-}
-@keyframes shoot {
-0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; }
-5% { opacity: 1; }
-15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; }
-100% { opacity: 0; }
-}
-@keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
+        /* --- PLANÈTES : ITINÉRAIRES UNIQUES --- */
+        .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); pointer-events: none;}
+        .p-gold { width: 45px; height: 45px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%; animation: floatGold 25s infinite ease-in-out; }
+        @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
+        .p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 40s infinite ease-in-out; }
+        @keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
+        .p-red { width: 45px; height: 45px; background: var(--bordeaux); bottom: 20%; right: 10%; animation: floatRed 30s infinite ease-in-out; }
+        @keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
+        .p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
+        @keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+        .p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
+        @keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+        .p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
+        @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
-/* --- QUASAR --- */
-.quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -2; }
-.black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
-.jet {
-position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px;
-background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent);
-opacity: 0.6; animation: spinJet 15s linear infinite;
-}
-@keyframes spinJet { 
-0% { transform: translate(-50%, -50%) rotate(45deg); } 
-100% { transform: translate(-50%, -50%) rotate(405deg); } 
-}
+        /* --- INTERFACE (BORDEAUX) --- */
+        .terminal-container {
+            position: relative; z-index: 1000; width: 85%; max-width: 900px;
+            border: 1px solid var(--bordeaux); padding: 40px;
+            background: rgba(0, 0, 0, 0.94); box-shadow: 0 0 30px rgba(102, 0, 17, 0.3);
+            text-align: center;
+        }
 
-/* --- PLANÈTES : ITINÉRAIRES UNIQUES --- */
-.nebula-planet { 
-position: fixed; border-radius: 50%; z-index: 500; 
-box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); 
-cursor: crosshair; transition: filter 0.3s;
-}
-.nebula-planet:hover {
-filter: brightness(1.5) drop-shadow(0 0 20px rgba(255,255,255,0.8));
-}
+        .header-sys {
+            position: absolute; top: -12px; left: 30px;
+            background: black; padding: 0 15px;
+            font-size: 11px; border: 1px solid var(--bordeaux); color: var(--bordeaux);
+        }
 
-.p-gold {
-width: 45px; height: 45px; background: var(--cosplay-gold);
-box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%;
-animation: floatGold 25s infinite ease-in-out;
-}
-@keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
+        .glitch-title {
+            font-size: 3.5rem; font-weight: bold; letter-spacing: 12px;
+            color: #fff; text-shadow: 2px 0 var(--bordeaux);
+        }
 
-.p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 40s infinite ease-in-out; }
-@keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
+        .nav-menu { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .box {
+            text-decoration: none; border: 1px solid #1a1a1a;
+            padding: 30px 15px; transition: 0.3s; background: rgba(10, 0, 0, 0.6);
+        }
+        .box:hover { border-color: var(--bordeaux); background: rgba(102, 0, 17, 0.1); }
+        
+        .btn {
+            display: inline-block; border: 1px solid var(--bordeaux); color: var(--bordeaux);
+            padding: 8px 18px; text-decoration: none; margin-top: 15px; font-size: 0.7rem; cursor: pointer; background: transparent; transition: 0.3s;
+        }
+        .btn:hover, .box:hover .btn { background: var(--bordeaux); color: white; }
 
-.p-red { width: 45px; height: 45px; background: var(--bordeaux); bottom: 20%; right: 10%; animation: floatRed 30s infinite ease-in-out; }
-@keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
+        .osd {
+            position: fixed; top: 30px; left: 30px; color: var(--ui-text);
+            font-size: 0.8rem; z-index: 9999; text-align: left;
+        }
 
-.p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
-@keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+        #console-output {
+            font-size: 11px; height: 60px; margin: 25px 0;
+            border-left: 1px solid var(--bordeaux); padding-left: 15px;
+            color: var(--ui-text); text-align: left;
+        }
 
-.p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
-@keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+        #omni-logs {
+            font-size: 0.6rem; color: #444; margin-top: 25px;
+            text-align: left; padding: 10px; border: 1px solid #111; line-height: 1.4;
+        }
 
-.p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
-@keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
-
-/* --- ANOMALIE GALACTIQUE (CHAT) --- */
-#galaxy-anomaly {
-    position: fixed; top: 15%; left: 5%; width: 6px; height: 6px;
-    background: var(--rouge-vif); border-radius: 50%; opacity: 0.2; z-index: 20005;
-    animation: pulseAnomaly 10s infinite; cursor: default;
-}
-@keyframes pulseAnomaly { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.4; box-shadow: 0 0 10px var(--rouge-vif); } }
-
-/* --- INTERFACE (BORDEAUX) --- */
-.terminal-container {
-position: relative; z-index: 1000; width: 85%; max-width: 900px;
-border: 1px solid var(--bordeaux); padding: 40px;
-background: rgba(0, 0, 0, 0.94); box-shadow: 0 0 30px rgba(102, 0, 17, 0.3);
-text-align: center;
-}
-
-.header-sys {
-position: absolute; top: -12px; left: 30px;
-background: black; padding: 0 15px;
-font-size: 11px; border: 1px solid var(--bordeaux); color: var(--bordeaux);
-}
-.glitch-title {
-font-size: 3.5rem; font-weight: bold; letter-spacing: 12px;
-color: #fff; text-shadow: 2px 0 var(--bordeaux);
-}
-.nav-menu { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-
-/* Responsive mobile */
-@media (max-width: 768px) {
-  .nav-menu { grid-template-columns: 1fr; }
-  .glitch-title { font-size: 2.5rem; letter-spacing: 6px; }
-}
-
-.box {
-text-decoration: none; border: 1px solid #1a1a1a;
-padding: 30px 15px; transition: 0.3s; background: rgba(10, 0, 0, 0.6);
-}
-.box:hover { border-color: var(--bordeaux); background: rgba(102, 0, 17, 0.1); }
-.btn {
-display: inline-block; border: 1px solid var(--bordeaux); color: var(--bordeaux);
-padding: 8px 18px; text-decoration: none; margin-top: 15px; font-size: 0.7rem;
-}
-.box:hover .btn { background: var(--bordeaux); color: white; }
-
-.osd {
-position: fixed; top: 30px; left: 30px; color: var(--ui-text);
-font-size: 0.8rem; z-index: 9999; text-align: left;
-}
-</style>
+        #qrcode { background: white; padding: 10px; display: none; margin: 20px auto; width: 140px; border: 4px solid var(--bordeaux); }
+    </style>
 </head>
 <body>
 
-<!-- OSD Mis à jour -->
-<div class="osd">
-    PLAY ▷ OMNI_MASTER_V2026<br>
-    SYNC : GPS_BROADCAST_ACTIVE<br>
-    <span id="hidden-trigger">SYS_VERSION : V100.9.9</span><br>
-    DATA : <span style="text-decoration: underline;">SECURED_LINK</span>
-</div>
-
-<!-- Parallaxe des étoiles -->
-<div class="bg-layer stars-far"></div>
-<div class="bg-layer stars-medium"></div>
-
-<div class="bg-layer stars"></div>
-<div class="bg-layer nebula-gas"></div>
-<div class="space-dust"></div>
-
-<div class="shooting-star"></div>
-<div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
-
-<div class="quasar-container">
-<div class="jet"></div><div class="black-hole"></div>
-</div>
-<div id="galaxy-receptor">
-<div class="nebula-planet p-gold" title="Astre Maître"></div>
-<div class="nebula-planet p-blue" title="Planète Océan (Secteur B)"></div>
-<div class="nebula-planet p-red" title="Archives (Secteur R)"></div>
-<div class="nebula-planet p-purple" title="Nébuleuse Sombre"></div>
-<div class="nebula-planet p-ice" title="Astéroïde Glacé"></div>
-<div class="nebula-planet p-toxic" title="Zone Toxique (DANGER)"></div>
-</div>
-
-<!-- Anomalie Galactique insérée ici -->
-<div id="galaxy-anomaly"></div> 
-
-<div class="terminal-container">
-    <div class="header-sys">OMNI_CORE_v2026</div>
-    <div class="glitch-title">DRASHAMY</div>
-    <div style="font-size: 0.75rem; letter-spacing: 4px; color: var(--bordeaux); margin-top: 10px; font-weight: bold;">
-        L'ASTRE CRÉATEUR SUPRÊME
+    <!-- OSD HEADER : AVEC L'HORLOGE CACHÉE POUR VOS 4 CLICS -->
+    <div class="osd">
+        PLAY ▷ OMNI_MASTER_V2031<br>
+        SYNC : GPS_BROADCAST_ACTIVE<br>
+        DATA : <span style="text-decoration: underline;">NATURAL_COLOR_MODE</span><br>
+        UI : BORDEAUX_LOCKED<br>
+        <!-- C'est ici, sur cette ligne, qu'il faudra cliquer 4 fois ! -->
+        <span id="hidden-trigger" style="cursor:pointer; font-size:10px; color:#600;">SYS_TIME: <span id="clock-display">00:00:00</span></span>
     </div>
 
-    <!-- Console Output mis à jour avec le style en ligne de votre snippet -->
-    <div id="console-output" style="font-size: 11px; height: 60px; margin: 25px 0; color: var(--bordeaux); text-align: left; border-left: 1px solid var(--bordeaux); padding-left: 15px;"></div>
-
-    <div class="nav-menu">
-        <a href="omni-archives-theories.html" class="box">
-            <span style="font-size: 2.5rem; filter: grayscale(1);">✍️</span>
-            <div style="font-weight:bold; color: var(--bordeaux); margin-top:10px;">THÉORIES</div>
-            <div class="btn">PROPOSER</div>
-        </a>
-        <a href="systeme.html" class="box">
-            <span style="font-size: 2.5rem; filter: grayscale(1);">📡</span>
-            <div style="font-weight:bold; color: var(--bordeaux); margin-top:10px;">SYSTÈME</div>
-            <div class="btn">ANALYSER</div>
-        </a>
-        <a href="galerie.html" class="box">
-            <span style="font-size: 2.5rem; filter: grayscale(1);">👁️</span>
-            <div style="font-weight:bold; color: var(--bordeaux); margin-top:10px;">GALERIE</div>
-            <div class="btn">TRAVERSER</div>
-        </a>
+    <!-- MOTEUR GALACTIQUE -->
+    <div class="bg-layer stars"></div>
+    <div class="bg-layer nebula-gas"></div>
+    <div class="space-dust"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
+    <div class="quasar-container">
+        <div class="jet"></div><div class="black-hole"></div>
     </div>
-
-    <div style="margin-top: 30px;">
-        <div id="qrcode" style="background: white; padding: 10px; display: none; margin: 20px auto; width: 140px; border: 4px solid var(--bordeaux);"></div>
-        <button class="btn" style="cursor: pointer; background: transparent;" onclick="genererPortailQR()">
-            [ ACTIVER PORTAIL QR ]
-        </button>
-    </div>
-</div>
-
-<script>
-// Pop-up de sécurité immersif
-function promptSecurity() {
-  alert("ALERTE : Protocole de sécurité. \nLe système va scanner votre terminal de connexion...");
-}
-
-// Bip Audio Immersif (Synthétiseur)
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-let audioCtx;
-function playTerminalBeep() {
-  if (!audioCtx) audioCtx = new AudioContext();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  
-  const oscillator = audioCtx.createOscillator();
-  const gainNode = audioCtx.createGain();
-  
-  oscillator.type = 'square';
-  oscillator.frequency.setValueAtTime(600, audioCtx.currentTime); 
-  
-  gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-  
-  oscillator.connect(gainNode);
-  gainNode.connect(audioCtx.destination);
-  
-  oscillator.start();
-  oscillator.stop(audioCtx.currentTime + 0.1);
-}
-
-// Logique de console au démarrage (Mise à jour avec vos nouveaux textes)
-const consoleOut = document.getElementById('console-output');
-const logs = [
-    "> SYSTÈME OMNI V100.9.9 ONLINE", 
-    "> INITIALISATION DU PONT TEMPOREL...", 
-    "> PRÊT POUR LIAISON MASTER."
-];
-let line = 0;
-
-function printLog() {
-    if (line < logs.length) {
-        consoleOut.innerHTML += logs[line] + "<br>";
-        playTerminalBeep();
-        line++;
-        setTimeout(printLog, 800);
-    }
-}
-
-// QR Code pour ta carte de visite (Mis à jour avec SECRET_CHANNEL)
-function genererPortailQR() {
-    const container = document.getElementById("qrcode");
-    container.innerHTML = "";
-    new QRCode(container, {
-        text: "https://shadrasy.github.io/Drashamygo/index.html?access=SECRET_CHANNEL",
-        width: 140, height: 140,
-        colorDark : "#660011", colorLight : "#ffffff"
-    });
-    container.style.display = "block";
-}
-
-// Génération aléatoire d'étoiles filantes
-function spawnRandomShootingStar() {
-  const star = document.createElement('div');
-  star.classList.add('shooting-star');
-  
-  star.style.top = Math.random() * 50 + 'vh';
-  star.style.left = (Math.random() * 50 + 50) + 'vw';
-  star.style.animationDuration = (Math.random() * 3 + 4) + 's';
-  
-  document.body.appendChild(star);
-  
-  setTimeout(() => { star.remove(); }, 6000);
-}
-setInterval(spawnRandomShootingStar, 4000);
-
-// Fusion de nos initialisations de la page
-window.onload = () => {
-    promptSecurity();
-    setTimeout(printLog, 1000); // Lance la console avec un petit délai
     
-    // Lancement automatique de la surveillance des clics cachés
-    if(typeof setupSecretTrigger === 'function') setupSecretTrigger();
-    if(typeof setupGalaxyTrigger === 'function') setupGalaxyTrigger();
-};
-</script>
+    <div id="galaxy-receptor">
+        <div class="nebula-planet p-gold" title="Astre Maître"></div>
+        <div class="nebula-planet p-blue"></div>
+        <div class="nebula-planet p-red"></div>
+        <div class="nebula-planet p-purple"></div>
+        <div class="nebula-planet p-ice"></div>
+        <div class="nebula-planet p-toxic"></div>
+    </div>
+
+    <!-- TERMINAL PRINCIPAL -->
+    <div class="terminal-container">
+        <div class="header-sys">OMNI_CORE_v2031</div>
+        <div class="glitch-title">ARCHIVES</div>
+        <div style="font-size: 0.75rem; letter-spacing: 4px; color: var(--bordeaux); margin-top: 10px; font-weight: bold;">
+            L'ASTRE CRÉATEUR SUPRÊME
+        </div>
+
+        <div id="console-output"></div>
+
+        <div class="nav-menu">
+            <a href="omni-archives-theories.html" class="box">
+                <span style="font-size: 2.5rem; filter: grayscale(1);">✍️</span>
+                <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">THÉORIES</div>
+                <div class="btn">PROPOSER</div>
+            </a>
+            <a href="systeme.html" class="box">
+                <span style="font-size: 2.5rem; filter: grayscale(1);">📡</span>
+                <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">SYSTÈME</div>
+                <div class="btn">ANALYSER</div>
+            </a>
+            <a href="galerie.html" class="box">
+                <span style="font-size: 2.5rem; filter: grayscale(1);">👁️</span>
+                <div style="font-weight:bold; margin-top:10px; color: var(--bordeaux);">GALERIE</div>
+                <div class="btn">TRAVERSER</div>
+            </a>
+        </div>
+
+        <div id="omni-logs">
+            >> OMNI_SCANNER_ACTIVE... <br>
+            >> LEXICON_DATABASE_V100.9.9_LOADED... <br>
+            >> SUCCESS: SYSTEM_RESTORATION_COMPLETE <br>
+            >> STATUS: ARCHIVE_SECURED... <br>
+            >> WAITING_FOR_INCOMING_SIGNAL...
+        </div>
+
+        <!-- PORTAIL QR NORMAL (VISIBLE POUR TOUS) -->
+        <div style="margin-top: 30px;">
+            <div id="qrcode"></div>
+            <button class="btn" onclick="genererPortailQR()">[ ACTIVER PORTAIL QR ]</button>
+        </div>
+    </div>
+
+    <script>
+        // --- GESTION DU TERMINAL D'ACCUEIL ---
+        const consoleOut = document.getElementById('console-output');
+        const logs = [
+            "> SYSTÈME OMNI V100.9.9 ONLINE",
+            "> CHARGEMENT DES ASTRES NATURELS...",
+            "> FILTRE INTERFACE BORDEAUX ACTIF.",
+            "> BIENVENUE DANS LES ARCHIVES."
+        ];
+        let line = 0;
+
+        function printLog() {
+            if (line < logs.length) {
+                consoleOut.innerHTML += logs[line] + "<br>";
+                line++;
+                setTimeout(printLog, 800);
+            }
+        }
+
+        // Horloge pour l'affichage OSD
+        setInterval(() => { 
+            const clock = document.getElementById('clock-display');
+            if(clock) clock.innerText = new Date().toLocaleTimeString(); 
+        }, 1000);
+
+        // QR Code Classique de la Page d'Accueil
+        function genererPortailQR() {
+            const container = document.getElementById("qrcode");
+            container.innerHTML = "";
+            new QRCode(container, {
+                text: "https://shadrasy.github.io/Drashamygo/index.html",
+                width: 140, height: 140,
+                colorDark : "#660011", colorLight : "#ffffff"
+            });
+            container.style.display = "block";
+        }
+
+
+        /**
+         * SYSTEM_BRIDGE_V2026 - LE CERVEAU INVISIBLE (VOTRE AJOUT)
+         * Gère les secrets, les 4 clics et les accès sans bouton visible.
+         */
+        
+        // On vérifie si l'URL contient les mots de passe
+        const urlParamsIndex = new URLSearchParams(window.location.search);
+        // On attache à window.STATE pour éviter les conflits si le fichier system-bridge l'a déjà déclaré
+        window.INDEX_STATE = {
+            hasChat: urlParamsIndex.get('access') === 'SECRET_CHANNEL'
+        };
+
+        // --- 1. DÉTECTION DES 4 CLICS (POUR TOI) ---
+        let secretClicks = 0;
+        let secretTimer;
+
+        function setupSecretTrigger() {
+            const trigger = document.getElementById('hidden-trigger'); // L'horloge sur l'Index en haut à gauche
+            if (trigger) {
+                trigger.addEventListener('click', () => {
+                    secretClicks++;
+                    clearTimeout(secretTimer);
+                    secretTimer = setTimeout(() => { secretClicks = 0; }, 1000);
+
+                    if (secretClicks === 4) {
+                        // ACTION SECRÈTE : Génère le QR Code de Discussion Privée
+                        genererAccesPriveHinaru();
+                        secretClicks = 0;
+                    }
+                });
+            }
+        }
+
+        // --- 2. GÉNÉRATION DU QR CODE PRIVÉ (TOTALEMENT CACHÉ) ---
+        function genererAccesPriveHinaru() {
+            // S'il existe déjà on ne le recrée pas
+            if(document.getElementById("omni-private-portal")) return; 
+
+            let alertBox = document.createElement('div');
+            alertBox.id = "omni-private-portal";
+            alertBox.style = `
+                position:fixed; top:50%; left:50%; transform:translate(-50%, -50%);
+                background:#000; border:2px solid #ff0033; padding:20px; z-index:1000000;
+                text-align:center; box-shadow: 0 0 50px #600; font-family:monospace;
+            `;
+            
+            alertBox.innerHTML = `
+                <p style="color:#ff0033; font-size:10px;">[ PORTAIL PRIVÉ GÉNÉRÉ ]</p>
+                <div id="qr-privé-space" style="background:white; padding:10px; margin:10px 0;"></div>
+                <p style="color:#444; font-size:8px;">Scannez pour ouvrir la discussion privée.</p>
+                <button onclick="this.parentElement.remove()" style="background:transparent; color:#600; border:1px solid #600; cursor:pointer; font-size:9px;">[ FERMER ]</button>
+            `;
+            
+            document.body.appendChild(alertBox);
+
+            // On génère le lien SECRET que seul ce QR Code possède
+            const lienSecret = "https://shadrasy.github.io/Drashamygo/index.html?access=SECRET_CHANNEL";
+
+            new QRCode(document.getElementById("qr-privé-space"), {
+                text: lienSecret,
+                width: 180, height: 180,
+                colorDark : "#000000",
+                colorLight : "#ffffff"
+            });
+            
+            // Joue un son si la fonction existe ailleurs
+            if(typeof playTerminalBeep === 'function') playTerminalBeep();
+        }
+
+        // Lancement automatique de la surveillance au démarrage
+        window.addEventListener('DOMContentLoaded', () => {
+            printLog();
+            setupSecretTrigger();
+            
+            // Si l'URL a le code secret, on ouvre le chat bleu (Fonction gérée par system-bridge.js)
+            if (window.INDEX_STATE.hasChat && typeof unlockSecretChat === 'function') {
+                unlockSecretChat();
+            }
+        });
+    </script>
 </body>
 </html>
