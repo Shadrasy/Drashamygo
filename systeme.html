@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
 
-<!-- Script pour la 3D du Cyborg -->
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <script src="security.js"></script>
 
 <style>
@@ -42,7 +40,6 @@ body::after {
 ========================================= */
 .bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
 
-/* 1. Nébuleuses et Gaz */
 .nebula-gas {
     background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
                 radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
@@ -50,7 +47,6 @@ body::after {
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
 
-/* 2. Étoiles Scintillantes */
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
                       radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
@@ -59,12 +55,10 @@ body::after {
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
 
-/* 3. Poussière et Étoiles Filantes */
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
 
-/* 4. Le Quasar */
 .quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -15; }
 .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
 .jet { position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6; }
@@ -84,7 +78,6 @@ body::after {
 .p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
 @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
-
 /* =========================================
    LE RADAR CENTRAL (SERVEURS INTERNES)
 ========================================= */
@@ -93,12 +86,7 @@ body::after {
 .radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
 @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.server-planet {
-    position: absolute; border-radius: 50%; top: 50%; left: 50%;
-    border: 1px solid rgba(255,255,255,0.4); z-index: 10;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s;
-}
+.server-planet { position: absolute; border-radius: 50%; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.4); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s; }
 .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
 .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable), 0 0 30px rgba(0,255,65,0.4); animation: orbitIdx 25s linear infinite; }
 .p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte), 0 0 30px rgba(255,0,51,0.4); animation: orbitThe 40s linear infinite reverse; }
@@ -122,17 +110,53 @@ body::after {
 
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
 
-/* REMPLACEMENT PAR LE CYBORG 3D */
-.cyborg-frame { width: 120px; height: 120px; margin: 0 auto 15px; position: relative; background: radial-gradient(circle, rgba(0,229,255,0.1), transparent); border-radius: 50%; }
-.scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
-@keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+/* --- LE CYBORG DRAGONNET DESSINÉ EN CODE --- */
+.cyborg-full-frame { width: 100%; height: 180px; position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
 
-#boot-logs { font-size: 0.7rem; line-height: 1.5; height: 160px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
+/* 1. La Tête (Cornes et Yeux de Dragon) */
+.c-head { width: 26px; height: 32px; border: 1.5px solid var(--cyan-system); border-radius: 40% 40% 50% 50%; position: relative; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); margin-bottom: 4px; background: #000; z-index: 3; }
+.c-horns { position: absolute; top: -10px; width: 100%; display: flex; justify-content: space-between; z-index: 1; }
+.c-horn { width: 3px; height: 12px; border: 1.5px solid var(--cyan-system); border-bottom: none; border-radius: 50% 50% 0 0; }
+.c-horn.left { transform: rotate(-30deg) translateX(4px); }
+.c-horn.right { transform: rotate(30deg) translateX(-4px); }
+.c-eyes { position: absolute; top: 12px; width: 100%; display: flex; justify-content: center; gap: 6px; }
+.c-eye { width: 5px; height: 2px; background: var(--cyan-system); box-shadow: 0 0 6px var(--cyan-system); border-radius: 50%; animation: blink 4s infinite; }
+.c-eye.left { transform: rotate(15deg); }
+.c-eye.right { transform: rotate(-15deg); }
+
+/* 2. Le Corps (Silhouette Féminine, Cœur, Ailes et Queue) */
+.c-body-group { display: flex; gap: 4px; margin-bottom: 4px; position: relative; justify-content: center; }
+.c-torso { width: 30px; height: 50px; border: 1.5px solid var(--cyan-system); border-radius: 15px 15px 40% 40%; position: relative; box-shadow: inset 0 0 10px rgba(0,229,255,0.1); background: #000; z-index: 2; }
+.c-core { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border: 1px dashed var(--cyan-system); border-radius: 50%; animation: pulseCore 1.5s infinite; }
+.c-arm { width: 6px; height: 42px; border: 1.5px solid var(--cyan-system); border-radius: 6px; margin-top: 6px; }
+
+.c-wings { position: absolute; top: 5px; left: -25px; right: -25px; display: flex; justify-content: space-between; z-index: 1; }
+.c-wing { width: 25px; height: 35px; border: 1.5px solid var(--cyan-system); border-radius: 0 20px 20px 20px; box-shadow: inset 0 0 10px rgba(0,229,255,0.1); }
+.c-wing.left { transform: rotate(-25deg); border-right: none; }
+.c-wing.right { transform: rotate(25deg) scaleX(-1); border-right: none; }
+
+.c-tail { position: absolute; bottom: -28px; left: 50%; margin-left: -3px; width: 6px; height: 32px; border: 1.5px solid var(--cyan-system); border-top: none; border-radius: 0 0 10px 10px; transform-origin: top; animation: wag 4s infinite ease-in-out; z-index: 1; }
+
+/* 3. Les Jambes */
+.c-legs { display: flex; gap: 6px; justify-content: center; }
+.c-leg { width: 8px; height: 55px; border: 1.5px solid var(--cyan-system); border-radius: 4px; }
+
+/* Le rayon de scan global */
+.scan-line { position: absolute; width: 150px; height: 2px; background: var(--cyan-system); box-shadow: 0 0 15px var(--cyan-system); animation: scanBody 2.5s infinite linear; z-index: 10; pointer-events: none; left: 50%; transform: translateX(-50%); }
+
+@keyframes wag { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } }
+@keyframes scanBody { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+@keyframes pulseCore { 0%, 100% { box-shadow: 0 0 5px var(--cyan-system); background: transparent; } 50% { box-shadow: 0 0 15px var(--cyan-system); background: rgba(0, 229, 255, 0.4); } }
+@keyframes blink { 0%, 96%, 100% { opacity: 1; } 98% { opacity: 0; } }
+
+/* -------------------------------------------------------- */
+
+#boot-logs { font-size: 0.7rem; line-height: 1.5; height: 130px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
 .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
 @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
 
 /* LA LIGNE DE COMMANDE INTERACTIVE */
-#interactive-cmd { display: none; margin-top: 15px; border-top: 1px dashed var(--cyan-system); padding-top: 10px; text-align: left;}
+#interactive-cmd { display: none; margin-top: 10px; border-top: 1px dashed var(--cyan-system); padding-top: 10px; text-align: left;}
 .cmd-prefix { color: var(--cosplay-gold); font-weight: bold; }
 #cmd-input { background: transparent; border: none; color: white; font-family: 'Courier New', monospace; font-size: 0.8rem; outline: none; width: 80%; text-transform: lowercase; }
 #cmd-history { font-size: 0.7rem; color: #888; margin-bottom: 5px; }
@@ -177,12 +201,41 @@ body::after {
 
 <!-- LE TERMINAL CYBORG -->
 <div class="awakening-corner">
-    <div class="header-mini">UNITÉ_CYBORG_OMNI</div>
+    <!-- Changement du titre du cadre -->
+    <div class="header-mini">UNITÉ_DRAGONNET_CYBORG</div>
     
-    <div class="cyborg-frame">
+    <!-- LE CYBORG DRAGONNET (Cornes, Ailes, Silhouette Femme, Queue) -->
+    <div class="cyborg-full-frame">
         <div class="scan-line"></div>
-        <!-- VÉRIFIEZ BIEN QUE LE FICHIER cyborg.glb EST DANS LE MÊME DOSSIER ! -->
-        <model-viewer src="cyborg.glb" auto-rotate camera-controls style="width: 100%; height: 100%;" exposure="0.5" shadow-intensity="2"></model-viewer>
+        
+        <div class="c-head">
+            <div class="c-horns">
+                <div class="c-horn left"></div>
+                <div class="c-horn right"></div>
+            </div>
+            <div class="c-eyes">
+                <div class="c-eye left"></div>
+                <div class="c-eye right"></div>
+            </div>
+        </div>
+        
+        <div class="c-body-group">
+            <div class="c-arm"></div>
+            <div class="c-torso">
+                <div class="c-wings">
+                    <div class="c-wing left"></div>
+                    <div class="c-wing right"></div>
+                </div>
+                <div class="c-core"></div>
+                <div class="c-tail"></div>
+            </div>
+            <div class="c-arm"></div>
+        </div>
+        
+        <div class="c-legs">
+            <div class="c-leg"></div>
+            <div class="c-leg"></div>
+        </div>
     </div>
     
     <div id="boot-logs"></div>
@@ -215,8 +268,6 @@ const logs = [
     "INIT_SYSTÈMES_LOCOMOTEURS... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
     "DÉTECTION_INDEX_STABLE... [YES]",
-    "DÉTECTION_THEORIES_SYNC... [YES]",
-    "DÉTECTION_GALERIE_ACTIVE... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
     "CONSCIENCE_EN_LIGNE.",
     "> EN ATTENTE D'INSTRUCTION MANUELLE..."
