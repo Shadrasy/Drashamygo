@@ -36,7 +36,7 @@ body::after {
 }
 
 /* =========================================
-   L'UNIVERS GALACTIQUE MASSIF (ARRIÈRE-PLAN)
+   L'UNIVERS GALACTIQUE MASSIF
 ========================================= */
 .bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
 .nebula-gas {
@@ -76,7 +76,7 @@ body::after {
 @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
 /* =========================================
-   LE RADAR CENTRAL (SERVEURS INTERNES)
+   LE RADAR CENTRAL
 ========================================= */
 .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
 .radar-lens { width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%); }
@@ -101,17 +101,18 @@ body::after {
     background: rgba(0, 5, 15, 0.95);
     border: 1px solid var(--cyan-system);
     backdrop-filter: blur(10px);
-    z-index: 1000; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+    z-index: 10000 !important; 
+    box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+    display: flex;
+    flex-direction: column;
 }
 
-.header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
+.header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); z-index: 10; }
 
-/* --- CADRE DU MODÈLE 3D --- */
-#viewport { width: 100%; height: 220px; position: relative; background: radial-gradient(circle, rgba(0,229,255,0.1), transparent); border-radius: 10px; border: 1px solid rgba(0, 229, 255, 0.2); margin-bottom: 15px; overflow: hidden; }
 .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
 @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
-#boot-logs { font-size: 0.7rem; line-height: 1.5; height: 130px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
+#boot-logs { font-size: 0.7rem; line-height: 1.5; height: 130px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; margin-bottom: 15px; }
 .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
 @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
 
@@ -125,7 +126,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 .btn-gen { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--rouge-alerte); background: rgba(255,0,51,0.1); color: var(--rouge-alerte); font-family: inherit; font-size: 0.75rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
 
-#tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 2000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
+#tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
 </style>
 </head>
 <body>
@@ -164,16 +165,21 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
     <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
     
-    <!-- L'AFFICHAGE DU MODÈLE 3D -->
-    <div id="viewport">
+    <!-- VOTRE BLOC PARFAITEMENT INTÉGRÉ ICI -->
+    <div class="cyborg-full-frame" style="height: 300px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden;">
         <div class="scan-line"></div>
+        
         <model-viewer id="dragonnier-view" 
-            src="images/humain_base.glb" 
+            src="images/dragonnier_humanoide.glb" 
+            alt="Spécimen Humanoïde"
             camera-controls 
-            exposure="1" 
+            auto-rotate
             shadow-intensity="2"
+            exposure="1.5"
             environment-image="neutral"
-            style="width: 100%; height: 100%;">
+            loading="eager"
+            style="width: 100%; height: 100%;"
+            onerror="this.src='https://modelviewer.dev/shared-assets/models/Astronaut.glb'">
         </model-viewer>
     </div>
     
@@ -186,8 +192,8 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
         <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
 
         <div class="control-group">
-            <label>PIGMENTATION DE LA PEAU (0 à 200)</label>
-            <input type="range" id="skin-color" min="0" max="200" value="0" oninput="updateGenetics()">
+            <label>PIGMENTATION DE LA PEAU</label>
+            <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
         </div>
 
         <div class="control-group">
@@ -243,11 +249,13 @@ function print() {
 }
 window.onload = print;
 
-// --- LE MOTEUR DE MUTATION GÉNÉTIQUE ---
-const model = document.querySelector('#dragonnier-view');
+// =======================================================
+// --- VOTRE MOTEUR DE MUTATION GÉNÉTIQUE CORRIGÉ ---
+// =======================================================
+const dragonView = document.querySelector('#dragonnier-view');
 
-// Applique les valeurs au chargement de l'objet 3D
-model.addEventListener('load', () => {
+// Dès que l'astronaute (ou le dragonnier) est chargé, on applique les couleurs
+dragonView.addEventListener('load', () => {
     updateGenetics();
 });
 
@@ -256,40 +264,36 @@ function updateGenetics() {
     const scaleVal = document.getElementById('scale-density').value;
     const metalVal = document.getElementById('metallic').value;
 
-    // On accède aux matériaux du modèle 3D
-    if (!model.model) return;
-    
-    // Modification de la texture de base (le premier matériau)
-    const material = model.model.materials; 
+    if (dragonView.model) {
+        // LA CORRECTION CLÉ EST ICI :  permet de cibler la peau
+        const material = dragonView.model.materials;
+        
+        if (material && material.pbrMetallicRoughness) {
+            // Mutation de la pigmentation (Rouge / Peau / Sombre)
+            const colorRatio = skinVal / 100;
+            material.pbrMetallicRoughness.setBaseColorFactor([1, 0.8 * colorRatio, 0.6 * colorRatio, 1]);
+            
+            // Mutation Draconique (Aspect métallique des écailles)
+            material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
 
-    // 1. On change la couleur de peau
-    const r = 1 - (skinVal / 200);
-    const g = 0.8 - (skinVal / 200);
-    const b = 0.6 - (skinVal / 200);
-    
-    // Vérifier que le material existe avant d'appliquer
-    if (material && material.pbrMetallicRoughness) {
-        material.pbrMetallicRoughness.setBaseColorFactor([r, g, b, 1]);
-        material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
-        material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
+            // Mutation des écailles (Optionnel, lié à votre slider)
+            material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
+        }
     }
 }
 
-// --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE ---
+// --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
 function saveGenetics() {
-    // On récupère les valeurs
     const skinVal = document.getElementById('skin-color').value;
     const scaleVal = document.getElementById('scale-density').value;
     const metalVal = document.getElementById('metallic').value;
 
-    // On sauvegarde dans le noyau mémoire OMNI (localStorage)
     localStorage.setItem('OMNI_ADN_SKIN', skinVal);
     localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
     localStorage.setItem('OMNI_ADN_METAL', metalVal);
 
     alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
     
-    // Téléportation vers l'accueil après la sauvegarde
     setTimeout(() => { window.location.href = "index.html"; }, 500);
 }
 </script>
