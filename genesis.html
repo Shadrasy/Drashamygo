@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>OMNI_GENESIS - Laboratoire Dragonnier</title>
+    <!-- Librairie 3D -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <style>
+        :root { 
+            --bordeaux: #660011; 
+            --gold: #ffcc00; 
+            --cyan-bionique: #00e5ff;
+        }
+        body { 
+            margin: 0; background: #000; color: white; 
+            font-family: 'Courier New', monospace; display: flex; height: 100vh; overflow: hidden;
+        }
+
+        /* --- PANNEAU DE CONTRÔLE (GAUCHE) --- */
+        #dna-controls {
+            width: 380px; border-right: 2px solid var(--bordeaux);
+            padding: 30px; background: rgba(5, 0, 0, 0.95); z-index: 10;
+            box-shadow: 5px 0 20px rgba(102, 0, 17, 0.5);
+            display: flex; flex-direction: column;
+        }
+
+        /* --- VISUALISEUR 3D (DROITE) --- */
+        #viewport { 
+            flex-grow: 1; position: relative; 
+            background: radial-gradient(circle at center, #1a0005 0%, #000 100%); 
+        }
+        
+        model-viewer { width: 100%; height: 100%; --poster-color: transparent; outline: none; }
+
+        /* Décoration du visualiseur (Scanner) */
+        .scan-grid { position: absolute; inset: 0; background: linear-gradient(rgba(255,0,51,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,51,0.05) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; }
+
+        h2 { color: var(--gold); font-size: 16px; letter-spacing: 4px; border-bottom: 1px solid var(--bordeaux); padding-bottom: 10px; margin-top: 0;}
+        
+        .control-group { margin-bottom: 25px; }
+        label { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; margin-bottom: 10px; font-weight: bold; }
+        
+        /* Personnalisation des curseurs (Sliders) */
+        input[type=range] { 
+            width: 100%; -webkit-appearance: none; background: #222; height: 4px; border-radius: 2px; outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 15px; height: 15px; background: var(--gold); border: 2px solid #000; border-radius: 50%; cursor: crosshair; transition: 0.2s;
+        }
+        input[type=range]:hover::-webkit-slider-thumb { background: var(--cyan-bionique); box-shadow: 0 0 10px var(--cyan-bionique); }
+        
+        .btn-gen {
+            width: 100%; padding: 15px; background: transparent; border: 1px solid var(--gold);
+            color: var(--gold); cursor: pointer; font-family: inherit; font-weight: bold; letter-spacing: 2px; transition: 0.3s; margin-top: auto;
+        }
+        .btn-gen:hover { background: var(--gold); color: black; box-shadow: 0 0 15px var(--gold); }
+
+        #lab-logs {
+            margin-top: 20px; font-size: 10px; color: #ff3366; border: 1px solid #300; padding: 10px; background: #000; height: 120px; overflow-y: auto; line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PARTIE 1 : LE PANNEAU DE CONTRÔLE -->
+    <div id="dna-controls">
+        <h2>SÉQUENÇAGE_ADN_CYBORG</h2>
+        
+        <div class="control-group">
+            <label>PIGMENTATION ÉPIDERMIQUE <span id="val-skin">50%</span></label>
+            <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics('skin', 'Taux de Mélanine')">
+        </div>
+
+        <!-- Nouveaux réglages Dragon/Cyborg -->
+        <div class="control-group">
+            <label>DÉPLOIEMENT CORNES & AILES <span id="val-dragon">0%</span></label>
+            <input type="range" id="dragon-genes" min="0" max="100" value="0" oninput="updateGenetics('dragon', 'Gènes de Dragonnet')">
+        </div>
+
+        <div class="control-group">
+            <label>IMPLANTS CYBERNÉTIQUES <span id="val-cyber">80%</span></label>
+            <input type="range" id="cyber-parts" min="0" max="100" value="80" oninput="updateGenetics('cyber', 'Acier et Câblages')">
+        </div>
+
+        <div class="control-group">
+            <label>LUMINESCENCE ŒIL BIONIQUE <span id="val-eye">100%</span></label>
+            <input type="range" id="eye-glow" min="0" max="100" value="100" oninput="updateGenetics('eye', 'Spectre Cyan')">
+        </div>
+
+        <!-- Écran de contrôle des logs -->
+        <div id="lab-logs">
+            >> LABO OMNI_GENESIS PRÊT.<br>
+            >> EN ATTENTE DE MANIPULATION GÉNÉTIQUE...
+        </div>
+
+        <button class="btn-gen" onclick="forgerCyborg()">[ INCUBER L'UNITÉ ]</button>
+    </div>
+
+    <!-- PARTIE 2 : LE VISUALISEUR 3D -->
+    <div id="viewport">
+        <div class="scan-grid"></div>
+        
+        <!-- Mettez ici le nom de votre fichier 3D (ex: femme_dragonnet.glb) -->
+        <model-viewer 
+            id="cyborg-model" 
+            src="cyborg.glb" 
+            auto-rotate 
+            camera-controls 
+            shadow-intensity="2" 
+            exposure="1.2">
+        </model-viewer>
+    </div>
+
+    <!-- PARTIE 3 : LE MOTEUR JAVASCRIPT -->
+    <script>
+        const logsBox = document.getElementById('lab-logs');
+
+        // Fonction qui met à jour les pourcentages et affiche du texte de Hacker
+        function updateGenetics(type, nomScientifique) {
+            // Récupère la valeur du curseur
+            let valeur = document.getElementById(type + (type==='skin'?'-color': (type==='dragon'?'-genes': (type==='cyber'?'-parts':'-glow')))).value;
+            
+            // Met à jour le petit texte au dessus du curseur
+            document.getElementById('val-' + type).innerText = valeur + "%";
+
+            // Ajoute une ligne dans le journal de bord
+            logsBox.innerHTML += `<br>>> MODIFICATION : ${nomScientifique} calibré à ${valeur}%.`;
+            logsBox.scrollTop = logsBox.scrollHeight; // Descend automatiquement en bas des logs
+        }
+
+        // Fonction du bouton final
+        function forgerCyborg() {
+            logsBox.innerHTML += `<br><br><span style="color: var(--gold);">>> FUSION ADN TERMINÉE.</span>`;
+            logsBox.innerHTML += `<br><span style="color: var(--cyan-bionique);">>> PRÉPARATION À L'ÉVEIL DU CYBORG...</span>`;
+            logsBox.scrollTop = logsBox.scrollHeight;
+
+            // Redirige vers la page du scan d'éveil après 2 secondes
+            setTimeout(() => {
+                window.location.href = "systeme.html"; 
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
