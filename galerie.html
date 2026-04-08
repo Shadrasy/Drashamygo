@@ -354,20 +354,23 @@ function renderRomans() {
         `;
     };
 
-    htmlHTML += createTab(0, "HORS SÉRIE", "BONUS & ILLUSTRATIONS", "GÉNÉRAL", true);
-    htmlHTML += createTab(-1, "FILMS CINÉMA", "PROJETS LONGS", "GÉNÉRAL", true);
+    const isVIP = localStorage.getItem('NEBULA_VIP') === 'true';
 
-    let customGalleries = JSON.parse(localStorage.getItem('NEBULA_CUSTOM_GALLERIES')) || [];
-    customGalleries.forEach(cg => {
-        htmlHTML += createTab(cg.id, cg.title.toUpperCase(), "SÉRIE CUSTOM", "ARCHIVE", true);
-    });
+    // 🔒 SÉCURITÉ : Les Bonus, Films et dossiers Custom sont cachés pour le public !
+    if (STATE.isMaster || isVIP) {
+        htmlHTML += createTab(0, "HORS SÉRIE", "BONUS & ILLUSTRATIONS", "GÉNÉRAL", true);
+        htmlHTML += createTab(-1, "FILMS CINÉMA", "PROJETS LONGS", "GÉNÉRAL", true);
+
+        let customGalleries = JSON.parse(localStorage.getItem('NEBULA_CUSTOM_GALLERIES')) || [];
+        customGalleries.forEach(cg => {
+            htmlHTML += createTab(cg.id, cg.title.toUpperCase(), "SÉRIE CUSTOM", "ARCHIVE", true);
+        });
+    }
 
     if (STATE && STATE.romans) {
         STATE.romans.forEach(r => {
-            const released = r.releaseDate && now >= new Date(r.releaseDate);
-            // ⚠️ MODIFICATION VIP AUTONOME : La galerie lit directement la mémoire du téléphone !
-            const isVIP = localStorage.getItem('NEBULA_VIP') === 'true';
-            if (STATE.isMaster || isVIP || released) {
+            // 🔒 SÉCURITÉ : Le public ne voit QUE le Roman 1 (SHADRASY)
+            if (STATE.isMaster || isVIP || r.id === 1) {
                 htmlHTML += createTab(r.id, `R-${r.id}: ${r.title.toUpperCase()}`, `${r.tomes} UNITÉS`, `SORTIE: ${r.date}`, false);
             }
         });
@@ -389,6 +392,9 @@ function loadData() {
 
         // ⚠️ MODIFICATION VIP AUTONOME : Si le badge VIP est dans le téléphone, il passe la douane !
         const isVIP = localStorage.getItem('NEBULA_VIP') === 'true';
+
+        // 🔒 MUR DE SÉCURITÉ ABSOLU : Si ce n'est PAS le roman 1, le public ne voit rien !
+        if (item.roman !== 1 && !STATE.isMaster && !isVIP) return false;
 
         if (!isAvailable && !STATE.isMaster && !isVIP) return false;
         if (item.prive && !STATE.isMaster && !isVIP) return false;
