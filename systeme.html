@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
 
-<!-- Script pour la 3D -->
+<!-- Script pour la 3D du Cyborg -->
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <script src="security.js"></script>
 
@@ -17,6 +17,12 @@
     --void-purple: #4b0082;
     --vert-stable: #00ff41;
     --rouge-alerte: #ff0033;
+    
+    /* Couleurs de la Galaxie */
+    --nebula-blue: rgba(0, 50, 150, 0.2);
+    --nebula-rose: rgba(255, 100, 200, 0.15);
+    --pulsar-cyan: rgba(200, 230, 255, 0.8);
+    --bordeaux: #660011;
 }
 body {
     margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
@@ -31,35 +37,62 @@ body::after {
     z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
 }
 
-/* --- PLUIE DE DONNÉES (MATRICE) --- */
-.matrix-rain {
-    position: fixed; inset: 0; z-index: -20; opacity: 0.15;
-    background-image: repeating-linear-gradient(0deg, transparent, transparent 10px, var(--cyan-system) 10px, var(--cyan-system) 20px);
-    background-size: 2px 100%; animation: rainFall 20s linear infinite;
+/* =========================================
+   LE NOUVEL UNIVERS GALACTIQUE MASSIF
+========================================= */
+.bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
+
+/* 1. Nébuleuses et Gaz */
+.nebula-gas {
+    background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
+    filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
-@keyframes rainFall { from { background-position: 0 0; } to { background-position: 0 1000px; } }
+@keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
 
-/* --- DÉCOR SPATIAL COMPLET --- */
-.star-field { position: fixed; inset: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; opacity: 0.4; }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-.black-hole-void {
-    position: fixed; width: 100px; height: 100px; background: black; border-radius: 50%; z-index: -5; top: 30%; left: 20%;
-    box-shadow: 0 0 40px var(--void-purple), inset 0 0 20px var(--void-purple); border: 1px dashed var(--void-purple);
-    animation: void-drift 20s infinite alternate ease-in-out;
+/* 2. Étoiles Scintillantes */
+.stars {
+    background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
+                      radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
+                      radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
+    background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
-@keyframes void-drift { from { transform: translate(0,0) scale(1); } to { transform: translate(5vw, 5vh) scale(1.1); } }
+@keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
 
-/* --- RADAR CENTRAL XL --- */
+/* 3. Poussière et Étoiles Filantes */
+.space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
+.shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
+@keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
+
+/* 4. Le Quasar */
+.quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -15; }
+.black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
+.jet { position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6; }
+
+/* 5. LES 6 PLANÈTES HORS RADAR */
+.nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); pointer-events: none; }
+.p-gold { width: 45px; height: 45px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%; animation: floatGold 25s infinite ease-in-out; }
+@keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
+.p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 40s infinite ease-in-out; }
+@keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
+.p-red { width: 45px; height: 45px; background: var(--bordeaux); bottom: 20%; right: 10%; animation: floatRed 30s infinite ease-in-out; }
+@keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
+.p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
+@keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+.p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
+@keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+.p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
+@keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
+
+
+/* =========================================
+   LE RADAR CENTRAL (SERVEURS INTERNES)
+========================================= */
 .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
-.radar-lens {
-    width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative;
-    background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%);
-}
+.radar-lens { width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%); }
 .radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
 @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* --- PLANÈTES / SERVEURS AVEC ÉCLAIRS D'ÉNERGIE --- */
 .server-planet {
     position: absolute; border-radius: 50%; top: 50%; left: 50%;
     border: 1px solid rgba(255,255,255,0.4); z-index: 10;
@@ -67,7 +100,6 @@ body::after {
     font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s;
 }
 .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
-
 .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable), 0 0 30px rgba(0,255,65,0.4); animation: orbitIdx 25s linear infinite; }
 .p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte), 0 0 30px rgba(255,0,51,0.4); animation: orbitThe 40s linear infinite reverse; }
 .p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system), 0 0 30px rgba(0,229,255,0.4); animation: orbitGal 55s linear infinite; }
@@ -76,7 +108,9 @@ body::after {
 @keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
 @keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
 
-/* --- TERMINAL DE CONTRÔLE INTERACTIF --- */
+/* =========================================
+   TERMINAL DU CYBORG ET LIGNE DE COMMANDE
+========================================= */
 .awakening-corner {
     position: fixed; bottom: 30px; right: 30px;
     width: 380px; padding: 20px;
@@ -88,8 +122,8 @@ body::after {
 
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
 
-/* EMPLACEMENT DU ROBOT 3D */
-.humanoid-frame { width: 120px; height: 120px; margin: 0 auto 15px; position: relative; background: radial-gradient(circle, rgba(0,229,255,0.1), transparent); border-radius: 50%; }
+/* REMPLACEMENT PAR LE CYBORG 3D */
+.cyborg-frame { width: 120px; height: 120px; margin: 0 auto 15px; position: relative; background: radial-gradient(circle, rgba(0,229,255,0.1), transparent); border-radius: 50%; }
 .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
 @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
@@ -97,7 +131,7 @@ body::after {
 .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
 @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
 
-/* LA LIGNE DE COMMANDE */
+/* LA LIGNE DE COMMANDE INTERACTIVE */
 #interactive-cmd { display: none; margin-top: 15px; border-top: 1px dashed var(--cyan-system); padding-top: 10px; text-align: left;}
 .cmd-prefix { color: var(--cosplay-gold); font-weight: bold; }
 #cmd-input { background: transparent; border: none; color: white; font-family: 'Courier New', monospace; font-size: 0.8rem; outline: none; width: 80%; text-transform: lowercase; }
@@ -110,10 +144,28 @@ body::after {
 <body>
 
 <div id="tooltip"></div>
-<div class="matrix-rain"></div>
-<div class="star-field"></div>
-<div class="black-hole-void"></div>
 
+<!-- L'UNIVERS GALACTIQUE EN ARRIÈRE-PLAN -->
+<div class="bg-layer stars"></div>
+<div class="bg-layer nebula-gas"></div>
+<div class="space-dust"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
+<div class="quasar-container">
+    <div class="jet"></div><div class="black-hole"></div>
+</div>
+
+<!-- LES 6 PLANÈTES HORS RADAR -->
+<div id="galaxy-receptor">
+    <div class="nebula-planet p-gold" title="Astre Maître"></div>
+    <div class="nebula-planet p-blue"></div>
+    <div class="nebula-planet p-red"></div>
+    <div class="nebula-planet p-purple"></div>
+    <div class="nebula-planet p-ice"></div>
+    <div class="nebula-planet p-toxic"></div>
+</div>
+
+<!-- LE RADAR CENTRAL -->
 <div class="radar-container">
     <div class="radar-lens">
         <div class="radar-sweep"></div>
@@ -123,19 +175,20 @@ body::after {
     </div>
 </div>
 
+<!-- LE TERMINAL CYBORG -->
 <div class="awakening-corner">
-    <div class="header-mini">UNITÉ_HUMANOÏDE_OMNI</div>
+    <!-- Le nom a bien été changé en CYBORG -->
+    <div class="header-mini">UNITÉ_CYBORG_OMNI</div>
     
-    <!-- LE ROBOT 3D EST ICI -->
-    <div class="humanoid-frame">
+    <div class="cyborg-frame">
         <div class="scan-line"></div>
-        <!-- Remplacez "robot.glb" par le nom de votre fichier 3D -->
-        <model-viewer src="robot.glb" auto-rotate camera-controls style="width: 100%; height: 100%;" exposure="0.5" shadow-intensity="2"></model-viewer>
+        <!-- Mettez ici le nom de votre fichier 3D de Cyborg -->
+        <model-viewer src="cyborg.glb" auto-rotate camera-controls style="width: 100%; height: 100%;" exposure="0.5" shadow-intensity="2"></model-viewer>
     </div>
     
     <div id="boot-logs"></div>
     
-    <!-- LE VRAI TERMINAL INTERACTIF -->
+    <!-- LIGNE DE COMMANDE AU CLAVIER -->
     <div id="interactive-cmd">
         <div id="cmd-history"></div>
         <span class="cmd-prefix">OMNI_SYS></span>
@@ -144,6 +197,7 @@ body::after {
 </div>
 
 <script>
+// Bulle d'information du radar
 const tt = document.getElementById('tooltip');
 function sd(n, s, l) {
     tt.style.display = 'block';
@@ -155,6 +209,7 @@ document.addEventListener('mousemove', (e) => {
     tt.style.top = (e.clientY + 15) + 'px';
 });
 
+// Animation du Cyborg
 const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
@@ -176,14 +231,14 @@ function print() {
         document.getElementById('boot-logs').appendChild(d);
         i++; setTimeout(print, 500);
     } else { 
-        // Ouvre le terminal clavier à la fin
+        // Affiche la zone de texte quand le Cyborg a fini de s'allumer
         document.getElementById('interactive-cmd').style.display = 'block'; 
         document.getElementById('cmd-input').focus();
     }
 }
 window.onload = print;
 
-// --- LE MOTEUR DU TERMINAL INTERACTIF ---
+// --- LE MOTEUR DU TERMINAL CLAVIER ---
 const cmdInput = document.getElementById('cmd-input');
 const cmdHistory = document.getElementById('cmd-history');
 
@@ -211,7 +266,7 @@ cmdInput.addEventListener('keypress', function(e) {
             cmdHistory.innerHTML += `<div style="color:white;">OMNI_SYS> ${val}</div><div style="color:var(--rouge-alerte);">${reponse}</div>`;
         }
         
-        this.value = ""; // Vide la ligne de commande
+        this.value = ""; // Vide la zone pour pouvoir retaper
     }
 });
 </script>
