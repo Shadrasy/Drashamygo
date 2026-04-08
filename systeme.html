@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
+<title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 
 <script src="security.js"></script>
+<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
 <style>
 :root {
@@ -15,16 +17,10 @@
     --void-purple: #4b0082;
     --vert-stable: #00ff41;
     --rouge-alerte: #ff0033;
-    
-    /* Couleurs de la Galaxie */
     --nebula-blue: rgba(0, 50, 150, 0.2);
     --nebula-rose: rgba(255, 100, 200, 0.15);
     --pulsar-cyan: rgba(200, 230, 255, 0.8);
     --bordeaux: #660011;
-    
-    /* Nouvelles couleurs de la Cyborg */
-    --peau-cyborg: #ffdfc4;
-    --armure-cyborg: #14141f;
 }
 body {
     margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
@@ -40,17 +36,15 @@ body::after {
 }
 
 /* =========================================
-   LE NOUVEL UNIVERS GALACTIQUE MASSIF
+   L'UNIVERS GALACTIQUE MASSIF (ARRIÈRE-PLAN)
 ========================================= */
 .bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
-
 .nebula-gas {
     background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
                 radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
-
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
                       radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
@@ -58,7 +52,6 @@ body::after {
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
-
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
@@ -67,7 +60,7 @@ body::after {
 .black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
 .jet { position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6; }
 
-/* 5. LES 6 PLANÈTES HORS RADAR */
+/* LES 6 PLANÈTES HORS RADAR */
 .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); pointer-events: none; }
 .p-gold { width: 45px; height: 45px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%; animation: floatGold 25s infinite ease-in-out; }
 @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
@@ -92,21 +85,20 @@ body::after {
 
 .server-planet { position: absolute; border-radius: 50%; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.4); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s; }
 .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
-.p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable), 0 0 30px rgba(0,255,65,0.4); animation: orbitIdx 25s linear infinite; }
-.p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte), 0 0 30px rgba(255,0,51,0.4); animation: orbitThe 40s linear infinite reverse; }
-.p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system), 0 0 30px rgba(0,229,255,0.4); animation: orbitGal 55s linear infinite; }
-
+.p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
+.p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitThe 40s linear infinite reverse; }
+.p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system); animation: orbitGal 55s linear infinite; }
 @keyframes orbitIdx { from { transform: rotate(0deg) translateX(28vh) rotate(0deg); } to { transform: rotate(360deg) translateX(28vh) rotate(-360deg); } }
 @keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
 @keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
 
 /* =========================================
-   TERMINAL DU CYBORG ET LIGNE DE COMMANDE
+   PANNEAU DU LABORATOIRE GÉNÉTIQUE
 ========================================= */
 .awakening-corner {
     position: fixed; bottom: 30px; right: 30px;
-    width: 380px; padding: 20px;
-    background: rgba(0, 5, 15, 0.9);
+    width: 360px; padding: 20px;
+    background: rgba(0, 5, 15, 0.95);
     border: 1px solid var(--cyan-system);
     backdrop-filter: blur(10px);
     z-index: 1000; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
@@ -114,66 +106,25 @@ body::after {
 
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
 
-/* --- LE CYBORG DRAGONNET (AVEC DE LA PEAU ET UNE ARMURE) --- */
-.cyborg-full-frame { width: 100%; height: 180px; position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
-
-/* 1. La Tête (Peau, Cheveux, Cornes et Yeux) */
-.c-head { width: 24px; height: 28px; background: var(--peau-cyborg); border-radius: 40% 40% 50% 50%; position: relative; z-index: 5; box-shadow: inset -2px -2px 5px rgba(0,0,0,0.3); }
-.c-hair { position: absolute; top: -4px; left: -4px; width: 32px; height: 35px; background: var(--armure-cyborg); border-radius: 50% 50% 10px 10px; z-index: -1; border-top: 1px solid var(--cyan-system); }
-.c-horns { position: absolute; top: -10px; width: 100%; display: flex; justify-content: space-between; z-index: 2; }
-.c-horn { width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 12px solid var(--cyan-system); }
-.c-horn.left { transform: rotate(-30deg) translateX(3px); }
-.c-horn.right { transform: rotate(30deg) translateX(-3px); }
-.c-eyes { position: absolute; top: 12px; width: 100%; display: flex; justify-content: center; gap: 5px; }
-.c-eye { width: 4px; height: 2px; background: #222; border-radius: 50%; } /* Œil humain */
-.c-eye.cyborg { background: var(--cyan-system); box-shadow: 0 0 6px var(--cyan-system); width: 4px; height: 4px; border-radius: 50%; transform: translateY(-1px); animation: blink 4s infinite; } /* Œil bionique */
-
-/* 2. Le Cou */
-.c-neck { width: 8px; height: 6px; background: var(--peau-cyborg); margin: 0 auto; z-index: 4; position: relative; box-shadow: inset 0 2px 3px rgba(0,0,0,0.5); }
-
-/* 3. Le Corps (Peau, Armure, Cœur, Ailes et Queue) */
-.c-body-group { display: flex; gap: 5px; position: relative; justify-content: center; z-index: 3; margin-bottom: 0; }
-.c-torso { width: 28px; height: 42px; background: var(--armure-cyborg); border-radius: 8px 8px 15px 15px; position: relative; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); border: 1px solid #333; z-index: 3; display:flex; flex-direction:column; align-items:center; }
-.c-skin-chest { width: 12px; height: 8px; background: var(--peau-cyborg); border-radius: 0 0 10px 10px; box-shadow: inset 0 -2px 3px rgba(0,0,0,0.2); }
-.c-core { margin-top: 5px; width: 10px; height: 10px; background: var(--cyan-system); border-radius: 50%; box-shadow: 0 0 10px var(--cyan-system); animation: pulseCore 1.5s infinite; }
-
-/* 4. Les Bras (Haut en peau, gants cybernétiques) */
-.c-arm { width: 7px; height: 38px; background: var(--peau-cyborg); border-radius: 3px; position: relative; z-index: 4; }
-.c-glove { position: absolute; bottom: 0; left: 0; width: 100%; height: 22px; background: var(--armure-cyborg); border-radius: 3px; border-top: 1px solid var(--cyan-system); }
-
-/* 5. Ailes et Queue (Attributs de dragon) */
-.c-wings { position: absolute; top: 5px; left: -30px; right: -30px; display: flex; justify-content: space-between; z-index: 1; }
-.c-wing { width: 28px; height: 35px; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--cyan-system); border-radius: 0 20px 20px 20px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
-.c-wing.left { transform: rotate(-20deg); border-right: none; }
-.c-wing.right { transform: rotate(20deg) scaleX(-1); border-right: none; }
-.c-tail { position: absolute; bottom: -30px; left: 50%; margin-left: -3px; width: 6px; height: 35px; background: var(--armure-cyborg); border: 1px solid var(--cyan-system); border-top: none; border-radius: 0 0 5px 5px; transform-origin: top; animation: wag 4s infinite ease-in-out; z-index: 1; }
-
-/* 6. Les Jambes (Cuisses en peau, Bottes cybernétiques) */
-.c-legs { display: flex; gap: 6px; justify-content: center; margin-top: -2px; z-index: 2; position: relative; }
-.c-leg { width: 9px; height: 45px; background: var(--peau-cyborg); border-radius: 3px; position: relative; z-index: 2; }
-.c-boot { position: absolute; bottom: 0; left: 0; width: 100%; height: 30px; background: var(--armure-cyborg); border-radius: 3px; border-top: 1.5px solid var(--cyan-system); }
-
-/* Le rayon de scan global */
-.scan-line { position: absolute; width: 150px; height: 2px; background: var(--cyan-system); box-shadow: 0 0 15px var(--cyan-system); animation: scanBody 2.5s infinite linear; z-index: 10; pointer-events: none; left: 50%; transform: translateX(-50%); }
-
-@keyframes wag { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } }
-@keyframes scanBody { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
-@keyframes pulseCore { 0%, 100% { box-shadow: 0 0 5px var(--cyan-system); background: var(--cyan-system); } 50% { box-shadow: 0 0 15px var(--cyan-system); background: rgba(0, 229, 255, 0.4); } }
-@keyframes blink { 0%, 96%, 100% { opacity: 1; } 98% { opacity: 0; } }
-
-/* -------------------------------------------------------- */
+/* --- CADRE DU MODÈLE 3D --- */
+#viewport { width: 100%; height: 220px; position: relative; background: radial-gradient(circle, rgba(0,229,255,0.1), transparent); border-radius: 10px; border: 1px solid rgba(0, 229, 255, 0.2); margin-bottom: 15px; overflow: hidden; }
+.scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
+@keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
 #boot-logs { font-size: 0.7rem; line-height: 1.5; height: 130px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
 .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
 @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
 
-/* LA LIGNE DE COMMANDE INTERACTIVE */
-#interactive-cmd { display: none; margin-top: 10px; border-top: 1px dashed var(--cyan-system); padding-top: 10px; text-align: left;}
-.cmd-prefix { color: var(--cosplay-gold); font-weight: bold; }
-#cmd-input { background: transparent; border: none; color: white; font-family: 'Courier New', monospace; font-size: 0.8rem; outline: none; width: 80%; text-transform: lowercase; }
-#cmd-history { font-size: 0.7rem; color: #888; margin-bottom: 5px; }
+/* --- STYLE DES CURSEURS GÉNÉTIQUES --- */
+.control-group { margin-bottom: 15px; }
+.control-group label { display: block; font-size: 9px; color: #fff; margin-bottom: 5px; }
+input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; background: var(--cyan-system); border-radius: 50%; box-shadow: 0 0 8px var(--cyan-system); cursor: pointer; margin-top: -5px; }
+input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; background: var(--rouge-alerte); border-radius: 2px; }
 
-/* TOOLTIP PARAMÈTRES */
+.btn-gen { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--rouge-alerte); background: rgba(255,0,51,0.1); color: var(--rouge-alerte); font-family: inherit; font-size: 0.75rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+.btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
+
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 2000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
 </style>
 </head>
@@ -181,7 +132,7 @@ body::after {
 
 <div id="tooltip"></div>
 
-<!-- L'UNIVERS GALACTIQUE EN ARRIÈRE-PLAN -->
+<!-- L'UNIVERS GALACTIQUE -->
 <div class="bg-layer stars"></div>
 <div class="bg-layer nebula-gas"></div>
 <div class="space-dust"></div>
@@ -191,7 +142,6 @@ body::after {
     <div class="jet"></div><div class="black-hole"></div>
 </div>
 
-<!-- LES 6 PLANÈTES HORS RADAR -->
 <div id="galaxy-receptor">
     <div class="nebula-planet p-gold" title="Astre Maître"></div>
     <div class="nebula-planet p-blue"></div>
@@ -201,7 +151,6 @@ body::after {
     <div class="nebula-planet p-toxic"></div>
 </div>
 
-<!-- LE RADAR CENTRAL -->
 <div class="radar-container">
     <div class="radar-lens">
         <div class="radar-sweep"></div>
@@ -211,92 +160,72 @@ body::after {
     </div>
 </div>
 
-<!-- LE TERMINAL CYBORG -->
+<!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">UNITÉ_DRAGONNET_CYBORG</div>
+    <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
     
-    <!-- LE CYBORG DRAGONNET (Avec Peau, Armure, et Éléments mécaniques) -->
-    <div class="cyborg-full-frame">
+    <!-- L'AFFICHAGE DU MODÈLE 3D -->
+    <div id="viewport">
         <div class="scan-line"></div>
-        
-        <div class="c-head">
-            <div class="c-hair"></div>
-            <div class="c-horns">
-                <div class="c-horn left"></div>
-                <div class="c-horn right"></div>
-            </div>
-            <div class="c-eyes">
-                <div class="c-eye left"></div> <!-- Œil Humain -->
-                <div class="c-eye right cyborg"></div> <!-- Œil Bionique -->
-            </div>
-        </div>
-        
-        <div class="c-neck"></div>
-        
-        <div class="c-body-group">
-            <div class="c-wings">
-                <div class="c-wing left"></div>
-                <div class="c-wing right"></div>
-            </div>
-            <div class="c-tail"></div>
-            
-            <div class="c-arm">
-                <div class="c-glove"></div>
-            </div>
-            
-            <div class="c-torso">
-                <div class="c-skin-chest"></div>
-                <div class="c-core"></div>
-            </div>
-            
-            <div class="c-arm">
-                <div class="c-glove"></div>
-            </div>
-        </div>
-        
-        <div class="c-legs">
-            <div class="c-leg">
-                <div class="c-boot"></div>
-            </div>
-            <div class="c-leg">
-                <div class="c-boot"></div>
-            </div>
-        </div>
+        <model-viewer id="dragonnier-view" 
+            src="images/humain_base.glb" 
+            camera-controls 
+            exposure="1" 
+            shadow-intensity="2"
+            environment-image="neutral"
+            style="width: 100%; height: 100%;">
+        </model-viewer>
     </div>
     
+    <!-- LES LOGS DE DÉMARRAGE -->
     <div id="boot-logs"></div>
     
-    <!-- LIGNE DE COMMANDE AU CLAVIER -->
-    <div id="interactive-cmd">
-        <div id="cmd-history"></div>
-        <span class="cmd-prefix">OMNI_SYS></span>
-        <input type="text" id="cmd-input" autofocus autocomplete="off" spellcheck="false" placeholder="Taper commande...">
+    <!-- LE PANNEAU DE CONTRÔLE (CACHÉ PENDANT LE DÉMARRAGE) -->
+    <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
+        
+        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
+
+        <div class="control-group">
+            <label>PIGMENTATION DE LA PEAU (0 à 200)</label>
+            <input type="range" id="skin-color" min="0" max="200" value="0" oninput="updateGenetics()">
+        </div>
+
+        <div class="control-group">
+            <label>DENSITÉ DES ÉCAILLES (DRACONIQUE)</label>
+            <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
+        </div>
+
+        <div class="control-group">
+            <label>LUSTRAGE MÉTALLIQUE (REFLETS)</label>
+            <input type="range" id="metallic" min="0" max="100" value="20" oninput="updateGenetics()">
+        </div>
+
+        <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
+            > STABILITÉ GÉNÉTIQUE : 98.4% <br>
+            > TYPE : HUMANOÏDE HYBRIDE <br>
+            > ORIGINE : SECTEUR_SHADRASY
+        </div>
+
+        <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
     </div>
+
 </div>
 
 <script>
-// Bulle d'information du radar
+// --- BULLE DU RADAR ---
 const tt = document.getElementById('tooltip');
-function sd(n, s, l) {
-    tt.style.display = 'block';
-    tt.innerHTML = `<strong>UNITÉ : ${n}</strong><br>ÉTAT : ${s}<br>VERSION : ${l}<br>COORD : SCANNING...`;
-}
+function sd(n, s, l) { tt.style.display = 'block'; tt.innerHTML = `<strong>UNITÉ : ${n}</strong><br>ÉTAT : ${s}<br>VERSION : ${l}<br>COORD : SCANNING...`; }
 function hd() { tt.style.display = 'none'; }
-document.addEventListener('mousemove', (e) => {
-    tt.style.left = (e.clientX + 15) + 'px';
-    tt.style.top = (e.clientY + 15) + 'px';
-});
+document.addEventListener('mousemove', (e) => { tt.style.left = (e.clientX + 15) + 'px'; tt.style.top = (e.clientY + 15) + 'px'; });
 
-// Animation d'initialisation du Cyborg
+// --- ANIMATION DE DÉMARRAGE ---
 const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
-    "INIT_SYSTÈMES_LOCOMOTEURS... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "DÉTECTION_INDEX_STABLE... [YES]",
+    "EXTRACTION_ADN_DRAGONNIER... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
-    "CONSCIENCE_EN_LIGNE.",
-    "> EN ATTENTE D'INSTRUCTION MANUELLE..."
+    "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
 
 let i = 0;
@@ -307,44 +236,62 @@ function print() {
         document.getElementById('boot-logs').appendChild(d);
         i++; setTimeout(print, 500);
     } else { 
-        // Affiche la zone de texte quand le Cyborg a fini de s'allumer
-        document.getElementById('interactive-cmd').style.display = 'block'; 
-        document.getElementById('cmd-input').focus();
+        // Cache les logs et affiche les curseurs génétiques
+        document.getElementById('boot-logs').style.display = 'none';
+        document.getElementById('genetics-panel').style.display = 'block'; 
     }
 }
 window.onload = print;
 
-// --- LE MOTEUR DU TERMINAL CLAVIER ---
-const cmdInput = document.getElementById('cmd-input');
-const cmdHistory = document.getElementById('cmd-history');
+// --- LE MOTEUR DE MUTATION GÉNÉTIQUE ---
+const model = document.querySelector('#dragonnier-view');
 
-cmdInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        const val = this.value.trim().toLowerCase();
-        let reponse = "";
-
-        if (val === "menu" || val === "entrer" || val === "retour" || val === "index") {
-            reponse = "> REDIRECTION VERS LE MENU PRINCIPAL...";
-            cmdHistory.innerHTML += `<div style="color:white;">OMNI_SYS> ${val}</div><div style="color:var(--vert-stable);">${reponse}</div>`;
-            setTimeout(() => { window.location.href = "index.html"; }, 800);
-            
-        } else if (val === "help" || val === "aide") {
-            reponse = "> COMMANDES DISPONIBLES : menu, retour, hinaru";
-            
-        } else if (val === "hinaru" || val === "architecte") {
-            reponse = "> ACCÈS RECONNU. BIENVENUE CRÉATEUR SUPRÊME.";
-            
-        } else if (val !== "") {
-            reponse = "> ERREUR : COMMANDE INCONNUE. Taper 'help'.";
-        }
-
-        if(reponse) {
-            cmdHistory.innerHTML += `<div style="color:white;">OMNI_SYS> ${val}</div><div style="color:var(--rouge-alerte);">${reponse}</div>`;
-        }
-        
-        this.value = ""; // Vide la zone pour pouvoir retaper
-    }
+// Applique les valeurs au chargement de l'objet 3D
+model.addEventListener('load', () => {
+    updateGenetics();
 });
+
+function updateGenetics() {
+    const skinVal = document.getElementById('skin-color').value;
+    const scaleVal = document.getElementById('scale-density').value;
+    const metalVal = document.getElementById('metallic').value;
+
+    // On accède aux matériaux du modèle 3D
+    if (!model.model) return;
+    
+    // Modification de la texture de base (le premier matériau)
+    const material = model.model.materials; 
+
+    // 1. On change la couleur de peau
+    const r = 1 - (skinVal / 200);
+    const g = 0.8 - (skinVal / 200);
+    const b = 0.6 - (skinVal / 200);
+    
+    // Vérifier que le material existe avant d'appliquer
+    if (material && material.pbrMetallicRoughness) {
+        material.pbrMetallicRoughness.setBaseColorFactor([r, g, b, 1]);
+        material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
+        material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
+    }
+}
+
+// --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE ---
+function saveGenetics() {
+    // On récupère les valeurs
+    const skinVal = document.getElementById('skin-color').value;
+    const scaleVal = document.getElementById('scale-density').value;
+    const metalVal = document.getElementById('metallic').value;
+
+    // On sauvegarde dans le noyau mémoire OMNI (localStorage)
+    localStorage.setItem('OMNI_ADN_SKIN', skinVal);
+    localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
+    localStorage.setItem('OMNI_ADN_METAL', metalVal);
+
+    alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
+    
+    // Téléportation vers l'accueil après la sauvegarde
+    setTimeout(() => { window.location.href = "index.html"; }, 500);
+}
 </script>
 </body>
 </html>
