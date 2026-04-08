@@ -1,167 +1,219 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
-    
-    <script src="security.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNI SYSTEM - Éveil & Scan (V100.9.17)</title>
 
-    <style>
-        :root { 
-            --noir-fond: #000105; 
-            --cyan-system: #00e5ff;
-            --cosplay-gold: #ffcc00;
-            --void-purple: #4b0082;
-            --vert-stable: #00ff41;
-            --rouge-alerte: #ff0033;
-        }
+<!-- Script pour la 3D -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+<script src="security.js"></script>
 
-        body {
-            margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
-            font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
-        }
+<style>
+:root {
+    --noir-fond: #000105;
+    --cyan-system: #00e5ff;
+    --cosplay-gold: #ffcc00;
+    --void-purple: #4b0082;
+    --vert-stable: #00ff41;
+    --rouge-alerte: #ff0033;
+}
+body {
+    margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
+    font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
+}
 
-        /* --- EFFET VHS (INDISPENSABLE) --- */
-        body::after {
-            content: " "; display: block; position: fixed; inset: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
-        }
+/* --- EFFET VHS --- */
+body::after {
+    content: " "; display: block; position: fixed; inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+    z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
+}
 
-        /* --- DÉCOR SPATIAL COMPLET --- */
-        .star-field { position: fixed; inset: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; opacity: 0.4; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* --- PLUIE DE DONNÉES (MATRICE) --- */
+.matrix-rain {
+    position: fixed; inset: 0; z-index: -20; opacity: 0.15;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 10px, var(--cyan-system) 10px, var(--cyan-system) 20px);
+    background-size: 2px 100%; animation: rainFall 20s linear infinite;
+}
+@keyframes rainFall { from { background-position: 0 0; } to { background-position: 0 1000px; } }
 
-        .black-hole-void {
-            position: fixed; width: 100px; height: 100px; background: black; border-radius: 50%; z-index: -5; top: 30%; left: 20%;
-            box-shadow: 0 0 40px var(--void-purple), inset 0 0 20px var(--void-purple); border: 1px dashed var(--void-purple);
-            animation: void-drift 20s infinite alternate ease-in-out;
-        }
-        @keyframes void-drift { from { transform: translate(0,0) scale(1); } to { transform: translate(5vw, 5vh) scale(1.1); } }
+/* --- DÉCOR SPATIAL COMPLET --- */
+.star-field { position: fixed; inset: -50%; z-index: -15; background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent); background-size: 300px 300px; animation: spin 400s linear infinite; opacity: 0.4; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* --- RADAR CENTRAL XL --- */
-        .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
-        .radar-lens { 
-            width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative;
-            background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%);
-        }
-        .radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
-        @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.black-hole-void {
+    position: fixed; width: 100px; height: 100px; background: black; border-radius: 50%; z-index: -5; top: 30%; left: 20%;
+    box-shadow: 0 0 40px var(--void-purple), inset 0 0 20px var(--void-purple); border: 1px dashed var(--void-purple);
+    animation: void-drift 20s infinite alternate ease-in-out;
+}
+@keyframes void-drift { from { transform: translate(0,0) scale(1); } to { transform: translate(5vw, 5vh) scale(1.1); } }
 
-        /* --- PLANÈTES / SERVEURS --- */
-        .server-planet {
-            position: absolute; border-radius: 50%; top: 50%; left: 50%;
-            border: 1px solid rgba(255,255,255,0.4); z-index: 10;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s;
-        }
-        .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
+/* --- RADAR CENTRAL XL --- */
+.radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
+.radar-lens {
+    width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative;
+    background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%);
+}
+.radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
+@keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
-        .p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitThe 40s linear infinite reverse; }
-        .p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system); animation: orbitGal 55s linear infinite; }
+/* --- PLANÈTES / SERVEURS AVEC ÉCLAIRS D'ÉNERGIE --- */
+.server-planet {
+    position: absolute; border-radius: 50%; top: 50%; left: 50%;
+    border: 1px solid rgba(255,255,255,0.4); z-index: 10;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s;
+}
+.server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
 
-        @keyframes orbitIdx { from { transform: rotate(0deg) translateX(28vh) rotate(0deg); } to { transform: rotate(360deg) translateX(28vh) rotate(-360deg); } }
-        @keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
-        @keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
+.p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable), 0 0 30px rgba(0,255,65,0.4); animation: orbitIdx 25s linear infinite; }
+.p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte), 0 0 30px rgba(255,0,51,0.4); animation: orbitThe 40s linear infinite reverse; }
+.p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system), 0 0 30px rgba(0,229,255,0.4); animation: orbitGal 55s linear infinite; }
 
-        /* --- TERMINAL DE CONTRÔLE (BAS DROITE - STYLE CADRE OMNI) --- */
-        .awakening-corner {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 320px; padding: 20px;
-            background: rgba(0, 5, 15, 0.9);
-            border: 1px solid var(--cyan-system);
-            backdrop-filter: blur(10px);
-            z-index: 1000; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
-        }
+@keyframes orbitIdx { from { transform: rotate(0deg) translateX(28vh) rotate(0deg); } to { transform: rotate(360deg) translateX(28vh) rotate(-360deg); } }
+@keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
+@keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
 
-        .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
+/* --- TERMINAL DE CONTRÔLE INTERACTIF --- */
+.awakening-corner {
+    position: fixed; bottom: 30px; right: 30px;
+    width: 380px; padding: 20px;
+    background: rgba(0, 5, 15, 0.9);
+    border: 1px solid var(--cyan-system);
+    backdrop-filter: blur(10px);
+    z-index: 1000; box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+}
 
-        .humanoid-frame { width: 80px; height: 100px; margin: 0 auto 15px; position: relative; }
-        .h-head { width: 30px; height: 40px; border: 1.5px solid var(--cyan-system); border-radius: 45% 45% 50% 50%; margin: 0 auto; position: relative; }
-        .h-head::after { content:''; position: absolute; top:15px; left:6px; width:18px; height:2px; background: var(--cyan-system); box-shadow: 0 0 5px var(--cyan-system); }
-        .h-shoulders { width: 70px; height: 30px; border: 1.5px solid var(--cyan-system); border-top: none; border-radius: 0 0 35px 35px; margin: -2px auto 0; }
-        .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; }
-        @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+.header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
 
-        #boot-logs { font-size: 0.7rem; line-height: 1.5; height: 160px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
-        .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
-        @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
+/* EMPLACEMENT DU ROBOT 3D */
+.humanoid-frame { width: 120px; height: 120px; margin: 0 auto 15px; position: relative; background: radial-gradient(circle, rgba(0,229,255,0.1), transparent); border-radius: 50%; }
+.scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
+@keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
-        #final-prompt { display: none; color: var(--cosplay-gold); text-align: center; margin-top: 15px; font-weight: bold; }
-        .btn-acc { display: inline-block; margin-top: 10px; padding: 8px 20px; border: 1px solid var(--cyan-system); color: var(--cyan-system); text-decoration: none; font-size: 0.75rem; transition: 0.3s; }
-        .btn-acc:hover { background: var(--cyan-system); color: #000; box-shadow: 0 0 15px var(--cyan-system); }
+#boot-logs { font-size: 0.7rem; line-height: 1.5; height: 160px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; }
+.log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
+@keyframes logIn { to { opacity: 1; transform: translateX(0); } }
 
-        /* TOOLTIP PARAMÈTRES */
-        #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 2000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
-    </style>
+/* LA LIGNE DE COMMANDE */
+#interactive-cmd { display: none; margin-top: 15px; border-top: 1px dashed var(--cyan-system); padding-top: 10px; text-align: left;}
+.cmd-prefix { color: var(--cosplay-gold); font-weight: bold; }
+#cmd-input { background: transparent; border: none; color: white; font-family: 'Courier New', monospace; font-size: 0.8rem; outline: none; width: 80%; text-transform: lowercase; }
+#cmd-history { font-size: 0.7rem; color: #888; margin-bottom: 5px; }
+
+/* TOOLTIP PARAMÈTRES */
+#tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 2000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
+</style>
 </head>
 <body>
 
-    <div id="tooltip"></div>
-    <div class="star-field"></div>
-    <div class="black-hole-void"></div>
+<div id="tooltip"></div>
+<div class="matrix-rain"></div>
+<div class="star-field"></div>
+<div class="black-hole-void"></div>
 
-    <div class="radar-container">
-        <div class="radar-lens">
-            <div class="radar-sweep"></div>
-            <div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
-            <div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
-            <div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
-        </div>
+<div class="radar-container">
+    <div class="radar-lens">
+        <div class="radar-sweep"></div>
+        <div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
+        <div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
+        <div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
     </div>
+</div>
 
-    <div class="awakening-corner">
-        <div class="header-mini">UNITÉ_HUMANOÏDE_OMNI</div>
-        <div class="humanoid-frame">
-            <div class="scan-line"></div>
-            <div class="h-head"></div>
-            <div class="h-shoulders"></div>
-        </div>
-        <div id="boot-logs"></div>
-        <div id="final-prompt">
-            >> ÉVEIL RÉUSSI.<br>
-            [ LIEN NEURAL VALIDÉ ]<br>
-            <a href="index.html" class="btn-acc">OUVRIR TERMINAL</a>
-        </div>
+<div class="awakening-corner">
+    <div class="header-mini">UNITÉ_HUMANOÏDE_OMNI</div>
+    
+    <!-- LE ROBOT 3D EST ICI -->
+    <div class="humanoid-frame">
+        <div class="scan-line"></div>
+        <!-- Remplacez "robot.glb" par le nom de votre fichier 3D -->
+        <model-viewer src="robot.glb" auto-rotate camera-controls style="width: 100%; height: 100%;" exposure="0.5" shadow-intensity="2"></model-viewer>
     </div>
+    
+    <div id="boot-logs"></div>
+    
+    <!-- LE VRAI TERMINAL INTERACTIF -->
+    <div id="interactive-cmd">
+        <div id="cmd-history"></div>
+        <span class="cmd-prefix">OMNI_SYS></span>
+        <input type="text" id="cmd-input" autofocus autocomplete="off" spellcheck="false" placeholder="Taper commande...">
+    </div>
+</div>
 
-    <script>
-        const tt = document.getElementById('tooltip');
-        function sd(n, s, l) { 
-            tt.style.display = 'block'; 
-            tt.innerHTML = `<strong>UNITÉ : ${n}</strong><br>ÉTAT : ${s}<br>VERSION : ${l}<br>COORD : SCANNING...`; 
+<script>
+const tt = document.getElementById('tooltip');
+function sd(n, s, l) {
+    tt.style.display = 'block';
+    tt.innerHTML = `<strong>UNITÉ : ${n}</strong><br>ÉTAT : ${s}<br>VERSION : ${l}<br>COORD : SCANNING...`;
+}
+function hd() { tt.style.display = 'none'; }
+document.addEventListener('mousemove', (e) => {
+    tt.style.left = (e.clientX + 15) + 'px';
+    tt.style.top = (e.clientY + 15) + 'px';
+});
+
+const logs = [
+    "BOOTING_CORE_V2031...",
+    "VÉRIFICATION_MÉCANIQUE... [OK]",
+    "INIT_SYSTÈMES_LOCOMOTEURS... [OK]",
+    "SCAN_ENVIRONNEMENT... [ACTIF]",
+    "DÉTECTION_INDEX_STABLE... [YES]",
+    "DÉTECTION_THEORIES_SYNC... [YES]",
+    "DÉTECTION_GALERIE_ACTIVE... [YES]",
+    "SIGNATURE_HINARU... [VALIDÉE]",
+    "CONSCIENCE_EN_LIGNE.",
+    "> EN ATTENTE D'INSTRUCTION MANUELLE..."
+];
+
+let i = 0;
+function print() {
+    if (i < logs.length) {
+        const d = document.createElement('div');
+        d.className = 'log-entry'; d.innerHTML = `>> ${logs[i]}`;
+        document.getElementById('boot-logs').appendChild(d);
+        i++; setTimeout(print, 500);
+    } else { 
+        // Ouvre le terminal clavier à la fin
+        document.getElementById('interactive-cmd').style.display = 'block'; 
+        document.getElementById('cmd-input').focus();
+    }
+}
+window.onload = print;
+
+// --- LE MOTEUR DU TERMINAL INTERACTIF ---
+const cmdInput = document.getElementById('cmd-input');
+const cmdHistory = document.getElementById('cmd-history');
+
+cmdInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        const val = this.value.trim().toLowerCase();
+        let reponse = "";
+
+        if (val === "menu" || val === "entrer" || val === "retour" || val === "index") {
+            reponse = "> REDIRECTION VERS LE MENU PRINCIPAL...";
+            cmdHistory.innerHTML += `<div style="color:white;">OMNI_SYS> ${val}</div><div style="color:var(--vert-stable);">${reponse}</div>`;
+            setTimeout(() => { window.location.href = "index.html"; }, 800);
+            
+        } else if (val === "help" || val === "aide") {
+            reponse = "> COMMANDES DISPONIBLES : menu, retour, hinaru";
+            
+        } else if (val === "hinaru" || val === "architecte") {
+            reponse = "> ACCÈS RECONNU. BIENVENUE CRÉATEUR SUPRÊME.";
+            
+        } else if (val !== "") {
+            reponse = "> ERREUR : COMMANDE INCONNUE. Taper 'help'.";
         }
-        function hd() { tt.style.display = 'none'; }
-        document.addEventListener('mousemove', (e) => { 
-            tt.style.left = (e.clientX + 15) + 'px'; 
-            tt.style.top = (e.clientY + 15) + 'px'; 
-        });
 
-        const logs = [
-            "BOOTING_CORE_V2031...",
-            "VÉRIFICATION_MÉCANIQUE... [OK]",
-            "INIT_SYSTÈMES_LOCOMOTEURS... [OK]",
-            "SCAN_ENVIRONNEMENT... [ACTIF]",
-            "DÉTECTION_INDEX_STABLE... [YES]",
-            "DÉTECTION_THEORIES_SYNC... [YES]",
-            "DÉTECTION_GALERIE_ACTIVE... [YES]",
-            "SIGNATURE_HINARU... [VALIDÉE]",
-            "CONSCIENCE_EN_LIGNE."
-        ];
-
-        let i = 0;
-        function print() {
-            if (i < logs.length) {
-                const d = document.createElement('div');
-                d.className = 'log-entry'; d.innerHTML = `>> ${logs[i]}`;
-                document.getElementById('boot-logs').appendChild(d);
-                i++; setTimeout(print, 500);
-            } else { document.getElementById('final-prompt').style.display = 'block'; }
+        if(reponse) {
+            cmdHistory.innerHTML += `<div style="color:white;">OMNI_SYS> ${val}</div><div style="color:var(--rouge-alerte);">${reponse}</div>`;
         }
-        window.onload = print;
-    </script>
+        
+        this.value = ""; // Vide la ligne de commande
+    }
+});
+</script>
 </body>
 </html>
