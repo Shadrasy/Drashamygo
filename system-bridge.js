@@ -1,7 +1,8 @@
 /**
 * SYSTEM_BRIDGE_V2026 - SECURED LINK (Optimized for TOME 2)
-* Gère la connexion, l'intégrité, la publication AUTOMATISÉE sur 5 ans, le Chat Secret (Firebase) et le PASS VIP.
+* Gère la connexion, l'intégrité, la publication AUTOMATISÉE, le PASS VIP et le Chat Secret 1-VS-1 (Firebase).
 */
+
 // --- CONFIGURATION DU PONT ---
 const BRIDGE_CONFIG = {
     backup_server: "https://raw.githubusercontent.com/TON_NOM/TON_DEPOT/main/",
@@ -13,7 +14,7 @@ const BRIDGE_CONFIG = {
 // --- CONFIGURATION ET ÉTAT DU SYSTÈME ---
 const urlParams = new URLSearchParams(window.location.search);
 
-// --- NOUVEAU : GESTION DES PASS VIP (DONNER ET RETIRER) ---
+// --- GESTION DES PASS VIP (DONNER ET RETIRER) ---
 if (urlParams.get('access') === 'VIP_PASS') {
     localStorage.setItem('NEBULA_VIP', 'true');
     alert("SYSTÈME OMNI : ACCÈS VIP AUTORISÉ.\nCe terminal a désormais accès aux archives privées en lecture seule.");
@@ -208,17 +209,18 @@ function setupGalaxyTrigger() {
     }
 }
 
-// --- MODULE DE CHAT PRIVÉ (TEMPS RÉEL AVEC SATELLITE FIREBASE) ---
+// --- MODULE DE CHAT PRIVÉ (LIGNES DIRECTES 1-CONTRE-1) ---
 function unlockSecretChat() {
     if (document.getElementById('secret-terminal')) {
         document.getElementById('secret-terminal').style.display = 'flex';
         return;
     }
     
+    // 1. IDENTIFICATION DE L'UTILISATEUR
     let userID = localStorage.getItem('NEBULA_USER_ID');
     
     if (!userID || userID.startsWith('USER-')) {
-        let pseudoChoisi = prompt("SYSTÈME OMNI :\\nEntrez votre Pseudo pour rejoindre le canal privé de Maître Hinaru :");
+        let pseudoChoisi = prompt("SYSTÈME OMNI :\\nEntrez votre Pseudo de connexion :");
         if (!pseudoChoisi || pseudoChoisi.trim() === "") {
             userID = 'ANONYME-' + Math.floor(Math.random() * 1000);
         } else {
@@ -226,7 +228,20 @@ function unlockSecretChat() {
         }
         localStorage.setItem('NEBULA_USER_ID', userID);
     }
+
+    // 2. DÉFINITION DU CANAL CIBLE (LE SALON PRIVÉ)
+    let targetChannel = userID; // Par défaut, un invité parle dans son propre dossier
+
+    if (STATE.isMaster || userID === "HINARU") {
+        let canalChoisi = prompt("OMNI_COMMANDER DÉTECTÉ.\\nAvec quel terminal voulez-vous communiquer ? (Ex: EMMA, JORDAN)\\nLaissez vide pour rejoindre le canal global.");
+        if (canalChoisi && canalChoisi.trim() !== "") {
+            targetChannel = canalChoisi.trim().toUpperCase();
+        } else {
+            targetChannel = "GLOBAL_ROOM";
+        }
+    }
     
+    // 3. CRÉATION DE L'INTERFACE DU TERMINAL
     const chatUI = document.createElement('div');
     chatUI.id = "secret-terminal";
     chatUI.innerHTML = `
@@ -239,13 +254,16 @@ function unlockSecretChat() {
         
         <div style="color:var(--rouge-vif, #ff0033); font-size:14px; border-bottom:1px solid var(--bordeaux);
         padding-bottom:10px; margin-bottom:10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold;">
-            <span>[ CANAL PRIVÉ : ${userID} ]</span>
-            <span style="cursor:pointer; color:var(--bordeaux); font-size:20px; padding: 0 5px;"
-            onclick="document.getElementById('secret-terminal').style.display='none'">[X]</span>
+            <span>[ LIGNE : ${targetChannel} ]</span>
+            <div>
+                <button id="btn-change-user" style="background:transparent; color:#4da6ff; border:1px solid #4da6ff; font-size:9px; cursor:pointer; margin-right:10px; padding:3px 5px; transition:0.3s;">CHANGER ID</button>
+                <span style="cursor:pointer; color:var(--bordeaux); font-size:20px; padding: 0 5px;"
+                onclick="document.getElementById('secret-terminal').style.display='none'">[X]</span>
+            </div>
         </div>
         
         <div id="chat-messages" style="flex-grow:1; overflow-y:auto; font-size:13px; color:#d4d4dc; margin-bottom:5px; line-height: 1.5; padding-right: 5px;">
-            <p style="color: #ff3366; font-style: italic;">> Connexion au satellite relais en cours...</p>
+            <p style="color: #ff3366; font-style: italic;">> Connexion à la ligne privée en cours...</p>
         </div>
         
         <div id="typing-indicator" style="font-size:10px; color:#ffcc00; font-style:italic; min-height:15px; margin-bottom:5px; opacity:0; transition:0.3s;">
@@ -264,14 +282,22 @@ function unlockSecretChat() {
         }
         #chat-messages::-webkit-scrollbar { width: 4px; }
         #chat-messages::-webkit-scrollbar-thumb { background: var(--bordeaux); border-radius: 4px; }
+        #btn-change-user:hover { background: #4da6ff; color: #000 !important; }
     </style>
     `;
     document.body.appendChild(chatUI);
 
-    // =====================================================================
-    // CONNEXION AU SERVEUR MONDIAL (FIREBASE)
-    // =====================================================================
+    // 4. BOUTON POUR CHANGER DE TÉLÉPHONE / D'UTILISATEUR
+    document.getElementById('btn-change-user').addEventListener('click', () => {
+        localStorage.removeItem('NEBULA_USER_ID');
+        document.getElementById('secret-terminal').remove();
+        alert("SYSTÈME : Identité effacée de ce terminal.");
+        unlockSecretChat(); // Rouvre et redemande un pseudo
+    });
 
+    // =====================================================================
+    // CONNEXION AU CANAL INDIVIDUEL (FIREBASE)
+    // =====================================================================
     if (typeof firebase === 'undefined') {
         const script1 = document.createElement('script');
         script1.src = "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
@@ -287,7 +313,7 @@ function unlockSecretChat() {
     }
 
     function initFirebaseChat() {
-        // 🛑 REMPLACEZ CECI PAR LA CLÉ DE VOTRE PROJET FIREBASE !
+        // 🛑 REPLACEZ CECI PAR VOS VRAIES CLÉS FIREBASE !
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_PROJET.firebaseapp.com",
@@ -303,16 +329,17 @@ function unlockSecretChat() {
         }
 
         const db = firebase.database();
-        const chatRoom = db.ref("omni_secret_chat");
-        const typingRoom = db.ref("omni_typing");
+        // 🚀 LA MAGIE EST ICI : Le dossier change selon la personne (ex: canaux_prives/EMMA)
+        const chatRoom = db.ref("canaux_prives/" + targetChannel);
+        const typingRoom = db.ref("status_frappe/" + targetChannel);
 
         const container = document.getElementById('chat-messages');
         const inputField = document.getElementById('chat-input');
         const typingIndicator = document.getElementById('typing-indicator');
 
-        container.innerHTML += `<p style="color: #00ffcc; font-style: italic;">> Connexion sécurisée établie. Réception des signaux activée.</p>`;
+        container.innerHTML += `<p style="color: #00ffcc; font-style: italic;">> Ligne cryptée [${targetChannel}] sécurisée.</p>`;
 
-        // 1. RECEVOIR LES MESSAGES
+        // RECEVOIR LES MESSAGES
         chatRoom.on('child_added', (snapshot) => {
             const data = snapshot.val();
             let couleurTexte = (data.user === "HINARU" || data.user === "OMNI_COMMANDER") ? "#ffcc00" : "#4da6ff";
@@ -323,13 +350,13 @@ function unlockSecretChat() {
             if(typeof playTerminalBeep === 'function') playTerminalBeep();
         });
 
-        // 2. ENVOYER UN MESSAGE
+        // ENVOYER UN MESSAGE
         inputField.addEventListener('keypress', function (e) {
             if (e.key === 'Enter' && this.value.trim() !== '') {
                 const message = this.value.trim();
 
                 chatRoom.push({
-                    user: userID,
+                    user: userID, // Garde VOTRE nom même si vous êtes sur le canal d'Emma
                     text: message,
                     timestamp: firebase.database.ServerValue.TIMESTAMP
                 });
@@ -339,7 +366,7 @@ function unlockSecretChat() {
             }
         });
 
-        // 3. INDICATEUR DE FRAPPE EN DIRECT
+        // INDICATEUR DE FRAPPE
         let typingTimer;
         inputField.addEventListener('input', () => {
             typingRoom.child(userID).set(true); 
