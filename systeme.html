@@ -177,12 +177,11 @@ body::after {
 
 <!-- LE TERMINAL CYBORG -->
 <div class="awakening-corner">
-    <!-- Le nom a bien été changé en CYBORG -->
     <div class="header-mini">UNITÉ_CYBORG_OMNI</div>
     
     <div class="cyborg-frame">
         <div class="scan-line"></div>
-        <!-- Mettez ici le nom de votre fichier 3D de Cyborg -->
+        <!-- VÉRIFIEZ BIEN QUE LE FICHIER cyborg.glb EST DANS LE MÊME DOSSIER ! -->
         <model-viewer src="cyborg.glb" auto-rotate camera-controls style="width: 100%; height: 100%;" exposure="0.5" shadow-intensity="2"></model-viewer>
     </div>
     
@@ -209,7 +208,7 @@ document.addEventListener('mousemove', (e) => {
     tt.style.top = (e.clientY + 15) + 'px';
 });
 
-// Animation du Cyborg
+// Animation d'initialisation du Cyborg
 const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
