@@ -7,14 +7,35 @@
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <script src="system-bridge.js"></script>
 <style>
-:root { --bordeaux: #660011; --rouge-vif: #ff0033; }
+:root { 
+    --bordeaux: #660011; 
+    --rouge-vif: #ff0033; 
+    --cyan-system: #00e5ff; /* Ajout de votre couleur cyan pour le scan */
+}
 body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000; overflow: hidden; font-family: 'Courier New', monospace; color: white; }
 
-/* --- VISUALISEUR --- */
-model-viewer { width: 100%; height: 100%; background-color: #000; display: none; } /* Caché par défaut pour la sécurité */
+/* --- VOTRE BLOC : CADRE CYBORG ET LIGNE DE SCAN --- */
+.cyborg-full-frame { 
+    width: 100%; 
+    height: 100%; 
+    position: absolute; 
+    inset: 0;
+    display: none; /* Caché par défaut pour l'écran de chargement */
+}
+.scan-line { 
+    position: absolute; 
+    width: 100%; 
+    height: 2px; 
+    background: var(--cyan-system); 
+    box-shadow: 0 0 15px var(--cyan-system); 
+    animation: scanBody 3s infinite linear; 
+    z-index: 10; 
+    pointer-events: none; 
+}
+@keyframes scanBody { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
 
 /* --- INTERFACE OSD --- */
-.hud-overlay { position: fixed; inset: 0; pointer-events: none; border: 1px solid rgba(255, 0, 51, 0.2); z-index: 10; display: none; }
+.hud-overlay { position: fixed; inset: 0; pointer-events: none; border: 1px solid rgba(255, 0, 51, 0.2); z-index: 20; display: none; }
 .status-bar { position: absolute; top: 20px; left: 20px; color: var(--rouge-vif); font-size: 10px; background: rgba(0,0,0,0.8); padding: 10px; border-left: 3px solid var(--rouge-vif); }
 
 /* --- LOADING SCREEN --- */
@@ -47,22 +68,30 @@ model-viewer { width: 100%; height: 100%; background-color: #000; display: none;
     </div>
 </div>
 
-<!-- CHARGEMENT DE LA FEMME DRAGONNET -->
-<model-viewer id="maquette"
-    src="images/humain_base.glb"
-    camera-controls
-    touch-action="none"
-    shadow-intensity="2"
-    exposure="1"
-    loading="eager"
-    ar-modes="webxr scene-viewer">
-    <button class="Hotspot" slot="hotspot-1" data-position="0m 1m 0m" data-normal="0m 1m 0m" onclick="interagir('INFO: ADN personnalisé chargé avec succès')">
-        <div style="background:var(--rouge-vif); width:12px; height:12px; border-radius:50%; box-shadow: 0 0 10px var(--rouge-vif);"></div>
-    </button>
-</model-viewer>
+<!-- VOTRE BLOC INTÉGRÉ ICI -->
+<div class="cyborg-full-frame" id="frame-container">
+    <div class="scan-line"></div>
+    
+    <model-viewer id="dragonnier-view" 
+        src="images/humain_base.glb" 
+        camera-controls 
+        auto-rotate
+        shadow-intensity="1"
+        exposure="1.5"
+        environment-image="neutral"
+        style="width: 100%; height: 100%;">
+        
+        <!-- Petit bouton d'interaction holographique conservé -->
+        <button class="Hotspot" slot="hotspot-1" data-position="0m 1m 0m" data-normal="0m 1m 0m" onclick="interagir('INFO: ADN personnalisé chargé avec succès')">
+            <div style="background:var(--rouge-vif); width:12px; height:12px; border-radius:50%; box-shadow: 0 0 10px var(--rouge-vif);"></div>
+        </button>
+    </model-viewer>
+</div>
 
 <script>
-const viewer = document.querySelector('#maquette');
+// Le code cible désormais votre ID #dragonnier-view
+const viewer = document.querySelector('#dragonnier-view');
+const frameContainer = document.querySelector('#frame-container');
 const fill = document.querySelector('#fill');
 const percent = document.querySelector('#percent');
 
@@ -71,7 +100,6 @@ const percent = document.querySelector('#percent');
 // ========================================================
 viewer.addEventListener('load', () => {
     // 1. Récupération des données depuis le noyau mémoire (localStorage)
-    // S'il n'y a pas de sauvegarde, on met des valeurs par défaut
     const skinVal = localStorage.getItem('OMNI_ADN_SKIN') || 0;
     const scaleVal = localStorage.getItem('OMNI_ADN_SCALE') || 10;
     const metalVal = localStorage.getItem('OMNI_ADN_METAL') || 20;
@@ -116,7 +144,7 @@ window.onload = () => {
 };
 
 function bootImmersion() {
-    viewer.style.display = 'block';
+    frameContainer.style.display = 'block'; // Affiche le cadre contenant le scan et le modèle
     document.getElementById('hud').style.display = 'block';
     
     viewer.addEventListener('progress', (ev) => {
@@ -133,9 +161,13 @@ function bootImmersion() {
 window.addEventListener('keydown', (e) => {
     if (document.getElementById('loader').style.display === 'none') {
         const orbit = viewer.getCameraOrbit();
+        // Optionnel : sécurise la récupération de la target de la caméra
+        const targetParts = viewer.cameraTarget.split(' ');
+        const zPos = targetParts.length > 2 ? parseFloat(targetParts[1]) : 0;
+
         switch(e.key.toLowerCase()) {
-            case 'z': viewer.cameraTarget = `auto auto ${parseFloat(viewer.cameraTarget.split(' ')[4]) - 0.5}m`; break;
-            case 's': viewer.cameraTarget = `auto auto ${parseFloat(viewer.cameraTarget.split(' ')[4]) + 0.5}m`; break;
+            case 'z': viewer.cameraTarget = `auto auto ${zPos - 0.5}m`; break;
+            case 's': viewer.cameraTarget = `auto auto ${zPos + 0.5}m`; break;
             case 'q': viewer.cameraOrbit = `${orbit.theta - 0.1}rad ${orbit.phi}rad ${orbit.radius}m`; break;
             case 'd': viewer.cameraOrbit = `${orbit.theta + 0.1}rad ${orbit.phi}rad ${orbit.radius}m`; break;
         }
