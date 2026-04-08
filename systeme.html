@@ -21,6 +21,10 @@
     --nebula-rose: rgba(255, 100, 200, 0.15);
     --pulsar-cyan: rgba(200, 230, 255, 0.8);
     --bordeaux: #660011;
+    
+    /* Nouvelles couleurs de la Cyborg */
+    --peau-cyborg: #ffdfc4;
+    --armure-cyborg: #14141f;
 }
 body {
     margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
@@ -110,43 +114,51 @@ body::after {
 
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); }
 
-/* --- LE CYBORG DRAGONNET DESSINÉ EN CODE --- */
+/* --- LE CYBORG DRAGONNET (AVEC DE LA PEAU ET UNE ARMURE) --- */
 .cyborg-full-frame { width: 100%; height: 180px; position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
 
-/* 1. La Tête (Cornes et Yeux de Dragon) */
-.c-head { width: 26px; height: 32px; border: 1.5px solid var(--cyan-system); border-radius: 40% 40% 50% 50%; position: relative; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); margin-bottom: 4px; background: #000; z-index: 3; }
-.c-horns { position: absolute; top: -10px; width: 100%; display: flex; justify-content: space-between; z-index: 1; }
-.c-horn { width: 3px; height: 12px; border: 1.5px solid var(--cyan-system); border-bottom: none; border-radius: 50% 50% 0 0; }
-.c-horn.left { transform: rotate(-30deg) translateX(4px); }
-.c-horn.right { transform: rotate(30deg) translateX(-4px); }
-.c-eyes { position: absolute; top: 12px; width: 100%; display: flex; justify-content: center; gap: 6px; }
-.c-eye { width: 5px; height: 2px; background: var(--cyan-system); box-shadow: 0 0 6px var(--cyan-system); border-radius: 50%; animation: blink 4s infinite; }
-.c-eye.left { transform: rotate(15deg); }
-.c-eye.right { transform: rotate(-15deg); }
+/* 1. La Tête (Peau, Cheveux, Cornes et Yeux) */
+.c-head { width: 24px; height: 28px; background: var(--peau-cyborg); border-radius: 40% 40% 50% 50%; position: relative; z-index: 5; box-shadow: inset -2px -2px 5px rgba(0,0,0,0.3); }
+.c-hair { position: absolute; top: -4px; left: -4px; width: 32px; height: 35px; background: var(--armure-cyborg); border-radius: 50% 50% 10px 10px; z-index: -1; border-top: 1px solid var(--cyan-system); }
+.c-horns { position: absolute; top: -10px; width: 100%; display: flex; justify-content: space-between; z-index: 2; }
+.c-horn { width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 12px solid var(--cyan-system); }
+.c-horn.left { transform: rotate(-30deg) translateX(3px); }
+.c-horn.right { transform: rotate(30deg) translateX(-3px); }
+.c-eyes { position: absolute; top: 12px; width: 100%; display: flex; justify-content: center; gap: 5px; }
+.c-eye { width: 4px; height: 2px; background: #222; border-radius: 50%; } /* Œil humain */
+.c-eye.cyborg { background: var(--cyan-system); box-shadow: 0 0 6px var(--cyan-system); width: 4px; height: 4px; border-radius: 50%; transform: translateY(-1px); animation: blink 4s infinite; } /* Œil bionique */
 
-/* 2. Le Corps (Silhouette Féminine, Cœur, Ailes et Queue) */
-.c-body-group { display: flex; gap: 4px; margin-bottom: 4px; position: relative; justify-content: center; }
-.c-torso { width: 30px; height: 50px; border: 1.5px solid var(--cyan-system); border-radius: 15px 15px 40% 40%; position: relative; box-shadow: inset 0 0 10px rgba(0,229,255,0.1); background: #000; z-index: 2; }
-.c-core { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; border: 1px dashed var(--cyan-system); border-radius: 50%; animation: pulseCore 1.5s infinite; }
-.c-arm { width: 6px; height: 42px; border: 1.5px solid var(--cyan-system); border-radius: 6px; margin-top: 6px; }
+/* 2. Le Cou */
+.c-neck { width: 8px; height: 6px; background: var(--peau-cyborg); margin: 0 auto; z-index: 4; position: relative; box-shadow: inset 0 2px 3px rgba(0,0,0,0.5); }
 
-.c-wings { position: absolute; top: 5px; left: -25px; right: -25px; display: flex; justify-content: space-between; z-index: 1; }
-.c-wing { width: 25px; height: 35px; border: 1.5px solid var(--cyan-system); border-radius: 0 20px 20px 20px; box-shadow: inset 0 0 10px rgba(0,229,255,0.1); }
-.c-wing.left { transform: rotate(-25deg); border-right: none; }
-.c-wing.right { transform: rotate(25deg) scaleX(-1); border-right: none; }
+/* 3. Le Corps (Peau, Armure, Cœur, Ailes et Queue) */
+.c-body-group { display: flex; gap: 5px; position: relative; justify-content: center; z-index: 3; margin-bottom: 0; }
+.c-torso { width: 28px; height: 42px; background: var(--armure-cyborg); border-radius: 8px 8px 15px 15px; position: relative; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); border: 1px solid #333; z-index: 3; display:flex; flex-direction:column; align-items:center; }
+.c-skin-chest { width: 12px; height: 8px; background: var(--peau-cyborg); border-radius: 0 0 10px 10px; box-shadow: inset 0 -2px 3px rgba(0,0,0,0.2); }
+.c-core { margin-top: 5px; width: 10px; height: 10px; background: var(--cyan-system); border-radius: 50%; box-shadow: 0 0 10px var(--cyan-system); animation: pulseCore 1.5s infinite; }
 
-.c-tail { position: absolute; bottom: -28px; left: 50%; margin-left: -3px; width: 6px; height: 32px; border: 1.5px solid var(--cyan-system); border-top: none; border-radius: 0 0 10px 10px; transform-origin: top; animation: wag 4s infinite ease-in-out; z-index: 1; }
+/* 4. Les Bras (Haut en peau, gants cybernétiques) */
+.c-arm { width: 7px; height: 38px; background: var(--peau-cyborg); border-radius: 3px; position: relative; z-index: 4; }
+.c-glove { position: absolute; bottom: 0; left: 0; width: 100%; height: 22px; background: var(--armure-cyborg); border-radius: 3px; border-top: 1px solid var(--cyan-system); }
 
-/* 3. Les Jambes */
-.c-legs { display: flex; gap: 6px; justify-content: center; }
-.c-leg { width: 8px; height: 55px; border: 1.5px solid var(--cyan-system); border-radius: 4px; }
+/* 5. Ailes et Queue (Attributs de dragon) */
+.c-wings { position: absolute; top: 5px; left: -30px; right: -30px; display: flex; justify-content: space-between; z-index: 1; }
+.c-wing { width: 28px; height: 35px; background: rgba(0, 229, 255, 0.1); border: 1px solid var(--cyan-system); border-radius: 0 20px 20px 20px; box-shadow: inset 0 0 10px rgba(0,229,255,0.2); }
+.c-wing.left { transform: rotate(-20deg); border-right: none; }
+.c-wing.right { transform: rotate(20deg) scaleX(-1); border-right: none; }
+.c-tail { position: absolute; bottom: -30px; left: 50%; margin-left: -3px; width: 6px; height: 35px; background: var(--armure-cyborg); border: 1px solid var(--cyan-system); border-top: none; border-radius: 0 0 5px 5px; transform-origin: top; animation: wag 4s infinite ease-in-out; z-index: 1; }
+
+/* 6. Les Jambes (Cuisses en peau, Bottes cybernétiques) */
+.c-legs { display: flex; gap: 6px; justify-content: center; margin-top: -2px; z-index: 2; position: relative; }
+.c-leg { width: 9px; height: 45px; background: var(--peau-cyborg); border-radius: 3px; position: relative; z-index: 2; }
+.c-boot { position: absolute; bottom: 0; left: 0; width: 100%; height: 30px; background: var(--armure-cyborg); border-radius: 3px; border-top: 1.5px solid var(--cyan-system); }
 
 /* Le rayon de scan global */
 .scan-line { position: absolute; width: 150px; height: 2px; background: var(--cyan-system); box-shadow: 0 0 15px var(--cyan-system); animation: scanBody 2.5s infinite linear; z-index: 10; pointer-events: none; left: 50%; transform: translateX(-50%); }
 
 @keyframes wag { 0%, 100% { transform: rotate(15deg); } 50% { transform: rotate(-15deg); } }
 @keyframes scanBody { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
-@keyframes pulseCore { 0%, 100% { box-shadow: 0 0 5px var(--cyan-system); background: transparent; } 50% { box-shadow: 0 0 15px var(--cyan-system); background: rgba(0, 229, 255, 0.4); } }
+@keyframes pulseCore { 0%, 100% { box-shadow: 0 0 5px var(--cyan-system); background: var(--cyan-system); } 50% { box-shadow: 0 0 15px var(--cyan-system); background: rgba(0, 229, 255, 0.4); } }
 @keyframes blink { 0%, 96%, 100% { opacity: 1; } 98% { opacity: 0; } }
 
 /* -------------------------------------------------------- */
@@ -201,40 +213,54 @@ body::after {
 
 <!-- LE TERMINAL CYBORG -->
 <div class="awakening-corner">
-    <!-- Changement du titre du cadre -->
     <div class="header-mini">UNITÉ_DRAGONNET_CYBORG</div>
     
-    <!-- LE CYBORG DRAGONNET (Cornes, Ailes, Silhouette Femme, Queue) -->
+    <!-- LE CYBORG DRAGONNET (Avec Peau, Armure, et Éléments mécaniques) -->
     <div class="cyborg-full-frame">
         <div class="scan-line"></div>
         
         <div class="c-head">
+            <div class="c-hair"></div>
             <div class="c-horns">
                 <div class="c-horn left"></div>
                 <div class="c-horn right"></div>
             </div>
             <div class="c-eyes">
-                <div class="c-eye left"></div>
-                <div class="c-eye right"></div>
+                <div class="c-eye left"></div> <!-- Œil Humain -->
+                <div class="c-eye right cyborg"></div> <!-- Œil Bionique -->
             </div>
         </div>
         
+        <div class="c-neck"></div>
+        
         <div class="c-body-group">
-            <div class="c-arm"></div>
-            <div class="c-torso">
-                <div class="c-wings">
-                    <div class="c-wing left"></div>
-                    <div class="c-wing right"></div>
-                </div>
-                <div class="c-core"></div>
-                <div class="c-tail"></div>
+            <div class="c-wings">
+                <div class="c-wing left"></div>
+                <div class="c-wing right"></div>
             </div>
-            <div class="c-arm"></div>
+            <div class="c-tail"></div>
+            
+            <div class="c-arm">
+                <div class="c-glove"></div>
+            </div>
+            
+            <div class="c-torso">
+                <div class="c-skin-chest"></div>
+                <div class="c-core"></div>
+            </div>
+            
+            <div class="c-arm">
+                <div class="c-glove"></div>
+            </div>
         </div>
         
         <div class="c-legs">
-            <div class="c-leg"></div>
-            <div class="c-leg"></div>
+            <div class="c-leg">
+                <div class="c-boot"></div>
+            </div>
+            <div class="c-leg">
+                <div class="c-boot"></div>
+            </div>
         </div>
     </div>
     
