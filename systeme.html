@@ -6,8 +6,6 @@
 <title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
 
 <script src="security.js"></script>
-<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
 <style>
 :root {
@@ -45,7 +43,6 @@ L'UNIVERS GALACTIQUE MASSIF
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
-
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
                       radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
@@ -53,7 +50,6 @@ L'UNIVERS GALACTIQUE MASSIF
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
-
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
@@ -140,6 +136,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="quasar-container">
 <div class="jet"></div><div class="black-hole"></div>
 </div>
+
 <div id="galaxy-receptor">
 <div class="nebula-planet p-gold" title="Astre Maître"></div>
 <div class="nebula-planet p-blue"></div>
@@ -162,23 +159,25 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
 <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-<!-- VOTRE BLOC 3D EXACTEMENT COMME DEMANDÉ -->
-<div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<!-- VOTRE NOUVEAU BLOC : MANIFESTATION DIVINE 2.5D AVEC SÉCURITÉ -->
+<div class="cyborg-full-frame" style="height: 380px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
     
     <div class="scan-line"></div>
 
-    <model-viewer id="dragonnier-view" 
-        src="images/dragonniere_divine.glb" 
-        camera-controls 
-        auto-rotate
-        shadow-intensity="2"
-        exposure="1.5"
-        environment-image="neutral"
-        loading="eager"
-        style="width: 100%; height: 100%; filter: brightness(1.5) drop-shadow(0 0 20px #fff);">
+    <div id="divine-manifestation" style="position: relative; width: 200px; height: 350px; display: flex; justify-content: center; align-items: center;">
         
-        <div slot="poster" style="color:white; font-size:10px;">CHARGEMENT DU SPÉCIMEN...</div>
-    </model-viewer>
+        <div id="wing-l" style="position: absolute; left: -10px; width: 100px; height: 220px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 40%, 0% 0%, 20% 100%); filter: blur(3px); transform: rotate(-15deg); z-index: 1;"></div>
+        <div id="wing-r" style="position: absolute; right: -10px; width: 100px; height: 220px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 40%, 100% 0%, 80% 100%); filter: blur(3px); transform: rotate(15deg); z-index: 1;"></div>
+
+        <img id="divine-body" 
+             src="https://svgsilh.com/svg/297169.svg" 
+             style="height: 300px; filter: brightness(0) invert(1) drop-shadow(0 0 15px #fff); z-index: 2; position: relative;"
+             onerror="this.style.display='none'; document.getElementById('backup-body').style.display='block';">
+        
+        <div id="backup-body" style="display:none; width: 60px; height: 250px; background: white; border-radius: 50% 50% 20% 20%; box-shadow: 0 0 30px #fff; z-index: 2;"></div>
+
+        <div style="position: absolute; width: 120px; height: 320px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); z-index: 0; filter: blur(10px);"></div>
+    </div>
 </div>
 
 <!-- LES LOGS DE DÉMARRAGE -->
@@ -190,19 +189,17 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
 <div class="control-group">
 <label>PIGMENTATION DE LA PEAU</label>
-<input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
+<input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
 </div>
 <div class="control-group">
 <label>ÉNERGIE FLAMBOYANTE (AILES)</label>
-<input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
+<input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
 </div>
-
-<!-- Curseur Metallique masqué pour la sauvegarde mémoire -->
 <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
 <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-> PIGMENTATION : 50% <br>
-> ÉNERGIE FLAMBOYANTE : 10% <br>
+> PIGMENTATION : 0% <br>
+> ÉNERGIE FLAMBOYANTE : 0% <br>
 > STABILITÉ : OPTIMALE
 </div>
 
@@ -222,7 +219,7 @@ const logs = [
 "BOOTING_CORE_V2031...",
 "VÉRIFICATION_MÉCANIQUE... [OK]",
 "SCAN_ENVIRONNEMENT... [ACTIF]",
-"CHARGEMENT_MODÈLE_3D... [YES]",
+"RÉSOLUTION_VECTEURS_DIVINS... [YES]",
 "SIGNATURE_HINARU... [VALIDÉE]",
 "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -236,43 +233,46 @@ function print() {
     } else {
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
+        updateGenetics(); // Initialiser les couleurs au lancement
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- MOTEUR DE MUTATION 3D (AVEC PBR MATERIALS) ---
+// --- MOTEUR DE MUTATION SVG & BACKUP-BODY ---
 // =======================================================
-const dragonView = document.querySelector('#dragonnier-view');
-
-// On applique les modifications une fois le modèle 3D chargé
-dragonView.addEventListener('load', () => {
-    updateGenetics();
-});
-
 function updateGenetics() {
-    const skinVal = document.getElementById('skin-color').value; 
-    const scaleVal = document.getElementById('scale-density').value;
+    const body = document.getElementById('divine-body');
+    const backupBody = document.getElementById('backup-body');
+    const wingL = document.getElementById('wing-l');
+    const wingR = document.getElementById('wing-r');
+    
+    const skinVal = document.getElementById('skin-color').value; // Vers le Marron
+    const scaleVal = document.getElementById('scale-density').value; // Vers le Rouge
 
-    if (dragonView.model && dragonView.model.materials && dragonView.model.materials.length >= 2) {
-        // Matériau 0 = la peau, Matériau 1 = les ailes
-        const skinMaterial = dragonView.model.materials;
-        const scaleMaterial = dragonView.model.materials[4];
-        
-        // 1. Mutation de la pigmentation de la peau (du clair au marron)
-        if (skinMaterial && skinMaterial.pbrMetallicRoughness) {
-            const skinColor = 1 - (skinVal / 200);
-            skinMaterial.pbrMetallicRoughness.setBaseColorFactor([1, skinColor * 0.8, skinColor * 0.6, 1]);
-        }
-        
-        // 2. Mutation de l'éclat des ailes (intensité du rouge)
-        if (scaleMaterial && scaleMaterial.pbrMetallicRoughness) {
-            const scaleGlow = 1 + (scaleVal / 50);
-            scaleMaterial.pbrMetallicRoughness.setBaseColorFactor([scaleGlow, 0.1, 0.1, 1]);
-        }
+    // Mutation Peau : On transforme le blanc pur en marron/doré
+    const brownTone = 100 - (skinVal / 2);
+    const filterString = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 15px #fff)`;
+    
+    // On applique le filtre sur l'image principale...
+    if (body) {
+        body.style.filter = filterString;
+    }
+    // ...Et on applique le MÊME filtre sur la forme de secours !
+    if (backupBody) {
+        backupBody.style.filter = filterString;
     }
 
-    // Mise à jour de l'affichage textuel UI
+    // Mutation Ailes : Intensité du rouge et de l'éclat
+    const fireAlpha = 0.3 + (scaleVal / 100);
+    if (wingL && wingR) {
+        wingL.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
+        wingR.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
+        wingL.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
+        wingR.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
+    }
+
+    // Mise à jour des stats UI
     document.getElementById('bio-stats').innerHTML = `
         > PIGMENTATION : ${skinVal}% <br>
         > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
