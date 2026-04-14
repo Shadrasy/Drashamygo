@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
+
 <script src="security.js"></script>
 
 <style>
@@ -38,19 +39,17 @@ L'UNIVERS GALACTIQUE MASSIF
 .bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
 .nebula-gas {
     background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
-    radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
+                radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
-
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
-    radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
-    radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
+                      radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
+                      radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
-
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
@@ -102,7 +101,8 @@ PANNEAU DU LABORATOIRE GÉNÉTIQUE
     backdrop-filter: blur(10px);
     z-index: 10000 !important;
     box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
-    display: flex; flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); z-index: 10; }
 .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
@@ -120,6 +120,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px
 input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; background: var(--rouge-alerte); border-radius: 2px; }
 .btn-gen { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--rouge-alerte); background: rgba(255,0,51,0.1); color: var(--rouge-alerte); font-family: inherit; font-size: 0.75rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
+
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
 </style>
 </head>
@@ -143,6 +144,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="nebula-planet p-ice"></div>
 <div class="nebula-planet p-toxic"></div>
 </div>
+
 <div class="radar-container">
 <div class="radar-lens">
 <div class="radar-sweep"></div>
@@ -156,46 +158,45 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
 <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-<!-- VOTRE BLOC 2.5D PARFAITEMENT INTÉGRÉ ICI -->
-<div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<!-- VOTRE NOUVEAU BLOC : MANIFESTATION DIVINE 2.5D -->
+<div class="cyborg-full-frame" style="height: 400px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
     
-    <div class="scan-line" style="box-shadow: 0 0 20px var(--cyan-system); height: 3px;"></div>
+    <div class="scan-line"></div>
 
-    <div id="divine-manifestation" style="position: relative; width: 200px; height: 350px; display: flex; justify-content: center; align-items: center; transition: 0.5s;">
+    <div id="divine-manifestation" style="position: relative; width: 200px; height: 350px; display: flex; justify-content: center; align-items: center;">
         
-        <div id="wing-l" style="position: absolute; left: 0px; width: 100px; height: 220px; background: rgba(255, 0, 0, 0.7); clip-path: polygon(100% 20%, 0% 0%, 40% 100%, 80% 60%); filter: blur(3px); transform: rotate(-15deg); z-index: 1;"></div>
-        <div id="wing-r" style="position: absolute; right: 0px; width: 100px; height: 220px; background: rgba(255, 0, 0, 0.7); clip-path: polygon(0% 20%, 100% 0%, 60% 100%, 20% 60%); filter: blur(3px); transform: rotate(15deg); z-index: 1;"></div>
+        <div id="wing-l" style="position: absolute; left: 10px; width: 90px; height: 200px; background: rgba(255, 0, 0, 0.6); clip-path: polygon(100% 20%, 0% 0%, 30% 100%, 80% 50%); filter: blur(3px); transform: rotate(-15deg); z-index: 1;"></div>
+        <div id="wing-r" style="position: absolute; right: 10px; width: 90px; height: 200px; background: rgba(255, 0, 0, 0.6); clip-path: polygon(0% 20%, 100% 0%, 70% 100%, 20% 50%); filter: blur(3px); transform: rotate(15deg); z-index: 1;"></div>
 
         <img id="divine-silhouette" src="https://www.svgrepo.com/show/398513/woman-standing.svg" 
-             style="height: 320px; filter: brightness(0) invert(1) drop-shadow(0 0 15px #fff); z-index: 2; position: relative;">
+             style="height: 300px; filter: brightness(0) invert(1) drop-shadow(0 0 15px #fff); z-index: 2; position: relative;">
 
-        <div style="position: absolute; width: 120px; height: 340px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 80%); z-index: 0; filter: blur(10px);"></div>
+        <div style="position: absolute; width: 100px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 80%); z-index: 0; filter: blur(10px);"></div>
     </div>
 </div>
 
 <!-- LES LOGS DE DÉMARRAGE -->
 <div id="boot-logs"></div>
 
-<!-- LE PANNEAU DE CONTRÔLE -->
+<!-- LE PANNEAU DE CONTRÔLE (CACHÉ PENDANT LE DÉMARRAGE) -->
 <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
 <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
 
 <div class="control-group">
 <label>PIGMENTATION DE LA PEAU</label>
-<input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
+<input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
 </div>
 <div class="control-group">
 <label>ÉNERGIE FLAMBOYANTE (AILES)</label>
-<input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
+<input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
 </div>
-
-<!-- Bouton métallique conservé en caché pour l'export -->
+<!-- Curseur Metallique masqué pour la compatibilité des sauvegardes -->
 <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
 <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-> PIGMENTATION : 0% <br>
-> ÉNERGIE FLAMBOYANTE : 0% <br>
-> STABILITÉ : OPTIMALE
+> STABILITÉ GÉNÉTIQUE : OPTIMALE <br>
+> TYPE : DÉESSE HYBRIDE <br>
+> ORIGINE : SECTEUR_SHADRASY
 </div>
 
 <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
@@ -226,41 +227,35 @@ function print() {
         document.getElementById('boot-logs').appendChild(d);
         i++; setTimeout(print, 500);
     } else {
+        // Cache les logs et affiche les curseurs génétiques
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
-        updateGenetics(); // Initialisation visuelle au démarrage
+        updateGenetics(); // Initialiser les couleurs au lancement
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE FONCTION JAVASCRIPT CORRIGÉE ---
+// --- VOTRE MOTEUR DE MUTATION VECTORIELLE CSS ---
 // =======================================================
 function updateGenetics() {
-    const silhouette = document.getElementById('divine-silhouette');
+    const body = document.getElementById('divine-silhouette');
     const wingL = document.getElementById('wing-l');
     const wingR = document.getElementById('wing-r');
     
-    const skinVal = document.getElementById('skin-color').value; 
-    const scaleVal = document.getElementById('scale-density').value;
+    const skinVal = document.getElementById('skin-color').value; // Vers le Marron
+    const scaleVal = document.getElementById('scale-density').value; // Vers le Rouge
 
-    // 1. Mutation Marron : On ajuste le "sepia" pour colorer le blanc en marron
-    // Plus tu montes, plus elle devient marron/dorée
-    silhouette.style.filter = `brightness(${100 - skinVal/2}%) invert(1) sepia(${skinVal}%) saturate(3) drop-shadow(0 0 20px #fff)`;
+    // Mutation Peau : On transforme le blanc pur en marron/doré
+    const brownTone = 100 - (skinVal / 2);
+    body.style.filter = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 15px #fff)`;
 
-    // 2. Mutation Rouge Flamboyant : On ajuste l'opacité et l'éclat des ailes
-    const firePower = 0.3 + (scaleVal / 100);
-    wingL.style.background = `rgba(255, 0, 0, ${firePower})`;
-    wingR.style.background = `rgba(255, 0, 0, ${firePower})`;
-    wingL.style.filter = `blur(${5 - scaleVal/20}px) drop-shadow(0 0 ${scaleVal/5}px red)`;
-    wingR.style.filter = `blur(${5 - scaleVal/20}px) drop-shadow(0 0 ${scaleVal/5}px red)`;
-
-    // Mise à jour de l'affichage textuel (UI)
-    document.getElementById('bio-stats').innerHTML = `
-        > PIGMENTATION : ${skinVal}% <br>
-        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
-        > STABILITÉ : OPTIMALE
-    `;
+    // Mutation Ailes : Intensité du rouge et de l'éclat
+    const fireAlpha = 0.3 + (scaleVal / 100);
+    wingL.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
+    wingR.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
+    wingL.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
+    wingR.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
