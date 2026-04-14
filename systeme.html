@@ -156,22 +156,20 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
 <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-<!-- VOTRE NOUVEAU BLOC : VIDÉO TURNAROUND -->
-<div class="cyborg-full-frame" style="height: 400px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<!-- VOTRE BLOC 2.5D PARFAITEMENT INTÉGRÉ ICI -->
+<div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
     
-    <div class="scan-line"></div>
+    <div class="scan-line" style="box-shadow: 0 0 20px var(--cyan-system); height: 3px;"></div>
 
-    <video id="divine-turnaround" autoplay loop muted playsinline 
-           style="height: 95%; width: auto; filter: drop-shadow(0 0 15px rgba(255,0,51,0.5)); transition: 0.5s;">
-        <source src="images/dragonniere_turnaround.webm" type="video/webm">
-        <source src="images/dragonniere_turnaround.mp4" type="video/mp4">
-        ERREUR_SIGNAL_VIDÉO_MANQUANT
-    </video>
+    <div id="divine-manifestation" style="position: relative; width: 200px; height: 350px; display: flex; justify-content: center; align-items: center; transition: 0.5s;">
+        
+        <div id="wing-l" style="position: absolute; left: 0px; width: 100px; height: 220px; background: rgba(255, 0, 0, 0.7); clip-path: polygon(100% 20%, 0% 0%, 40% 100%, 80% 60%); filter: blur(3px); transform: rotate(-15deg); z-index: 1;"></div>
+        <div id="wing-r" style="position: absolute; right: 0px; width: 100px; height: 220px; background: rgba(255, 0, 0, 0.7); clip-path: polygon(0% 20%, 100% 0%, 60% 100%, 20% 60%); filter: blur(3px); transform: rotate(15deg); z-index: 1;"></div>
 
-    <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right;">
-        MORPHOLOGIE : DÉESSE<br>
-        AILES : ALPHA_RED<br>
-        TYPE : DRACONIQUE_HYBRIDE
+        <img id="divine-silhouette" src="https://www.svgrepo.com/show/398513/woman-standing.svg" 
+             style="height: 320px; filter: brightness(0) invert(1) drop-shadow(0 0 15px #fff); z-index: 2; position: relative;">
+
+        <div style="position: absolute; width: 120px; height: 340px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 80%); z-index: 0; filter: blur(10px);"></div>
     </div>
 </div>
 
@@ -191,7 +189,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
 </div>
 
-<!-- Bouton métallique conservé en caché pour ne pas casser l'export -->
+<!-- Bouton métallique conservé en caché pour l'export -->
 <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
 <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
@@ -216,7 +214,7 @@ const logs = [
 "BOOTING_CORE_V2031...",
 "VÉRIFICATION_MÉCANIQUE... [OK]",
 "SCAN_ENVIRONNEMENT... [ACTIF]",
-"CHARGEMENT_FLUX_VIDÉO... [YES]",
+"RÉSOLUTION_VECTORIELLE... [YES]",
 "SIGNATURE_HINARU... [VALIDÉE]",
 "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -230,26 +228,34 @@ function print() {
     } else {
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
-        updateGenetics(); // On lance la fonction pour mettre les valeurs à jour d'emblée
+        updateGenetics(); // Initialisation visuelle au démarrage
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE FONCTION VIDÉO (FILTRES CSS) ---
+// --- VOTRE FONCTION JAVASCRIPT CORRIGÉE ---
 // =======================================================
 function updateGenetics() {
-    const vid = document.getElementById('divine-turnaround');
+    const silhouette = document.getElementById('divine-silhouette');
+    const wingL = document.getElementById('wing-l');
+    const wingR = document.getElementById('wing-r');
+    
     const skinVal = document.getElementById('skin-color').value; 
-    const scaleVal = document.getElementById('scale-density').value; 
+    const scaleVal = document.getElementById('scale-density').value;
 
-    // Les CSS Filters s'appliquent aussi aux vidéos !
-    // On simule les modifications avec sepia, saturate et hue-rotate
-    if (vid) {
-        vid.style.filter = `sepia(${skinVal}%) saturate(${100 + scaleVal * 1.5}%) hue-rotate(${scaleVal * 0.5}deg) drop-shadow(0 0 15px rgba(255,0,51,0.5))`;
-    }
+    // 1. Mutation Marron : On ajuste le "sepia" pour colorer le blanc en marron
+    // Plus tu montes, plus elle devient marron/dorée
+    silhouette.style.filter = `brightness(${100 - skinVal/2}%) invert(1) sepia(${skinVal}%) saturate(3) drop-shadow(0 0 20px #fff)`;
 
-    // Mise à jour de l'affichage textuel
+    // 2. Mutation Rouge Flamboyant : On ajuste l'opacité et l'éclat des ailes
+    const firePower = 0.3 + (scaleVal / 100);
+    wingL.style.background = `rgba(255, 0, 0, ${firePower})`;
+    wingR.style.background = `rgba(255, 0, 0, ${firePower})`;
+    wingL.style.filter = `blur(${5 - scaleVal/20}px) drop-shadow(0 0 ${scaleVal/5}px red)`;
+    wingR.style.filter = `blur(${5 - scaleVal/20}px) drop-shadow(0 0 ${scaleVal/5}px red)`;
+
+    // Mise à jour de l'affichage textuel (UI)
     document.getElementById('bio-stats').innerHTML = `
         > PIGMENTATION : ${skinVal}% <br>
         > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
@@ -267,7 +273,7 @@ function saveGenetics() {
     localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
     localStorage.setItem('OMNI_ADN_METAL', metalVal);
     
-    alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
+    alert("SÉQUENCE DIVINE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
     setTimeout(() => { window.location.href = "index.html"; }, 500);
 }
 </script>
