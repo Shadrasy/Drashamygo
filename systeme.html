@@ -6,6 +6,8 @@
 <title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
 
 <script src="security.js"></script>
+<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
 <style>
 :root {
@@ -15,7 +17,6 @@
     --void-purple: #4b0082;
     --vert-stable: #00ff41;
     --rouge-alerte: #ff0033;
-    --rouge-vif: #ff0033; /* Ajouté pour correspondre à votre nouveau code */
     --nebula-blue: rgba(0, 50, 150, 0.2);
     --nebula-rose: rgba(255, 100, 200, 0.15);
     --pulsar-cyan: rgba(200, 230, 255, 0.8);
@@ -164,20 +165,21 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
     <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
     
-    <!-- VOTRE NOUVEAU BLOC : L'IMAGE 2D AVEC FILTRES ET DONNÉES BIO -->
-    <div class="cyborg-full-frame" style="height: 380px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-        
-        <img id="dragonniere-img" src="images/dragonniere_divine.png" 
-             style="height: 90%; width: auto; filter: drop-shadow(0 0 10px var(--rouge-vif)); transition: 0.5s;">
-    
+    <!-- VOTRE BLOC 3D EXACT RÉINTÉGRÉ -->
+    <div class="cyborg-full-frame" style="height: 350px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         <div class="scan-line"></div>
-        <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,229,255,0.05) 0px, transparent 2px); pointer-events: none;"></div>
         
-        <div id="bio-data-overlay" style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-vif); text-align: right;">
-            MORPHOLOGIE : DÉESSE<br>
-            AILES : ALPHA_RED<br>
-            STATUT : DIVIN
-        </div>
+        <model-viewer id="dragonnier-view" 
+            src="images/dragonniere_divine.glb" 
+            alt="Spécimen Dragonnière Divine"
+            camera-controls 
+            auto-rotate
+            shadow-intensity="1.5"
+            exposure="1.3" 
+            environment-image="neutral"
+            loading="eager"
+            style="width: 100%; height: 100%;">
+        </model-viewer>
     </div>
     
     <!-- LES LOGS DE DÉMARRAGE -->
@@ -190,21 +192,21 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
         <div class="control-group">
             <label>PIGMENTATION DE LA PEAU</label>
-            <input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
+            <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
         </div>
 
         <div class="control-group">
-            <label>ÉNERGIE FLAMBOYANTE (ÉCAILLES)</label>
-            <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
+            <label>ÉCLAT DES AILES / ÉCAILLES</label>
+            <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
         </div>
 
-        <!-- Bouton métallique conservé en masqué pour la sauvegarde mémoire -->
+        <!-- Bouton métallique masqué pour la sauvegarde -->
         <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > PIGMENTATION : 0% <br>
-            > ÉNERGIE FLAMBOYANTE : 0% <br>
-            > STABILITÉ : OPTIMALE
+            > STABILITÉ GÉNÉTIQUE : 99.9% <br>
+            > TYPE : DRAGONNIÈRE DIVINE <br>
+            > ORIGINE : SECTEUR_SHADRASY
         </div>
 
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
@@ -240,35 +242,42 @@ function print() {
         // Cache les logs et affiche les curseurs génétiques
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block'; 
-        // Lance une première fois l'update pour afficher les valeurs par défaut
-        updateGenetics();
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE FONCTION DE MUTATION 2D (FILTRES CSS) ---
+// --- VOTRE SCRIPT 3D (AVEC LES DEUX MATÉRIAUX) ---
 // =======================================================
-function updateGenetics() {
-    const img = document.getElementById('dragonniere-img');
-    const skinVal = document.getElementById('skin-color').value; // Pour le marron
-    const scaleVal = document.getElementById('scale-density').value; // Pour le rouge flamboyant
+const dragonView = document.querySelector('#dragonnier-view');
 
-    // On utilise les filtres CSS pour changer les couleurs de l'image en direct
-    // sepia pour le marron, hue-rotate pour le rouge, brightness pour le flamboyant
-    img.style.filter = `
-        sepia(${skinVal}%) 
-        hue-rotate(${scaleVal * 0.5}deg) 
-        brightness(${1 + scaleVal/100})
-        drop-shadow(0 0 15px var(--rouge-vif))
-    `;
-    
-    // Mise à jour de l'affichage textuel
-    document.getElementById('bio-stats').innerHTML = `
-        > PIGMENTATION : ${skinVal}% <br>
-        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
-        > STABILITÉ : OPTIMALE
-    `;
+// Dès que le modèle est chargé, on applique les couleurs
+dragonView.addEventListener('load', () => {
+    updateGenetics();
+});
+
+function updateGenetics() {
+    const skinVal = document.getElementById('skin-color').value; // Peau
+    const scaleVal = document.getElementById('scale-density').value; // Écailles/Ailes
+
+    // On s'assure que le modèle est bien chargé et qu'il possède au moins 2 matériaux
+    if (dragonView.model && dragonView.model.materials.length >= 2) {
+        // Matériau 0 = la peau, Matériau 1 = les ailes/écailles (comme vous l'avez demandé)
+        const skinMaterial = dragonView.model.materials;
+        const scaleMaterial = dragonView.model.materials[3];
+        
+        // 1. Mutation de la pigmentation de la peau (du clair au marron)
+        if (skinMaterial && skinMaterial.pbrMetallicRoughness) {
+            const skinColor = 1 - (skinVal / 200); // 1 = blanc, 0.5 = marron clair
+            skinMaterial.pbrMetallicRoughness.setBaseColorFactor([1, skinColor * 0.8, skinColor * 0.6, 1]);
+        }
+        
+        // 2. Mutation de l'éclat des ailes rouges
+        if (scaleMaterial && scaleMaterial.pbrMetallicRoughness) {
+            const scaleGlow = 1 + (scaleVal / 50); // Augmente l'intensité du rouge
+            scaleMaterial.pbrMetallicRoughness.setBaseColorFactor([scaleGlow, 0.1, 0.1, 1]);
+        }
+    }
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
