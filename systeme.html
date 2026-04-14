@@ -156,7 +156,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
     <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-    <!-- VOTRE NOUVEAU BLOC 3D EXACTEMENT COMME DEMANDÉ -->
+    <!-- VOTRE NOUVEAU BLOC 3D AVEC ROTATION CINÉMATOGRAPHIQUE -->
     <div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         
         <div class="scan-line"></div>
@@ -166,6 +166,8 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
             ar-status="not-present"
             camera-controls 
             auto-rotate
+            rotation-per-second="30deg"
+            field-of-view="30deg"
             touch-action="pan-y"
             interpolation-decay="200"
             shadow-intensity="1"
@@ -198,7 +200,6 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
             <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
         </div>
 
-        <!-- Curseur Métallique conservé caché pour la sauvegarde -->
         <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
@@ -242,11 +243,10 @@ function print() {
 window.onload = print;
 
 // =======================================================
-// --- VOTRE NOUVEAU SCRIPT (IDENTIFICATION PAR NOMS) ---
+// --- VOTRE NOUVEAU SCRIPT (EFFET ÉMISSIF / NÉON) ---
 // =======================================================
 const dragonView = document.querySelector('#dragonnier-view');
 
-// Appliquer dès que le modèle a fini de charger
 dragonView.addEventListener('load', () => {
     updateGenetics();
 });
@@ -264,9 +264,13 @@ function updateGenetics() {
         if (material.name.toLowerCase().includes("peau")) {
             material.pbrMetallicRoughness.setBaseColorFactor([1, 1 - skinVal, 0.8 - skinVal, 1]);
         }
+        
         // Si le matériau s'appelle "Ailes" ou "Ecailles"
         if (material.name.toLowerCase().includes("aile") || material.name.toLowerCase().includes("ecaille")) {
             material.pbrMetallicRoughness.setBaseColorFactor([1 + scaleVal, 0.1, 0.1, 1]);
+            
+            // L'ajout clé : crée une véritable lumière incandescente émise par les ailes !
+            material.setEmissiveFactor([scaleVal, 0, 0]); 
         }
     });
 
