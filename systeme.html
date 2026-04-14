@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
+<title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
 
 <script src="security.js"></script>
-<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
 <style>
 :root {
@@ -17,6 +15,7 @@
     --void-purple: #4b0082;
     --vert-stable: #00ff41;
     --rouge-alerte: #ff0033;
+    --rouge-vif: #ff0033; /* Ajouté pour correspondre à votre nouveau code */
     --nebula-blue: rgba(0, 50, 150, 0.2);
     --nebula-rose: rgba(255, 100, 200, 0.15);
     --pulsar-cyan: rgba(200, 230, 255, 0.8);
@@ -163,24 +162,22 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
+    <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
     
-    <!-- VOTRE BLOC PARFAITEMENT INTÉGRÉ ICI -->
-    <div class="cyborg-full-frame" style="height: 300px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden;">
-        <div class="scan-line"></div>
+    <!-- VOTRE NOUVEAU BLOC : L'IMAGE 2D AVEC FILTRES ET DONNÉES BIO -->
+    <div class="cyborg-full-frame" style="height: 380px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         
-        <model-viewer id="dragonnier-view" 
-            src="images/dragonnier_humanoide.glb" 
-            alt="Spécimen Humanoïde"
-            camera-controls 
-            auto-rotate
-            shadow-intensity="2"
-            exposure="1.5"
-            environment-image="neutral"
-            loading="eager"
-            style="width: 100%; height: 100%;"
-            onerror="this.src='https://modelviewer.dev/shared-assets/models/Astronaut.glb'">
-        </model-viewer>
+        <img id="dragonniere-img" src="images/dragonniere_divine.png" 
+             style="height: 90%; width: auto; filter: drop-shadow(0 0 10px var(--rouge-vif)); transition: 0.5s;">
+    
+        <div class="scan-line"></div>
+        <div style="position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,229,255,0.05) 0px, transparent 2px); pointer-events: none;"></div>
+        
+        <div id="bio-data-overlay" style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-vif); text-align: right;">
+            MORPHOLOGIE : DÉESSE<br>
+            AILES : ALPHA_RED<br>
+            STATUT : DIVIN
+        </div>
     </div>
     
     <!-- LES LOGS DE DÉMARRAGE -->
@@ -189,27 +186,25 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
     <!-- LE PANNEAU DE CONTRÔLE (CACHÉ PENDANT LE DÉMARRAGE) -->
     <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
         
-        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
+        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
 
         <div class="control-group">
             <label>PIGMENTATION DE LA PEAU</label>
-            <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
+            <input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
         </div>
 
         <div class="control-group">
-            <label>DENSITÉ DES ÉCAILLES (DRACONIQUE)</label>
-            <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
+            <label>ÉNERGIE FLAMBOYANTE (ÉCAILLES)</label>
+            <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
         </div>
 
-        <div class="control-group">
-            <label>LUSTRAGE MÉTALLIQUE (REFLETS)</label>
-            <input type="range" id="metallic" min="0" max="100" value="20" oninput="updateGenetics()">
-        </div>
+        <!-- Bouton métallique conservé en masqué pour la sauvegarde mémoire -->
+        <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > STABILITÉ GÉNÉTIQUE : 98.4% <br>
-            > TYPE : HUMANOÏDE HYBRIDE <br>
-            > ORIGINE : SECTEUR_SHADRASY
+            > PIGMENTATION : 0% <br>
+            > ÉNERGIE FLAMBOYANTE : 0% <br>
+            > STABILITÉ : OPTIMALE
         </div>
 
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
@@ -229,7 +224,7 @@ const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "EXTRACTION_ADN_DRAGONNIER... [YES]",
+    "EXTRACTION_ADN_DIVIN... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
     "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -245,41 +240,35 @@ function print() {
         // Cache les logs et affiche les curseurs génétiques
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block'; 
+        // Lance une première fois l'update pour afficher les valeurs par défaut
+        updateGenetics();
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE MOTEUR DE MUTATION GÉNÉTIQUE CORRIGÉ ---
+// --- VOTRE FONCTION DE MUTATION 2D (FILTRES CSS) ---
 // =======================================================
-const dragonView = document.querySelector('#dragonnier-view');
-
-// Dès que l'astronaute (ou le dragonnier) est chargé, on applique les couleurs
-dragonView.addEventListener('load', () => {
-    updateGenetics();
-});
-
 function updateGenetics() {
-    const skinVal = document.getElementById('skin-color').value;
-    const scaleVal = document.getElementById('scale-density').value;
-    const metalVal = document.getElementById('metallic').value;
+    const img = document.getElementById('dragonniere-img');
+    const skinVal = document.getElementById('skin-color').value; // Pour le marron
+    const scaleVal = document.getElementById('scale-density').value; // Pour le rouge flamboyant
 
-    if (dragonView.model) {
-        // LA CORRECTION CLÉ EST ICI :  permet de cibler la peau
-        const material = dragonView.model.materials;
-        
-        if (material && material.pbrMetallicRoughness) {
-            // Mutation de la pigmentation (Rouge / Peau / Sombre)
-            const colorRatio = skinVal / 100;
-            material.pbrMetallicRoughness.setBaseColorFactor([1, 0.8 * colorRatio, 0.6 * colorRatio, 1]);
-            
-            // Mutation Draconique (Aspect métallique des écailles)
-            material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
-
-            // Mutation des écailles (Optionnel, lié à votre slider)
-            material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
-        }
-    }
+    // On utilise les filtres CSS pour changer les couleurs de l'image en direct
+    // sepia pour le marron, hue-rotate pour le rouge, brightness pour le flamboyant
+    img.style.filter = `
+        sepia(${skinVal}%) 
+        hue-rotate(${scaleVal * 0.5}deg) 
+        brightness(${1 + scaleVal/100})
+        drop-shadow(0 0 15px var(--rouge-vif))
+    `;
+    
+    // Mise à jour de l'affichage textuel
+    document.getElementById('bio-stats').innerHTML = `
+        > PIGMENTATION : ${skinVal}% <br>
+        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
+        > STABILITÉ : OPTIMALE
+    `;
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
@@ -292,7 +281,7 @@ function saveGenetics() {
     localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
     localStorage.setItem('OMNI_ADN_METAL', metalVal);
 
-    alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
+    alert("SÉQUENCE DIVINE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
     
     setTimeout(() => { window.location.href = "index.html"; }, 500);
 }
