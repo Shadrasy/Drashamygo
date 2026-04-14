@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
-
 <script src="security.js"></script>
 
 <style>
@@ -34,22 +33,24 @@ body::after {
 }
 
 /* =========================================
-   L'UNIVERS GALACTIQUE MASSIF
+L'UNIVERS GALACTIQUE MASSIF
 ========================================= */
 .bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
 .nebula-gas {
     background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
+    radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
+
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
-                      radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
-                      radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
+    radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
+    radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
+
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
@@ -74,7 +75,7 @@ body::after {
 @keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
 /* =========================================
-   LE RADAR CENTRAL
+LE RADAR CENTRAL
 ========================================= */
 .radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
 .radar-lens { width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%); }
@@ -91,7 +92,7 @@ body::after {
 @keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
 
 /* =========================================
-   PANNEAU DU LABORATOIRE GÉNÉTIQUE
+PANNEAU DU LABORATOIRE GÉNÉTIQUE
 ========================================= */
 .awakening-corner {
     position: fixed; bottom: 30px; right: 30px;
@@ -99,14 +100,11 @@ body::after {
     background: rgba(0, 5, 15, 0.95);
     border: 1px solid var(--cyan-system);
     backdrop-filter: blur(10px);
-    z-index: 10000 !important; 
+    z-index: 10000 !important;
     box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
 }
-
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); z-index: 10; }
-
 .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
 @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
 
@@ -120,15 +118,12 @@ body::after {
 input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; background: var(--cyan-system); border-radius: 50%; box-shadow: 0 0 8px var(--cyan-system); cursor: pointer; margin-top: -5px; }
 input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; background: var(--rouge-alerte); border-radius: 2px; }
-
 .btn-gen { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--rouge-alerte); background: rgba(255,0,51,0.1); color: var(--rouge-alerte); font-family: inherit; font-size: 0.75rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
-
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
 </style>
 </head>
 <body>
-
 <div id="tooltip"></div>
 
 <!-- L'UNIVERS GALACTIQUE -->
@@ -138,78 +133,75 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="shooting-star"></div>
 <div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
 <div class="quasar-container">
-    <div class="jet"></div><div class="black-hole"></div>
+<div class="jet"></div><div class="black-hole"></div>
 </div>
-
 <div id="galaxy-receptor">
-    <div class="nebula-planet p-gold" title="Astre Maître"></div>
-    <div class="nebula-planet p-blue"></div>
-    <div class="nebula-planet p-red"></div>
-    <div class="nebula-planet p-purple"></div>
-    <div class="nebula-planet p-ice"></div>
-    <div class="nebula-planet p-toxic"></div>
+<div class="nebula-planet p-gold" title="Astre Maître"></div>
+<div class="nebula-planet p-blue"></div>
+<div class="nebula-planet p-red"></div>
+<div class="nebula-planet p-purple"></div>
+<div class="nebula-planet p-ice"></div>
+<div class="nebula-planet p-toxic"></div>
 </div>
-
 <div class="radar-container">
-    <div class="radar-lens">
-        <div class="radar-sweep"></div>
-        <div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
-        <div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
-        <div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
-    </div>
+<div class="radar-lens">
+<div class="radar-sweep"></div>
+<div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
+<div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
+<div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
+</div>
 </div>
 
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
+<div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
+
+<!-- VOTRE NOUVEAU BLOC : VIDÉO TURNAROUND -->
+<div class="cyborg-full-frame" style="height: 400px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
     
-    <!-- VOTRE NOUVEAU BLOC D'HOLOGRAMME VECTORIEL 2.5D -->
-    <div class="cyborg-full-frame" style="height: 380px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-        
-        <div class="scan-line"></div>
+    <div class="scan-line"></div>
 
-        <div id="divine-container" style="position: relative; width: 150px; height: 300px; display: flex; justify-content: center; align-items: center;">
-            
-            <div id="wing-l" style="position: absolute; left: -20px; width: 80px; height: 180px; background: rgba(255, 0, 0, 0.6); clip-path: polygon(100% 20%, 0% 0%, 20% 100%); filter: blur(4px); transform: rotate(-10deg); z-index: 1;"></div>
-            <div id="wing-r" style="position: absolute; right: -20px; width: 80px; height: 180px; background: rgba(255, 0, 0, 0.6); clip-path: polygon(0% 20%, 100% 0%, 80% 100%); filter: blur(4px); transform: rotate(10deg); z-index: 1;"></div>
+    <video id="divine-turnaround" autoplay loop muted playsinline 
+           style="height: 95%; width: auto; filter: drop-shadow(0 0 15px rgba(255,0,51,0.5)); transition: 0.5s;">
+        <source src="images/dragonniere_turnaround.webm" type="video/webm">
+        <source src="images/dragonniere_turnaround.mp4" type="video/mp4">
+        ERREUR_SIGNAL_VIDÉO_MANQUANT
+    </video>
 
-            <img id="divine-body" src="https://www.svgrepo.com/show/398513/woman-standing.svg" 
-                 style="height: 250px; filter: brightness(0) invert(1) drop-shadow(0 0 15px #fff); z-index: 2; position: relative;">
-            
-            <div style="position: absolute; width: 100px; height: 260px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); z-index: 0;"></div>
-        </div>
+    <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right;">
+        MORPHOLOGIE : DÉESSE<br>
+        AILES : ALPHA_RED<br>
+        TYPE : DRACONIQUE_HYBRIDE
     </div>
-    
-    <!-- LES LOGS DE DÉMARRAGE -->
-    <div id="boot-logs"></div>
-    
-    <!-- LE PANNEAU DE CONTRÔLE (CACHÉ PENDANT LE DÉMARRAGE) -->
-    <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
-        
-        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
+</div>
 
-        <div class="control-group">
-            <label>PIGMENTATION DE LA PEAU</label>
-            <input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
-        </div>
+<!-- LES LOGS DE DÉMARRAGE -->
+<div id="boot-logs"></div>
 
-        <div class="control-group">
-            <label>ÉNERGIE FLAMBOYANTE (AILES)</label>
-            <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
-        </div>
+<!-- LE PANNEAU DE CONTRÔLE -->
+<div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
+<div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
 
-        <!-- Bouton métallique masqué pour la sauvegarde mémoire -->
-        <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
+<div class="control-group">
+<label>PIGMENTATION DE LA PEAU</label>
+<input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
+</div>
+<div class="control-group">
+<label>ÉNERGIE FLAMBOYANTE (AILES)</label>
+<input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
+</div>
 
-        <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > STABILITÉ GÉNÉTIQUE : OPTIMALE <br>
-            > TYPE : DÉESSE HYBRIDE <br>
-            > ORIGINE : SECTEUR_SHADRASY
-        </div>
+<!-- Bouton métallique conservé en caché pour ne pas casser l'export -->
+<input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
-        <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
-    </div>
+<div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
+> PIGMENTATION : 0% <br>
+> ÉNERGIE FLAMBOYANTE : 0% <br>
+> STABILITÉ : OPTIMALE
+</div>
 
+<button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
+</div>
 </div>
 
 <script>
@@ -221,14 +213,13 @@ document.addEventListener('mousemove', (e) => { tt.style.left = (e.clientX + 15)
 
 // --- ANIMATION DE DÉMARRAGE ---
 const logs = [
-    "BOOTING_CORE_V2031...",
-    "VÉRIFICATION_MÉCANIQUE... [OK]",
-    "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "RÉSOLUTION_VECTORIELLE... [YES]",
-    "SIGNATURE_HINARU... [VALIDÉE]",
-    "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
+"BOOTING_CORE_V2031...",
+"VÉRIFICATION_MÉCANIQUE... [OK]",
+"SCAN_ENVIRONNEMENT... [ACTIF]",
+"CHARGEMENT_FLUX_VIDÉO... [YES]",
+"SIGNATURE_HINARU... [VALIDÉE]",
+"> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
-
 let i = 0;
 function print() {
     if (i < logs.length) {
@@ -236,38 +227,34 @@ function print() {
         d.className = 'log-entry'; d.innerHTML = `>> ${logs[i]}`;
         document.getElementById('boot-logs').appendChild(d);
         i++; setTimeout(print, 500);
-    } else { 
-        // Cache les logs et affiche les curseurs génétiques
+    } else {
         document.getElementById('boot-logs').style.display = 'none';
-        document.getElementById('genetics-panel').style.display = 'block'; 
-        
-        // Force la mise à jour initiale des couleurs
-        updateGenetics();
+        document.getElementById('genetics-panel').style.display = 'block';
+        updateGenetics(); // On lance la fonction pour mettre les valeurs à jour d'emblée
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE NOUVELLE FONCTION DE MUTATION SVG / CSS ---
+// --- VOTRE FONCTION VIDÉO (FILTRES CSS) ---
 // =======================================================
 function updateGenetics() {
-    const body = document.getElementById('divine-body');
-    const wingL = document.getElementById('wing-l');
-    const wingR = document.getElementById('wing-r');
-    
+    const vid = document.getElementById('divine-turnaround');
     const skinVal = document.getElementById('skin-color').value; 
-    const scaleVal = document.getElementById('scale-density').value;
+    const scaleVal = document.getElementById('scale-density').value; 
 
-    // Mutation Marron (on réduit le blanc pour laisser passer le marron)
-    const brownEffect = 100 - (skinVal / 2);
-    body.style.filter = `brightness(${brownEffect}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 15px #fff)`;
+    // Les CSS Filters s'appliquent aussi aux vidéos !
+    // On simule les modifications avec sepia, saturate et hue-rotate
+    if (vid) {
+        vid.style.filter = `sepia(${skinVal}%) saturate(${100 + scaleVal * 1.5}%) hue-rotate(${scaleVal * 0.5}deg) drop-shadow(0 0 15px rgba(255,0,51,0.5))`;
+    }
 
-    // Mutation Ailes Rouges
-    const redIntensity = 0.4 + (scaleVal / 100);
-    wingL.style.background = `rgba(255, 0, 0, ${redIntensity})`;
-    wingR.style.background = `rgba(255, 0, 0, ${redIntensity})`;
-    wingL.style.filter = `blur(${6 - scaleVal/20}px) drop-shadow(0 0 10px red)`;
-    wingR.style.filter = `blur(${6 - scaleVal/20}px) drop-shadow(0 0 10px red)`;
+    // Mise à jour de l'affichage textuel
+    document.getElementById('bio-stats').innerHTML = `
+        > PIGMENTATION : ${skinVal}% <br>
+        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
+        > STABILITÉ : OPTIMALE
+    `;
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
@@ -275,13 +262,12 @@ function saveGenetics() {
     const skinVal = document.getElementById('skin-color').value;
     const scaleVal = document.getElementById('scale-density').value;
     const metalVal = document.getElementById('metallic').value;
-
+    
     localStorage.setItem('OMNI_ADN_SKIN', skinVal);
     localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
     localStorage.setItem('OMNI_ADN_METAL', metalVal);
-
-    alert("SÉQUENCE DIVINE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
     
+    alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
     setTimeout(() => { window.location.href = "index.html"; }, 500);
 }
 </script>
