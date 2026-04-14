@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
-
 <script src="security.js"></script>
 
 <style>
@@ -158,27 +157,28 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
 <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-<!-- VOTRE NOUVEAU BLOC : MANIFESTATION DIVINE 2.5D -->
-<div class="cyborg-full-frame" style="height: 400px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+<!-- VOTRE NOUVEAU BLOC : MANIFESTATION DIVINE SVG -->
+<div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
     
     <div class="scan-line"></div>
 
-    <div id="divine-manifestation" style="position: relative; width: 200px; height: 350px; display: flex; justify-content: center; align-items: center;">
+    <div id="divine-manifestation" style="position: relative; width: 200px; height: 380px; display: flex; justify-content: center; align-items: center;">
         
-        <div id="wing-l" style="position: absolute; left: 10px; width: 90px; height: 200px; background: rgba(255, 0, 0, 0.6); clip-path: polygon(100% 20%, 0% 0%, 30% 100%, 80% 50%); filter: blur(3px); transform: rotate(-15deg); z-index: 1;"></div>
-        <div id="wing-r" style="position: absolute; right: 10px; width: 90px; height: 200px; background: rgba(255, 0, 0, 0.6); clip-path: polygon(0% 20%, 100% 0%, 70% 100%, 20% 50%); filter: blur(3px); transform: rotate(15deg); z-index: 1;"></div>
+        <div id="aura" style="position: absolute; width: 250px; height: 350px; background: radial-gradient(circle, rgba(255,0,0,0.2) 0%, transparent 70%); filter: blur(20px); z-index: 0;"></div>
 
-        <img id="divine-silhouette" src="https://www.svgrepo.com/show/398513/woman-standing.svg" 
-             style="height: 300px; filter: brightness(0) invert(1) drop-shadow(0 0 15px #fff); z-index: 2; position: relative;">
+        <img id="divine-body" src="https://svgsilh.com/svg/297169.svg" 
+             style="height: 330px; filter: brightness(0) invert(1) drop-shadow(0 0 20px #fff); z-index: 2; transition: 0.5s;">
+        
+        <div id="wing-l" style="position: absolute; left: -10px; width: 120px; height: 200px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 36%, 10% 0%, 0% 28%, 24% 43%, 0% 64%, 28% 71%, 13% 100%, 100% 79%); filter: blur(2px); transform: rotate(-10deg); z-index: 1;"></div>
+        <div id="wing-r" style="position: absolute; right: -10px; width: 120px; height: 200px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 36%, 90% 0%, 100% 28%, 76% 43%, 100% 64%, 72% 71%, 87% 100%, 0% 79%); filter: blur(2px); transform: rotate(10deg); z-index: 1;"></div>
 
-        <div style="position: absolute; width: 100px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 80%); z-index: 0; filter: blur(10px);"></div>
     </div>
 </div>
 
 <!-- LES LOGS DE DÉMARRAGE -->
 <div id="boot-logs"></div>
 
-<!-- LE PANNEAU DE CONTRÔLE (CACHÉ PENDANT LE DÉMARRAGE) -->
+<!-- LE PANNEAU DE CONTRÔLE -->
 <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
 <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
 
@@ -190,7 +190,8 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <label>ÉNERGIE FLAMBOYANTE (AILES)</label>
 <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
 </div>
-<!-- Curseur Metallique masqué pour la compatibilité des sauvegardes -->
+
+<!-- Bouton métallique conservé en caché pour l'export -->
 <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
 <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
@@ -215,7 +216,7 @@ const logs = [
 "BOOTING_CORE_V2031...",
 "VÉRIFICATION_MÉCANIQUE... [OK]",
 "SCAN_ENVIRONNEMENT... [ACTIF]",
-"RÉSOLUTION_VECTORIELLE... [YES]",
+"CHARGEMENT_VECTEURS_DIVINS... [YES]",
 "SIGNATURE_HINARU... [VALIDÉE]",
 "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -236,10 +237,10 @@ function print() {
 window.onload = print;
 
 // =======================================================
-// --- VOTRE MOTEUR DE MUTATION VECTORIELLE CSS ---
+// --- MOTEUR DE MUTATION SVG (ADAPTÉ POUR DIVINE-BODY) ---
 // =======================================================
 function updateGenetics() {
-    const body = document.getElementById('divine-silhouette');
+    const body = document.getElementById('divine-body');
     const wingL = document.getElementById('wing-l');
     const wingR = document.getElementById('wing-r');
     
@@ -248,14 +249,25 @@ function updateGenetics() {
 
     // Mutation Peau : On transforme le blanc pur en marron/doré
     const brownTone = 100 - (skinVal / 2);
-    body.style.filter = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 15px #fff)`;
+    if (body) {
+        body.style.filter = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 20px #fff)`;
+    }
 
     // Mutation Ailes : Intensité du rouge et de l'éclat
     const fireAlpha = 0.3 + (scaleVal / 100);
-    wingL.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
-    wingR.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
-    wingL.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
-    wingR.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
+    if (wingL && wingR) {
+        wingL.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
+        wingR.style.background = `rgba(255, 0, 0, ${fireAlpha})`;
+        wingL.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
+        wingR.style.filter = `blur(${5 - scaleVal/25}px) drop-shadow(0 0 10px red)`;
+    }
+
+    // Mise à jour des stats UI
+    document.getElementById('bio-stats').innerHTML = `
+        > PIGMENTATION : ${skinVal}% <br>
+        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
+        > STABILITÉ : OPTIMALE
+    `;
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
