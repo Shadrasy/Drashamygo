@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 <script src="security.js"></script>
-<!-- Librairie 3D -->
+<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-
 <style>
 :root {
     --noir-fond: #000105;
@@ -25,7 +24,6 @@ body {
     margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
     font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
 }
-
 /* --- EFFET VHS --- */
 body::after {
     content: " "; display: block; position: fixed; inset: 0;
@@ -44,7 +42,6 @@ L'UNIVERS GALACTIQUE MASSIF
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
-
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
                       radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
@@ -52,15 +49,28 @@ L'UNIVERS GALACTIQUE MASSIF
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
-
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
 
-/* LES PLANÈTES */
+.quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -15; }
+.black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
+.jet { position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6; }
+
+/* LES PLANÈTES HORS RADAR */
 .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); pointer-events: none; }
 .p-gold { width: 45px; height: 45px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%; animation: floatGold 25s infinite ease-in-out; }
 @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
+.p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 40s infinite ease-in-out; }
+@keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
+.p-red { width: 45px; height: 45px; background: var(--bordeaux); bottom: 20%; right: 10%; animation: floatRed 30s infinite ease-in-out; }
+@keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
+.p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
+@keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+.p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
+@keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+.p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
+@keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
 
 /* =========================================
 LE RADAR CENTRAL
@@ -73,7 +83,11 @@ LE RADAR CENTRAL
 .server-planet { position: absolute; border-radius: 50%; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.4); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s; }
 .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
 .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
+.p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitThe 40s linear infinite reverse; }
+.p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system); animation: orbitGal 55s linear infinite; }
 @keyframes orbitIdx { from { transform: rotate(0deg) translateX(28vh) rotate(0deg); } to { transform: rotate(360deg) translateX(28vh) rotate(-360deg); } }
+@keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
+@keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
 
 /* =========================================
 PANNEAU DU LABORATOIRE GÉNÉTIQUE
@@ -107,25 +121,6 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
 
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
-
-/* --- ANIMATIONS CODÉES EN CSS POUR LA DÉESSE --- */
-@keyframes flame-flicker {
-    0% { transform: translateX(-50%) scaleY(1) rotate(-2deg); opacity: 0.8; }
-    50% { transform: translateX(-50%) scaleY(1.05) rotate(2deg); opacity: 1; filter: blur(5px) drop-shadow(0 0 20px #ff3333); }
-    100% { transform: translateX(-50%) scaleY(0.95) rotate(-1deg); opacity: 0.9; }
-}
-@keyframes tail-wag {
-    0%, 100% { transform: rotate(10deg); }
-    50% { transform: rotate(25deg); }
-}
-@keyframes wing-beat-l {
-    0%, 100% { transform: rotate(-20deg) scaleX(1); }
-    50% { transform: rotate(-15deg) scaleX(0.8); }
-}
-@keyframes wing-beat-r {
-    0%, 100% { transform: rotate(20deg) scaleX(1); }
-    50% { transform: rotate(15deg) scaleX(0.8); }
-}
 </style>
 </head>
 <body>
@@ -135,57 +130,52 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="bg-layer stars"></div>
 <div class="bg-layer nebula-gas"></div>
 <div class="space-dust"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
+<div class="quasar-container">
+    <div class="jet"></div><div class="black-hole"></div>
+</div>
+<div id="galaxy-receptor">
+    <div class="nebula-planet p-gold" title="Astre Maître"></div>
+    <div class="nebula-planet p-blue"></div>
+    <div class="nebula-planet p-red"></div>
+    <div class="nebula-planet p-purple"></div>
+    <div class="nebula-planet p-ice"></div>
+    <div class="nebula-planet p-toxic"></div>
+</div>
 
 <div class="radar-container">
     <div class="radar-lens">
         <div class="radar-sweep"></div>
         <div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
+        <div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
+        <div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
     </div>
 </div>
 
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
+    <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
 
-    <!-- BLOC HYBRIDE : CODE CSS + CORPS 3D -->
-    <div class="cyborg-full-frame" style="height: 480px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    <!-- VOTRE BASE ORIGINALE EXACTE (AVEC LA HAUTEUR DE 420px QUE VOUS AVIEZ CHOISIE) -->
+    <div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         
         <div class="scan-line"></div>
-
-        <div id="divine-entity" style="position: relative; width: 350px; height: 450px; display: flex; justify-content: center; align-items: center;">
-            
-            <!-- 1. QUEUE DE DRAGON CODÉE EN CSS (Derrière le modèle) -->
-            <div id="dragon-tail" style="position: absolute; bottom: 80px; left: 50%; width: 120px; height: 80px; border-bottom: 25px solid rgba(255,0,0,0.8); border-right: 10px solid transparent; border-radius: 0 0 100px 0; z-index: 1; transform-origin: left center; animation: tail-wag 5s infinite ease-in-out;">
-                <div id="tail-tip" style="position:absolute; bottom:-25px; right:-15px; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 35px solid rgba(255,0,0,0.9); transform: rotate(-25deg);"></div>
-            </div>
-
-            <!-- 2. AILES DE DRAGON CODÉES EN CSS (Derrière le modèle) -->
-            <div class="wing wing-l" style="position: absolute; left: -10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 30%, 0% 0%, 20% 100%, 60% 60%); z-index: 1; animation: wing-beat-l 4s infinite ease-in-out; transform-origin: right center;"></div>
-            <div class="wing wing-r" style="position: absolute; right: -10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 30%, 100% 0%, 80% 100%, 40% 60%); z-index: 1; animation: wing-beat-r 4s infinite ease-in-out; transform-origin: left center;"></div>
-
-            <!-- 3. CHEVEUX ROUGES FLAMBOYANTS CODÉS EN CSS (Derrière la tête) -->
-            <div id="entity-hair" style="position: absolute; top: 10px; left: 50%; width: 100px; height: 280px; background: linear-gradient(to bottom, #ff0000 0%, #ff6600 50%, transparent 100%); z-index: 2; border-radius: 50% 50% 0 0; animation: flame-flicker 2s infinite alternate;"></div>
-
-            <!-- 4. CORPS HUMANOÏDE EN VRAIE 3D (Chargé automatiquement depuis internet, fond transparent) -->
-            <!-- Ce modèle va tourner en 3D au milieu de vos ailes et cheveux en CSS ! -->
-            <model-viewer id="dragonnier-view" 
-                src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" 
-                camera-controls 
-                auto-rotate
-                rotation-per-second="30deg"
-                shadow-intensity="0"
-                exposure="1.5"
-                style="width: 100%; height: 100%; background: transparent; z-index: 5; filter: drop-shadow(0 0 10px rgba(255,0,51,0.8));">
-            </model-viewer>
-
-            <!-- Aura d'énergie globale -->
-            <div style="position: absolute; width: 300px; height: 400px; background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, transparent 70%); z-index: 0; filter: blur(15px);"></div>
-        </div>
-
-        <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right; z-index: 10;">
-            MORPHOLOGIE : DÉESSE HYBRIDE<br>
-            CODE SOURCE : GÉNÉRATION DIRECTE CSS/3D
-        </div>
+        
+        <!-- C'EST ICI QUE VOTRE VRAI DRAGONNIER EST CHARGÉ -->
+        <model-viewer id="dragonnier-view" 
+            src="images/dragonnier_humanoide.glb" 
+            alt="Spécimen Humanoïde"
+            camera-controls 
+            auto-rotate
+            shadow-intensity="2"
+            exposure="1.5"
+            environment-image="neutral"
+            loading="eager"
+            style="width: 100%; height: 100%;"
+            onerror="this.src='https://modelviewer.dev/shared-assets/models/Astronaut.glb'">
+        </model-viewer>
+        
     </div>
 
     <!-- LES LOGS DE DÉMARRAGE -->
@@ -193,24 +183,27 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
     <!-- LE PANNEAU DE CONTRÔLE -->
     <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
-        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
+        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
         
         <div class="control-group">
-            <label>PIGMENTATION DE LA PEAU (CORPS 3D)</label>
+            <label>PIGMENTATION DE LA PEAU</label>
             <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
         </div>
         
         <div class="control-group">
-            <label>ÉNERGIE FLAMBOYANTE (AILES / CHEVEUX / QUEUE)</label>
-            <input type="range" id="scale-density" min="0" max="100" value="50" oninput="updateGenetics()">
+            <label>DENSITÉ DES ÉCAILLES (DRACONIQUE)</label>
+            <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
+        </div>
+        
+        <div class="control-group">
+            <label>LUSTRAGE MÉTALLIQUE (REFLETS)</label>
+            <input type="range" id="metallic" min="0" max="100" value="20" oninput="updateGenetics()">
         </div>
 
-        <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
-
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > PIGMENTATION : 50% <br>
-            > ÉNERGIE FLAMBOYANTE : 50% <br>
-            > STABILITÉ : 100% CODE PUR
+            > STABILITÉ GÉNÉTIQUE : 98.4% <br>
+            > TYPE : HUMANOÏDE HYBRIDE <br>
+            > ORIGINE : SECTEUR_SHADRASY
         </div>
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
     </div>
@@ -226,10 +219,10 @@ document.addEventListener('mousemove', (e) => { tt.style.left = (e.clientX + 15)
 // --- ANIMATION DE DÉMARRAGE ---
 const logs = [
     "BOOTING_CORE_V2031...",
-    "GÉNÉRATION_AILES_CSS... [OK]",
-    "GÉNÉRATION_CHEVEUX_CSS... [OK]",
-    "IMPORTATION_CORPS_3D_GÉNÉRIQUE... [YES]",
-    "FUSION_HYBRIDE... [VALIDÉE]",
+    "VÉRIFICATION_MÉCANIQUE... [OK]",
+    "SCAN_ENVIRONNEMENT... [ACTIF]",
+    "EXTRACTION_ADN_DRAGONNIER... [YES]",
+    "SIGNATURE_HINARU... [VALIDÉE]",
     "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
 let i = 0;
@@ -242,13 +235,12 @@ function print() {
     } else {
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
-        updateGenetics(); 
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- MOTEUR DE MUTATION HYBRIDE (CSS + 3D) ---
+// --- VOTRE MOTEUR DE MUTATION GÉNÉTIQUE ORIGINEL ---
 // =======================================================
 const dragonView = document.querySelector('#dragonnier-view');
 
@@ -259,47 +251,21 @@ dragonView.addEventListener('load', () => {
 function updateGenetics() {
     const skinVal = document.getElementById('skin-color').value;
     const scaleVal = document.getElementById('scale-density').value;
+    const metalVal = document.getElementById('metallic').value;
     
-    // 1. MODIFICATION DU CORPS EN 3D (Teinte de la peau)
     if (dragonView.model) {
-        dragonView.model.materials.forEach((mat) => {
-            if (mat.pbrMetallicRoughness) {
+        // Cette boucle garantit que la peau, les ailes et les écailles de votre modèle
+        // dragonnier_humanoide.glb changeront bien de couleur, peu importe comment
+        // le fichier 3D est construit à l'intérieur.
+        dragonView.model.materials.forEach((material) => {
+            if (material && material.pbrMetallicRoughness) {
                 const colorRatio = skinVal / 100;
-                // Transforme la couleur vers le marron/rouge/doré
-                mat.pbrMetallicRoughness.setBaseColorFactor([1, 0.8 * colorRatio, 0.5 * colorRatio, 1]);
+                material.pbrMetallicRoughness.setBaseColorFactor([1, 0.8 * colorRatio, 0.6 * colorRatio, 1]);
+                material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
+                material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
             }
         });
     }
-
-    // 2. MODIFICATION DES ÉLÉMENTS CODÉS EN CSS (Ailes, Cheveux, Queue)
-    const wings = document.querySelectorAll('.wing');
-    const hair = document.getElementById('entity-hair');
-    const tail = document.getElementById('dragon-tail');
-    const tailTip = document.getElementById('tail-tip');
-
-    const energyLevel = 0.3 + (scaleVal / 100);
-    const blurLevel = 5 - (scaleVal / 25);
-
-    wings.forEach(w => {
-        w.style.background = `rgba(255, 0, 0, ${energyLevel})`;
-        w.style.filter = `blur(${blurLevel}px) drop-shadow(0 0 15px red)`;
-    });
-
-    if (tail && tailTip) {
-        tail.style.borderBottomColor = `rgba(255, 0, 0, ${energyLevel})`;
-        tailTip.style.borderLeftColor = `rgba(255, 0, 0, ${energyLevel + 0.2})`;
-    }
-
-    if (hair) {
-        hair.style.opacity = energyLevel + 0.3;
-    }
-
-    // Mise à jour de l'interface
-    document.getElementById('bio-stats').innerHTML = `
-        > PIGMENTATION : ${skinVal}% <br>
-        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
-        > STABILITÉ : 100% HYBRIDE CODE/3D
-    `;
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
