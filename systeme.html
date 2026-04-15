@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 <script src="security.js"></script>
+
 <style>
 :root {
     --noir-fond: #000105;
@@ -22,6 +23,7 @@ body {
     margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
     font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
 }
+
 /* --- EFFET VHS --- */
 body::after {
     content: " "; display: block; position: fixed; inset: 0;
@@ -29,6 +31,7 @@ body::after {
     linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
     z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
 }
+
 /* =========================================
 L'UNIVERS GALACTIQUE MASSIF
 ========================================= */
@@ -39,6 +42,7 @@ L'UNIVERS GALACTIQUE MASSIF
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
+
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
                       radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
@@ -46,6 +50,7 @@ L'UNIVERS GALACTIQUE MASSIF
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
+
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
@@ -76,6 +81,7 @@ LE RADAR CENTRAL
 .radar-lens { width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%); }
 .radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
 @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
 .server-planet { position: absolute; border-radius: 50%; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.4); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s; }
 .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
 .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
@@ -117,6 +123,28 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
 
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
+
+/* --- ANIMATIONS DE L'ENTITÉ DIVINE --- */
+@keyframes flame-flicker {
+    0% { transform: translateX(-50%) scaleY(1) rotate(-2deg); opacity: 0.8; }
+    50% { transform: translateX(-50%) scaleY(1.1) rotate(2deg); opacity: 1; filter: blur(4px) drop-shadow(0 0 30px #ff3333); }
+    100% { transform: translateX(-50%) scaleY(0.95) rotate(-1deg); opacity: 0.9; }
+}
+
+@keyframes tail-wag {
+    0%, 100% { transform: rotate(10deg); }
+    50% { transform: rotate(25deg); }
+}
+
+@keyframes wing-beat-l {
+    0%, 100% { transform: rotate(-20deg) scaleX(1); }
+    50% { transform: rotate(-15deg) scaleX(0.8); }
+}
+
+@keyframes wing-beat-r {
+    0%, 100% { transform: rotate(20deg) scaleX(1); }
+    50% { transform: rotate(15deg) scaleX(0.8); }
+}
 </style>
 </head>
 <body>
@@ -152,23 +180,37 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
+    <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-    <!-- VOTRE BLOC VIDÉO EXACTEMENT COMME DEMANDÉ -->
-    <div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    <!-- NOUVEAU BLOC : L'ENTITÉ DIVINE GÉANTE (550px) -->
+    <div class="cyborg-full-frame" style="height: 550px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         
         <div class="scan-line"></div>
 
-        <video id="divine-turnaround" autoplay loop muted playsinline 
-               style="height: 95%; width: auto; filter: drop-shadow(0 0 20px rgba(255,0,0,0.5)); transition: 0.5s;">
-            <source src="images/dragonniere_turnaround.webm" type="video/webm">
-            <source src="images/dragonniere_turnaround.mp4" type="video/mp4">
-            ERREUR_SIGNAL_VIDÉO_MANQUANT
-        </video>
+        <div id="divine-entity" style="position: relative; width: 350px; height: 500px; display: flex; justify-content: center; align-items: center; filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));">
+            
+            <!-- QUEUE DE DRAGON GÉANTE -->
+            <div id="dragon-tail" style="position: absolute; bottom: 60px; left: 50%; width: 150px; height: 100px; background: transparent; border-bottom: 25px solid rgba(255,0,0,0.8); border-right: 10px solid transparent; border-radius: 0 0 120px 0; z-index: 1; transform-origin: left center; animation: tail-wag 6s infinite ease-in-out;">
+                <!-- Pointe acérée de la queue -->
+                <div id="tail-tip" style="position:absolute; bottom:-25px; right:-15px; width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 45px solid rgba(255,0,0,0.9); transform: rotate(-25deg);"></div>
+            </div>
 
-        <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right;">
-            MORPHOLOGIE : DÉESSE<br>
-            TYPE : DRACONIQUE_HYBRIDE
+            <!-- AILES DE DRAGON GÉANTES -->
+            <div class="wing wing-l" style="position: absolute; left: -10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 30%, 0% 0%, 20% 100%, 60% 60%); z-index: 1; animation: wing-beat-l 4s infinite ease-in-out; transform-origin: right center;"></div>
+            <div class="wing wing-r" style="position: absolute; right: -10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 30%, 100% 0%, 80% 100%, 40% 60%); z-index: 1; animation: wing-beat-r 4s infinite ease-in-out; transform-origin: left center;"></div>
+
+            <!-- CORPS DE DÉESSE -->
+            <img id="divine-body" src="https://svgsilh.com/svg/297169.svg" style="height: 450px; filter: brightness(0) invert(1) drop-shadow(0 0 20px #fff); z-index: 3; transition: 0.5s;">
+
+            <!-- CHEVEUX ROUGE FLAMBOYANTS (AURA) -->
+            <div id="entity-hair" style="position: absolute; top: -30px; left: 50%; width: 120px; height: 250px; background: radial-gradient(ellipse at bottom, var(--rouge-alerte) 0%, #ff6600 40%, #ffcc00 80%, transparent 100%); z-index: 2; border-radius: 50% 50% 0 0; mix-blend-mode: screen; animation: flame-flicker 2s infinite alternate;"></div>
+
+            <div style="position: absolute; width: 300px; height: 480px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); z-index: 0; filter: blur(15px);"></div>
+        </div>
+
+        <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right; z-index: 10;">
+            MORPHOLOGIE : DÉESSE SUPRÊME<br>
+            TYPE : DRACONIQUE_HYBRIDE_GÉANTE
         </div>
     </div>
 
@@ -177,7 +219,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
     <!-- LE PANNEAU DE CONTRÔLE -->
     <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
-        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
+        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
         
         <div class="control-group">
             <label>PIGMENTATION DE LA PEAU</label>
@@ -185,17 +227,17 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
         </div>
         
         <div class="control-group">
-            <label>ÉNERGIE FLAMBOYANTE (AILES / AURA)</label>
+            <label>ÉNERGIE FLAMBOYANTE (AILES / CHEVEUX / QUEUE)</label>
             <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
         </div>
         
-        <!-- Champ caché pour compatibilité avec l'export de sauvegarde -->
+        <!-- Compatibilité sauvegarde -->
         <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
             > PIGMENTATION : 0% <br>
             > ÉNERGIE FLAMBOYANTE : 0% <br>
-            > STABILITÉ GÉNÉTIQUE : OPTIMALE
+            > STABILITÉ : OPTIMALE
         </div>
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
     </div>
@@ -213,7 +255,7 @@ const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "EXTRACTION_FLUX_VIDÉO... [YES]",
+    "GÉNÉRATION_CHIMÈRE_GÉANTE... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
     "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -233,16 +275,46 @@ function print() {
 window.onload = print;
 
 // =======================================================
-// --- VOTRE MOTEUR DE MUTATION (FILTRES VIDÉO) ---
+// --- MOTEUR DE MUTATION POUR L'ENTITÉ GÉANTE ---
 // =======================================================
 function updateGenetics() {
-    const vid = document.getElementById('divine-turnaround');
+    const body = document.getElementById('divine-body');
+    const wings = document.querySelectorAll('.wing');
+    const hair = document.getElementById('entity-hair');
+    const tail = document.getElementById('dragon-tail');
+    const tailTip = document.getElementById('tail-tip');
+
     const skinVal = document.getElementById('skin-color').value;
     const scaleVal = document.getElementById('scale-density').value;
 
-    // Modification de la vidéo avec des filtres CSS (temps réel !)
-    if (vid) {
-        vid.style.filter = `sepia(${skinVal}%) saturate(${100 + scaleVal * 1.5}%) hue-rotate(${scaleVal * 0.5}deg) drop-shadow(0 0 20px rgba(255,0,0,0.5))`;
+    // Mutation Peau : Transforme la déesse blanche en déesse marron/dorée
+    const brownTone = 100 - (skinVal / 2);
+    if (body) {
+        body.style.filter = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 20px #fff)`;
+    }
+
+    // Mutation Énergie Draconique : Plus fort = Plus rouge et plus brillant
+    const energyLevel = 0.4 + (scaleVal / 100);
+    const blurLevel = 5 - (scaleVal / 25);
+    const glowLevel = 10 + (scaleVal / 5);
+
+    // AILES
+    wings.forEach(w => {
+        w.style.background = `rgba(255, 0, 0, ${energyLevel})`;
+        w.style.filter = `blur(${blurLevel}px) drop-shadow(0 0 ${glowLevel}px red)`;
+    });
+
+    // QUEUE
+    if (tail && tailTip) {
+        tail.style.borderBottomColor = `rgba(255, 0, 0, ${energyLevel})`;
+        tail.style.filter = `drop-shadow(0 0 ${glowLevel}px red)`;
+        tailTip.style.borderLeftColor = `rgba(255, 0, 0, ${energyLevel + 0.2})`;
+    }
+
+    // CHEVEUX FLAMBOYANTS
+    if (hair) {
+        hair.style.opacity = energyLevel + 0.2;
+        hair.style.filter = `blur(${blurLevel + 2}px) drop-shadow(0 0 ${glowLevel * 2}px #ff3333)`;
     }
 
     // Mise à jour de l'affichage textuel (UI)
