@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 <script src="security.js"></script>
-<!-- Librairie 3D pour afficher et modifier le modèle en temps réel -->
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root {
     --noir-fond: #000105;
@@ -31,7 +29,6 @@ body::after {
     linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
     z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
 }
-
 /* =========================================
 L'UNIVERS GALACTIQUE MASSIF
 ========================================= */
@@ -118,6 +115,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px
 input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; background: var(--rouge-alerte); border-radius: 2px; }
 .btn-gen { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--rouge-alerte); background: rgba(255,0,51,0.1); color: var(--rouge-alerte); font-family: inherit; font-size: 0.75rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
+
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
 </style>
 </head>
@@ -133,6 +131,7 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="quasar-container">
     <div class="jet"></div><div class="black-hole"></div>
 </div>
+
 <div id="galaxy-receptor">
     <div class="nebula-planet p-gold" title="Astre Maître"></div>
     <div class="nebula-planet p-blue"></div>
@@ -154,20 +153,23 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
     <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
-    
-    <!-- VOTRE NOUVELLE BALISE 3D MODEL-VIEWER -->
-    <div class="cyborg-full-frame" style="height: 300px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden;">
+
+    <!-- VOTRE BLOC VIDÉO EXACTEMENT COMME DEMANDÉ -->
+    <div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+        
         <div class="scan-line"></div>
-        <model-viewer id="dragonnier-view" 
-            src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb" 
-            alt="Specimen Divin"
-            camera-controls 
-            auto-rotate
-            shadow-intensity="1"
-            exposure="1.2"
-            loading="eager"
-            style="width: 100%; height: 100%; background: #000;">
-        </model-viewer>
+
+        <video id="divine-turnaround" autoplay loop muted playsinline 
+               style="height: 95%; width: auto; filter: drop-shadow(0 0 20px rgba(255,0,0,0.5)); transition: 0.5s;">
+            <source src="images/dragonniere_turnaround.webm" type="video/webm">
+            <source src="images/dragonniere_turnaround.mp4" type="video/mp4">
+            ERREUR_SIGNAL_VIDÉO_MANQUANT
+        </video>
+
+        <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right;">
+            MORPHOLOGIE : DÉESSE<br>
+            TYPE : DRACONIQUE_HYBRIDE
+        </div>
     </div>
 
     <!-- LES LOGS DE DÉMARRAGE -->
@@ -179,23 +181,21 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
         
         <div class="control-group">
             <label>PIGMENTATION DE LA PEAU</label>
-            <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
+            <input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
         </div>
         
         <div class="control-group">
-            <label>DENSITÉ DES ÉCAILLES (DRACONIQUE)</label>
-            <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
+            <label>ÉNERGIE FLAMBOYANTE (AILES / AURA)</label>
+            <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
         </div>
         
-        <div class="control-group">
-            <label>LUSTRAGE MÉTALLIQUE (REFLETS)</label>
-            <input type="range" id="metallic" min="0" max="100" value="20" oninput="updateGenetics()">
-        </div>
+        <!-- Champ caché pour compatibilité avec l'export de sauvegarde -->
+        <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > STABILITÉ GÉNÉTIQUE : 98.4% <br>
-            > TYPE : HUMANOÏDE HYBRIDE <br>
-            > ORIGINE : SECTEUR_SHADRASY
+            > PIGMENTATION : 0% <br>
+            > ÉNERGIE FLAMBOYANTE : 0% <br>
+            > STABILITÉ GÉNÉTIQUE : OPTIMALE
         </div>
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
     </div>
@@ -213,7 +213,7 @@ const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "EXTRACTION_ADN_DRAGONNIER... [YES]",
+    "EXTRACTION_FLUX_VIDÉO... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
     "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -227,41 +227,30 @@ function print() {
     } else {
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
+        updateGenetics(); // On lance la fonction pour mettre les valeurs à jour
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE MOTEUR DE MUTATION GÉNÉTIQUE CORRIGÉ ---
+// --- VOTRE MOTEUR DE MUTATION (FILTRES VIDÉO) ---
 // =======================================================
-const dragonView = document.querySelector('#dragonnier-view');
-
-// Dès que le modèle (RobotExpressive) est chargé, on applique les couleurs
-dragonView.addEventListener('load', () => {
-    updateGenetics();
-});
-
 function updateGenetics() {
+    const vid = document.getElementById('divine-turnaround');
     const skinVal = document.getElementById('skin-color').value;
     const scaleVal = document.getElementById('scale-density').value;
-    const metalVal = document.getElementById('metallic').value;
-    
-    if (dragonView.model) {
-        // Applique la couleur sur le tout premier matériau du robot
-        const material = dragonView.model.materials;
-        
-        if (material && material.pbrMetallicRoughness) {
-            // Mutation de la pigmentation (Rouge / Peau / Sombre)
-            const colorRatio = skinVal / 100;
-            material.pbrMetallicRoughness.setBaseColorFactor([1, 0.8 * colorRatio, 0.6 * colorRatio, 1]);
-            
-            // Mutation Draconique (Aspect métallique des écailles)
-            material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
-            
-            // Mutation des écailles (Lisse vs Rugueux)
-            material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
-        }
+
+    // Modification de la vidéo avec des filtres CSS (temps réel !)
+    if (vid) {
+        vid.style.filter = `sepia(${skinVal}%) saturate(${100 + scaleVal * 1.5}%) hue-rotate(${scaleVal * 0.5}deg) drop-shadow(0 0 20px rgba(255,0,0,0.5))`;
     }
+
+    // Mise à jour de l'affichage textuel (UI)
+    document.getElementById('bio-stats').innerHTML = `
+        > PIGMENTATION : ${skinVal}% <br>
+        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
+        > STABILITÉ GÉNÉTIQUE : OPTIMALE
+    `;
 }
 
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
