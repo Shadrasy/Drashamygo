@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 <script src="security.js"></script>
-<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root {
     --noir-fond: #000105;
@@ -31,6 +29,7 @@ body::after {
     linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
     z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
 }
+
 /* =========================================
 L'UNIVERS GALACTIQUE MASSIF
 ========================================= */
@@ -78,6 +77,7 @@ LE RADAR CENTRAL
 .radar-lens { width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%); }
 .radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
 @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
 .server-planet { position: absolute; border-radius: 50%; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.4); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s; }
 .server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
 .p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
@@ -104,6 +104,12 @@ PANNEAU DU LABORATOIRE GÉNÉTIQUE
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); z-index: 10; }
 .scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
 @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
+
+/* --- ANIMATION DE PULSATION DIVINE --- */
+@keyframes pulse-divine {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.02); opacity: 1; }
+}
 
 #boot-logs { font-size: 0.7rem; line-height: 1.5; height: 130px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; margin-bottom: 15px; }
 .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
@@ -133,7 +139,6 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="quasar-container">
     <div class="jet"></div><div class="black-hole"></div>
 </div>
-
 <div id="galaxy-receptor">
     <div class="nebula-planet p-gold" title="Astre Maître"></div>
     <div class="nebula-planet p-blue"></div>
@@ -154,33 +159,32 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
-
-    <!-- VOTRE NOUVEAU BLOC 3D AVEC ROTATION CINÉMATOGRAPHIQUE -->
+    <div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
+    
+    <!-- VOTRE NOUVEAU BLOC : L'ENTITÉ DIVINE PURE CSS -->
     <div class="cyborg-full-frame" style="height: 420px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         
         <div class="scan-line"></div>
 
-        <model-viewer id="dragonnier-view" 
-            src="images/dragonniere_divine.glb" 
-            ar-status="not-present"
-            camera-controls 
-            auto-rotate
-            rotation-per-second="30deg"
-            field-of-view="30deg"
-            touch-action="pan-y"
-            interpolation-decay="200"
-            shadow-intensity="1"
-            exposure="1"
-            loading="eager" 
-            reveal="auto"
-            style="width: 100%; height: 100%; background: #000;">
+        <div id="divine-entity" style="position: relative; width: 200px; height: 380px; display: flex; justify-content: center; align-items: center; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));">
             
-            <div slot="progress-bar" style="width: 100%; height: 2px; background: rgba(0,229,255,0.2);">
-                <div style="width: 0%; height: 100%; background: var(--cyan-system); transition: width 0.3s;"></div>
+            <div class="wing wing-l" style="position: absolute; left: 10px; width: 100px; height: 220px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 40%, 0% 0%, 20% 100%); filter: blur(2px); transform: rotate(-15deg); z-index: 1;"></div>
+            <div class="wing wing-r" style="position: absolute; right: 10px; width: 100px; height: 220px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 40%, 100% 0%, 80% 100%); filter: blur(2px); transform: rotate(15deg); z-index: 1;"></div>
+
+            <div id="entity-body" style="
+                width: 50px; height: 280px; 
+                background: #fff; 
+                border-radius: 50% 50% 20% 20% / 10% 10% 80% 80%;
+                box-shadow: 0 0 30px #fff, inset 0 0 15px var(--cyan-system);
+                z-index: 2; position: relative;
+                animation: pulse-divine 4s infinite ease-in-out;
+            ">
+                <div style="position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 35px; height: 45px; background: #fff; border-radius: 50%; box-shadow: 0 0 20px #fff;"></div>
+                <div id="entity-hair" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); width: 45px; height: 180px; background: linear-gradient(to bottom, var(--rouge-alerte), transparent); z-index: -1; border-radius: 50% 50% 0 0; filter: blur(3px);"></div>
             </div>
-        </model-viewer>
-        
+
+            <div style="position: absolute; width: 150px; height: 350px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 80%); z-index: 0;"></div>
+        </div>
     </div>
 
     <!-- LES LOGS DE DÉMARRAGE -->
@@ -188,26 +192,26 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 
     <!-- LE PANNEAU DE CONTRÔLE -->
     <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
-        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
-
+        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
+        
         <div class="control-group">
             <label>PIGMENTATION DE LA PEAU</label>
             <input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
         </div>
         
         <div class="control-group">
-            <label>ÉNERGIE FLAMBOYANTE (AILES)</label>
+            <label>ÉNERGIE FLAMBOYANTE (AILES ET CHEVEUX)</label>
             <input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
         </div>
-
+        
+        <!-- Masqué car l'entité pure CSS n'utilise pas le métal 3D, mais gardé pour la sauvegarde -->
         <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > STABILITÉ GÉNÉTIQUE : OPTIMALE <br>
-            > TYPE : DÉESSE HYBRIDE <br>
-            > ORIGINE : SECTEUR_SHADRASY
+            > PIGMENTATION : 50% <br>
+            > ÉNERGIE FLAMBOYANTE : 10% <br>
+            > STABILITÉ GÉNÉTIQUE : OPTIMALE
         </div>
-
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
     </div>
 </div>
@@ -224,7 +228,7 @@ const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "CHARGEMENT_MODÈLE_3D... [YES]",
+    "GÉNÉRATION_MATRICE_CSS... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
     "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -238,48 +242,47 @@ function print() {
     } else {
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
+        updateGenetics(); // Initialisation visuelle
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- VOTRE NOUVEAU SCRIPT (EFFET ÉMISSIF / NÉON) ---
+// --- VOTRE NOUVELLE FONCTION DE MUTATION CSS/RVB ---
 // =======================================================
-const dragonView = document.querySelector('#dragonnier-view');
-
-dragonView.addEventListener('load', () => {
-    updateGenetics();
-});
-
 function updateGenetics() {
-    const modelViewer = document.querySelector('#dragonnier-view');
-    const skinVal = document.getElementById('skin-color').value / 200;
-    const scaleVal = document.getElementById('scale-density').value / 50;
+    const body = document.getElementById('entity-body');
+    const wings = document.querySelectorAll('.wing');
+    const hair = document.getElementById('entity-hair');
+    
+    const skinVal = document.getElementById('skin-color').value; 
+    const scaleVal = document.getElementById('scale-density').value;
 
-    if (!modelViewer.model) return;
+    // Mutation Peau (Blanc vers Marron)
+    // On retire du bleu et du vert pour ne laisser que le rouge/jaune (marron)
+    const r = 255;
+    const g = 255 - (skinVal * 1.5);
+    const b = 255 - (skinVal * 2);
+    
+    if (body) {
+        body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
 
-    // On parcourt TOUS les matériaux pour ne pas se tromper d'index
-    modelViewer.model.materials.forEach((material) => {
-        // Si le matériau s'appelle "Peau" dans Blender
-        if (material.name.toLowerCase().includes("peau")) {
-            material.pbrMetallicRoughness.setBaseColorFactor([1, 1 - skinVal, 0.8 - skinVal, 1]);
-        }
-        
-        // Si le matériau s'appelle "Ailes" ou "Ecailles"
-        if (material.name.toLowerCase().includes("aile") || material.name.toLowerCase().includes("ecaille")) {
-            material.pbrMetallicRoughness.setBaseColorFactor([1 + scaleVal, 0.1, 0.1, 1]);
-            
-            // L'ajout clé : crée une véritable lumière incandescente émise par les ailes !
-            material.setEmissiveFactor([scaleVal, 0, 0]); 
-        }
+    // Mutation Énergie (Ailes et Cheveux)
+    const energyLevel = 0.3 + (scaleVal / 100);
+    wings.forEach(w => {
+        w.style.backgroundColor = `rgba(255, 0, 0, ${energyLevel})`;
+        w.style.filter = `blur(${5 - scaleVal/20}px) drop-shadow(0 0 10px red)`;
     });
+    
+    if (hair) {
+        hair.style.opacity = energyLevel;
+    }
 
     // Mise à jour de l'affichage textuel (UI)
-    const skinDisplay = document.getElementById('skin-color').value;
-    const scaleDisplay = document.getElementById('scale-density').value;
     document.getElementById('bio-stats').innerHTML = `
-        > PIGMENTATION : ${skinDisplay}% <br>
-        > ÉNERGIE FLAMBOYANTE : ${scaleDisplay}% <br>
+        > PIGMENTATION : ${skinVal}% <br>
+        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
         > STABILITÉ : OPTIMALE
     `;
 }
@@ -294,7 +297,7 @@ function saveGenetics() {
     localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
     localStorage.setItem('OMNI_ADN_METAL', metalVal);
     
-    alert("SÉQUENCE DIVINE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
+    alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
     setTimeout(() => { window.location.href = "index.html"; }, 500);
 }
 </script>
