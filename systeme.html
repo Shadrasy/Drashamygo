@@ -3,262 +3,253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OMNI SYSTEM - Laboratoire Divin (V100.9.17)</title>
+<title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 <script src="security.js"></script>
-
+<!-- Librairie 3D pour afficher et modifier l'humain en temps réel -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root {
-    --noir-fond: #000105;
-    --cyan-system: #00e5ff;
-    --cosplay-gold: #ffcc00;
-    --rouge-alerte: #ff0033;
-    --nebula-blue: rgba(0, 50, 150, 0.2);
-    --nebula-rose: rgba(255, 100, 200, 0.15);
-    --pulsar-cyan: rgba(200, 230, 255, 0.8);
-    --bordeaux: #660011;
+--noir-fond: #000105;
+--cyan-system: #00e5ff;
+--cosplay-gold: #ffcc00;
+--void-purple: #4b0082;
+--vert-stable: #00ff41;
+--rouge-alerte: #ff0033;
+--nebula-blue: rgba(0, 50, 150, 0.2);
+--nebula-rose: rgba(255, 100, 200, 0.15);
+--pulsar-cyan: rgba(200, 230, 255, 0.8);
+--bordeaux: #660011;
 }
 body {
-    margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
-    font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
+margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
+font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
 }
-
 /* --- EFFET VHS --- */
 body::after {
-    content: " "; display: block; position: fixed; inset: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-    z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
+content: " "; display: block; position: fixed; inset: 0;
+background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+z-index: 999; background-size: 100% 2px, 3px 100%; pointer-events: none; opacity: 0.4;
 }
-
 /* =========================================
 L'UNIVERS GALACTIQUE MASSIF
 ========================================= */
 .bg-layer { position: fixed; inset: 0; z-index: -20; pointer-events: none; }
 .nebula-gas {
-    background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
-                radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
-    filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
+background: radial-gradient(circle at 20% 30%, var(--nebula-blue) 0%, transparent 60%),
+radial-gradient(circle at 80% 70%, var(--nebula-rose) 0%, transparent 50%);
+filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
-
 .stars {
-    background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
-                      radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
-                      radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
-    background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
+background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
+radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
+radial-gradient(2px 2px at 70% 30%, var(--cosplay-gold), transparent);
+background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
-
-/* PLANÈTES HORS RADAR */
+.space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
+.shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
+@keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
+.quasar-container { position: fixed; top: 10%; right: 8%; width: 150px; height: 150px; z-index: -15; }
+.black-hole { width: 100%; height: 100%; background: #000; border-radius: 50%; box-shadow: 0 0 50px white, inset 0 0 20px var(--pulsar-cyan); }
+.jet { position: absolute; top: 50%; left: 50%; width: 2px; height: 1000px; background: linear-gradient(0deg, transparent, var(--pulsar-cyan), white, var(--pulsar-cyan), transparent); transform: translate(-50%, -50%) rotate(45deg); opacity: 0.6; }
+/* LES 6 PLANÈTES HORS RADAR */
 .nebula-planet { position: fixed; border-radius: 50%; z-index: -5; box-shadow: inset -15px -15px 30px rgba(0,0,0,0.9); pointer-events: none; }
 .p-gold { width: 45px; height: 45px; background: var(--cosplay-gold); box-shadow: 0 0 35px var(--cosplay-gold); top: 15%; right: 15%; animation: floatGold 25s infinite ease-in-out; }
 @keyframes floatGold { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, 30px); } }
-
+.p-blue { width: 60px; height: 60px; background: #0044aa; top: 40%; left: 10%; animation: floatBlue 40s infinite ease-in-out; }
+@keyframes floatBlue { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(6vw, 12vh); } }
+.p-red { width: 45px; height: 45px; background: var(--bordeaux); bottom: 20%; right: 10%; animation: floatRed 30s infinite ease-in-out; }
+@keyframes floatRed { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-8vw, -10vh); } }
+.p-purple { width: 70px; height: 70px; background: #220044; top: 10%; left: 40%; animation: floatPurple 50s infinite ease-in-out; }
+@keyframes floatPurple { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(15vw, 5vh); } }
+.p-ice { width: 35px; height: 35px; background: #b0e0e6; bottom: 15%; left: 20%; animation: floatIce 35s infinite ease-in-out; }
+@keyframes floatIce { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(10vw, -5vh); } }
+.p-toxic { width: 55px; height: 55px; background: #003300; top: 60%; right: 5%; animation: floatToxic 45s infinite ease-in-out; }
+@keyframes floatToxic { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(-12vw, -8vh); } }
+/* =========================================
+LE RADAR CENTRAL
+========================================= */
+.radar-container { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; }
+.radar-lens { width: 85vh; height: 85vh; border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 50%; position: relative; background: radial-gradient(circle, rgba(0,210,255,0.05) 0%, transparent 80%); }
+.radar-sweep { position: absolute; width: 50%; height: 3px; top: 50%; left: 50%; background: linear-gradient(90deg, transparent, var(--cyan-system)); transform-origin: left center; animation: sweep 4s infinite linear; }
+@keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.server-planet { position: absolute; border-radius: 50%; top: 50%; left: 50%; border: 1px solid rgba(255,255,255,0.4); z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; cursor: crosshair; transition: 0.3s; }
+.server-planet:hover { animation-play-state: paused !important; transform: scale(1.6); border-color: #fff; }
+.p-index { width: 30px; height: 30px; box-shadow: 0 0 15px var(--vert-stable); animation: orbitIdx 25s linear infinite; }
+.p-theories { width: 35px; height: 35px; box-shadow: 0 0 15px var(--rouge-alerte); animation: orbitThe 40s linear infinite reverse; }
+.p-galerie { width: 25px; height: 25px; box-shadow: 0 0 15px var(--cyan-system); animation: orbitGal 55s linear infinite; }
+@keyframes orbitIdx { from { transform: rotate(0deg) translateX(28vh) rotate(0deg); } to { transform: rotate(360deg) translateX(28vh) rotate(-360deg); } }
+@keyframes orbitThe { from { transform: rotate(0deg) translateX(38vh) rotate(0deg); } to { transform: rotate(360deg) translateX(38vh) rotate(-360deg); } }
+@keyframes orbitGal { from { transform: rotate(0deg) translateX(18vh) rotate(0deg); } to { transform: rotate(360deg) translateX(18vh) rotate(-360deg); } }
 /* =========================================
 PANNEAU DU LABORATOIRE GÉNÉTIQUE
 ========================================= */
 .awakening-corner {
-    position: fixed; bottom: 30px; right: 30px;
-    width: 360px; padding: 20px;
-    background: rgba(0, 5, 15, 0.95);
-    border: 1px solid var(--cyan-system);
-    backdrop-filter: blur(10px);
-    z-index: 10000 !important;
-    box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
-    display: flex; flex-direction: column;
+position: fixed; bottom: 30px; right: 30px;
+width: 360px; padding: 20px;
+background: rgba(0, 5, 15, 0.95);
+border: 1px solid var(--cyan-system);
+backdrop-filter: blur(10px);
+z-index: 10000 !important;
+box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+display: flex;
+flex-direction: column;
 }
 .header-mini { position: absolute; top: -10px; left: 15px; background: #000; padding: 0 10px; font-size: 9px; color: var(--cyan-system); border: 1px solid var(--cyan-system); z-index: 10; }
-.scan-line { position: absolute; width: 100%; height: 3px; background: var(--cyan-system); box-shadow: 0 0 20px var(--cyan-system); animation: scan 3s infinite ease-in-out; z-index: 10; pointer-events: none;}
+.scan-line { position: absolute; width: 100%; height: 2px; background: var(--cyan-system); box-shadow: 0 0 10px var(--cyan-system); animation: scan 2.5s infinite ease-in-out; z-index: 10; pointer-events: none;}
 @keyframes scan { 0%, 100% { top: 0%; } 50% { top: 100%; } }
-
 #boot-logs { font-size: 0.7rem; line-height: 1.5; height: 130px; overflow-y: hidden; border-top: 1px solid rgba(0, 229, 255, 0.3); padding-top: 10px; text-align: left; margin-bottom: 15px; }
 .log-entry { opacity: 0; transform: translateX(-5px); animation: logIn 0.2s forwards; }
 @keyframes logIn { to { opacity: 1; transform: translateX(0); } }
-
 /* --- STYLE DES CURSEURS GÉNÉTIQUES --- */
-.control-group { margin-bottom: 12px; }
-.control-group label { display: block; font-size: 9px; color: #fff; margin-bottom: 5px; letter-spacing: 1px; }
+.control-group { margin-bottom: 15px; }
+.control-group label { display: block; font-size: 9px; color: #fff; margin-bottom: 5px; }
 input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 12px; width: 12px; background: var(--cyan-system); border-radius: 50%; box-shadow: 0 0 8px var(--cyan-system); cursor: pointer; margin-top: -5px; }
 input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; background: var(--rouge-alerte); border-radius: 2px; }
 .btn-gen { display: inline-block; width: 100%; padding: 10px; border: 1px solid var(--rouge-alerte); background: rgba(255,0,51,0.1); color: var(--rouge-alerte); font-family: inherit; font-size: 0.75rem; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
-
-/* --- ANIMATIONS DE LA DÉESSE DRAGONNIÈRE --- */
-@keyframes flame-flicker {
-    0% { transform: translateX(-50%) scaleY(1) rotate(-2deg); opacity: 0.8; }
-    50% { transform: translateX(-50%) scaleY(1.05) rotate(2deg); opacity: 1; filter: blur(5px) drop-shadow(0 0 20px #ff3333); }
-    100% { transform: translateX(-50%) scaleY(0.95) rotate(-1deg); opacity: 0.9; }
-}
-@keyframes tail-wag {
-    0%, 100% { transform: rotate(10deg); }
-    50% { transform: rotate(25deg); }
-}
-@keyframes wing-beat-l {
-    0%, 100% { transform: rotate(-20deg) scaleX(1); }
-    50% { transform: rotate(-15deg) scaleX(0.8); }
-}
-@keyframes wing-beat-r {
-    0%, 100% { transform: rotate(20deg) scaleX(1); }
-    50% { transform: rotate(15deg) scaleX(0.8); }
-}
+#tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
 </style>
 </head>
 <body>
-
+<div id="tooltip"></div>
 <!-- L'UNIVERS GALACTIQUE -->
 <div class="bg-layer stars"></div>
 <div class="bg-layer nebula-gas"></div>
-<div id="galaxy-receptor">
-    <div class="nebula-planet p-gold"></div>
+<div class="space-dust"></div>
+<div class="shooting-star"></div>
+<div class="shooting-star" style="animation-delay: 4s; left: 30%;"></div>
+<div class="quasar-container">
+<div class="jet"></div><div class="black-hole"></div>
 </div>
-
+<div id="galaxy-receptor">
+<div class="nebula-planet p-gold" title="Astre Maître"></div>
+<div class="nebula-planet p-blue"></div>
+<div class="nebula-planet p-red"></div>
+<div class="nebula-planet p-purple"></div>
+<div class="nebula-planet p-ice"></div>
+<div class="nebula-planet p-toxic"></div>
+</div>
+<div class="radar-container">
+<div class="radar-lens">
+<div class="radar-sweep"></div>
+<div class="server-planet p-index" onmouseover="sd('INDEX_CORE', 'STABLE', 'V100.9.17')" onmouseout="hd()">IDX</div>
+<div class="server-planet p-theories" onmouseover="sd('THEORIES_DB', 'SYNCING', 'DECRYPT_ON')" onmouseout="hd()">THE</div>
+<div class="server-planet p-galerie" onmouseover="sd('GALERIE_MEDIA', 'ACTIVE', 'BUFFER_OK')" onmouseout="hd()">GAL</div>
+</div>
+</div>
 <!-- LE LABORATOIRE GÉNÉTIQUE -->
 <div class="awakening-corner">
-    <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
-
-    <!-- BLOC VISUEL : LA DÉESSE DRAGONNIÈRE 100% CODE -->
-    <div class="cyborg-full-frame" style="height: 480px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-        
-        <div class="scan-line"></div>
-
-        <!-- ZONE D'AFFICHAGE DE LA CRÉATURE -->
-        <div id="divine-entity" style="position: relative; width: 350px; height: 450px; display: flex; justify-content: center; align-items: center;">
-            
-            <!-- 1. QUEUE DE DRAGON -->
-            <div id="dragon-tail" style="position: absolute; bottom: 80px; left: 50%; width: 120px; height: 80px; border-bottom: 25px solid rgba(255,0,0,0.8); border-right: 10px solid transparent; border-radius: 0 0 100px 0; z-index: 1; transform-origin: left center; animation: tail-wag 5s infinite ease-in-out;">
-                <div id="tail-tip" style="position:absolute; bottom:-25px; right:-15px; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 35px solid rgba(255,0,0,0.9); transform: rotate(-25deg);"></div>
-            </div>
-
-            <!-- 2. AILES DE DRAGON -->
-            <div class="wing wing-l" style="position: absolute; left: 10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 30%, 0% 0%, 20% 100%, 60% 60%); z-index: 1; animation: wing-beat-l 4s infinite ease-in-out; transform-origin: right center;"></div>
-            <div class="wing wing-r" style="position: absolute; right: 10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 30%, 100% 0%, 80% 100%, 40% 60%); z-index: 1; animation: wing-beat-r 4s infinite ease-in-out; transform-origin: left center;"></div>
-
-            <!-- 3. CHEVEUX ROUGES FLAMBOYANTS (LONG JUSQU'AU BAS DU DOS) -->
-            <div id="entity-hair" style="position: absolute; top: 10px; left: 50%; width: 100px; height: 320px; background: linear-gradient(to bottom, #ff0000 0%, #ff6600 50%, transparent 100%); z-index: 2; border-radius: 50% 50% 0 0; animation: flame-flicker 2s infinite alternate;"></div>
-
-            <!-- 4. CORPS HUMANOÏDE (SILHOUETTE FÉMININE DE DÉESSE EN LIGNE) -->
-            <img id="divine-body" src="https://svgsilh.com/svg/297169.svg" style="height: 400px; filter: brightness(0) invert(1) drop-shadow(0 0 20px #fff); z-index: 3; transition: 0.5s;">
-
-            <!-- Aura d'énergie globale -->
-            <div style="position: absolute; width: 300px; height: 400px; background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, transparent 70%); z-index: 0; filter: blur(15px);"></div>
-        </div>
-
-        <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right; z-index: 10;">
-            MORPHOLOGIE : DÉESSE HYBRIDE<br>
-            CODE SOURCE : 100% GÉNÉRATION SANS FICHIER LOCAL
-        </div>
-    </div>
-
-    <!-- LES LOGS DE DÉMARRAGE -->
-    <div id="boot-logs"></div>
-
-    <!-- LE PANNEAU DE CONTRÔLE -->
-    <div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
-        <div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DIVIN</div>
-        
-        <div class="control-group">
-            <label>PIGMENTATION DE LA PEAU</label>
-            <input type="range" id="skin-color" min="0" max="100" value="0" oninput="updateGenetics()">
-        </div>
-        
-        <div class="control-group">
-            <label>ÉNERGIE FLAMBOYANTE (AILES / CHEVEUX / QUEUE)</label>
-            <input type="range" id="scale-density" min="0" max="100" value="50" oninput="updateGenetics()">
-        </div>
-
-        <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
-            > PIGMENTATION : 0% <br>
-            > ÉNERGIE FLAMBOYANTE : 50% <br>
-            > STABILITÉ : 100% CODE PUR
-        </div>
-        <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
-    </div>
+<div class="header-mini">LABORATOIRE_HYBRIDE_OMNI</div>
+<!-- VOTRE BLOC PARFAITEMENT INTÉGRÉ ICI -->
+<div class="cyborg-full-frame" style="height: 300px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden;">
+<div class="scan-line"></div>
+<model-viewer id="dragonnier-view"
+src="images/dragonnier_humanoide.glb"
+alt="Spécimen Humanoïde"
+camera-controls
+auto-rotate
+shadow-intensity="2"
+exposure="1.5"
+environment-image="neutral"
+loading="eager"
+style="width: 100%; height: 100%;"
+onerror="this.src='https://modelviewer.dev/shared-assets/models/Astronaut.glb'">
+</model-viewer>
 </div>
-
+<!-- LES LOGS DE DÉMARRAGE -->
+<div id="boot-logs"></div>
+<!-- LE PANNEAU DE CONTRÔLE (CACHÉ PENDANT LE DÉMARRAGE) -->
+<div id="genetics-panel" style="display: none; border-top: 1px dashed var(--cyan-system); padding-top: 15px;">
+<div style="color: var(--cosplay-gold); font-size: 10px; font-weight: bold; margin-bottom: 15px;">> CONFIGURATION ADN DRAGONNIER</div>
+<div class="control-group">
+<label>PIGMENTATION DE LA PEAU</label>
+<input type="range" id="skin-color" min="0" max="100" value="50" oninput="updateGenetics()">
+</div>
+<div class="control-group">
+<label>DENSITÉ DES ÉCAILLES (DRACONIQUE)</label>
+<input type="range" id="scale-density" min="0" max="100" value="10" oninput="updateGenetics()">
+</div>
+<div class="control-group">
+<label>LUSTRAGE MÉTALLIQUE (REFLETS)</label>
+<input type="range" id="metallic" min="0" max="100" value="20" oninput="updateGenetics()">
+</div>
+<div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
+> STABILITÉ GÉNÉTIQUE : 98.4% <br>
+> TYPE : HUMANOÏDE HYBRIDE <br>
+> ORIGINE : SECTEUR_SHADRASY
+</div>
+<button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
+</div>
+</div>
 <script>
+// --- BULLE DU RADAR ---
+const tt = document.getElementById('tooltip');
+function sd(n, s, l) { tt.style.display = 'block'; tt.innerHTML = `<strong>UNITÉ : ${n}</strong><br>ÉTAT : ${s}<br>VERSION : ${l}<br>COORD : SCANNING...`; }
+function hd() { tt.style.display = 'none'; }
+document.addEventListener('mousemove', (e) => { tt.style.left = (e.clientX + 15) + 'px'; tt.style.top = (e.clientY + 15) + 'px'; });
 // --- ANIMATION DE DÉMARRAGE ---
 const logs = [
-    "BOOTING_CORE_V2031...",
-    "GÉNÉRATION_AILES_DRAGON... [OK]",
-    "GÉNÉRATION_CHEVEUX_FLAMBOYANTS... [OK]",
-    "GÉNÉRATION_QUEUE_DRACONIQUE... [OK]",
-    "FUSION_SILHOUETTE_FÉMININE... [VALIDÉE]",
-    "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
+"BOOTING_CORE_V2031...",
+"VÉRIFICATION_MÉCANIQUE... [OK]",
+"SCAN_ENVIRONNEMENT... [ACTIF]",
+"EXTRACTION_ADN_DRAGONNIER... [YES]",
+"SIGNATURE_HINARU... [VALIDÉE]",
+"> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
 let i = 0;
 function print() {
-    if (i < logs.length) {
-        const d = document.createElement('div');
-        d.className = 'log-entry'; d.innerHTML = `>> ${logs[i]}`;
-        document.getElementById('boot-logs').appendChild(d);
-        i++; setTimeout(print, 500);
-    } else {
-        document.getElementById('boot-logs').style.display = 'none';
-        document.getElementById('genetics-panel').style.display = 'block';
-        updateGenetics(); 
-    }
+if (i < logs.length) {
+const d = document.createElement('div');
+d.className = 'log-entry'; d.innerHTML = `>> ${logs[i]}`;
+document.getElementById('boot-logs').appendChild(d);
+i++; setTimeout(print, 500);
+} else {
+// Cache les logs et affiche les curseurs génétiques
+document.getElementById('boot-logs').style.display = 'none';
+document.getElementById('genetics-panel').style.display = 'block';
+}
 }
 window.onload = print;
-
 // =======================================================
-// --- MOTEUR DE MUTATION 100% CODE ---
+// --- VOTRE MOTEUR DE MUTATION GÉNÉTIQUE CORRIGÉ ---
 // =======================================================
+const dragonView = document.querySelector('#dragonnier-view');
+// Dès que l'astronaute (ou le dragonnier) est chargé, on applique les couleurs
+dragonView.addEventListener('load', () => {
+updateGenetics();
+});
 function updateGenetics() {
-    const skinVal = document.getElementById('skin-color').value;
-    const scaleVal = document.getElementById('scale-density').value;
-    
-    const body = document.getElementById('divine-body');
-    const wings = document.querySelectorAll('.wing');
-    const hair = document.getElementById('entity-hair');
-    const tail = document.getElementById('dragon-tail');
-    const tailTip = document.getElementById('tail-tip');
-
-    // 1. MODIFICATION DE LA PEAU (Vers le marron/doré)
-    const brownTone = 100 - (skinVal / 2);
-    if (body) {
-        body.style.filter = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 20px #fff)`;
-    }
-
-    // 2. MODIFICATION DE L'ÉNERGIE (Ailes, Cheveux, Queue)
-    const energyLevel = 0.3 + (scaleVal / 100);
-    const blurLevel = 5 - (scaleVal / 25);
-    const glowLevel = 10 + (scaleVal / 5);
-
-    wings.forEach(w => {
-        w.style.background = `rgba(255, 0, 0, ${energyLevel})`;
-        w.style.filter = `blur(${blurLevel}px) drop-shadow(0 0 ${glowLevel}px red)`;
-    });
-
-    if (tail && tailTip) {
-        tail.style.borderBottomColor = `rgba(255, 0, 0, ${energyLevel})`;
-        tail.style.filter = `drop-shadow(0 0 ${glowLevel}px red)`;
-        tailTip.style.borderLeftColor = `rgba(255, 0, 0, ${energyLevel + 0.2})`;
-    }
-
-    if (hair) {
-        hair.style.opacity = energyLevel + 0.2;
-        hair.style.filter = `blur(${blurLevel + 2}px) drop-shadow(0 0 ${glowLevel * 2}px #ff3333)`;
-    }
-
-    // Mise à jour de l'interface
-    document.getElementById('bio-stats').innerHTML = `
-        > PIGMENTATION : ${skinVal}% <br>
-        > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
-        > STABILITÉ : 100% CODE PUR
-    `;
+const skinVal = document.getElementById('skin-color').value;
+const scaleVal = document.getElementById('scale-density').value;
+const metalVal = document.getElementById('metallic').value;
+if (dragonView.model) {
+// LA CORRECTION CLÉ EST ICI : permet de cibler la peau
+const material = dragonView.model.materials;
+if (material && material.pbrMetallicRoughness) {
+// Mutation de la pigmentation (Rouge / Peau / Sombre)
+const colorRatio = skinVal / 100;
+material.pbrMetallicRoughness.setBaseColorFactor([1, 0.8 * colorRatio, 0.6 * colorRatio, 1]);
+// Mutation Draconique (Aspect métallique des écailles)
+material.pbrMetallicRoughness.setMetallicFactor(metalVal / 100);
+// Mutation des écailles (Optionnel, lié à votre slider)
+material.pbrMetallicRoughness.setRoughnessFactor(1 - (scaleVal / 100));
 }
-
+}
+}
 // --- LA PASSERELLE : SAUVEGARDE EN MÉMOIRE POUR IMMERSION.HTML ---
 function saveGenetics() {
-    const skinVal = document.getElementById('skin-color').value;
-    const scaleVal = document.getElementById('scale-density').value;
-    
-    localStorage.setItem('OMNI_ADN_SKIN', skinVal);
-    localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
-    
-    alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
-    setTimeout(() => { window.location.href = "index.html"; }, 500);
+const skinVal = document.getElementById('skin-color').value;
+const scaleVal = document.getElementById('scale-density').value;
+const metalVal = document.getElementById('metallic').value;
+localStorage.setItem('OMNI_ADN_SKIN', skinVal);
+localStorage.setItem('OMNI_ADN_SCALE', scaleVal);
+localStorage.setItem('OMNI_ADN_METAL', metalVal);
+alert("SÉQUENCE ENREGISTRÉE DANS LE LEXIQUE OMNI. \nRedirection vers l'Astre Principal...");
+setTimeout(() => { window.location.href = "index.html"; }, 500);
 }
 </script>
 </body>
