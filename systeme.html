@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OMNI SYSTEM - Laboratoire Génétique (V100.9.17)</title>
 <script src="security.js"></script>
-
+<!-- Librairie 3D pour afficher et modifier la chimère en temps réel -->
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root {
     --noir-fond: #000105;
@@ -23,7 +24,6 @@ body {
     margin: 0; background-color: var(--noir-fond); color: var(--cyan-system);
     font-family: 'Courier New', monospace; overflow: hidden; height: 100vh;
 }
-
 /* --- EFFET VHS --- */
 body::after {
     content: " "; display: block; position: fixed; inset: 0;
@@ -42,7 +42,6 @@ L'UNIVERS GALACTIQUE MASSIF
     filter: blur(40px); animation: gas-pulse 15s infinite alternate ease-in-out;
 }
 @keyframes gas-pulse { from { opacity: 0.4; } to { opacity: 0.8; } }
-
 .stars {
     background-image: radial-gradient(1px 1px at 10% 15%, #fff, transparent),
                       radial-gradient(1px 1px at 30% 60%, var(--pulsar-cyan), transparent),
@@ -50,7 +49,6 @@ L'UNIVERS GALACTIQUE MASSIF
     background-size: 300px 300px; animation: twinkle 5s infinite alternate ease-in-out;
 }
 @keyframes twinkle { 0% { opacity: 0.3; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
-
 .space-dust { position: fixed; inset: 0; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.5) 100%); mix-blend-mode: overlay; z-index: -18; }
 .shooting-star { position: fixed; top: -10px; width: 100px; height: 1px; background: linear-gradient(90deg, white, transparent); animation: shoot 8s linear infinite; opacity: 0; transform: rotate(-45deg); z-index: -17; }
 @keyframes shoot { 0% { transform: translateX(100vw) translateY(0) rotate(-45deg); opacity: 0; } 5% { opacity: 1; } 15% { transform: translateX(-100vw) translateY(100vh) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
@@ -123,28 +121,6 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 .btn-gen:hover { background: var(--rouge-alerte); color: #000; box-shadow: 0 0 15px var(--rouge-alerte); }
 
 #tooltip { position: fixed; pointer-events: none; background: rgba(0,0,0,0.9); border: 1px solid var(--cyan-system); padding: 8px; font-size: 10px; display: none; z-index: 20000; box-shadow: 0 0 15px var(--cyan-system); line-height: 1.4; }
-
-/* --- ANIMATIONS DE L'ENTITÉ DIVINE --- */
-@keyframes flame-flicker {
-    0% { transform: translateX(-50%) scaleY(1) rotate(-2deg); opacity: 0.8; }
-    50% { transform: translateX(-50%) scaleY(1.1) rotate(2deg); opacity: 1; filter: blur(4px) drop-shadow(0 0 30px #ff3333); }
-    100% { transform: translateX(-50%) scaleY(0.95) rotate(-1deg); opacity: 0.9; }
-}
-
-@keyframes tail-wag {
-    0%, 100% { transform: rotate(10deg); }
-    50% { transform: rotate(25deg); }
-}
-
-@keyframes wing-beat-l {
-    0%, 100% { transform: rotate(-20deg) scaleX(1); }
-    50% { transform: rotate(-15deg) scaleX(0.8); }
-}
-
-@keyframes wing-beat-r {
-    0%, 100% { transform: rotate(20deg) scaleX(1); }
-    50% { transform: rotate(15deg) scaleX(0.8); }
-}
 </style>
 </head>
 <body>
@@ -182,32 +158,37 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
 <div class="awakening-corner">
     <div class="header-mini">LABORATOIRE_DIVIN_OMNI</div>
 
-    <!-- NOUVEAU BLOC : L'ENTITÉ DIVINE GÉANTE (550px) -->
-    <div class="cyborg-full-frame" style="height: 550px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    <!-- LE BLOC 3D GRAND FORMAT PRÊT POUR VOTRE DÉESSE -->
+    <div class="cyborg-full-frame" style="height: 480px; background: #000; border: 1px solid var(--cyan-system); margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
         
         <div class="scan-line"></div>
 
-        <div id="divine-entity" style="position: relative; width: 350px; height: 500px; display: flex; justify-content: center; align-items: center; filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));">
+        <!-- Ce visualiseur charge votre fichier ou affiche un texte si le fichier n'est pas encore téléchargé -->
+        <model-viewer id="dragonnier-view" 
+            src="images/deesse_dragon.glb" 
+            alt="Spécimen Divin"
+            camera-controls 
+            auto-rotate
+            rotation-per-second="30deg"
+            shadow-intensity="1.5"
+            exposure="1.2"
+            loading="eager"
+            style="width: 100%; height: 100%; background: #000; filter: drop-shadow(0 0 20px rgba(255,0,51,0.4));">
             
-            <!-- QUEUE DE DRAGON GÉANTE -->
-            <div id="dragon-tail" style="position: absolute; bottom: 60px; left: 50%; width: 150px; height: 100px; background: transparent; border-bottom: 25px solid rgba(255,0,0,0.8); border-right: 10px solid transparent; border-radius: 0 0 120px 0; z-index: 1; transform-origin: left center; animation: tail-wag 6s infinite ease-in-out;">
-                <!-- Pointe acérée de la queue -->
-                <div id="tail-tip" style="position:absolute; bottom:-25px; right:-15px; width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 45px solid rgba(255,0,0,0.9); transform: rotate(-25deg);"></div>
+            <!-- Message affiché pendant le chargement -->
+            <div slot="progress-bar" style="width: 100%; height: 2px; background: rgba(0,229,255,0.2);">
+                <div style="width: 0%; height: 100%; background: var(--cyan-system); transition: width 0.3s;"></div>
             </div>
-
-            <!-- AILES DE DRAGON GÉANTES -->
-            <div class="wing wing-l" style="position: absolute; left: -10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(100% 30%, 0% 0%, 20% 100%, 60% 60%); z-index: 1; animation: wing-beat-l 4s infinite ease-in-out; transform-origin: right center;"></div>
-            <div class="wing wing-r" style="position: absolute; right: -10px; width: 140px; height: 350px; background: rgba(255,0,0,0.6); clip-path: polygon(0% 30%, 100% 0%, 80% 100%, 40% 60%); z-index: 1; animation: wing-beat-r 4s infinite ease-in-out; transform-origin: left center;"></div>
-
-            <!-- CORPS DE DÉESSE -->
-            <img id="divine-body" src="https://svgsilh.com/svg/297169.svg" style="height: 450px; filter: brightness(0) invert(1) drop-shadow(0 0 20px #fff); z-index: 3; transition: 0.5s;">
-
-            <!-- CHEVEUX ROUGE FLAMBOYANTS (AURA) -->
-            <div id="entity-hair" style="position: absolute; top: -30px; left: 50%; width: 120px; height: 250px; background: radial-gradient(ellipse at bottom, var(--rouge-alerte) 0%, #ff6600 40%, #ffcc00 80%, transparent 100%); z-index: 2; border-radius: 50% 50% 0 0; mix-blend-mode: screen; animation: flame-flicker 2s infinite alternate;"></div>
-
-            <div style="position: absolute; width: 300px; height: 480px; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); z-index: 0; filter: blur(15px);"></div>
-        </div>
-
+            
+            <!-- Message affiché si le fichier deesse_dragon.glb est introuvable -->
+            <div slot="poster" style="color: var(--rouge-alerte); font-size: 10px; text-align: center; padding: 20px;">
+                [ EN ATTENTE DU MODÈLE 3D ]<br><br>
+                Générez le modèle sur une IA (Meshy/Tripo),<br>
+                nommez-le <b>deesse_dragon.glb</b><br>
+                et placez-le dans votre dossier <b>images/</b>
+            </div>
+        </model-viewer>
+        
         <div style="position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--rouge-alerte); text-align: right; z-index: 10;">
             MORPHOLOGIE : DÉESSE SUPRÊME<br>
             TYPE : DRACONIQUE_HYBRIDE_GÉANTE
@@ -230,14 +211,13 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 2px; bac
             <label>ÉNERGIE FLAMBOYANTE (AILES / CHEVEUX / QUEUE)</label>
             <input type="range" id="scale-density" min="0" max="100" value="0" oninput="updateGenetics()">
         </div>
-        
-        <!-- Compatibilité sauvegarde -->
+
         <input type="range" id="metallic" min="0" max="100" value="20" style="display: none;">
 
         <div id="bio-stats" style="font-size: 9px; color: var(--rouge-alerte); margin-top: 15px; border-left: 2px solid var(--rouge-alerte); padding-left: 10px;">
             > PIGMENTATION : 0% <br>
             > ÉNERGIE FLAMBOYANTE : 0% <br>
-            > STABILITÉ : OPTIMALE
+            > STABILITÉ GÉNÉTIQUE : OPTIMALE
         </div>
         <button class="btn-gen" style="margin-top: 15px;" onclick="saveGenetics()">[ ENREGISTRER LE SPÉCIMEN ]</button>
     </div>
@@ -255,7 +235,7 @@ const logs = [
     "BOOTING_CORE_V2031...",
     "VÉRIFICATION_MÉCANIQUE... [OK]",
     "SCAN_ENVIRONNEMENT... [ACTIF]",
-    "GÉNÉRATION_CHIMÈRE_GÉANTE... [YES]",
+    "CHARGEMENT_CHIMÈRE_3D... [YES]",
     "SIGNATURE_HINARU... [VALIDÉE]",
     "> DÉVERROUILLAGE DU PANNEAU GÉNÉTIQUE..."
 ];
@@ -269,55 +249,33 @@ function print() {
     } else {
         document.getElementById('boot-logs').style.display = 'none';
         document.getElementById('genetics-panel').style.display = 'block';
-        updateGenetics(); // On lance la fonction pour mettre les valeurs à jour
     }
 }
 window.onload = print;
 
 // =======================================================
-// --- MOTEUR DE MUTATION POUR L'ENTITÉ GÉANTE ---
+// --- MOTEUR DE MUTATION 3D GÉNÉRIQUE ---
 // =======================================================
-function updateGenetics() {
-    const body = document.getElementById('divine-body');
-    const wings = document.querySelectorAll('.wing');
-    const hair = document.getElementById('entity-hair');
-    const tail = document.getElementById('dragon-tail');
-    const tailTip = document.getElementById('tail-tip');
+const dragonView = document.querySelector('#dragonnier-view');
 
+dragonView.addEventListener('load', () => {
+    updateGenetics();
+});
+
+function updateGenetics() {
     const skinVal = document.getElementById('skin-color').value;
     const scaleVal = document.getElementById('scale-density').value;
-
-    // Mutation Peau : Transforme la déesse blanche en déesse marron/dorée
-    const brownTone = 100 - (skinVal / 2);
-    if (body) {
-        body.style.filter = `brightness(${brownTone}%) invert(1) sepia(${skinVal}%) saturate(2) drop-shadow(0 0 20px #fff)`;
+    
+    // On utilise un effet global CSS sur la balise 3D pour s'assurer que ça 
+    // modifie la couleur peu importe les noms des matériaux générés par l'IA
+    const glowLevel = (scaleVal / 100) * 50;
+    const hueShift = (skinVal / 100) * -40; // Décale la teinte selon le curseur
+    
+    if (dragonView) {
+        dragonView.style.filter = `hue-rotate(${hueShift}deg) saturate(${100 + scaleVal*1.5}%) drop-shadow(0 0 ${20 + glowLevel}px rgba(255,0,51,0.6))`;
     }
 
-    // Mutation Énergie Draconique : Plus fort = Plus rouge et plus brillant
-    const energyLevel = 0.4 + (scaleVal / 100);
-    const blurLevel = 5 - (scaleVal / 25);
-    const glowLevel = 10 + (scaleVal / 5);
-
-    // AILES
-    wings.forEach(w => {
-        w.style.background = `rgba(255, 0, 0, ${energyLevel})`;
-        w.style.filter = `blur(${blurLevel}px) drop-shadow(0 0 ${glowLevel}px red)`;
-    });
-
-    // QUEUE
-    if (tail && tailTip) {
-        tail.style.borderBottomColor = `rgba(255, 0, 0, ${energyLevel})`;
-        tail.style.filter = `drop-shadow(0 0 ${glowLevel}px red)`;
-        tailTip.style.borderLeftColor = `rgba(255, 0, 0, ${energyLevel + 0.2})`;
-    }
-
-    // CHEVEUX FLAMBOYANTS
-    if (hair) {
-        hair.style.opacity = energyLevel + 0.2;
-        hair.style.filter = `blur(${blurLevel + 2}px) drop-shadow(0 0 ${glowLevel * 2}px #ff3333)`;
-    }
-
-    // Mise à jour de l'affichage textuel (UI)
+    // Mise à jour UI
     document.getElementById('bio-stats').innerHTML = `
         > PIGMENTATION : ${skinVal}% <br>
         > ÉNERGIE FLAMBOYANTE : ${scaleVal}% <br>
